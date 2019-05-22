@@ -77,8 +77,9 @@ class ProjectsListPage extends Component {
         const queryParams = []; 
 
         this.props.history.push({
-            pathname: "/project/",
-            search: '?' + encodeURIComponent("projectID") + "=" + encodeURIComponent(projektIndex)
+            pathname: "/projects/" + encodeURIComponent(projektIndex),
+            search: '',
+            key: encodeURIComponent(projektIndex)
         });
      }
 

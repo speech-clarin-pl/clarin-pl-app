@@ -44,17 +44,23 @@ class App extends Component{
       <div className="App">
         <IntlProvider locale={this.state.currln} defaultLocale="pl" messages={messages[this.state.currln]}>
             <Switch>
-                    <Route path="/projectsList" render={(props) => (
+
+                    
+
+                   
+
+                    <Route path="/projects/:projectID" render={(props) => (
+                       <ProjectPage {...props} 
+                            changeLn={this.changeLnHandler}
+                            currLn = {this.state.currln} />
+                    )}/>
+
+                  <Route path="/projects" render={(props) => (
                        <ProjectsListPage {...props} 
                             changeLn={this.changeLnHandler} 
                             currLn = {this.state.currln}/>
                     )}/>
 
-                    <Route path="/project" render={(props) => (
-                       <ProjectPage {...props} 
-                            changeLn={this.changeLnHandler}
-                            currLn = {this.state.currln} />
-                    )}/>
 
                     <Route path="/help" render={(props) => (
                        <HelpPage {...props} 

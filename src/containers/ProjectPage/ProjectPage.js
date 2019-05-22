@@ -13,6 +13,8 @@ import RepoBar from './RepoBar/RepoBar';
 import ErrorPage from '../../components/ErrorPage/ErrorPage';
 
 import TopBar from '../../components/TopBar/TopBar';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import Tab from '../ProjectPage/TabContainer/Tab/Tab';
 
 // to do edycji jezykowej
 
@@ -29,20 +31,33 @@ class ProjectPage extends Component {
     currentTab: TABS.dashboard,
   };
 
+  parseQueryParams () {
+    console.log(this.props);
+    const query = new URLSearchParams(this.props.location.search);
+    /*
+    for (let param of query.entries()) {
+        if (this.state.courseTitle !== param[1]) {
+            this.setState({courseTitle: param[1]});
+        }
+    }
+    */
+  }
+
   componentDidMount() {
     //ekstrachuje parametry w URL o id projektu
-    const query = new URLSearchParams(this.props.location.search);
-    const params = {};
+   // const query = new URLSearchParams(this.props.location.search);
+   // const params = {};
+
+    //this.parseQueryParams ();
 
     //niepotrzebnie iteruje po wiekszej liczbie parametrow - na przyszlosc - bo aktualnie przekazywane jest tylko ID
-    for (let param of query.entries()){
-      params[param[0]] = param[1];
-    }
+    //for (let param of query.entries()){
+    //  params[param[0]] = param[1];
+    //}
 
-    console.log(params);
 
     this.setState({
-      currentProjectID: params.projectID,
+      currentProjectID: this.props.match.params.projectID,
     });
     
   }
@@ -77,7 +92,7 @@ class ProjectPage extends Component {
     }
 
     
-
+   console.log(this.props);
 
     return (
         <Aux>
@@ -93,14 +108,35 @@ class ProjectPage extends Component {
 
             <LeftSiteBar czyTopPart="true" />
            
+            {
+            /*
             <TabContainer listOfTabs={TABS} clickTab={this.switchTabHandler} displayedTab={this.state.currentTab}>
+              */
+            }
 
-              {displayedTab}
+          <div className="ProjectPage">
+
+              <ul className={["nav nav-tabs", "darkbg"].join(' ')}>
+                  <Tab  title="Dashboard" whereToLink={'/dashboard'}/>
+                  <Tab  title="Rozpoznawanie" whereToLink={'/recognition'}/>
+                  <Tab  title="Sementacja" whereToLink={'/segment'}/>
+                  <Tab  title="Podgląd" whereToLink={'/preview'}/>                  
+              </ul>
+            
+              <Switch>
+                <Route path={this.props.match.url + '/recognition'} component={RecognitionTool} />
+                <Route path={this.props.match.url + '/segment'} component={SegmentTool} />
+                <Route path={this.props.match.url + '/preview'} component={TranscriptTool} />
+                <Route path={this.props.match.url + '/dashboard'} component={Dashboard} />
+                <Redirect from={this.props.match.url + '/'} to={this.props.match.url + '/dashboard'} />
+                <Route component={ErrorPage}/> 
+              </Switch>
               
-            </TabContainer> 
+
+            </div>
 
             <RepoBar />
-
+          
         </Aux>
       
     );

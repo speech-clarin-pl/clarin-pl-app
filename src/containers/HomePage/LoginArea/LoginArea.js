@@ -20,15 +20,15 @@ const loginArea = (props) => {
                            
 
                             <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">Email address</label>
+                                <label htmlFor="registerInputEmail">Email address</label>
                                 <input type="email" className="form-control" 
-                                id="exampleInputEmail1" 
+                                id="registerInputEmail" 
                                 placeholder="Enter email" />
                             </div>
                             <div className="form-group">
-                                <label htmlFor="exampleInputPassword1">Password</label>
+                                <label htmlFor="registerInputPassword">Password</label>
                                 <input type="password" className="form-control" 
-                                id="exampleInputPassword1" 
+                                id="registerInputPassword" 
                                 placeholder="Password" />
                             </div>
                             
@@ -44,19 +44,19 @@ const loginArea = (props) => {
                             <h3>Jeżeli posiadasz już konto</h3>
                           
                             <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">Email address</label>
+                                <label htmlFor="loginInputEmail">Email address</label>
                                 <input type="email" className="form-control" 
-                                id="exampleInputEmail1" 
+                                id="loginInputEmail" 
                                 placeholder="Enter email" />
                             </div>
                             <div className="form-group">
-                                <label htmlFor="exampleInputPassword1">Password</label>
+                                <label htmlFor="loginInputPassword">Password</label>
                                 <input type="password" className="form-control" 
-                                id="exampleInputPassword1" 
+                                id="loginInputPassword" 
                                 placeholder="Password" />
                             </div>
                         
-                            <Link to="/projectsList">
+                            <Link to="/projects">
                                 <button className="btn btn-primary">
                                     <FormattedMessage
                                      id="LoginArea.login"

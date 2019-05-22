@@ -1,0 +1,12 @@
+.ProjectPage {
+    position: absolute;
+    left: 210px;
+    bottom: 0px;
+    top: 45px;
+    right: 300px;
+}
+
+
+.ProjectPage .darkbg {
+    background-color: #394b55;
+}

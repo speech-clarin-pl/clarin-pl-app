@@ -22,7 +22,7 @@ const topBar = (props) => {
              {
                  //czy szeroki topBar czy nie
              }
-            <div className={props.wide=="no" ? "container": "container-fluid"}>
+            <div className={props.wide==="no" ? "container": "container-fluid"}>
 
              {
                  //kliknięcie w logo
@@ -40,7 +40,7 @@ const topBar = (props) => {
              <div className="projectTitleEdit">
              { czyInit ? null : (
                 <div>
-                    <Link to="/projectsList">
+                    <Link to="/projects">
                         <i className={["fas",  "fa-arrow-left"].join(' ')}></i>
                     </Link>
                         <span className="editField">{props.projectTitle}</span>

@@ -9,11 +9,11 @@ const leftSiteBar = (props) => {
         <Aux>
 
             <div className="LeftSiteBar">
-				<div className={props.czyTopPart=="true" ? "topPart" : "resetTopPart"}>
+				<div className={props.czyTopPart==="true" ? "topPart" : "resetTopPart"}>
 					
 				</div>
 
-                <div className={props.czyTopPart=="true" ? "hintPanel" : "resetHintPanel"}>
+                <div className={props.czyTopPart==="true" ? "hintPanel" : "resetHintPanel"}>
                             <div className="btn-group-vertical btn-block" id="hint-buttons">
 
                             </div>

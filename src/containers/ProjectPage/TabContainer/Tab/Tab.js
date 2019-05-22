@@ -1,29 +1,39 @@
 import React from 'react';
 import Aux from '../../../../hoc/Auxiliary';
 import './Tab.css';
+import { NavLink } from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
 
 const tab = (props) => {
 
-    let ifActive = props.ifActive;
-
     let klasy = ["nav-link", "clarinNavLink"];
 
-    //jeżeli aktywna zakladka to dodaj klase
-    if(props.ifActive){
-        klasy.push("active")
-    };
-    
+    console.log(props);
 
     return(
         <Aux>
              <li className="nav-item">
-                <a className={klasy.join(' ')} 
-                    href="#"
-                    onClick = {()=> props.whenClickTab(props.title)}>{props.title}</a>
+                 {
+                     /*
+                        <a className={klasy.join(' ')} 
+                        href="#"
+                        onClick = {()=> props.whenClickTab(props.title)}>{props.title}</a>                       
+                        */
+                 }
+
+                    <NavLink className={klasy.join(' ')} 
+                       to={{
+                           pathname: props.match.url + '' + props.whereToLink,
+                           search: '',
+                           activeClassName: 'active' 
+                       }}>{props.title}</NavLink>
+
+                    
+                
             </li>
         </Aux>
     );
 }
 
-export default tab;
+export default withRouter(tab);
