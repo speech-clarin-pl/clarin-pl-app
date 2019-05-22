@@ -57,3 +57,7 @@
 .TopBar .dropdown-item:hover {
     color: #394b55;
 }
+
+.TopBar .dropdown-toggle {
+    text-transform: uppercase;
+}

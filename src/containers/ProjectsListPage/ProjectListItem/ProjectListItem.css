@@ -11,3 +11,7 @@
 .ProjectIcon {
     margin: 5px;
 }
+
+.ProjectListItem .projectTitle {
+    text-align: left;
+}

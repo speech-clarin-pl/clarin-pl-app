@@ -14,6 +14,8 @@ const homePage = (props) => {
                 wide="no" 
                 language="pl" 
                 projectTitle=""
+                changeLn = {props.changeLn}
+                currLn = {props.currLn}
                  />
             <Jumbotron />
             <LoginArea />

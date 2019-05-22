@@ -6,8 +6,8 @@ const projectListItem = (props) => {
     return(
         <Aux>
              <tr className="ProjectListItem">   
-                <th scope="row">
-                    <a onClick={props.wyborprojektu}> {props.title} </a>
+                <th scope="row" className="projectTitle">
+                    <a onClick={props.wyborprojektu} > {props.title} </a>
                 </th>
                 <td>{props.owner}</td>
                 <td>{props.modified}</td>

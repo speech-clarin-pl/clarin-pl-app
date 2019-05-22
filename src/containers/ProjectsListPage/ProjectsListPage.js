@@ -115,7 +115,9 @@ class ProjectsListPage extends Component {
                     version="init" 
                     wide="yes" 
                     language="pl" 
-                    projectTitle="" />
+                    projectTitle=""
+                    changeLn = {this.props.changeLn}
+                    currLn = {this.props.currLn} />
                 
                 <LeftSiteBar czyTopPart="false" />
 

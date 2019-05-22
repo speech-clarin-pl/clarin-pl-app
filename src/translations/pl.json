@@ -1,4 +1,7 @@
 {
-    "app.title": "Cześć Willkommen bei react-intl",
-    "app.intro": "Zum Loslegen editiere <code>src/App.js</code>."
+    "TopBar.help": "Pomoc",
+    "TopBar.konto": "Konto",
+    "Jumbotron.lead": "Łatwa w użyciu platfroma do analizy sygnału mowy w nagraniach dźwiękowych",
+    "Jumbotron.sublead": "Znajdziesz tutaj narzędzia do rozpoznawania mowy, transkrypcji, segmentacji, analizy itp.",
+    "Jumbotron.register": "Zarejestruj się"
 }

@@ -24,15 +24,6 @@ const leftSiteBar = (props) => {
 
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent iaculis, velit eu facilisis fermentum, enim ligula commodo ex, vitae ornare neque nisi ut turpis. Nullam malesuada nisl id magna elementum, ut congue massa eleifend. 
 
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent iaculis, velit eu facilisis fermentum, enim ligula commodo ex, vitae ornare neque nisi ut turpis. Nullam malesuada nisl id magna elementum, ut congue massa eleifend. 
-
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent iaculis, velit eu facilisis fermentum, enim ligula commodo ex, vitae ornare neque nisi ut turpis. Nullam malesuada nisl id magna elementum, ut congue massa eleifend. 
-
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent iaculis, velit eu facilisis fermentum, enim ligula commodo ex, vitae ornare neque nisi ut turpis. Nullam malesuada nisl id magna elementum, ut congue massa eleifend. 
-
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent iaculis, velit eu facilisis fermentum, enim ligula commodo ex, vitae ornare neque nisi ut turpis. Nullam malesuada nisl id magna elementum, ut congue massa eleifend. 
-
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent iaculis, velit eu facilisis fermentum, enim ligula commodo ex, vitae ornare neque nisi ut turpis. Nullam malesuada nisl id magna elementum, ut congue massa eleifend. 
                                 </div> 
                             </div>
                 </div>

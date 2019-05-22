@@ -1,4 +1,7 @@
 {
-    "app.title": "Welcome to react-intl",
-    "app.intro": "To get started, edit <code>src/App.js</code> and save to reload."
+    "TopBar.help": "Help",
+    "TopBar.konto": "Account",
+    "Jumbotron.lead": "Easy to use platform for analyzing the speech signal",
+    "Jumbotron.sublead": "You'll find here tools for speech recognition, transcription, segmentation, analysis and much more",
+    "Jumbotron.register": "Register"
 }

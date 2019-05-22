@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {BrowserRouter} from 'react-router-dom';
 import './ProjectPage.css';
 import Aux from '../../hoc/Auxiliary';
 import LeftSiteBar from '../../components/LeftSiteBar/LeftSiteBar';
@@ -87,7 +86,9 @@ class ProjectPage extends Component {
                   version="longinit" 
                   wide="yes" 
                   language="pl" 
-                  projectTitle={""+this.state.currentProjectID} />
+                  projectTitle={""+this.state.currentProjectID}
+                  changeLn = {this.props.changeLn}
+                  currLn = {this.props.currLn}/>
 
 
             <LeftSiteBar czyTopPart="true" />

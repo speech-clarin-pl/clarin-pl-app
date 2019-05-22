@@ -14,7 +14,6 @@ const topBar = (props) => {
     let navClassNames = ["TopBar", "navbar", "navbar-expand"];
     if(czyInit) navClassNames.push("init");
 
-
     return(
         
        
@@ -66,11 +65,11 @@ const topBar = (props) => {
                     data-toggle="dropdown" 
                     aria-haspopup="true" 
                     aria-expanded="false">
-                    <i className={["fas", "fa-globe-europe"].join(' ')}></i> PL
+                    <i className={["fas", "fa-globe-europe"].join(' ')}></i> {props.currLn}
                 </a>
                 <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLinkjezyk">
-                    <a className="dropdown-item" href="#">PL</a>
-                    <a className="dropdown-item" href="#">EN</a>
+                    <a className="dropdown-item" onClick={()=>props.changeLn("pl")}>PL</a>
+                    <a className="dropdown-item" onClick={() => props.changeLn("en")}>EN</a>
                 </div>
                 </li>
 
@@ -110,8 +109,8 @@ const topBar = (props) => {
                        aria-expanded="false">
                        <i className="fas fa-user-circle"></i> 
                         
-                        <FormattedMessage
-                            id="TopBar.account"
+                       <FormattedMessage
+                            id="TopBar.konto"
                             defaultMessage="Konto"
                             />
                             

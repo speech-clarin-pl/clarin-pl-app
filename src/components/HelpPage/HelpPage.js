@@ -10,6 +10,8 @@ const helpPage = (props) => {
                     wide="no" 
                     language="pl" 
                     projectTitle=""
+                    changeLn = {props.changeLn}
+                    currLn = {props.currLn}
                     />
             <h2>Tutaj będzie strona pomocy</h2>
         </Aux>
