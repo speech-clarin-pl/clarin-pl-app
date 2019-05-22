@@ -1,0 +1,38 @@
+
+.RepoBar {
+    position: absolute;
+    right: 0px;
+    width: 300px;
+    bottom: 0px;
+    top: 38px;
+}
+
+.mainRepoContent {
+    background-color: #e1e9ec;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    top: 95px;
+    overflow: auto;
+}
+
+.repoNav{
+    background-color: #6f8796;
+    height: 40px;
+}
+
+.repoTab {
+    background-color: #546c78;
+    height: 50px;
+    border-top-left-radius: 5px;
+    line-height: 45px;
+}
+
+.topPart {
+    height: 90px;
+    background: #394b55;
+    color:#e1e9ec;
+    text-align: center;
+    margin-top: 5px;
+}

@@ -1,0 +1,41 @@
+.Content {
+    position: absolute;
+    bottom: 0px;
+    top: 90px;
+    overflow: auto;
+}
+
+.RecognitionTool {
+    padding-top: 1em;
+}
+
+
+
+.RecognitionTool .uploadFromDiskArea {
+    background: #fdfdfd;
+    border: 1px dotted #6f8796;
+    color: #6f8796;
+    text-align: center;
+    padding: 1em;
+    border-radius: 10px;
+    margin-bottom: 1em;
+}
+
+.RecognitionTool .uploadFromRepo {
+    background: #fdfdfd;
+    border: 1px dotted #6f8796;
+    color: #6f8796;
+    text-align: center;
+    padding: 1em;
+    border-radius: 10px;
+    margin-bottom: 1em;
+}
+
+.RecognitionTool .fileAudio {
+    width: 100%;
+    display: block;
+    overflow: hidden;
+    height: 35px;
+    border: 1px dotted #6f8796;
+    padding: 5px;
+}

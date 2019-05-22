@@ -1,0 +1,26 @@
+.SegmentItem.pairedItem {
+    background: #fdfdfd;
+    border: 1px solid #6f8796;
+    color: #6f8796;
+    text-align: left;
+    padding: 8px;
+    margin: 8px;
+}
+
+.SegmentItem .fileAudio {
+    width: 100%;
+    display: block;
+    overflow: hidden;
+    height: 35px;
+    border: 1px dotted #6f8796;
+    padding: 5px;
+}
+
+.SegmentItem .fileText {
+    width: 100%;
+    display: block;
+    overflow: hidden;
+    height: 35px;
+    border: 1px dotted #6f8796;
+    padding: 5px;
+}

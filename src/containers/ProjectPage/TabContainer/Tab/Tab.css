@@ -1,0 +1,28 @@
+
+.clarinNavLink {
+    height: 50px;
+    border: none !important;
+    background-color: #546c78 !important;
+    color: #d4d8da !important;
+    box-shadow: 1px 2px 2px #222427 !important;
+    border-right: 1px solid #3c4f58 !important;
+    line-height: 33px;
+    border-top-left-radius: 0.6rem;
+    border-top-right-radius: 0.6rem;
+  
+}
+
+
+.clarinNavLink.active {
+    background-color: #6f8796 !important;
+    color:white !important;
+    box-shadow: 2px 2px 4px #222427 !important;
+    z-index:999;
+    position:relative;
+}
+
+
+.clarinNavLink:hover {
+    color: white;
+}
+

@@ -1,0 +1,7 @@
+.SettingBar {
+    background-color: #6f8796;
+    z-index: 99999;
+    position: relative;
+    top: -2px;
+    color: #e1e9ec;
+}

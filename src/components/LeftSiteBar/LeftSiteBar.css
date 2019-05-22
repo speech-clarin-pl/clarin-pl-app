@@ -1,0 +1,46 @@
+.LeftSiteBar {
+    position: absolute;
+    width: 210px;
+    bottom: 0px;
+    left: 0px;
+    top: 43px;
+    font-size: 0.9em;
+}
+
+.LeftSiteBar .topPart {
+    height: 90px;
+    background: #394b55;
+    color: #d4d8da;
+    position: relative !important;
+    text-align: center;
+}
+
+.LeftSiteBar .resetTopPart {
+    height: 0px;
+}
+
+.LeftSiteBar .hintPanel {
+    background-color: #e1e9ec;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    top: 90px;
+    overflow: auto;
+}
+
+.LeftSiteBar .resetHintPanel {
+    background-color: #e1e9ec;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    top: 8px;
+    overflow: auto;
+}
+
+
+
+
+
+

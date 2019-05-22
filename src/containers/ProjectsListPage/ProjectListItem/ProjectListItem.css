@@ -1,0 +1,13 @@
+.ProjectListItem a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.ProjectListItem:hover {
+    background: #e9ecef;
+}
+
+.ProjectIcon {
+    margin: 5px;
+}

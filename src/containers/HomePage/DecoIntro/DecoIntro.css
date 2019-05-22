@@ -1,0 +1,12 @@
+.DecoIntro {
+    padding-top: 3em;
+    padding-bottom: 3em;
+    background-image: url('../../../images/homeDecoBg.png');
+    background-size: cover;
+    background-position: top;
+    min-height: 600px;
+}
+
+.introButton {
+    padding: 1em;
+}

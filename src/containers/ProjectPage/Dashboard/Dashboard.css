@@ -1,0 +1,15 @@
+.Dashboard {
+    padding-top: 1em;
+}
+
+.cardHeader {
+    background-color: #6f8796;
+    color: white;
+}
+
+.Content {
+    position: absolute;
+    bottom: 0px;
+    top: 90px;
+    overflow: auto;
+}

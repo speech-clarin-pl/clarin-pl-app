@@ -1,0 +1,63 @@
+.RecognitionItem.fileItem {
+    background: #fdfdfd;
+    border: 1px solid #6f8796;
+    color: #6f8796;
+    text-align: left;
+    padding: 1em;
+    margin: 1em 0 1em 0;
+}
+
+
+
+.RecognitionItem.fileName {
+    font-weight: bold;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.RecognitionItem .fileIcons {
+    text-align: right;
+}
+
+.RecognitionItem .fileIcons a {
+    margin-right: 15px;
+}
+
+.RecognitionItem .fileSize {
+    font-size: small;
+}
+
+.RecognitionItem .ready {
+    color: #28a745;
+}
+
+.RecognitionItem .preview {
+    color: #28a745;
+}
+
+.RecognitionItem .download {
+    color: #3498db;
+}
+
+.RecognitionItem .downloadRepo {
+    color: #3498db;
+}
+
+.RecognitionItem .inprogress {
+    color: #3498db;
+    background: inherit;
+    font-size: inherit;
+}
+
+.RecognitionItem .remove {
+    color: inherit;
+}
+
+.RecognitionItem .uploaded {
+    color: inherit;
+}
+
+.RecognitionItem .spinner-border {
+    width: 1.3rem;
+    height: 1.3rem;
+}

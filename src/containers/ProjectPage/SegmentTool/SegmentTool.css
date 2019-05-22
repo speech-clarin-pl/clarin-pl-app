@@ -1,0 +1,32 @@
+
+.SegmentTool {
+    padding-top: 1em;
+}
+
+.Content {
+    position: absolute;
+    bottom: 0px;
+    top: 90px;
+    overflow: auto;
+}
+
+.SegmentTool .uploadAudio {
+    background: #fdfdfd;
+    border: 1px dotted #6f8796;
+    color: #6f8796;
+    text-align: center;
+    padding: 1em;
+    border-radius: 10px;
+    margin-bottom: 1em;
+}
+
+.SegmentTool .uploadTxt {
+    background: #fdfdfd;
+    border: 1px dotted #6f8796;
+    color: #6f8796;
+    text-align: center;
+    padding: 1em;
+    border-radius: 10px;
+    margin-bottom: 1em;
+}
+

@@ -1,0 +1,13 @@
+
+.TabContainer {
+    position: absolute;
+    left: 210px;
+    bottom: 0px;
+    top: 45px;
+    right: 300px;
+}
+
+
+.TabContainer .darkbg {
+    background-color: #394b55;
+}

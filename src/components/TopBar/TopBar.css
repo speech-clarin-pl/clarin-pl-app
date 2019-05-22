@@ -1,0 +1,59 @@
+.TopBar {
+    background-color: #394b55;
+    color: #546c78;
+    position: relative;
+    display: flex;
+
+}
+
+.TopBar a {
+   color: #d4d8da;
+}
+
+.TopBar a:hover {
+    color: white;
+}
+
+.TopBar .logo {
+    width: 140px;
+    position:absolute;
+    top: -8px;
+    left: 20px;
+    z-index: 999;
+}
+
+.TopBar .logoPlace {
+    position:relative;
+    width: 140px;
+}
+
+.TopBar .projectTitleEdit {
+    margin: 0 auto;
+    font-size: small;
+}
+
+.TopBar .editField {
+    margin-left:0.75em;
+    margin-right:0.75em;
+    font-size:1.1em;
+    color: #e1e9d9;
+}
+
+.TopBar .navLink {
+    color: #e1e9d9;
+    font-size: small;
+    padding-right: 1em;
+}
+
+.TopBar .navLink:hover {
+    color: white;
+}
+
+
+.TopBar .dropdown-item {
+    color: #394b55;
+}
+
+.TopBar .dropdown-item:hover {
+    color: #394b55;
+}
