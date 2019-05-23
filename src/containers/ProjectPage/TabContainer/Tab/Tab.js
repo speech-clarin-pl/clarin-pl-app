@@ -9,7 +9,7 @@ const tab = (props) => {
 
     let klasy = ["nav-link", "clarinNavLink"];
 
-    console.log(props);
+ 
 
     return(
         <Aux>

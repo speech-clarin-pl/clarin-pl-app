@@ -16,83 +16,22 @@ import TopBar from '../../components/TopBar/TopBar';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Tab from '../ProjectPage/TabContainer/Tab/Tab';
 
-// to do edycji jezykowej
-
-let TABS = {
-  dashboard: 'Dashboard', 
-  recognition: 'Rozpoznawanie',
-  segmentation: 'Segmentacja',
-  transcription: 'Transkrypcje'};
-
 class ProjectPage extends Component {
 
   state = {
     currentProjectID: null,
-    currentTab: TABS.dashboard,
   };
 
-  parseQueryParams () {
-    console.log(this.props);
-    const query = new URLSearchParams(this.props.location.search);
-    /*
-    for (let param of query.entries()) {
-        if (this.state.courseTitle !== param[1]) {
-            this.setState({courseTitle: param[1]});
-        }
-    }
-    */
-  }
-
   componentDidMount() {
-    //ekstrachuje parametry w URL o id projektu
-   // const query = new URLSearchParams(this.props.location.search);
-   // const params = {};
-
-    //this.parseQueryParams ();
-
-    //niepotrzebnie iteruje po wiekszej liczbie parametrow - na przyszlosc - bo aktualnie przekazywane jest tylko ID
-    //for (let param of query.entries()){
-    //  params[param[0]] = param[1];
-    //}
-
-
     this.setState({
       currentProjectID: this.props.match.params.projectID,
     });
     
   }
 
-  switchTabHandler = (whichTab) => {
-
-    console.log('wybrano tab: '+whichTab);
-        this.setState({
-          currentTab: whichTab,
-    });
-  }
-
   render() {
 
-    let displayedTab = null;
-
-    switch(this.state.currentTab){
-      case (TABS.dashboard):
-        displayedTab = <Dashboard />
-        break;
-      case (TABS.recognition):
-        displayedTab = <RecognitionTool />
-        break;
-      case (TABS.segmentation):
-        displayedTab = <SegmentTool />
-        break;
-      case (TABS.transcription):
-        displayedTab = <TranscriptTool />
-        break;
-      default:
-        displayedTab = <ErrorPage />
-    }
-
-    
-   console.log(this.props);
+  
 
     return (
         <Aux>
@@ -107,14 +46,8 @@ class ProjectPage extends Component {
 
 
             <LeftSiteBar czyTopPart="true" />
-           
-            {
-            /*
-            <TabContainer listOfTabs={TABS} clickTab={this.switchTabHandler} displayedTab={this.state.currentTab}>
-              */
-            }
 
-          <div className="ProjectPage">
+            <div className="ProjectPage">
 
               <ul className={["nav nav-tabs", "darkbg"].join(' ')}>
                   <Tab  title="Dashboard" whereToLink={'/dashboard'}/>

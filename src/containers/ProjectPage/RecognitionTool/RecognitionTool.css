@@ -10,17 +10,6 @@
 }
 
 
-
-.RecognitionTool .uploadFromDiskArea {
-    background: #fdfdfd;
-    border: 1px dotted #6f8796;
-    color: #6f8796;
-    text-align: center;
-    padding: 1em;
-    border-radius: 10px;
-    margin-bottom: 1em;
-}
-
 .RecognitionTool .uploadFromRepo {
     background: #fdfdfd;
     border: 1px dotted #6f8796;
