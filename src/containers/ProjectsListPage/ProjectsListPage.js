@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Aux from '../../hoc/Auxiliary';
 import ProjectListItem from './ProjectListItem/ProjectListItem';
-import LeftSiteBar from '../../components/LeftSiteBar/LeftSiteBar';
+import LeftSiteBar from '../ProjectPage/LeftSiteBar/LeftSiteBar';
 import ProjectsList from './ProjectsList/ProjectList';
 import TopBar from '../../components/TopBar/TopBar';
 import {Route} from 'react-router-dom';
@@ -107,9 +107,12 @@ class ProjectsListPage extends Component {
         return(
             <Aux>
               
+              
+              
                 <Route path="/project/" render={(props) => (
                     <ProjectPage {...props}  />
                 )} />
+
 
 
                 <TopBar 
@@ -120,9 +123,13 @@ class ProjectsListPage extends Component {
                     changeLn = {this.props.changeLn}
                     currLn = {this.props.currLn} />
                 
-                <LeftSiteBar czyTopPart="false" />
+                
 
                 <ProjectsList>
+
+                <LeftSiteBar 
+                  czyTopPart="false"
+                  desc="tutaj opis do listy projektow" />
                 
                 {projectList}
                 

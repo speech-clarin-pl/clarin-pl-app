@@ -2,12 +2,92 @@ import React, {Component} from 'react';
 import Aux from '../../../../hoc/Auxiliary';
 import './RecognitionItem.css';
 
+const reader = new FileReader();  
+
 class RecognitionItem extends Component {
+
 
     state = {
         file: this.props.file,
-        status: 'loading'
+        status: 'loading',
+        loadedperc: 0,
     }
+
+    componentWillMount(){
+        this.fileUpload(this.state.file);
+    }
+
+    componentWillUnmount(){
+        reader.abort();
+    }
+
+
+    fileUpload = (file) => {
+        
+
+        reader.onload = (evt) => {
+            this.setState({
+                status: 'loaded',
+              })
+        };
+
+        reader.onprogress = (evt) => {
+            if (evt.lengthComputable) {
+                var percentLoaded = Math.round((evt.loaded / evt.total) * 100);
+                // Increase the progress bar length.
+                console.log("loading...." + percentLoaded + "%");
+                if (percentLoaded < 100) {
+                  console.log(percentLoaded + "%");
+                  this.setState({
+                    status: 'loading',
+                    loadedperc: percentLoaded
+                  })
+                }
+            }
+        }
+
+        reader.onerror = (evt) => {
+            switch(evt.target.error.code) {
+                case evt.target.error.NOT_FOUND_ERR:
+                  alert('File Not Found!');
+                  break;
+                case evt.target.error.NOT_READABLE_ERR:
+                  alert('File is not readable');
+                  break;
+                case evt.target.error.ABORT_ERR:
+                  break; // noop
+                default:
+                  alert('An error occurred reading this file.');
+              };
+
+              this.setState({
+                status: 'error'
+              })
+            
+        }
+
+        reader.onloadend = (evt) => {
+            console.log("onloadend");
+            this.setState({
+                status: 'loaded'
+              })
+        }
+
+        reader.onloadstart = (evt) => {
+            console.log("onloadstart");
+            this.setState({
+                status: 'loading',
+              })
+
+        }
+
+     
+        reader.readAsBinaryString(file);
+
+ 
+
+      }
+    
 
     render(){
 
@@ -19,16 +99,16 @@ class RecognitionItem extends Component {
 
         for (let aMultiples = ["KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"], nMultiple = 0, nApprox = nBytes / 1024; nApprox > 1; nApprox /= 1024, nMultiple++) {
             filesize = nApprox.toFixed(1) + " " + aMultiples[nMultiple];
-          }
+        }
 
         switch(this.state.status){
             case ('loading'):
                     statusinfo = (<span className="loading">
                     <div className="spinner-border text-primary" role="status">
-                        <span class="sr-only">Ładowanie pliku do pamięci...</span>
+                        <span className="sr-only">loadin... </span>
                     </div>
     
-                     Ładowanie pliku
+                     Ładowanie pliku {this.state.loadedperc + '%'}
                 </span>);
                 break;	
             case ('ready'):
@@ -43,7 +123,7 @@ class RecognitionItem extends Component {
             case ('progress'):
                     statusinfo = (<span className="inprogress">
                                 <div className="spinner-border text-primary" role="status">
-                                    <span class="sr-only">Loading...</span>
+                                    <span className="sr-only">Loading...</span>
                                 </div>
     
                                  Rozpoznawanie

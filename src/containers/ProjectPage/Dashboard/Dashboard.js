@@ -3,12 +3,18 @@ import Aux from '../../../hoc/Auxiliary';
 import SettingBar from '../SettingBar/SettingBar';
 import './Dashboard.css';
 import FooterTool from '../FooterTool/FooterTool';
+import LeftSiteBar from '../LeftSiteBar/LeftSiteBar';
 
 
 const dashboard = (props) => {
 
     return(
         <Aux>
+
+            <LeftSiteBar 
+                czyTopPart="true"
+                desc="Tutaj opis do dashoardu" />
+
             <SettingBar />
 
 

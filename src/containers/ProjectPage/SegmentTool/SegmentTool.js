@@ -4,11 +4,20 @@ import SettingBar from '../SettingBar/SettingBar';
 import FooterTool from '../FooterTool/FooterTool';
 import './SegmentTool.css';
 import SegmentItem from './SegmentItem/SegmentItem';
+import LeftSiteBar from '../LeftSiteBar/LeftSiteBar';
 
 const segmentTool = (props) => {
 
     return(
         <Aux>
+
+			<LeftSiteBar 
+                    czyTopPart="true"
+                    desc="Tutaj opis do segmentacji" />
+
+
+
+
             <SettingBar />
             
             <section className="Content" data-scrollbar>

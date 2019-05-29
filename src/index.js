@@ -4,11 +4,30 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {BrowserRouter} from 'react-router-dom';
+import {Provider} from 'react-redux';
+import {createStore, combineReducers} from 'redux';
+import homeReducer from './store/reducers/homeReducer';
+import projectsListReducer from './store/reducers/projectsListReducer';
+import recognitionReducer from './store/reducers/toolsReducers/recognitionReducer';
+import segmentationReducer from './store/reducers/toolsReducers/segmentationReducer';
+import repoReducer from './store/reducers/toolsReducers/repoReducer';
+
+const rootReducer = combineReducers({
+    homeR: homeReducer,
+    prolistR: projectsListReducer,
+    recR: recognitionReducer,
+    segR: segmentationReducer,
+    repoR: repoReducer
+});
+
+const store = createStore(rootReducer);
 
     const app = (
+            <Provider store={store}>
                 <BrowserRouter>
                     <App /> 
                 </BrowserRouter>
+            </Provider>
     );
 
 ReactDOM.render(app, document.getElementById('root'));

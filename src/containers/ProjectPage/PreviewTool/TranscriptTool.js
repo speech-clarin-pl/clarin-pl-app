@@ -3,12 +3,18 @@ import Aux from '../../../hoc/Auxiliary';
 import './TranscriptTool.css';
 import SettingBar from '../SettingBar/SettingBar';
 import FooterTool from '../FooterTool/FooterTool';
+import LeftSiteBar from '../LeftSiteBar/LeftSiteBar';
 
 
 const transcriptTool = (props) => {
 
     return(
         <Aux>
+
+            <LeftSiteBar 
+                czyTopPart="true"
+                desc="Tutaj opis do podglądu plików" />
+
              <SettingBar />
 
              <section className={"Content"} data-scrollbar>

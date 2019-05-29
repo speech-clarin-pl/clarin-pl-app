@@ -5,6 +5,7 @@ import SettingBar from '../SettingBar/SettingBar';
 import FooterTool from '../FooterTool/FooterTool';
 import RecognitionItem from './RecognitionItem/RecognitionItem';
 import DropFilesArea from '../../../components/UI/DropFilesArea/DropFilesArea';
+import LeftSiteBar from '../LeftSiteBar/LeftSiteBar'
 
 class RecognitionTool extends Component {
 
@@ -14,101 +15,14 @@ class RecognitionTool extends Component {
 
 
     droppingFilesFromDiscHandler = (files, event) => {
-        
+
         this.setState({
             draggedFiles: files
         });
         
-        const fileList = files;
-        
-
-        const numFiles = files.length;
-        let nBytes = 0;
-
-         // Loop through each of the selected files.
-         for (var i = 0; i < files.length; i++) {
-            var file = files[i];
-
-            //if (!file.type.startsWith('audio/')){ continue }
-
-            nBytes += file.size;
-
-            this.FileUpload(file)
-
-            //const reader = new FileReader();
-           
-            //reader.readAsDataURL(file);
-        }
-
-        let sOutput = nBytes + " bytes";
-
-        for (let aMultiples = ["KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"], nMultiple = 0, nApprox = nBytes / 1024; nApprox > 1; nApprox /= 1024, nMultiple++) {
-            sOutput = nApprox.toFixed(3) + " " + aMultiples[nMultiple] + " (" + nBytes + " bytes)";
-          }
-
-          console.log(sOutput);
-
-       
-        this.setState({
-            draggedFiles: files
-        });
     }
 
-    FileUpload(file) {
-        const reader = new FileReader();  
 
-        reader.onload = function(e) {
-          
-        //console.log(e.target.result);
-        console.log(file.name);
-        
-           // console.log(file.size);
-           // console.log(file.type);
-           // console.log(file.lastModifiedDate );
-        };
-
-        reader.onprogress = function(evt) {
-           
-            if (evt.lengthComputable) {
-                var percentLoaded = Math.round((evt.loaded / evt.total) * 100);
-                // Increase the progress bar length.
-                console.log("loading...." + percentLoaded + "%");
-                if (percentLoaded < 100) {
-                  console.log(percentLoaded + "%");
-                }
-            }
-        }
-
-        reader.onerror = function(evt) {
-            switch(evt.target.error.code) {
-                case evt.target.error.NOT_FOUND_ERR:
-                  alert('File Not Found!');
-                  break;
-                case evt.target.error.NOT_READABLE_ERR:
-                  alert('File is not readable');
-                  break;
-                case evt.target.error.ABORT_ERR:
-                  break; // noop
-                default:
-                  alert('An error occurred reading this file.');
-              };
-            
-        }
-
-        reader.onloadend = function(evt) {
-            console.log("onloadend");
-        }
-
-        reader.onloadstart = function(evt) {
-            console.log("onloadstart");
-        }
-
-     
-        reader.readAsBinaryString(file);
-
-        //przerwanie uploadu to reader.abort(); TO DO
-
-      }
 
     render(){
 
@@ -137,6 +51,11 @@ class RecognitionTool extends Component {
 
         return(
             <Aux>
+
+                <LeftSiteBar 
+                    czyTopPart="true"
+                    desc="Tutaj opis do rozpoznawania" />
+
                  <SettingBar />
     
                 <section className="Content" data-scrollbar>

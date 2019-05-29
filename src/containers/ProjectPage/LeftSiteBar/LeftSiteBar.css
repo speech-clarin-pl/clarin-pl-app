@@ -2,8 +2,8 @@
     position: absolute;
     width: 210px;
     bottom: 0px;
-    left: 0px;
-    top: 43px;
+    left: -210px;
+    top: -2px;
     font-size: 0.9em;
 }
 
@@ -35,7 +35,7 @@
     bottom: 0px;
     left: 0px;
     right: 0px;
-    top: 8px;
+    top: 3px;
     overflow: auto;
 }
 

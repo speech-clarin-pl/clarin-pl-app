@@ -1,5 +1,5 @@
 import React from 'react';
-import Aux from '../../hoc/Auxiliary';
+import Aux from '../../../hoc/Auxiliary';
 import './LeftSiteBar.css';
 
 
@@ -20,10 +20,7 @@ const leftSiteBar = (props) => {
 
                             <div id="hint-content"  data-scrollbar>
                                 <div className="container-fluid">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent iaculis, velit eu facilisis fermentum, enim ligula commodo ex, vitae ornare neque nisi ut turpis. Nullam malesuada nisl id magna elementum, ut congue massa eleifend. 
-
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent iaculis, velit eu facilisis fermentum, enim ligula commodo ex, vitae ornare neque nisi ut turpis. Nullam malesuada nisl id magna elementum, ut congue massa eleifend. 
-
+                                    {props.desc} 
                                 </div> 
                             </div>
                 </div>
