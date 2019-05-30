@@ -5,18 +5,20 @@ import FooterTool from '../FooterTool/FooterTool';
 import './SegmentTool.css';
 import SegmentItem from './SegmentItem/SegmentItem';
 import LeftSiteBar from '../LeftSiteBar/LeftSiteBar';
+import ButtonLeftBar from '../../../components/UI/ButtonLeftBar/ButtonLeftBar';
 
 const segmentTool = (props) => {
 
     return(
         <Aux>
 
-			<LeftSiteBar 
-                    czyTopPart="true"
-                    desc="Tutaj opis do segmentacji" />
+			<LeftSiteBar czyTopPart="true" desc="Tutaj opis do segmentacji" >
 
+				<ButtonLeftBar napis="Rozpocznij segmentacje" iconType="fa-cogs" whenClicked={null} />
+				<ButtonLeftBar napis="Zapisz wynik na Twoim dysku" disabled={true} iconType="fa-download" whenClicked={null}/>
+				<ButtonLeftBar napis="Zapisz wynik w repozytorium" disabled={true} iconType="fa-cloud-download-alt" whenClicked={null}/>
 
-
+			</LeftSiteBar>
 
             <SettingBar />
             

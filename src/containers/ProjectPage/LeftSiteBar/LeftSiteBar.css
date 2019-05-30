@@ -5,7 +5,12 @@
     left: -210px;
     top: -2px;
     font-size: 0.9em;
+
 }
+.LeftSiteBar .texts {
+    margin-top: 10px;
+}
+
 
 .LeftSiteBar .topPart {
     height: 90px;

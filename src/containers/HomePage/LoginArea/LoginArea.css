@@ -2,3 +2,12 @@
     padding-top: 2em;
     padding-bottom: 2em;
 }
+
+.LoginArea .loggedAs {
+    font-size: smaller;
+}
+
+.LoginArea .gotoprojects {
+    margin: 20px;
+    text-decoration: none;
+}

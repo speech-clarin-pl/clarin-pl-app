@@ -6,6 +6,7 @@ import ProjectPage from './containers/ProjectPage/ProjectPage';
 import ProjectsListPage from './containers/ProjectsListPage/ProjectsListPage';
 import HelpPage from './components/HelpPage/HelpPage';
 import {IntlProvider, addLocaleData} from 'react-intl';
+import {connect} from 'react-redux';
 
 import en from 'react-intl/locale-data/en';
 import pl from 'react-intl/locale-data/pl';
@@ -38,16 +39,12 @@ class App extends Component{
 
   render(){
 
-    
-
     return (
       <div className="App">
         <IntlProvider locale={this.state.currln} defaultLocale="pl" messages={messages[this.state.currln]}>
+
+
             <Switch>
-
-                    
-
-                   
 
                     <Route path="/projects/:projectID" render={(props) => (
                        <ProjectPage {...props} 
@@ -60,7 +57,6 @@ class App extends Component{
                             changeLn={this.changeLnHandler} 
                             currLn = {this.state.currln}/>
                     )}/>
-
 
                     <Route path="/help" render={(props) => (
                        <HelpPage {...props} 
@@ -77,8 +73,18 @@ class App extends Component{
       </div>
     );
   }
-
- 
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+      isAuth: state.homeR.isAuth,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+      
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

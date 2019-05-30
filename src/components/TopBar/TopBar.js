@@ -14,6 +14,8 @@ const topBar = (props) => {
     let navClassNames = ["TopBar", "navbar", "navbar-expand"];
     if(czyInit) navClassNames.push("init");
 
+
+
     return(
         
        
@@ -53,6 +55,11 @@ const topBar = (props) => {
 
 
             <ul className="navbar-nav">
+
+               
+
+
+
           
                 { 
                     // jezyk 
@@ -68,7 +75,7 @@ const topBar = (props) => {
                     <i className={["fas", "fa-globe-europe"].join(' ')}></i> {props.currLn}
                 </a>
                 <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLinkjezyk">
-                    <a className="dropdown-item" onClick={()=>props.changeLn("pl")}>PL</a>
+                    <a className="dropdown-item" onClick={()=> props.changeLn("pl")}>PL</a>
                     <a className="dropdown-item" onClick={() => props.changeLn("en")}>EN</a>
                 </div>
                 </li>
@@ -88,7 +95,7 @@ const topBar = (props) => {
 
                         <FormattedMessage
                             id="TopBar.help"
-                            defaultMessage="Pomoc"
+                            defaultMessage=" Pomoc"
                             />
                         
                         </Link>
@@ -111,7 +118,7 @@ const topBar = (props) => {
                         
                        <FormattedMessage
                             id="TopBar.konto"
-                            defaultMessage="Konto"
+                            defaultMessage=" Konto"
                             />
                             
                             </a>

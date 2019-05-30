@@ -6,7 +6,9 @@ import HomeText from './HomeText/HomeText';
 import AppFooter from '../../components/AppFooter/AppFooter';
 import TopBar from '../../components/TopBar/TopBar';
 
+
 const homePage = (props) => {
+    
     return(
         <>
             <TopBar 
@@ -25,5 +27,7 @@ const homePage = (props) => {
         </>
     );
 }
+
+
 
 export default homePage;

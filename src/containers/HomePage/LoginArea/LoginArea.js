@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import Aux from '../../../hoc/Auxiliary';
 import './LoginArea.css';
-import {Route} from 'react-router-dom';
+import {withRouter, Link} from 'react-router-dom';
 import {FormattedMessage} from 'react-intl';
 import {connect} from 'react-redux';
 import * as actionTypes from '../../../store/actions';
 import Input from '../../../components/UI/Input/Input';
+
 
 class LoginArea extends Component {
 
@@ -72,9 +73,10 @@ class LoginArea extends Component {
         },
         loginFormIsValid:false,
         registerFormIsValid: false,
-        
-        
+        firstTimeAfterLogin: false,
     }
+
+    
 
     //simple validator....
     checkValidity(value, rules){
@@ -105,6 +107,10 @@ class LoginArea extends Component {
         //console.log(loginData);
 
         this.props.onLogIn(loginData.loginemail, loginData.loginpass);
+
+
+        //console.log(this.props)
+        
     }
 
     registerHandler = (event) => {
@@ -120,6 +126,7 @@ class LoginArea extends Component {
         //console.log(registerData);
 
         this.props.onRegister(registerData.registeremail, registerData.registerpass);
+        
 
 
     }
@@ -212,22 +219,32 @@ class LoginArea extends Component {
         this.setState({loginform: updatedLoginForm, loginFormIsValid: formIsValid});
     }
 
+
+    componentDidUpdate(prevProps, prevState) {
+
+        //sprawdzam czy jestesmy zalogowaniu poraz pierwszy
+        //jezeli tak to przechodzimy do listy projektow
+        if (this.props.isAuth !== prevProps.isAuth) {
+            this.props.history.push("/projects");
+        }
+      }
+
     
     render() {
 
 
-
+        
    
         //console.log(this.state.registerform)
        
         let myclasses = ["container-fluid", "LoginArea"];
-
 
         let messageForLogin = '';
         if(this.props.isAuth==false){
             messageForLogin = 'Zaloguj się testowo jako admin, admin';
         } else {
             messageForLogin = 'Jesteś zalogowany jako:';
+
         }
 
         const registerArea = (
@@ -268,11 +285,14 @@ class LoginArea extends Component {
 
         const loginArea = (
             <div className="col">
-                            <h3>{messageForLogin}</h3>
+                            
 
-                            {!this.props.isAuth? 
+                            {
+                                !this.props.isAuth? 
 
+                            
                             <form onSubmit={this.loginHandler}> 
+                                <h3>Zaloguj się testowo jako admin, admin</h3>
                                 <div className="form-group">
                                     <Input 
                                         inputtype="input" 
@@ -306,14 +326,25 @@ class LoginArea extends Component {
                             </form>   
                             
                             : 
+                            
                             <div>
-                                <h5>{this.props.loggedEmail}</h5>
 
-                                <button className="btn btn-primary">
+                                <h4>Jesteś obecnie zalogowany jako: <span className="loggedAs">{this.props.loggedEmail}</span></h4>
+
+                                <Link to="/projects">
+                                    <button className="btn btn-primary btn-lg btn-block gotoprojects">
+                                        Przejdź do listy projektów
+                                    </button>
+                                </Link>
+
+                                <div> lub </div>
+
+                                <button className="btn btn-secondary">
 
                                     Wyloguj się
                                 
                                 </button>
+
                             </div>
 
                             }
@@ -323,13 +354,11 @@ class LoginArea extends Component {
      
         return(
             <Aux>
-
-                
                 <div className={myclasses.join(' ')}>
                     <div className="container">
                         <div className="row">
 
-                        {this.props.isAuth? loginArea : [registerArea, loginArea]}
+                            {this.props.isAuth? loginArea : [registerArea, loginArea]}
                                                 
                         </div>
                     </div>
@@ -354,4 +383,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginArea);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(LoginArea));

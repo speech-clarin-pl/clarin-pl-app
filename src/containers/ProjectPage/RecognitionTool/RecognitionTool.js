@@ -5,7 +5,8 @@ import SettingBar from '../SettingBar/SettingBar';
 import FooterTool from '../FooterTool/FooterTool';
 import RecognitionItem from './RecognitionItem/RecognitionItem';
 import DropFilesArea from '../../../components/UI/DropFilesArea/DropFilesArea';
-import LeftSiteBar from '../LeftSiteBar/LeftSiteBar'
+import LeftSiteBar from '../LeftSiteBar/LeftSiteBar';
+import ButtonLeftBar from '../../../components/UI/ButtonLeftBar/ButtonLeftBar';
 
 class RecognitionTool extends Component {
 
@@ -22,24 +23,15 @@ class RecognitionTool extends Component {
         
     }
 
-
-
     render(){
-
         let filelist = "Wgraj pliki do rozpoznawania";
-
-       
 
         if(this.state.draggedFiles !== null){
 
             filelist = [];
-   
             const files = Array.from(this.state.draggedFiles);
-
             console.log(files);
-
             const numFiles = files.length;
-
             filelist = files.map((file,i)=>{
                 return (
                     <RecognitionItem key={"key"+i} 
@@ -52,9 +44,15 @@ class RecognitionTool extends Component {
         return(
             <Aux>
 
-                <LeftSiteBar 
-                    czyTopPart="true"
-                    desc="Tutaj opis do rozpoznawania" />
+                <LeftSiteBar czyTopPart="true" desc="Tutaj opis do rozpoznawania" >
+
+                    <ButtonLeftBar napis="Rozpocznij rozpoznawanie" iconType="fa-comments" whenClicked={null} />
+                    <ButtonLeftBar napis="Zapisz wynik na Twoim dysku" disabled={true} iconType="fa-download" whenClicked={null}/>
+                    <ButtonLeftBar napis="Zapisz wynik w repozytorium" disabled={true} iconType="fa-cloud-download-alt" whenClicked={null}/>
+
+                </LeftSiteBar>
+
+
 
                  <SettingBar />
     
@@ -72,6 +70,9 @@ class RecognitionTool extends Component {
                                 <DropFilesArea whenFilesDropped={this.droppingFilesFromDiscHandler}/>
                             </div>
                             <div className="col-md">
+
+                                   
+
                                     <div className="uploadFromRepo">
                                         <h2>Wgraj pliki z repozytorium</h2>
                                         <p>Przeciągnij pliki z repozytorium. Podczas przetwarzania nie bedziesz mógł wykonywać żadnych dodatkowych operacji na tych plikach</p>
