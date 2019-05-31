@@ -13,8 +13,8 @@ class RecognitionItem extends Component {
         loadedperc: 0,
     }
 
-    componentWillMount(){
-        this.fileUpload(this.state.file);
+    componentDidMount(){
+        //this.fileUpload(this.state.file);
     }
 
     componentWillUnmount(){

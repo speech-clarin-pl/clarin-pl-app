@@ -7,11 +7,12 @@ import RecognitionItem from './RecognitionItem/RecognitionItem';
 import DropFilesArea from '../../../components/UI/DropFilesArea/DropFilesArea';
 import LeftSiteBar from '../LeftSiteBar/LeftSiteBar';
 import ButtonLeftBar from '../../../components/UI/ButtonLeftBar/ButtonLeftBar';
+import DragAndDrop from '../../../components/UI/DragAndDrop/DragAndDrop';
 
 class RecognitionTool extends Component {
 
     state = {
-        draggedFiles: null,
+        draggedFiles: [],
     }
 
 
@@ -23,9 +24,20 @@ class RecognitionTool extends Component {
         
     }
 
-    render(){
-        let filelist = "Wgraj pliki do rozpoznawania";
+    handleDrop = (files) => {
+        let fileList = this.state.draggedFiles
+        for (var i = 0; i < files.length; i++) {
+          if (!files[i].name) return
+          fileList.push(files[i])
+        }
+        this.setState({draggedFiles: fileList})
+      }
 
+    render(){
+
+        let filelist = "Wgraj pliki do rozpoznawania";
+        console.log(this.state.draggedFiles)
+        /*
         if(this.state.draggedFiles !== null){
 
             filelist = [];
@@ -39,6 +51,7 @@ class RecognitionTool extends Component {
                 );
             });
         }
+        */
         
 
         return(
@@ -51,8 +64,6 @@ class RecognitionTool extends Component {
                     <ButtonLeftBar napis="Zapisz wynik w repozytorium" disabled={true} iconType="fa-cloud-download-alt" whenClicked={null}/>
 
                 </LeftSiteBar>
-
-
 
                  <SettingBar />
     
@@ -67,12 +78,13 @@ class RecognitionTool extends Component {
     
                         <div className="row">
                             <div className="col-md">
-                                <DropFilesArea whenFilesDropped={this.droppingFilesFromDiscHandler}/>
+
+                                <DragAndDrop handleDrop={this.handleDrop}>
+                                       <DropFilesArea />
+                                </DragAndDrop>
+                                
                             </div>
                             <div className="col-md">
-
-                                   
-
                                     <div className="uploadFromRepo">
                                         <h2>Wgraj pliki z repozytorium</h2>
                                         <p>Przeciągnij pliki z repozytorium. Podczas przetwarzania nie bedziesz mógł wykonywać żadnych dodatkowych operacji na tych plikach</p>
@@ -82,7 +94,14 @@ class RecognitionTool extends Component {
                         </div>
     
                         <div className="file-list">
-                            {filelist}
+                            {
+                                //filelist
+                            }
+
+                            {this.state.draggedFiles.map((file,i) =>
+                                        <RecognitionItem key={"key"+i} 
+                                        file={file}/>
+                            )}
                             
     
     {/*
