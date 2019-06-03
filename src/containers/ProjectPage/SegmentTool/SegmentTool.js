@@ -15,10 +15,6 @@ import SortableList from '../../../components/UI/SortableList/SortableList';
 
 class SegmentTool extends Component {
 
-	state= {
-		items: [1, 2, 3, 4, 5, 6]
-	}
-
 	handleDropAudio = (files) => {
 		let extFiles = [];
 
@@ -32,8 +28,11 @@ class SegmentTool extends Component {
             extFiles.push(newFile);
 
 		});
-		
+
+		console.log("extFiles")
 		console.log(extFiles)
+		
+	
 
         this.props.onAudioDrop(extFiles);
 	}
@@ -49,12 +48,6 @@ class SegmentTool extends Component {
 	render(){
 
 
-		
-
-	
-
-
-
 		let entrylist = (
             <h3>Wgraj pliki audio oraz txt do segmentacji</h3>
 		)
@@ -62,7 +55,7 @@ class SegmentTool extends Component {
 		if(this.props.segmentEntry.length > 0 ){
         
             entrylist = this.props.segmentEntry.map((entry,i) =>
-				<SegmentItem key={entry.id} />
+				<SegmentItem key={entry.id} audioFileName={entry.file.name} />
              )
         }
 		
@@ -139,10 +132,14 @@ class SegmentTool extends Component {
 										</div>
 									</div>
 
+									
 									<SortableList
-										items={this.state.items}
+										items={this.props.audioList}
 										onChange={(items) => {
-											this.setState({ items });
+											//this.setState({ items });
+											//this.props.onAudioDrop(items);
+											//{console.log(items)}
+											this.props.onChangeAudioListOrder(items);
 										}}
 									>
 									</SortableList>
@@ -170,6 +167,8 @@ class SegmentTool extends Component {
 const mapStateToProps = state => {
     return {
 		segmentEntry: state.segR.segmentEntry,
+		audioList: state.segR.audioList,
+		txtList: state.segR.txtList
     }
 }
 
@@ -177,6 +176,7 @@ const mapDispatchToProps = dispatch => {
     return {
 	   onAudioDrop: (audioFiles) => dispatch({type:actionTypes.DROP_AUDIO_FILES, audioFiles: audioFiles}),
 	   onTxtDrop: (txtFiles) => dispatch({type:actionTypes.DROP_TXT_FILES, txtFiles: txtFiles}),
+	   onChangeAudioListOrder: (idsOrder) => dispatch({type:actionTypes.CHANGE_AUDIO_LIST_ORDER, audioIdsOrder: idsOrder}),
     }
 }
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import Aux from '../../../../hoc/Auxiliary';
 import './SegmentItem.css';
+import SegmentAudioItem from '../SegmentAudioItem/SegmentAudioItem';
 
 const segmentItem = (props) => {
 
@@ -17,24 +18,9 @@ const segmentItem = (props) => {
 
                 <div className="col-sm audio-info">
 
-                    <span className="fileAudio">
+                    <SegmentAudioItem filename={props.audioFileName} />
 
-                        <div className="row">
-
-                            
-                                <div className="col-sm-auto">
-                                        <i className="fas fa-arrows-alt-v"></i>
-                                </div>
-                                <div className="col-sm">
-                                        <span className="file-name">Lorem ipsum dolor.mp3 </span>
-                                </div>
-                                <div className="col-sm-auto">
-                                        <i className="fas fa-play"></i>
-                                </div>
-                        </div>
-                        
-                        
-                    </span>
+                    
                 </div>
                 <div className="col-sm-auto pair-status">
                 {

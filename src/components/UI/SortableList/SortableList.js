@@ -1,15 +1,23 @@
 import uuid  from 'uuid';
 import React from 'react';
 import Sortable from 'react-sortablejs';
+import PropTypes from 'prop-types';
  
 // Functional Component
 const SortableList = ({ items, onChange }) => {
+    
     let sortable = null; // sortable instance
     const reverseOrder = (evt) => {
         const order = sortable.toArray();
         onChange(order.reverse());
     };
-    const listItems = items.map(val => (<li key={uuid.v4()} data-id={val}>List Item: {val}</li>));
+
+    console.log(items);
+
+    const listItems = items.map(val => (
+        
+        <li key={uuid.v4()} data-id={val.id}>{val.file.name}</li>
+    ));
  
     return (
         <div>
@@ -48,8 +56,8 @@ const SortableList = ({ items, onChange }) => {
 };
  
 SortableList.propTypes = {
-    items: React.PropTypes.array,
-    onChange: React.PropTypes.func
+    items: PropTypes.array,
+    onChange: PropTypes.func
 };
  
 export default SortableList;
