@@ -9,8 +9,8 @@ class DropFilesArea extends Component {
         <div className="DropFilesArea">
           <div id="react-file-drop">
                     <div className="uploadFromDiskArea">
-                        <h2>Wgraj pliki z dysku</h2>
-                        <p>Pliki zostaną zapisane jedynie tymczasowo na potrzeby przetwarzania. Po tym czasie są one usuwane bezpowrotnie usuwane z serwera</p>
+                        <h2>{this.props.mainTitle}</h2>
+                        <p>{this.props.desc}</p>
                         <i className="fas fa-upload"></i>
                     </div>
             </div>

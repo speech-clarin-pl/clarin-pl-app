@@ -1,6 +1,28 @@
 import React, { Component } from 'react';
 import './DragAndDrop.css';
 
+const dragAndDropStyles = {
+  position: 'relative',
+};
+
+const dropIndicationStyles = {
+  position: 'absolute',
+  top: '0px',
+  left: '0px',
+  right: '0px',
+  bottom: '0px',
+  width: '100%',
+  height: '100%',
+  color: '#3498db',
+  backgroundColor: 'rgba(255,255,255,0.9)',
+  border: '4px dotted #3498db',
+  borderRadius: '10px',
+  display:'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+};
+
+
 
 class DragAndDrop extends Component {
   state = {
@@ -54,11 +76,13 @@ class DragAndDrop extends Component {
   render() {
     return (
 
-      <div className="DragAndDrop" ref={this.dropRef}>
+      <div className="DragAndDrop" style={dragAndDropStyles} ref={this.dropRef} >
+
+
 
         {
             this.state.drag?
-              <div className="dropIndication">
+              <div className="dropIndication" style={dropIndicationStyles}>
                   <h2>Upuść pliki tutaj</h2>
               </div> 
               : 

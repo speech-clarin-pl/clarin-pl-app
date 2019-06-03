@@ -8,50 +8,53 @@ import DropFilesArea from '../../../components/UI/DropFilesArea/DropFilesArea';
 import LeftSiteBar from '../LeftSiteBar/LeftSiteBar';
 import ButtonLeftBar from '../../../components/UI/ButtonLeftBar/ButtonLeftBar';
 import DragAndDrop from '../../../components/UI/DragAndDrop/DragAndDrop';
+import {connect} from 'react-redux';
+import * as actionTypes from '../../../store/actions';
+import uuid  from 'uuid';
 
 class RecognitionTool extends Component {
 
-    state = {
-        draggedFiles: [],
-    }
-
-
-    droppingFilesFromDiscHandler = (files, event) => {
-
-        this.setState({
-            draggedFiles: files
-        });
-        
-    }
-
     handleDrop = (files) => {
-        let fileList = this.state.draggedFiles
-        for (var i = 0; i < files.length; i++) {
-          if (!files[i].name) return
-          fileList.push(files[i])
-        }
-        this.setState({draggedFiles: fileList})
-      }
+
+        //extending the files by additionnal info about the status and load percentage
+
+        let extFiles = [];
+
+        Array.from(files).forEach(file => {
+            
+            let newFile = Object.assign({},file);
+            newFile.file = file;
+            newFile.status = 'toload';
+            newFile.loadedperc = 0;
+            newFile.id = uuid.v4();
+            extFiles.push(newFile);
+
+        });
+
+        
+        this.props.onDrop(extFiles);
+    }
 
     render(){
 
-        let filelist = "Wgraj pliki do rozpoznawania";
-        console.log(this.state.draggedFiles)
-        /*
-        if(this.state.draggedFiles !== null){
 
-            filelist = [];
-            const files = Array.from(this.state.draggedFiles);
-            console.log(files);
-            const numFiles = files.length;
-            filelist = files.map((file,i)=>{
-                return (
-                    <RecognitionItem key={"key"+i} 
-                        file={file}/>
-                );
-            });
+        let filelist = (
+            <h3>Wgraj pliki do rozpoznawania</h3>
+        )
+
+       // console.log("FROM RECO TOOL")
+       // console.log(this.props.filesToUpload)
+
+        if(this.props.filesToUpload.length > 0 ){
+        
+            filelist = this.props.filesToUpload.map((file,i) =>
+                <RecognitionItem key={"key"+i} 
+                fileID={file.id}/>
+             )
         }
-        */
+        
+
+       // console.log(this.state.filesToUpload)
         
 
         return(
@@ -80,7 +83,9 @@ class RecognitionTool extends Component {
                             <div className="col-md">
 
                                 <DragAndDrop handleDrop={this.handleDrop}>
-                                       <DropFilesArea />
+                                       <DropFilesArea 
+                                            mainTitle="Wgraj pliki z dysku"
+                                            desc="Pliki zostaną zapisane jedynie tymczasowo na potrzeby przetwarzania. Po tym czasie są one usuwane bezpowrotnie usuwane z serwera"/>
                                 </DragAndDrop>
                                 
                             </div>
@@ -94,26 +99,7 @@ class RecognitionTool extends Component {
                         </div>
     
                         <div className="file-list">
-                            {
-                                //filelist
-                            }
-
-                            {this.state.draggedFiles.map((file,i) =>
-                                        <RecognitionItem key={"key"+i} 
-                                        file={file}/>
-                            )}
-                            
-    
-    {/*
-                            <RecognitionItem status="loaded"/>
-                            <RecognitionItem status="ready"/>		
-                            <RecognitionItem status="ready"/>
-                            <RecognitionItem status="error"/>
-                            <RecognitionItem status="progress"/>
-                            <RecognitionItem status="progress"/>
-
-    */ }
-    
+                            {filelist}
                         </div>
     
     
@@ -132,4 +118,19 @@ class RecognitionTool extends Component {
 
 }
 
-export default RecognitionTool;
+
+const mapStateToProps = state => {
+    return {
+        filesToUpload: state.recR.filesToUpload,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onDrop: (files) => dispatch({type:actionTypes.DROP_FILES, files: files}),
+    }
+}
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(RecognitionTool);

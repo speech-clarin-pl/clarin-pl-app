@@ -231,10 +231,7 @@ class LoginArea extends Component {
 
     
     render() {
-
-
         
-   
         //console.log(this.state.registerform)
        
         let myclasses = ["container-fluid", "LoginArea"];

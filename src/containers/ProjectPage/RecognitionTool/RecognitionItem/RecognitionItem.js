@@ -1,52 +1,82 @@
 import React, {Component} from 'react';
 import Aux from '../../../../hoc/Auxiliary';
 import './RecognitionItem.css';
+import * as actionTypes from '../../../../store/actions';
+import {connect} from 'react-redux';
 
-const reader = new FileReader();  
+ 
 
 class RecognitionItem extends Component {
 
+    constructor(props){
+        super(props);
 
-    state = {
-        file: this.props.file,
-        status: 'loading',
-        loadedperc: 0,
+        //wszytskie do tej pory wgrane pliki z reducera
+        let allFiles =  this.props.allFiles;
+        //znajduje plik przekazany jako parametr we wszystkich plikach przekazanych z reducera
+        const foundfile = allFiles.find(obj => obj.id == this.props.fileID);
+    
+        this.state = {
+            file: foundfile,
+        }
+
+        console.log(foundfile)
     }
+    
+    
 
     componentDidMount(){
-        //this.fileUpload(this.state.file);
+       // console.log("COMPOJNENT DID MOUNT")
+       this.reader = new FileReader(); 
+        
+       //upload file only if the status is not loaded
+       if(this.state.file.status !== 'loaded') {
+        this.fileUpload(this.state.file);
+       }
     }
 
     componentWillUnmount(){
-        reader.abort();
+       this.reader.abort();
     }
-
 
     fileUpload = (file) => {
         
+    
+        this.reader.onload = (evt) => {
 
-        reader.onload = (evt) => {
-            this.setState({
-                status: 'loaded',
-              })
+           console.log("ONLOAD");
+
+            //this.props.updateFileState(this.state.file.id, 'loaded', 0);
+
         };
 
-        reader.onprogress = (evt) => {
+        this.reader.onprogress = (evt) => {
+            console.log("ONPROGRESS");
             if (evt.lengthComputable) {
                 var percentLoaded = Math.round((evt.loaded / evt.total) * 100);
                 // Increase the progress bar length.
-                console.log("loading...." + percentLoaded + "%");
+               // console.log("loading...." + percentLoaded + "%");
                 if (percentLoaded < 100) {
-                  console.log(percentLoaded + "%");
-                  this.setState({
-                    status: 'loading',
-                    loadedperc: percentLoaded
-                  })
+                 // console.log(percentLoaded + "%");
+
+                    let updatedFile = {
+                        ...this.state.file,
+                        status: 'toload',
+                        loadedperc: percentLoaded
+                    };
+                    this.setState({
+                        file: updatedFile
+                    })
+
+                    this.props.updateFileState(this.state.file.id, 'toload', percentLoaded);
+                    //this.props.updateFileState(this.state.file.id, 'toload', percentLoaded);
+
+                  
                 }
             }
         }
 
-        reader.onerror = (evt) => {
+        this.reader.onerror = (evt) => {
             switch(evt.target.error.code) {
                 case evt.target.error.NOT_FOUND_ERR:
                   alert('File Not Found!');
@@ -60,31 +90,53 @@ class RecognitionItem extends Component {
                   alert('An error occurred reading this file.');
               };
 
-              this.setState({
-                status: 'error'
-              })
+              let updatedFile = {
+                ...this.state.file,
+                status: 'error',
+                loadedperc: 0
+            };
+            this.setState({
+                file: updatedFile
+            })
+
+            this.props.updateFileState(this.state.file.id, 'error', 0);
+              //this.props.updateFileState(this.state.file.id, 'error', 0);
             
         }
 
-        reader.onloadend = (evt) => {
-            console.log("onloadend");
+        this.reader.onloadend = (evt) => {
+            console.log("ONLOADEND");
+            let updatedFile = {
+                ...this.state.file,
+                status: 'loaded',
+                loadedperc: 100
+            };
             this.setState({
-                status: 'loaded'
-              })
+                file: updatedFile
+            })
+            
+            this.props.updateFileState(this.state.file.id, 'loaded', 100);
+
         }
 
-        reader.onloadstart = (evt) => {
-            console.log("onloadstart");
-            this.setState({
-                status: 'loading',
-              })
+        this.reader.onloadstart = (evt) => {
+            console.log("ONLOADSTART");
 
+            let updatedFile = {
+                ...this.state.file,
+                status: 'toload',
+                loadedperc: 0
+            };
+            this.setState({
+                file: updatedFile
+            })
+
+            //console.log("onloadstart");
+
+              this.props.updateFileState(this.state.file.id, 'toload', 0);
         }
 
-     
-        reader.readAsBinaryString(file);
-
- 
+        this.reader.readAsBinaryString(file.file);
 
       }
     
@@ -94,21 +146,23 @@ class RecognitionItem extends Component {
         let statusinfo = null;
 
         // formatowanie wielkosci pliku
-        let nBytes = this.state.file.size;
+        let nBytes = this.state.file.file.size;
         let filesize = nBytes + " bytes";
 
         for (let aMultiples = ["KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"], nMultiple = 0, nApprox = nBytes / 1024; nApprox > 1; nApprox /= 1024, nMultiple++) {
             filesize = nApprox.toFixed(1) + " " + aMultiples[nMultiple];
         }
 
-        switch(this.state.status){
-            case ('loading'):
+    
+
+        switch(this.state.file.status){
+            case ('toload'):
                     statusinfo = (<span className="loading">
                     <div className="spinner-border text-primary" role="status">
-                        <span className="sr-only">loadin... </span>
+                        <span className="sr-only">loading... </span>
                     </div>
     
-                     Ładowanie pliku {this.state.loadedperc + '%'}
+                         Ładowanie pliku {this.state.file.loadedperc + '%'}
                 </span>);
                 break;	
             case ('ready'):
@@ -132,13 +186,15 @@ class RecognitionItem extends Component {
             default:
                     statusinfo = null;
         }
+
+       // console.log("status: " + this.state.file.status)
         
         return(
             <Aux>
                   <div className={["row", "fileItem", "RecognitionItem"].join(' ')}>
                         <div className="col-sm file-info">
                             <i className="fas fa-desktop"></i>
-                            <span className={"fileName"}>{this.state.file.name}</span>
+                            <span className={"fileName"}>{this.state.file.file.name}</span>
                             <span className={"fileSize"}>({filesize})</span>
                         </div>
     
@@ -159,7 +215,20 @@ class RecognitionItem extends Component {
         );
     }
 
-   
+
 }
 
-export default RecognitionItem;
+const mapStateToProps = state => {
+    return {
+        allFiles: state.recR.filesToUpload,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+       updateFileState: (fileID, status,percLoaded) => dispatch({type:actionTypes.UPDATE_FILE_STATE, fileID: fileID, status: status, percLoaded:percLoaded}),
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(RecognitionItem);
