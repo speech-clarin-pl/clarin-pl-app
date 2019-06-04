@@ -69,6 +69,7 @@ class SegmentTool extends Component {
         
             entrylist = this.props.segmentEntry.map((entry,i) => 
 				<SegmentItem key={entry.id}  />
+				
              )
         }
 		
@@ -149,10 +150,9 @@ class SegmentTool extends Component {
 										<div className="row commonParent">
 
 											<div className="segmentEntriesBG">
-												<SegmentItem />	
-												<SegmentItem  />
-												<SegmentItem />	
-												<SegmentItem  />
+
+												{entrylist}	
+												
 											</div>
 
 
@@ -181,11 +181,7 @@ class SegmentTool extends Component {
 
 										</div>
 
-										{
-											/*
-											entrylist
-											*/
-										}		
+											
 
 												
 
