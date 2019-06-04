@@ -1,0 +1,37 @@
+
+.SortableAudioList {
+    display: block;
+    height: 35px;
+    border: none;
+    padding: 8px;
+    background:none;
+    color: #6f8796;
+    text-align: left;
+    margin: 16px 0px;
+    margin-left: 30px;
+    margin-right: 40px
+}
+
+.SortableAudioList .withReference {
+    position: relative;
+}
+
+.SortableAudioList .orderNo {
+    position: absolute;
+    left: -8px;
+    top: -3px;
+}
+
+.SortableAudioList .fa-arrows-alt-v {
+    width: 22px;
+    height: 22px;
+    background: #6f8796;
+    border-radius: 30px;
+    position: relative;
+    top: -4px;
+    color: white;
+    text-align: center;
+    line-height: 20px;
+    cursor: pointer;
+}
+

@@ -11,8 +11,6 @@ const segmentAudioItem = (props) => {
      
                     <span className="fileAudio">
                         <div className="row">
-
-                            
                                 <div className="col-sm-auto">
                                         <i className="fas fa-arrows-alt-v"></i>
                                 </div>

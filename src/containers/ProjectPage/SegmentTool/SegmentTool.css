@@ -3,6 +3,19 @@
     padding-top: 1em;
 }
 
+.SegmentTool .commonParent {
+    position: relative;
+    z-index: 10;
+}
+
+.SegmentTool .segmentEntriesBG {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 0;
+    width: 100%;
+
+}
 .Content {
     position: absolute;
     bottom: 0px;

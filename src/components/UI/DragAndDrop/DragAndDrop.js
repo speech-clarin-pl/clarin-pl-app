@@ -28,12 +28,17 @@ class DragAndDrop extends Component {
   state = {
     drag: false
   }
-  dropRef = React.createRef()
+
+  dropRef = React.createRef();
+ 
+  
   handleDrag = (e) => {
+    console.log("handleDrag")
     e.preventDefault()
     e.stopPropagation()
   }
   handleDragIn = (e) => {
+    console.log("handleDragIn " + this.dragCounter)
     e.preventDefault()
     e.stopPropagation()
     this.dragCounter++
@@ -42,6 +47,7 @@ class DragAndDrop extends Component {
     }
   }
   handleDragOut = (e) => {
+    console.log("handleDragOut " + this.dragCounter)
     e.preventDefault()
     e.stopPropagation()
     this.dragCounter--
@@ -50,6 +56,7 @@ class DragAndDrop extends Component {
     }
   }
   handleDrop = (e) => {
+    console.log("handleDrop")
     e.preventDefault()
     e.stopPropagation()
     this.setState({drag: false})
@@ -60,7 +67,8 @@ class DragAndDrop extends Component {
     }
   }
   componentDidMount() {
-    let div = this.dropRef.current
+    let div = this.dropRef.current;
+    this.dragCounter = 0  
     div.addEventListener('dragenter', this.handleDragIn)
     div.addEventListener('dragleave', this.handleDragOut)
     div.addEventListener('dragover', this.handleDrag)

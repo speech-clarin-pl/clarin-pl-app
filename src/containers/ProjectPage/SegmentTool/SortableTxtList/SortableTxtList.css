@@ -1,0 +1,32 @@
+
+.SortableTxtList {
+    width: 100%;
+    display: block;
+    overflow: hidden;
+    height: 35px;
+    border: none;
+    padding: 8px;
+    background: none;
+    color: #6f8796;
+    text-align: left;
+    margin: 16px 0px;
+}
+
+.SortableTxtList .orderNo {
+    font-size: small;
+    margin-right: 5px;
+}
+
+.SortableTxtList .fa-arrows-alt-v {
+    width: 22px;
+    height: 22px;
+    background: #6f8796;
+    border-radius: 30px;
+    position: relative;
+    top: -4px;
+    color: white;
+    text-align: center;
+    line-height: 20px;
+    cursor: pointer;
+}
+

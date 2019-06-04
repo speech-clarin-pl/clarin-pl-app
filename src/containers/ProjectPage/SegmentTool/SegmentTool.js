@@ -11,39 +11,52 @@ import DropFilesArea from '../../../components/UI/DropFilesArea/DropFilesArea';
 import {connect} from 'react-redux';
 import uuid  from 'uuid';
 import * as actionTypes from '../../../store/actions';
-import SortableList from '../../../components/UI/SortableList/SortableList';
+import SortableAudioList from './SortableAudioList/SortableAudioList';
+import SortableTxtList from './SortableTxtList/SortableTxtList';
 
 class SegmentTool extends Component {
 
-	handleDropAudio = (files) => {
-		let extFiles = [];
+	handleDropAudio = (audiofiles) => {
+		
+		let extAudioFiles = [];
 
-        Array.from(files).forEach(file => {
+        Array.from(audiofiles).forEach(file => {
             
             let newFile = Object.assign({},file);
             newFile.file = file;
             newFile.status = 'toload';
             newFile.loadedperc = 0;
             newFile.id = uuid.v4();
-            extFiles.push(newFile);
+            extAudioFiles.push(newFile);
 
 		});
 
-		console.log("extFiles")
-		console.log(extFiles)
+		//console.log("extAudioFiles")
+		//console.log(extAudioFiles)
 		
+        this.props.onAudioDrop(extAudioFiles);
+	}
+
+	handleDropTxt = (txtfiles) => {
+		let extTxtFiles = [];
+
+        Array.from(txtfiles).forEach(file => {
+            
+            let newFile = Object.assign({},file);
+            newFile.file = file;
+            newFile.status = 'toload';
+            newFile.loadedperc = 0;
+            newFile.id = uuid.v4();
+            extTxtFiles.push(newFile);
+
+		});
+
+		//console.log("extTxtFiles")
+		//console.log(extTxtFiles)
+		
+        this.props.onTxtDrop(extTxtFiles);
+	}
 	
-
-        this.props.onAudioDrop(extFiles);
-	}
-
-	componentDidMount() {
-	
-	}
-
-	handleDropTxt = (files) => {
-
-	}
 
 	render(){
 
@@ -54,8 +67,8 @@ class SegmentTool extends Component {
 
 		if(this.props.segmentEntry.length > 0 ){
         
-            entrylist = this.props.segmentEntry.map((entry,i) =>
-				<SegmentItem key={entry.id} audioFileName={entry.file.name} />
+            entrylist = this.props.segmentEntry.map((entry,i) => 
+				<SegmentItem key={entry.id}  />
              )
         }
 		
@@ -133,21 +146,50 @@ class SegmentTool extends Component {
 									</div>
 
 									
-									<SortableList
-										items={this.props.audioList}
-										onChange={(items) => {
-											//this.setState({ items });
-											//this.props.onAudioDrop(items);
-											//{console.log(items)}
-											this.props.onChangeAudioListOrder(items);
-										}}
-									>
-									</SortableList>
+										<div className="row commonParent">
+
+											<div className="segmentEntriesBG">
+												<SegmentItem />	
+												<SegmentItem  />
+												<SegmentItem />	
+												<SegmentItem  />
+											</div>
 
 
-									{entrylist}
-	
-								
+											<div className="col">
+												<SortableAudioList
+													items={this.props.audioList}
+													onChange={(items) => {
+														//this.setState({ items });
+														//this.props.onAudioDrop(items);
+														//{console.log(items)}
+														this.props.onChangeAudioListOrder(items);
+													}} />
+											</div>
+											<div className="col">
+												<SortableTxtList
+													items={this.props.txtList}
+													onChange={(items) => {
+														//this.setState({ items });
+														//this.props.onAudioDrop(items);
+														//{console.log(items)}
+														this.props.onChangeTxtListOrder(items);
+													}} />
+											</div>
+
+											
+
+										</div>
+
+										{
+											/*
+											entrylist
+											*/
+										}		
+
+												
+
+									
 	
 								</div>
 								
@@ -177,6 +219,7 @@ const mapDispatchToProps = dispatch => {
 	   onAudioDrop: (audioFiles) => dispatch({type:actionTypes.DROP_AUDIO_FILES, audioFiles: audioFiles}),
 	   onTxtDrop: (txtFiles) => dispatch({type:actionTypes.DROP_TXT_FILES, txtFiles: txtFiles}),
 	   onChangeAudioListOrder: (idsOrder) => dispatch({type:actionTypes.CHANGE_AUDIO_LIST_ORDER, audioIdsOrder: idsOrder}),
+	   onChangeTxtListOrder: (idsOrder) => dispatch({type:actionTypes.CHANGE_TXT_LIST_ORDER, txtIdsOrder: idsOrder}),
     }
 }
 
