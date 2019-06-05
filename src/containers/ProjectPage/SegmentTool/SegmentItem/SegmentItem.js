@@ -19,9 +19,8 @@ const segmentItem = (props) => {
                 <div className="col-sm-auto pair-status">
                 {
                     <div>
-                        <span className="ready"><i className="fas fa-check"></i></span>
-                        <i className="fas fa-download"></i>
-                        <i className="fas fa-cloud-download-alt"></i>
+                        <span className="segmenticon preview"><i className="fas fa-check"></i></span>
+                        
                     </div>
                 }
                     

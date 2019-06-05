@@ -20,7 +20,7 @@ const sortableTxtList = ({ items, onChange }) => {
 
     const listItems = items.map((val,i) => (
     
-        <div className="SortableAudioList" key={val.id}  data-id={val.id}>
+        <div className="SortableTxtList" key={val.id}  data-id={val.id}>
             <div className="row">
                     <div className="col-sm-auto">
                             <i className="fas fa-arrows-alt-v"></i>
@@ -29,7 +29,7 @@ const sortableTxtList = ({ items, onChange }) => {
                             <span className="file-name">{val.file.name}</span>
                     </div>
                     <div className="col-sm-auto">
-                            <i className="fas fa-play"></i>
+                            <i className="fas fa-eye preview"></i>
                     </div>
             </div>
         </div>

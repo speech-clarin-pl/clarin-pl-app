@@ -39,7 +39,7 @@ class RecognitionTool extends Component {
 
 
         let filelist = (
-            <h3>Wgraj pliki do rozpoznawania</h3>
+            <h4 style={{marginTop: '10px'}}>Wgraj pliki do rozpoznawania</h4>
         )
 
        // console.log("FROM RECO TOOL")

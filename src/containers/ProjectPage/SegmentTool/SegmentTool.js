@@ -62,7 +62,7 @@ class SegmentTool extends Component {
 
 
 		let entrylist = (
-            <h3>Wgraj pliki audio oraz txt do segmentacji</h3>
+            <h4 style={{marginTop: '10px'}}>Wgraj pliki audio oraz txt do segmentacji</h4>
 		)
 
 		if(this.props.segmentEntry.length > 0 ){
@@ -130,14 +130,14 @@ class SegmentTool extends Component {
 	
 										<div className="col-sm audio-info">
 	
-											<h3>Lista plików audio</h3>
+											<h4></h4>
 										</div>
 										<div className="col-sm-auto pair-status">
 											
 										</div>
 										<div className="col-sm txt-info">
 	
-											<h3>Lista plików tekstowych</h3>
+											<h4></h4>
 										</div>
 	
 										<div className="col-sm-auto pair-icons">

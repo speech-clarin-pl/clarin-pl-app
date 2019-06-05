@@ -33,9 +33,9 @@ const dashboard = (props) => {
                             <div className="card mb-3">
                                 <div className={["card-header", "cardHeader"].join(' ')}>Aktualności</div>
                                 <div className="card-body text-dark">
-                                <h5 className="news-title">Dark card title </h5>
-                                <div className="news-date">02.02.2019</div>
-                                <p className="news-body">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <h5 className="news-title">Wersja beta nowego serwisu </h5>
+                                <div className="news-date">02.07.2019</div>
+                                <p className="news-body">Miło nam przywitać Cię w panelu nowego serwisu który właśnie wystartował. Wszelkie uwagi na temat jego funkcjonowania są mile widziane.</p>
                                 </div>
                             </div>
                         </div>
@@ -47,6 +47,8 @@ const dashboard = (props) => {
                                 <div className="row mb-3">
                                     <div className="col">
                                         <h5 className="news-title">Rozpoznawanie:</h5>
+                                        <p>Całkowita licza plików w kolejce: (8)</p>
+                                        <p>Procent przetworzonych plików:</p>
                                         <div className="progress">
                                             <div className="progress-bar" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
                                         </div>
@@ -56,6 +58,8 @@ const dashboard = (props) => {
                                 <div className="row">
                                     <div className="col">
                                         <h5 className="news-title">Segmentacja:</h5>
+                                        <p>Całkowita licza plików w kolejce: (8)</p>
+                                        <p>Procent przetworzonych plików:</p>
                                         <div className="progress">
                                             <div className="progress-bar" role="progressbar" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">25%</div>
                                         </div>
@@ -82,8 +86,8 @@ const dashboard = (props) => {
                                 <div className={["card-header", "cardHeader"].join(' ')}>Szybkie linki</div>
                                 <div className="card-body text-dark">
                                 <button type="button" className="btn btn-primary btn-block op-btn"><i className="fas fa-comments"></i> Rozpoznawanie mowy</button>
-                                <button type="button" className="btn btn-primary btn-block op-btn"><i className="fas fa-cogs"></i>Segmentacja</button>
-                                <button type="button" className="btn btn-primary btn-block op-btn"><i className="fas fa-keyboard"></i>Transkrypcje</button>
+                                <button type="button" className="btn btn-primary btn-block op-btn"><i className="fas fa-cogs"></i> Segmentacja</button>
+                                <button type="button" className="btn btn-primary btn-block op-btn"><i className="fas fa-question-circle"></i> Pomoc</button>
                                 </div>
                             </div>
                         </div>

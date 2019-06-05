@@ -31,7 +31,7 @@ const sortableAudioList = ({ items, onChange }) => {
                             <span className="file-name">{val.file.name}</span>
                     </div>
                     <div className="col-sm-auto">
-                            <i className="fas fa-play"></i>
+                            <i className="fas fa-play preview"></i>
                     </div>
             </div>
         </div>

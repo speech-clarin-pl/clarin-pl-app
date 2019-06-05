@@ -3,9 +3,11 @@
     width: 100%;
     display: block;
     overflow: hidden;
-    height: 35px;
+    height: 56px;
     border: none;
-    padding: 8px;
+    padding-top: 16px;
+    padding-left: 20px;
+    padding-right: 60px;
     background: none;
     color: #6f8796;
     text-align: left;
@@ -15,6 +17,10 @@
 .SortableTxtList .orderNo {
     font-size: small;
     margin-right: 5px;
+}
+
+.SortableTxtList .preview {
+    color:#28a745;
 }
 
 .SortableTxtList .fa-arrows-alt-v {

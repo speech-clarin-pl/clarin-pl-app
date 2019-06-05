@@ -1,9 +1,11 @@
 
 .SortableAudioList {
     display: block;
-    height: 35px;
+    height: 56px;
     border: none;
-    padding: 8px;
+    padding-top: 16px;
+    padding-left: 10px;
+    padding-right: 10px;
     background:none;
     color: #6f8796;
     text-align: left;
@@ -14,6 +16,10 @@
 
 .SortableAudioList .withReference {
     position: relative;
+}
+
+.SortableAudioList .preview {
+    color:#28a745;
 }
 
 .SortableAudioList .orderNo {

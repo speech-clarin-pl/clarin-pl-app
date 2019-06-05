@@ -145,6 +145,8 @@ class RecognitionItem extends Component {
 
         let statusinfo = null;
 
+        let ikonki = null;
+
         // formatowanie wielkosci pliku
         let nBytes = this.state.file.file.size;
         let filesize = nBytes + " bytes";
@@ -163,16 +165,46 @@ class RecognitionItem extends Component {
                     </div>
     
                          Ładowanie pliku {this.state.file.loadedperc + '%'}
-                </span>);
+                    </span>);
+
+                    ikonki = (
+                        <>
+                        <a href="#" className="remove"><i className="fas fa-times"></i></a>
+                        </>
+                    )
+
+
                 break;	
             case ('ready'):
                     statusinfo = <span className="ready"><i className="fas fa-check"></i> Gotowe</span>;
+                    ikonki = (
+                        <>
+                        <a href="#" className="preview"><i className="fas fa-eye"></i></a>
+                        <a href="#" className="download"><i className="fas fa-download"></i></a>
+                        <a href="#" className="downloadRepo"><i className="fas fa-cloud-download-alt"></i></a>
+                        <a href="#" className="remove"><i className="fas fa-times"></i></a>
+                        </>
+                    )
                 break;
             case ('loaded'):
                     statusinfo = <span className="uploaded"><i className="fas fa-check"></i> Załadowany</span>;
+                    ikonki = (
+                        <>
+                        <a href="#" className="preview"><i className="fas fa-eye"></i></a>
+                        
+                        <a href="#" className="remove"><i className="fas fa-times"></i></a>
+                        </>
+                    )
                 break;
             case ('error'):
                     statusinfo = <span className="error"><i className="fas fa-exclamation-triangle"></i> Błąd</span>;
+                    ikonki = (
+                        <>
+                        
+                        <a href="#" className="remove"><i className="fas fa-times"></i></a>
+
+                        </>
+                    )
                 break;  
             case ('progress'):
                     statusinfo = (<span className="inprogress">
@@ -181,10 +213,18 @@ class RecognitionItem extends Component {
                                 </div>
     
                                  Rozpoznawanie
-                            </span>);			
+                            </span>);	
+                    ikonki = (
+                        <>
+                        <a href="#" className="preview"><i className="fas fa-eye"></i></a>
+                        
+                        <a href="#" className="remove"><i className="fas fa-times"></i></a>
+                        </>
+                    )		
                 break; 
             default:
                     statusinfo = null;
+                    ikonki = null;
         }
 
        // console.log("status: " + this.state.file.status)
@@ -203,10 +243,7 @@ class RecognitionItem extends Component {
                             {statusinfo}
                         </div>
                         <div className={["col-sm", "fileIcons"].join(' ')}>
-                            <a href="#" className="preview"><i className="fas fa-eye"></i></a>
-                            <a href="#" className="download"><i className="fas fa-download"></i></a>
-                            <a href="#" className="downloadRepo"><i className="fas fa-cloud-download-alt"></i></a>
-                            <a href="#" className="remove"><i className="fas fa-times"></i></a>
+                            {ikonki}
                         </div>
     
     

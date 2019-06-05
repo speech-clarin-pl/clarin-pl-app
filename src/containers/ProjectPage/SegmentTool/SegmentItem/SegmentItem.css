@@ -3,11 +3,29 @@
     border: 1px solid #6f8796;
     color: #6f8796;
     text-align: left;
-    padding: 8px;
-    margin: 8px;
+    padding: 16px;
     margin:16px;
-    height: 35px;
+    height: 56px;
+
+ 
 }
+
+.SegmentItem .segmenticon {
+    margin-right:8px;
+    display:inline-block;
+    position: relative;
+    left: 15px;
+}
+
+.SegmentItem .pair-status{
+    text-align: center;
+}
+
+.SegmentItem .preview {
+    color: #28a745;
+}
+
+
 
 .SegmentItem .fileAudio {
     width: 100%;

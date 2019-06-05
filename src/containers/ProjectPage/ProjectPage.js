@@ -54,7 +54,7 @@ class ProjectPage extends Component {
                   <Tab  title="Dashboard" whereToLink={'/dashboard'}/>
                   <Tab  title="Rozpoznawanie" whereToLink={'/recognition'}/>
                   <Tab  title="Sementacja" whereToLink={'/segment'}/>
-                  <Tab  title="Podgląd" whereToLink={'/preview'}/>                  
+                  <Tab  title="Podgląd plików" whereToLink={'/preview'}/>                  
               </ul>
             
               <Switch>
