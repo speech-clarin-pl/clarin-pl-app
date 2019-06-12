@@ -9,7 +9,8 @@ import LeftSiteBar from '../LeftSiteBar/LeftSiteBar';
 import ButtonLeftBar from '../../../components/UI/ButtonLeftBar/ButtonLeftBar';
 import DragAndDrop from '../../../components/UI/DragAndDrop/DragAndDrop';
 import {connect} from 'react-redux';
-import * as actionTypes from '../../../store/actions';
+import * as recognitionActions from '../../../store/actions/index';
+
 import uuid  from 'uuid';
 
 class RecognitionTool extends Component {
@@ -127,7 +128,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onDrop: (files) => dispatch({type:actionTypes.DROP_FILES, files: files}),
+        onDrop: (files) => dispatch(recognitionActions.dropFiles(files)),
     }
 }
 

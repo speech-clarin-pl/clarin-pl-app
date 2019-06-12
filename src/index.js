@@ -10,7 +10,8 @@ import homeReducer from './store/reducers/homeReducer';
 import projectsListReducer from './store/reducers/projectsListReducer';
 import recognitionReducer from './store/reducers/toolsReducers/recognitionReducer';
 import segmentationReducer from './store/reducers/toolsReducers/segmentationReducer';
-import repoReducer from './store/reducers/toolsReducers/repoReducer';
+import repoReducer from './store/reducers/repoReducer';
+
 
 const rootReducer = combineReducers({
     homeR: homeReducer,
@@ -20,7 +21,7 @@ const rootReducer = combineReducers({
     repoR: repoReducer
 });
 
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
     const app = (
             <Provider store={store}>

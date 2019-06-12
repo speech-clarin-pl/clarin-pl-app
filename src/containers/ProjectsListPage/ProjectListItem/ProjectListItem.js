@@ -1,13 +1,26 @@
 import React from 'react';
 import Aux from '../../../hoc/Auxiliary';
 import './ProjectListItem.css';
+import {Link} from 'react-router-dom';
 
 const projectListItem = (props) => {
+
+    
+
+          // console.log(props.key)
+
     return(
         <Aux>
              <tr className="ProjectListItem">   
                 <th scope="row" className="projectTitle">
-                    <span onClick={props.wyborprojektu} > {props.title} </span>
+               
+                   
+                    <Link to={{
+                            pathname: "/projects/" + encodeURIComponent(props.projektID)
+                        }}> {props.title}</Link>
+                    
+                        
+                   
                 </th>
                 <td>{props.owner}</td>
                 <td>{props.modified}</td>

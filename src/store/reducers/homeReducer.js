@@ -1,4 +1,5 @@
-import * as actionTypes from '../actions';
+import * as actionTypes from '../actions/actionsTypes';
+import {updateObject} from '../utility';
 
 const initialState = {
     isAuth: false,
@@ -6,32 +7,28 @@ const initialState = {
     pass: '',
 }
 
+const logIn = (state, action) => {
+    //tymczasowo
+    if(action.login=='admin' && action.pass =='admin'){
+        return updateObject(state,{
+            isAuth: true,
+            email: action.login,
+            pass: action.pass});
+    
+    } else {
+        return updateObject(state,{isAuth: false});
+    }
+}
+
+const register = (state, action) => {
+    return updateObject(state,{isAuth: false});
+}
+
 const homeReducer = (state = initialState, action) => {
 
     switch(action.type){
-        case actionTypes.LOG_IN:
-
-            //tymczasowo
-            if(action.login=='admin' && action.pass =='admin'){
-                return {
-                    ...state,
-                    isAuth: true,
-                    email: action.login,
-                    pass: action.pass
-                }
-            } else {
-                return {
-                    ...state,
-                    isAuth: false,
-                }
-            }
-           
-            
-        case actionTypes.REGISTER:
-            return {
-                ...state,
-                isAuth: false
-            }
+        case actionTypes.LOG_IN: return logIn(state, action);
+        case actionTypes.REGISTER: return register(state,action);    
     }
 
     return state;

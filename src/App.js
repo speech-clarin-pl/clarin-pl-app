@@ -39,10 +39,20 @@ class App extends Component{
 
   render(){
 
+   
+    if(this.props.chosenProjectID !== null){
+
+    }
+
     return (
       <div className="App">
         <IntlProvider locale={this.state.currln} defaultLocale="pl" messages={messages[this.state.currln]}>
 
+           
+           {
+            
+            }
+            
 
             <Switch>
 
@@ -78,6 +88,7 @@ class App extends Component{
 const mapStateToProps = state => {
   return {
       isAuth: state.homeR.isAuth,
+      chosenProjectID: state.prolistR.chosenProjectID
   }
 }
 

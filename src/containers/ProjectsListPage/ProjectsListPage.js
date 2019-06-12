@@ -6,33 +6,26 @@ import ProjectsList from './ProjectsList/ProjectList';
 import TopBar from '../../components/TopBar/TopBar';
 import {Route} from 'react-router-dom';
 import ProjectPage from '../ProjectPage/ProjectPage';
+import Modal from '../../components/UI/Modal/Modal';
+import {connect} from 'react-redux';
+import * as projectListActions from '../../store/actions/index';
+import ButtonLeftBar from '../../components/UI/ButtonLeftBar/ButtonLeftBar';
 
 
 class ProjectsListPage extends Component {
 
-    state = {
-        projects: [
-          {
-            id: 'p1',
-            title: 'Jakiś tytuł projektu 1',
-            owner: 'You',
-            modified: '22.03.2019'
-          },
-          {
-            id: 'p2',
-            title: 'Jakiś tytuł projektu 2 bla bla',
-            owner: 'You',
-            modified: '23.03.2019'
-          },
-          {
-            id: 'p3',
-            title: 'Jakiś tytuł projektu 3',
-            owner: 'You',
-            modified: '24.03.2019'
-          }
-        ]
-      };
-
+    componentDidMount = () => {
+      //pobieram z serwera liste projektow
+     // axios.get('/userProjest.json')
+     //   .then(response => {
+            //console.log(response);
+     //       this.setState({projects: response.data});
+     //   })
+     //   .catch(error => {
+          // console.log(error);
+      //    this.setState({error: true});
+      //  });
+    }
 
     duplicateProjectHandler = (projectIndex) => {
       alert('duplicate');
@@ -83,37 +76,42 @@ class ProjectsListPage extends Component {
         });
      }
 
+  
+
     render() {
 
-        let projectList = this.state.projects
+        let projectList = <p className="error">Coś poszło nie tak :/</p>;
+        if(!this.props.ifError){
+          projectList = this.props.projectList
             .map((projekt,i) => {
+                //console.log(projekt)
                 return  <ProjectListItem 
                             key={projekt.id} 
+                            projektID={projekt.id}
                             title={projekt.title}
                             owner={projekt.owner}
                             modified={projekt.modified} 
-                            wyborprojektu={() => this.wyborProjektuHandler(projekt.id)}
-                            duplicateProject={() => this.duplicateProjectHandler(projekt.id)}
-                            editName={() =>  this.editNameProjectHandler(projekt.id)}
-                            shareProject={()  => this.shareProjectHandler(projekt.id)}
-                            deleteProject={()  => this.removeProjectHandler(projekt.id)}
+                            wyborprojektu={() => this.props.onProjectChoice(projekt.id)}
+                            duplicateProject={() => this.props.onDuplicate(projekt.id)}
+                            editName={() =>  this.props.onNameEdit(projekt.id)}
+                            shareProject={()  => this.props.onShare(projekt.id)}
+                            deleteProject={()  => this.props.onDelete(projekt.id)}
                             />
             })
+        }
 
-         
-
-        //console.log(this.state.whichProjectActive);
 
         return(
             <Aux>
-              
-              
-              
+
                 <Route path="/project/" render={(props) => (
                     <ProjectPage {...props}  />
                 )} />
 
-
+                <Modal show={false}
+                      modalClosed={null}>
+                    sdlfdkjs lkdjf 
+                </Modal>
 
                 <TopBar 
                     version="init" 
@@ -123,13 +121,19 @@ class ProjectsListPage extends Component {
                     changeLn = {this.props.changeLn}
                     currLn = {this.props.currLn} />
                 
-                
-
                 <ProjectsList>
 
-                <LeftSiteBar 
-                  czyTopPart="false"
-                  desc="tutaj opis do listy projektow" />
+                <LeftSiteBar czyTopPart={false} desc="Tutaj opis do listy projektow" >
+
+                    <ButtonLeftBar 
+                      customeStyle={{height: '50px'}}
+                      napis="Dodaj projekt" 
+                      iconType="fa-plus" 
+                      whenClicked={null} />
+
+                </LeftSiteBar>
+
+                
                 
                 {projectList}
                 
@@ -139,4 +143,23 @@ class ProjectsListPage extends Component {
     }
 }
 
-export default ProjectsListPage;
+
+const mapStateToProps = (state) => {
+  return{
+    projectList: state.prolistR.projects,
+    ifError: state.prolistR.error,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onProjectChoice: (projectId) => dispatch(projectListActions.projectChoice(projectId)),
+    onDuplicate: (projectId) => dispatch(projectListActions.duplicateProject(projectId)),
+    onShare: (projectId) => dispatch(projectListActions.shareProject(projectId)),
+    onDelete: (projectId) => dispatch(projectListActions.deleteProject(projectId)),
+    onNameEdit: (projectId) => dispatch(projectListActions.editName(projectId)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectsListPage);
+

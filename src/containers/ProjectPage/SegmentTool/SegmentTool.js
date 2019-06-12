@@ -10,7 +10,7 @@ import DragAndDrop from '../../../components/UI/DragAndDrop/DragAndDrop';
 import DropFilesArea from '../../../components/UI/DropFilesArea/DropFilesArea';
 import {connect} from 'react-redux';
 import uuid  from 'uuid';
-import * as actionTypes from '../../../store/actions';
+import * as segmentActions from '../../../store/actions/index';
 import SortableAudioList from './SortableAudioList/SortableAudioList';
 import SortableTxtList from './SortableTxtList/SortableTxtList';
 
@@ -212,10 +212,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-	   onAudioDrop: (audioFiles) => dispatch({type:actionTypes.DROP_AUDIO_FILES, audioFiles: audioFiles}),
-	   onTxtDrop: (txtFiles) => dispatch({type:actionTypes.DROP_TXT_FILES, txtFiles: txtFiles}),
-	   onChangeAudioListOrder: (idsOrder) => dispatch({type:actionTypes.CHANGE_AUDIO_LIST_ORDER, audioIdsOrder: idsOrder}),
-	   onChangeTxtListOrder: (idsOrder) => dispatch({type:actionTypes.CHANGE_TXT_LIST_ORDER, txtIdsOrder: idsOrder}),
+	   onAudioDrop: (audioFiles) => dispatch(segmentActions.dropAudioFiles(audioFiles)),
+	   onTxtDrop: (txtFiles) => dispatch(segmentActions.dropTxtFiles(txtFiles)),
+	   onChangeAudioListOrder: (idsOrder) => dispatch(segmentActions.changeAudioListOrder(idsOrder)),
+	   onChangeTxtListOrder: (idsOrder) => dispatch(segmentActions.changeTxtListOrder(idsOrder)),
+
     }
 }
 

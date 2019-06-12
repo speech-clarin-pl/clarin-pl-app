@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Aux from '../../../../hoc/Auxiliary';
 import './RecognitionItem.css';
-import * as actionTypes from '../../../../store/actions';
+import * as actionTypes from '../../../../store/actions/actionsTypes';
 import {connect} from 'react-redux';
 
  

@@ -1,31 +1,31 @@
-import * as actionTypes from '../../actions';
-import {connect} from 'react-redux';
+import * as actionTypes from '../../actions/actionsTypes';
+import {updateObject} from '../../utility';
+
 
 const initialState = {
     filesToUpload: [],
 }
 
-const recognitionReducer = (state = initialState, action) => {
-    switch(action.type){
-        case actionTypes.DROP_FILES:
+const dropFiles = (state, action) => {
+    let fileList = [...state.filesToUpload, ...action.files];
+    return updateObject(state, {filesToUpload: fileList}) ;      
+}
 
-            let fileList = [...state.filesToUpload, ...action.files];
-           
-            return {
-                ...state,
-                filesToUpload: fileList,
-            }
-        case actionTypes.INIT_BATCH_RECOGNITION:
-            return {
+const initFileRecognition = (state,action) => {
 
-            }
-        case actionTypes.INIT_FILE_RECOGNITION:
-            return {
+    // to do
+    return updateObject(state, {}) ;  
+}
 
-            }
-        case actionTypes.UPDATE_FILE_STATE:
+const initBatchRecognition = (state,action) => {
 
-            const fileID = action.fileID;
+    // to do
+    return updateObject(state, {}) ;  
+}
+
+const updateFileState = (state,action) => {
+
+    const fileID = action.fileID;
             const status = action.status;
             const percLoaded = action.percLoaded;
 
@@ -40,11 +40,15 @@ const recognitionReducer = (state = initialState, action) => {
                 }
             }
 
+    return updateObject(state, { filesToUpload: currentfileList}) ;  
+}
 
-            return {
-                ...state,
-                filesToUpload: currentfileList
-            }
+const recognitionReducer = (state = initialState, action) => {
+    switch(action.type){
+        case actionTypes.DROP_FILES: return dropFiles(state, action);
+        case actionTypes.INIT_BATCH_RECOGNITION: return initBatchRecognition(state,action);
+        case actionTypes.INIT_FILE_RECOGNITION: return initFileRecognition(state,action);
+        case actionTypes.UPDATE_FILE_STATE: return updateFileState(state, action);
     }
 
     return state;

@@ -4,7 +4,7 @@ import './LoginArea.css';
 import {withRouter, Link} from 'react-router-dom';
 import {FormattedMessage} from 'react-intl';
 import {connect} from 'react-redux';
-import * as actionTypes from '../../../store/actions';
+import * as actionTypes from '../../../store/actions/actionsTypes';
 import Input from '../../../components/UI/Input/Input';
 
 
