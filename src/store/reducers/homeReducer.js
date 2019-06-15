@@ -24,11 +24,12 @@ const register = (state, action) => {
     return updateObject(state,{isAuth: false});
 }
 
+
 const homeReducer = (state = initialState, action) => {
 
     switch(action.type){
         case actionTypes.LOG_IN: return logIn(state, action);
-        case actionTypes.REGISTER: return register(state,action);    
+        case actionTypes.REGISTER: return register(state,action);           
     }
 
     return state;

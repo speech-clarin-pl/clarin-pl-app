@@ -5,13 +5,14 @@ import DecoIntro from './DecoIntro/DecoIntro';
 import HomeText from './HomeText/HomeText';
 import AppFooter from '../../components/AppFooter/AppFooter';
 import TopBar from '../../components/TopBar/TopBar';
+import Aux from '../../hoc/Auxiliary';
 
 
 const homePage = (props) => {
     
     return(
-        <>
-            <TopBar 
+        <Aux>
+            <TopBar  
                 version="init" 
                 wide="no" 
                 language="pl" 
@@ -20,11 +21,16 @@ const homePage = (props) => {
                 currLn = {props.currLn}
                  />
             <Jumbotron />
-            <LoginArea />
+           
+           {
+                <LoginArea />
+           }
+            
+           
             <DecoIntro />
             <HomeText />
             <AppFooter />
-        </>
+        </Aux>
     );
 }
 

@@ -23,7 +23,7 @@ const initialState = {
         }
     ],
     error: false,
-    chosenProjectID: null
+    chosenProjectID: 'defaultProjectID'
 }
 
 const choseProject = (state, action) => {

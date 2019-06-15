@@ -2,6 +2,7 @@ import React from 'react';
 import Aux from '../../../hoc/Auxiliary';
 import './Jumbotron.css';
 import {FormattedMessage} from 'react-intl';
+import {Link} from 'react-router-dom';
 
 const jumbotron = (props) => {
 
@@ -26,6 +27,15 @@ const jumbotron = (props) => {
                                 />
                     </p>
                     <p></p>
+
+                    <Link to="/projects/defaultProject">
+                          <button className="btn btn-primary btn-lg btn-block gotoprojects">
+                              Rozpocznij korzystac z narzedzi
+                           </button>
+                    </Link>
+
+                    {
+                    /*
                     <a className="btn btn-primary btn-lg" href="#" role="button">
                         
                         <FormattedMessage
@@ -34,6 +44,8 @@ const jumbotron = (props) => {
                                 />
 
                     </a>
+                    */
+                    }
                 </div>
             </div>
         </Aux>

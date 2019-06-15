@@ -168,9 +168,9 @@ class RecognitionItem extends Component {
                     </span>);
 
                     ikonki = (
-                        <>
+                        <Aux>
                         <a href="#" className="remove"><i className="fas fa-times"></i></a>
-                        </>
+                        </Aux>
                     )
 
 
@@ -178,12 +178,12 @@ class RecognitionItem extends Component {
             case ('ready'):
                     statusinfo = <span className="ready"><i className="fas fa-check"></i> Gotowe</span>;
                     ikonki = (
-                        <>
+                        <Aux>
                         <a href="#" className="preview"><i className="fas fa-eye"></i></a>
                         <a href="#" className="download"><i className="fas fa-download"></i></a>
                         <a href="#" className="downloadRepo"><i className="fas fa-cloud-download-alt"></i></a>
                         <a href="#" className="remove"><i className="fas fa-times"></i></a>
-                        </>
+                        </Aux>
                     )
                 break;
             case ('loaded'):
@@ -199,11 +199,11 @@ class RecognitionItem extends Component {
             case ('error'):
                     statusinfo = <span className="error"><i className="fas fa-exclamation-triangle"></i> Błąd</span>;
                     ikonki = (
-                        <>
+                        <Aux>
                         
                         <a href="#" className="remove"><i className="fas fa-times"></i></a>
 
-                        </>
+                        </Aux>
                     )
                 break;  
             case ('progress'):
@@ -215,11 +215,11 @@ class RecognitionItem extends Component {
                                  Rozpoznawanie
                             </span>);	
                     ikonki = (
-                        <>
+                        <Aux>
                         <a href="#" className="preview"><i className="fas fa-eye"></i></a>
                         
                         <a href="#" className="remove"><i className="fas fa-times"></i></a>
-                        </>
+                        </Aux>
                     )		
                 break; 
             default:

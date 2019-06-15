@@ -127,8 +127,6 @@ class LoginArea extends Component {
 
         this.props.onRegister(registerData.registeremail, registerData.registerpass);
         
-
-
     }
 
 
