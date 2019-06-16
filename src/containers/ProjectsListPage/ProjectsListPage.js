@@ -86,10 +86,10 @@ class ProjectsListPage extends Component {
   checkValidity = (value) => {
     let isValid = true;
 
-    //bardzo prosta validacja - trzeba napisac lepsza
+    //bardzo prosta validacja po stronie przegladarki
+    //taka sama jest po stronie serwera
     //nie moze byc puste i musi miec min. 3 znaki
     isValid = value.trim() !== '' && isValid;
-
     isValid = value.length >= 3 && isValid;
 
     return isValid;
@@ -102,9 +102,9 @@ class ProjectsListPage extends Component {
     //console.log(formIsValid);
     
     if(formIsValid){
-      console.log(this.state.newProjectName)
+      //console.log(this.state.newProjectName)
       this.props.onNewProject(this.state.newProjectName);
-      
+
     } else {
       //wyswietl komunikat
     }
@@ -122,21 +122,21 @@ class ProjectsListPage extends Component {
     })
   }
 
+
+  //otwiera okno modalne
   openModalHandler = () => {
-    this.setState({
-      modalDisplay: true,
-    })
+    this.props.onOpenModalHandler();
   }
 
+  //zamyka okno modalne
   closeModalHandler = () => {
-    this.setState({
-      modalDisplay: false,
-    })
+    this.props.onCloseModalHandler();
   }
 
   
-
   render() {
+
+    console.log(this.props.errorMessage)
 
     //formularz dodawania nazwy dla nowego projektu
     const newProjectForm = (
@@ -146,6 +146,7 @@ class ProjectsListPage extends Component {
           onChangeHandler={this.newProjectNameChangeHandler}
           placeholder="Podaj nazwe projektu"
           buttonLabel="Dodaj projekt"
+          errorMessage = {this.props.errorMessage}
         />
       </Aux>
     );
@@ -201,15 +202,10 @@ class ProjectsListPage extends Component {
 
       }
 
-
-
     } else {
       //kiedy jest error
       toDisplay = <p className="error">Error with connecting to server</p>;
     }
-
-    
-
 
 
     return (
@@ -221,7 +217,7 @@ class ProjectsListPage extends Component {
 
 
         <Modal
-          show={this.state.modalDisplay}
+          show={this.props.modalDisplay}
           modalClosed={this.closeModalHandler}
           title="Nowy projekt">
           {newProjectForm}
@@ -251,16 +247,19 @@ class ProjectsListPage extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    modalDisplay: state.prolistR.modalDisplay,
     newProjectCreated: state.prolistR.loaded,
     projectList: state.prolistR.projects,
     ifError: state.prolistR.error,
+    errorMessage: state.prolistR.errorMessage,
     ifProjectsLoading: state.prolistR.projectsLoading,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    
+    onOpenModalHandler: () => dispatch(projectListActions.openModal()),
+    onCloseModalHandler: () => dispatch(projectListActions.closeModal()),
     onNewProjectDone: () => dispatch(projectListActions.addNewProjectDone()),
     onNewProject: (projectName) => dispatch(projectListActions.addNewProject(projectName)),
     onProjectChoice: (projectId) => dispatch(projectListActions.projectChoice(projectId)),
@@ -268,7 +267,7 @@ const mapDispatchToProps = dispatch => {
     onShare: (projectId) => dispatch(projectListActions.shareProject(projectId)),
     onDelete: (projectId) => dispatch(projectListActions.deleteProject(projectId)),
     onNameEdit: (projectId) => dispatch(projectListActions.editName(projectId)),
-    onGetProjectsList: (userId) => dispatch(projectListActions.getProjectsList(userId))
+    onGetProjectsList: (userId) => dispatch(projectListActions.getProjectsList(userId)),
   }
 }
 

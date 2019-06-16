@@ -9,7 +9,10 @@ export {
     getProjectsList,
     getProjectsListFailed,
     addNewProject,
-    addNewProjectDone
+    addNewProjectDone,
+    addNewProjectActionFailed,
+    openModal,
+    closeModal
 } from './projectsList';
 
 export {} from './home';

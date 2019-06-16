@@ -1,6 +1,22 @@
 import * as actionTypes from './actionsTypes';
 import axios from 'axios';
 
+//otwieram okno modalne
+export const openModal = () => {
+    return {
+        type: actionTypes.OPEN_MODAL,
+    }
+}
+
+//zamykam okno modalne
+export const closeModal = () => {
+    return {
+        type: actionTypes.CLOSE_MODAL,
+    }
+}
+
+
+
 //#########  pobieram liste projektow #########
 export const getProjectsListAction = (userId, projects) => {
     //console.log(projects)
@@ -45,7 +61,7 @@ export const addNewProjectAction = (projectName, messageFromServer, responsedNew
 export const addNewProjectActionFailed = (error) => {
     return {
         type: actionTypes.ADD_PROJECT_FAILED,
-        error: error
+        errorMessage: error
     }
 }
 
@@ -60,9 +76,6 @@ export const addNewProjectDone = () => {
         type: actionTypes.ADD_PROJECT_DONE,
     }
 }
-
-
-
 
 export const addNewProject = (projectName) => {
     return dispatch => {

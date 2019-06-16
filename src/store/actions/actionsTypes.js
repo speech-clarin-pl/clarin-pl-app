@@ -1,3 +1,7 @@
+//ogolne
+export const OPEN_MODAL = 'OPEN_MODAL';
+export const CLOSE_MODAL = 'CLOSE_MODAL';
+
 // home page actions
 export const LOG_IN = 'LOG_IN';
 export const REGISTER = 'REGISTER';

@@ -8,6 +8,8 @@ const initialState = {
     projectsLoading: true, //gdy laduja sie dane z serwera
     chosenProjectID: 'defaultProjectID',
     loaded: false, //gdy projekt z serwera juz sie zaladowal
+    errorMessage: '',   //gdy nie przejdzie validacji po stronie serwera
+    modalDisplay: false, //czy pokazywac modal
 }
 
 const choseProject = (state, action) => {
@@ -27,7 +29,17 @@ const addProjectInit = (state, action) => {
 }
 
 const addProjectDone = (state, action) => {
-    return updateObject(state, {loaded: true});
+    return updateObject(state, {
+        loaded: true, 
+        errorMessage:'',
+        modalDisplay: false});
+}
+
+const addProjectFailed = (state,action) => {
+    //console.log(action.errorMessage.response.data.message)
+    return updateObject(state, {
+        errorMessage: action.errorMessage.response.data.message,
+    })
 }
 
 const duplicateProject = (state, action) => {
@@ -56,8 +68,11 @@ const editName = (state, action) => {
 
 //pobieranie listy projektow
 const getProjectsListFailed = (state, action) => {
-    // console.log(action)
-    return updateObject(state, { error: true, loaded: false });
+     console.log(action)
+    return updateObject(state, { 
+        error: true, 
+        loaded: false,
+        errorMessage: action.errorMessage });
 }
 
 const getProjectsList = (state, action) => {
@@ -70,41 +85,20 @@ const getProjectsList = (state, action) => {
             projectsLoading: false,
         });
 
-    // //TO DO: polaczenie z API
-    // axios.get('/projectsList')
-    //     .then(projects => {
-    //         console.log(projects);
+}
 
-    //         return updateObject(state,{
-    //             projects: [
-    //                 {
-    //                     _id: 'p1',
-    //                     name: 'Jakiś tytuł projektu 1',
-    //                     owner: 'You',
-    //                     modified: '22.03.2019'
-    //                 },
-    //                 {
-    //                     _id: 'p2',
-    //                     name: 'Jakiś tytuł projektu 2 bla bla',
-    //                     owner: 'You',
-    //                     modified: '23.03.2019'
-    //                 },
-    //                 {
-    //                     _id: 'p3',
-    //                     name: 'Jakiś tytuł projektu 3',
-    //                     owner: 'You',
-    //                     modified: '24.03.2019'
-    //                 }
-    //             ],
+const openModal = (state, action) => {
+    return updateObject(state,
+        {
+            modalDisplay: true
+        });
+}
 
-    //             projectsLoading: false,
-    //             error: false
-    //         });
-    //     })
-    //     .catch(error => {
-    //         return updateObject(state, {error: true});
-    //     });
-
+const closeModal = (state, action) => {
+    return updateObject(state,
+        {
+            modalDisplay: false
+        });
 }
 
 
@@ -119,10 +113,13 @@ const projectsListReducer = (state = initialState, action) => {
         case actionTypes.ADD_PROJECT_INIT: return addProjectInit(state, action);
         case actionTypes.ADD_PROJECT_DONE: return addProjectDone(state, action);
         case actionTypes.ADD_PROJECT: return addProject(state, action);
+        case actionTypes.ADD_PROJECT_FAILED: return addProjectFailed(state, action);
         case actionTypes.DUPLICATE_PROJECT: return duplicateProject(state, action);
         case actionTypes.SHARE_PROJECT: return shareProject(state, action);
         case actionTypes.REMOVE_PROJECT: return removeProject(state, action);
         case actionTypes.EDIT_NAME: return editName(state, action);
+        case actionTypes.OPEN_MODAL: return openModal(state, action);
+        case actionTypes.CLOSE_MODAL: return closeModal(state, action);
     }
 
     return state;
