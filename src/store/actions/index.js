@@ -7,7 +7,8 @@ export {
     shareProject,
     deleteProject,
     editName,
-
+    getProjectsList,
+    getProjectsListFailed,
 } from './projectsList';
 
 export {} from './home';
@@ -22,6 +23,7 @@ export {
     changeAudioListOrder,
     changeTxtListOrder
 } from './toolActions/segmentation';
+
 
 
 

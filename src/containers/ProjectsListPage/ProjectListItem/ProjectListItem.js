@@ -12,16 +12,13 @@ const projectListItem = (props) => {
     return(
         <Aux>
              <tr className="ProjectListItem">   
-                <th scope="row" className="projectTitle">
-               
-                   
+                <td className="projectTitle">
+
                     <Link to={{
                             pathname: "/projects/" + encodeURIComponent(props.projektID)
                         }}> {props.title}</Link>
-                    
-                        
-                   
-                </th>
+
+                </td>
                 <td>{props.owner}</td>
                 <td>{props.modified}</td>
                 <td>

@@ -28,9 +28,9 @@ const jumbotron = (props) => {
                     </p>
                     <p></p>
 
-                    <Link to="/projects/defaultProject">
+                    <Link to="/projectsList">
                           <button className="btn btn-primary btn-lg btn-block gotoprojects">
-                              Rozpocznij korzystac z narzedzi
+                              Przejdz do listy projektow
                            </button>
                     </Link>
 

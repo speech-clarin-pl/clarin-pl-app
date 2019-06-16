@@ -5,3 +5,19 @@
     top: 50px;
     right: 0px;
 }
+
+.ProjectList tr.thead-dark {
+    background-color: #546c78;
+    color: #e1e9d9;
+    height: 50px;
+   
+}
+
+.ProjectList tr.thead-dark .title {
+    text-align: left;
+}
+
+.ProjectList .table td, .ProjectList .table th {
+    border: none ;
+  
+}

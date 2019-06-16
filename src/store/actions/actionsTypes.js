@@ -4,6 +4,8 @@ export const REGISTER = 'REGISTER';
 export const SET_CURRENT_PROJECT_ID = 'SET_CURRENT_PROJECT_ID';
 
 // project list actions
+export const GET_PROJECTS_LIST = 'GET_PROJECTS_LIST';
+export const GET_PROJECTS_LIST_FAILED = 'GET_PROJECTS_LIST_FAILED';
 export const CHOSE_PROJECT = 'CHOSE_PROJECT';
 export const ADD_PROJECT = 'ADD_PROJECT';
 export const DUPLICATE_PROJECT = 'DUPLICATE_PROJECT';

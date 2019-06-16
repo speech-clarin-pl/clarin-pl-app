@@ -62,7 +62,7 @@ class App extends Component{
                             currLn = {this.state.currln} />
                     )}/>
 
-                  <Route path="/projects" render={(props) => (
+                  <Route path="/projectsList" render={(props) => (
                        <ProjectsListPage {...props} 
                             changeLn={this.changeLnHandler} 
                             currLn = {this.state.currln}/>

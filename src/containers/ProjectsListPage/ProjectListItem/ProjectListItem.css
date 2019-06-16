@@ -1,7 +1,14 @@
+
+
 .ProjectListItem a  {
     text-decoration: none;
     color: inherit;
     cursor: pointer;
+}
+
+.ProjectListItem {
+    border: none !important;
+    border-bottom: 1px solid #e1e9ec ;
 }
 
 .ProjectListItem:hover {
@@ -15,4 +22,5 @@
 .ProjectListItem .projectTitle {
     text-align: left;
     cursor: pointer;
+    border: none !important;
 }

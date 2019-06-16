@@ -4,19 +4,25 @@ import './ProjectList.css';
 
 const projectsList = (props) => {
 
+    const ifLoading = props.ifLoading;
+
+     const listHeader = (
+            <tr className="thead-dark">
+                <td className="title">Tytuł</td>
+                <td >Właściciel</td>
+                <td >Data modyfikacji</td>
+                <td >Akcje</td>
+            </tr>
+        );
+ 
+
     return(
         <Aux>
             <div className={"ProjectList"}>
+                {props.siteBar}
                 <table className="table">
-                    <thead className="thead-dark">
-                        <tr>
-                        <th scope="col">Tytuł</th>
-                        <th scope="col">Właściciel</th>
-                        <th scope="col">Data modyfikacji</th>
-                        <th scope="col">Akcje</th>
-                        </tr>
-                    </thead>
                     <tbody>
+                        {listHeader}
                         {props.children}
                     </tbody>
                 </table>
