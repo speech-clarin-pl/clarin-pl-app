@@ -1,7 +1,6 @@
 export {} from './repo';
 
 export {
-    addProject,
     projectChoice,
     duplicateProject,
     shareProject,
@@ -9,6 +8,7 @@ export {
     editName,
     getProjectsList,
     getProjectsListFailed,
+    addNewProject,
 } from './projectsList';
 
 export {} from './home';

@@ -11,9 +11,14 @@ import { connect } from 'react-redux';
 import * as projectListActions from '../../store/actions/index';
 import ButtonLeftBar from '../../components/UI/ButtonLeftBar/ButtonLeftBar';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import SingleInputForm from '../../components/UI/SingleInputForm/SingleInputForm';
 
 class ProjectsListPage extends Component {
 
+  state = {
+    modalDisplay: false,
+    newProjectName: '',
+  }
 
 
   componentDidMount = () => {
@@ -79,7 +84,67 @@ class ProjectsListPage extends Component {
     });
   }
 
+  //prosty validator...
+  checkValidity = (value) => {
+    let isValid = true;
+
+    //bardzo prosta validacja - trzeba napisac lepsza
+    //nie moze byc puste i musi miec min. 3 znaki
+    isValid = value.trim() !== '' && isValid;
+
+    isValid = value.length >= 3 && isValid;
+
+    return isValid;
+  }
+
+  addNewProjectHandler = (event) => {
+    event.preventDefault();
+    // dodaje nowy projekt tutaj TO DO
+    let formIsValid = this.checkValidity(this.state.newProjectName);
+    //console.log(formIsValid);
+    
+    if(formIsValid){
+      this.props.onNewProject(this.state.newProjectName);
+      this.closeModalHandler();
+    } else {
+      //wyswietl komunikat
+    }
+  }
+
+  newProjectNameChangeHandler = (event) => {
+    //console.log(event.target.value)
+    this.setState({
+      newProjectName: event.target.value,
+    })
+  }
+
+  openModalHandler = () => {
+    this.setState({
+      modalDisplay: true,
+    })
+  }
+
+  closeModalHandler = () => {
+    this.setState({
+      modalDisplay: false,
+    })
+  }
+
+  
+
   render() {
+
+    //formularz dodawania nazwy dla nowego projektu
+    const newProjectForm = (
+      <Aux>
+        <SingleInputForm
+          onSubmitHandler={this.addNewProjectHandler}
+          onChangeHandler={this.newProjectNameChangeHandler}
+          placeholder="Podaj nazwe projektu"
+          buttonLabel="Dodaj projekt"
+        />
+      </Aux>
+    );
 
     //lewy sidebar
     const leftSiteBar = (
@@ -88,39 +153,39 @@ class ProjectsListPage extends Component {
           customeStyle={{ height: '50px' }}
           napis="Dodaj projekt"
           iconType="fa-plus"
-          whenClicked={null} />
+          whenClicked={this.openModalHandler} />
       </LeftSiteBar>
     )
 
     //co wyswietlic
     let toDisplay = null;
-    
+
     //sama lista projektow
     let projectList = null;
 
     if (!this.props.ifError) {
       //console.log(this.props.ifProjectsLoading)
       //jak nie ma error to sprawdzam czy sie laduja dane
-      if(this.props.ifProjectsLoading){
+      if (this.props.ifProjectsLoading) {
         toDisplay = <Spinner />
       } else {
-        
+
         projectList = this.props.projectList
-        .map((projekt, i) => {
-          //console.log(projekt)
-          return <ProjectListItem
-            key={projekt._id}
-            projektID={projekt.id}
-            title={projekt.name}
-            owner={projekt.owner}
-            modified={projekt.modified}
-            wyborprojektu={() => this.props.onProjectChoice(projekt.id)}
-            duplicateProject={() => this.props.onDuplicate(projekt.id)}
-            editName={() => this.props.onNameEdit(projekt.id)}
-            shareProject={() => this.props.onShare(projekt.id)}
-            deleteProject={() => this.props.onDelete(projekt.id)}
-          />
-        });
+          .map((projekt, i) => {
+            //console.log(projekt)
+            return <ProjectListItem
+              key={projekt._id}
+              projektID={projekt.id}
+              title={projekt.name}
+              owner={projekt.owner}
+              modified={projekt.modified}
+              wyborprojektu={() => this.props.onProjectChoice(projekt.id)}
+              duplicateProject={() => this.props.onDuplicate(projekt.id)}
+              editName={() => this.props.onNameEdit(projekt.id)}
+              shareProject={() => this.props.onShare(projekt.id)}
+              deleteProject={() => this.props.onDelete(projekt.id)}
+            />
+          });
 
         toDisplay = (
           <ProjectsList siteBar={leftSiteBar}>
@@ -129,17 +194,17 @@ class ProjectsListPage extends Component {
 
           </ProjectsList>
         );
-        
+
       }
 
-    
-        
+
+
     } else {
       //kiedy jest error
       toDisplay = <p className="error">Error with connecting to server</p>;
     }
 
-    
+
 
     return (
       <Aux>
@@ -148,12 +213,14 @@ class ProjectsListPage extends Component {
           <ProjectPage {...props} />
         )} />
 
-        <Modal show={false}
-          modalClosed={null}>
-          sdlfdkjs lkdjf
-                </Modal>
 
-                
+        <Modal
+          show={this.state.modalDisplay}
+          modalClosed={this.closeModalHandler}
+          title="Nowy projekt">
+          {newProjectForm}
+        </Modal>
+
 
         <TopBar
           version="init"
@@ -164,7 +231,7 @@ class ProjectsListPage extends Component {
           currLn={this.props.currLn} />
 
 
-        
+
 
         {leftSiteBar}
 
@@ -186,6 +253,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    onNewProject: (projectName) => dispatch(projectListActions.addNewProject(projectName)),
     onProjectChoice: (projectId) => dispatch(projectListActions.projectChoice(projectId)),
     onDuplicate: (projectId) => dispatch(projectListActions.duplicateProject(projectId)),
     onShare: (projectId) => dispatch(projectListActions.shareProject(projectId)),

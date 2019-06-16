@@ -32,13 +32,37 @@ export const getProjectsList = (userId) => {
 }
 
 //#########  dodaje projekt ##########
-export const addProject = (projectName) => {
+export const addNewProjectAction = (projectName, messageFromServer) => {
     return {
         type: actionTypes.ADD_PROJECT,
-        projectName: projectName
+        projectName: projectName,
+        messageFromServer: messageFromServer,
+        userId: "jakiesIdUsera"
     }
 }
 
+export const addNewProjectActionFailed = (error) => {
+    return {
+        type: actionTypes.ADD_PROJECT_FAILED,
+        error: error
+    }
+}
+
+export const addNewProject = (projectName) => {
+    return dispatch => {
+        axios.post('/projectsList')
+            .then(response => {
+                console.log(response)
+                dispatch(addNewProjectAction(projectName, response.data.message));
+            })
+            .catch(error => {
+                dispatch(addNewProjectActionFailed(error));
+            });
+    }
+}
+
+
+//#########  wybieram  projekt ##########
 export const projectChoice = (projectId) => {
     return {
         type: actionTypes.CHOSE_PROJECT,

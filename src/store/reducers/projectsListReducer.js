@@ -15,7 +15,7 @@ const choseProject = (state, action) => {
 
 const addProject = (state, action) => {
 
-    // TO DO
+    console.log(action.messageFromServer)
     return updateObject(state, {});
 }
 
