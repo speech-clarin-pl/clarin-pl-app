@@ -51,8 +51,6 @@ class ProjectsListPage extends Component {
     alert('remove');
   }
 
-
-
   wyborProjektuHandler = (projektIndex) => {
 
 
@@ -104,11 +102,17 @@ class ProjectsListPage extends Component {
     //console.log(formIsValid);
     
     if(formIsValid){
+      console.log(this.state.newProjectName)
       this.props.onNewProject(this.state.newProjectName);
-      this.closeModalHandler();
+      
     } else {
       //wyswietl komunikat
     }
+  }
+
+  
+  onNewProjectDone = () => {
+    this.closeModalHandler()
   }
 
   newProjectNameChangeHandler = (event) => {
@@ -204,6 +208,8 @@ class ProjectsListPage extends Component {
       toDisplay = <p className="error">Error with connecting to server</p>;
     }
 
+    
+
 
 
     return (
@@ -245,6 +251,7 @@ class ProjectsListPage extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    newProjectCreated: state.prolistR.loaded,
     projectList: state.prolistR.projects,
     ifError: state.prolistR.error,
     ifProjectsLoading: state.prolistR.projectsLoading,
@@ -253,6 +260,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    
+    onNewProjectDone: () => dispatch(projectListActions.addNewProjectDone()),
     onNewProject: (projectName) => dispatch(projectListActions.addNewProject(projectName)),
     onProjectChoice: (projectId) => dispatch(projectListActions.projectChoice(projectId)),
     onDuplicate: (projectId) => dispatch(projectListActions.duplicateProject(projectId)),

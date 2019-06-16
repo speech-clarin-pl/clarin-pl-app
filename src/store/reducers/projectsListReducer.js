@@ -6,7 +6,8 @@ const initialState = {
     projects: [],
     error: false,          //gdy wystapi error z polaczeniem z api 
     projectsLoading: true, //gdy laduja sie dane z serwera
-    chosenProjectID: 'defaultProjectID'
+    chosenProjectID: 'defaultProjectID',
+    loaded: false, //gdy projekt z serwera juz sie zaladowal
 }
 
 const choseProject = (state, action) => {
@@ -14,9 +15,19 @@ const choseProject = (state, action) => {
 }
 
 const addProject = (state, action) => {
+    let newProjectsList = [action.responsedNewProject, ...state.projects];
+    //console.log(newProjectsList)
+   // console.log(action.responsedNewProject)
 
-    console.log(action.messageFromServer)
-    return updateObject(state, {});
+    return updateObject(state, {projects: newProjectsList, loaded: true });
+}
+
+const addProjectInit = (state, action) => {
+    return updateObject(state, {loaded: false});
+}
+
+const addProjectDone = (state, action) => {
+    return updateObject(state, {loaded: true});
 }
 
 const duplicateProject = (state, action) => {
@@ -46,7 +57,7 @@ const editName = (state, action) => {
 //pobieranie listy projektow
 const getProjectsListFailed = (state, action) => {
     // console.log(action)
-    return updateObject(state, { error: true });
+    return updateObject(state, { error: true, loaded: false });
 }
 
 const getProjectsList = (state, action) => {
@@ -56,7 +67,7 @@ const getProjectsList = (state, action) => {
         {
             projects: action.projects,
             error: false,
-            projectsLoading: false
+            projectsLoading: false,
         });
 
     // //TO DO: polaczenie z API
@@ -105,6 +116,8 @@ const projectsListReducer = (state = initialState, action) => {
         case actionTypes.GET_PROJECTS_LIST: return getProjectsList(state, action);
         case actionTypes.GET_PROJECTS_LIST_FAILED: return getProjectsListFailed(state, action);
         case actionTypes.CHOSE_PROJECT: return choseProject(state, action);
+        case actionTypes.ADD_PROJECT_INIT: return addProjectInit(state, action);
+        case actionTypes.ADD_PROJECT_DONE: return addProjectDone(state, action);
         case actionTypes.ADD_PROJECT: return addProject(state, action);
         case actionTypes.DUPLICATE_PROJECT: return duplicateProject(state, action);
         case actionTypes.SHARE_PROJECT: return shareProject(state, action);

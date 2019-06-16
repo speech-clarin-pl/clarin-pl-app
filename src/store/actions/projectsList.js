@@ -32,11 +32,12 @@ export const getProjectsList = (userId) => {
 }
 
 //#########  dodaje projekt ##########
-export const addNewProjectAction = (projectName, messageFromServer) => {
+export const addNewProjectAction = (projectName, messageFromServer, responsedNewProject) => {
     return {
         type: actionTypes.ADD_PROJECT,
         projectName: projectName,
         messageFromServer: messageFromServer,
+        responsedNewProject: responsedNewProject,
         userId: "jakiesIdUsera"
     }
 }
@@ -48,12 +49,33 @@ export const addNewProjectActionFailed = (error) => {
     }
 }
 
+export const initNewProjectAction = () => {
+    return {
+        type: actionTypes.ADD_PROJECT_INIT,
+    }
+}
+
+export const addNewProjectDone = () => {
+    return {
+        type: actionTypes.ADD_PROJECT_DONE,
+    }
+}
+
+
+
+
 export const addNewProject = (projectName) => {
     return dispatch => {
-        axios.post('/projectsList')
+            //ustawiam loaded na false w reducerze aby wylaczyc okienko dopiero gdy sie zaladuje
+            dispatch(initNewProjectAction())
+        axios.post('/projectsList', {
+                projectName: projectName
+            })
             .then(response => {
-                console.log(response)
-                dispatch(addNewProjectAction(projectName, response.data.message));
+                //console.log("from action:")
+                //console.log(response)
+                dispatch(addNewProjectAction(projectName, response.data.message, response.data.project));
+                dispatch(addNewProjectDone());
             })
             .catch(error => {
                 dispatch(addNewProjectActionFailed(error));

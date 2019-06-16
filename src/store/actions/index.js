@@ -9,6 +9,7 @@ export {
     getProjectsList,
     getProjectsListFailed,
     addNewProject,
+    addNewProjectDone
 } from './projectsList';
 
 export {} from './home';
