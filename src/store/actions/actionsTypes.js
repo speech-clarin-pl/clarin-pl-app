@@ -1,6 +1,5 @@
-//ogolne
-export const OPEN_MODAL = 'OPEN_MODAL';
-export const CLOSE_MODAL = 'CLOSE_MODAL';
+
+
 
 // home page actions
 export const LOG_IN = 'LOG_IN';
@@ -8,6 +7,9 @@ export const REGISTER = 'REGISTER';
 export const SET_CURRENT_PROJECT_ID = 'SET_CURRENT_PROJECT_ID';
 
 // project list actions
+export const OPEN_MODAL = 'OPEN_MODAL';
+export const CLOSE_MODAL = 'CLOSE_MODAL';
+
 export const GET_PROJECTS_LIST = 'GET_PROJECTS_LIST';
 export const GET_PROJECTS_LIST_FAILED = 'GET_PROJECTS_LIST_FAILED';
 export const CHOSE_PROJECT = 'CHOSE_PROJECT';
@@ -21,6 +23,11 @@ export const DUPLICATE_PROJECT = 'DUPLICATE_PROJECT';
 export const SHARE_PROJECT = 'SHARE_PROJECT';
 export const REMOVE_PROJECT = 'REMOVE_PROJECT';
 export const EDIT_NAME = 'EDIT_NAME';
+
+//project page
+export const INIT_PROJECT = 'INIT_PROJECT';
+export const OPEN_MODAL_PROJECT = 'OPEN_MODAL_PROJECT';
+export const CLOSE_MODAL_PROJECT = 'CLOSE_MODAL_PROJECT';
 
 // recognition tab
 export const INIT_BATCH_RECOGNITION = 'INIT_BATCH_RECOGNITION';

@@ -6,14 +6,23 @@ const initialState = {
     projects: [],
     error: false,          //gdy wystapi error z polaczeniem z api 
     projectsLoading: true, //gdy laduja sie dane z serwera
-    chosenProjectID: 'defaultProjectID',
+
+    chosenProjectID: '',    //dane wybranego projektu
+    chosenProjectName: '',
+    chosenProjectOwner: '',
+
     loaded: false, //gdy projekt z serwera juz sie zaladowal
     errorMessage: '',   //gdy nie przejdzie validacji po stronie serwera
     modalDisplay: false, //czy pokazywac modal
 }
 
 const choseProject = (state, action) => {
-    return updateObject(state, { chosenProjectID: action.projectId });
+  
+    return updateObject(state, { 
+        chosenProjectID: action.projectId, 
+        chosenProjectName: action.projectName,
+        chosenProjectOwner: action.projectOwner,
+     });
 }
 
 const addProject = (state, action) => {

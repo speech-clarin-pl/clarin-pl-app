@@ -98,10 +98,12 @@ export const addNewProject = (projectName) => {
 
 
 //#########  wybieram  projekt ##########
-export const projectChoice = (projectId) => {
+export const projectChoice = (projectId, projectName, projectOwner) => {
     return {
         type: actionTypes.CHOSE_PROJECT,
-        projectId: projectId
+        projectId: projectId,
+        projectName: projectName,
+        projectOwner: projectOwner,
     }
 }
 

@@ -51,36 +51,16 @@ class ProjectsListPage extends Component {
     alert('remove');
   }
 
-  wyborProjektuHandler = (projektIndex) => {
-
-
-    //console.log("wybralem projekt" + projektIndex);
-
-    //poszukuje teraz obiektu ze stanu z danym indexem
-    /*
-    let idxPoszukiwanego = 0;
-    this.state.projects.map((projekt,i) => {
-      if(projekt.id === projektIndex) return idxPoszukiwanego=i;
-    });
- 
-    //kopiuje teraz do aktywnego wybrany projekt przez usera
-    const projects = [...this.state.projects];
-    this.setState({
-      whichProjectActive: projects[idxPoszukiwanego],
-    });
-    */
-
-    //const currlocation = this.props.match.url;
-
-    //wrzucam parametry do URL
-    const queryParams = [];
-
-    this.props.history.push({
-      pathname: "/projects/" + encodeURIComponent(projektIndex),
-      search: '',
-      key: encodeURIComponent(projektIndex)
-    });
-  }
+  // wyborProjektuHandler = (projektIndex, projectName) => {
+  //   //const currlocation = this.props.match.url;
+  //   //wrzucam parametry do URL
+  //   const queryParams = [];
+  //   this.props.history.push({
+  //     pathname: "/projects/" + encodeURIComponent(projektIndex),
+  //     search: '',
+  //     key: encodeURIComponent(projektIndex)
+  //   });
+  // }
 
   //prosty validator...
   checkValidity = (value) => {
@@ -89,8 +69,8 @@ class ProjectsListPage extends Component {
     //bardzo prosta validacja po stronie przegladarki
     //taka sama jest po stronie serwera
     //nie moze byc puste i musi miec min. 3 znaki
-    isValid = value.trim() !== '' && isValid;
-    isValid = value.length >= 3 && isValid;
+    //isValid = value.trim() !== '' && isValid;
+    //isValid = value.length >= 3 && isValid;
 
     return isValid;
   }
@@ -175,20 +155,22 @@ class ProjectsListPage extends Component {
         toDisplay = <Spinner />
       } else {
 
+        console.log(this.props.projectList);
+
         projectList = this.props.projectList
           .map((projekt, i) => {
             //console.log(projekt)
             return <ProjectListItem
               key={projekt._id}
-              projektID={projekt.id}
+              projektID={projekt._id}
               title={projekt.name}
               owner={projekt.owner}
               modified={projekt.modified}
-              wyborprojektu={() => this.props.onProjectChoice(projekt.id)}
-              duplicateProject={() => this.props.onDuplicate(projekt.id)}
-              editName={() => this.props.onNameEdit(projekt.id)}
-              shareProject={() => this.props.onShare(projekt.id)}
-              deleteProject={() => this.props.onDelete(projekt.id)}
+              wyborprojektu={() => this.props.onProjectChoice(projekt._id, projekt.name, projekt.owner)}
+              duplicateProject={() => this.props.onDuplicate(projekt._id)}
+              editName={() => this.props.onNameEdit(projekt._id)}
+              shareProject={() => this.props.onShare(projekt._id)}
+              deleteProject={() => this.props.onDelete(projekt._id)}
             />
           });
 
@@ -237,7 +219,9 @@ class ProjectsListPage extends Component {
 
         {leftSiteBar}
 
-        {toDisplay}
+        {
+          toDisplay
+        }
 
       </Aux>
     );
@@ -247,6 +231,7 @@ class ProjectsListPage extends Component {
 
 const mapStateToProps = (state) => {
   return {
+
     modalDisplay: state.prolistR.modalDisplay,
     newProjectCreated: state.prolistR.loaded,
     projectList: state.prolistR.projects,
@@ -262,7 +247,7 @@ const mapDispatchToProps = dispatch => {
     onCloseModalHandler: () => dispatch(projectListActions.closeModal()),
     onNewProjectDone: () => dispatch(projectListActions.addNewProjectDone()),
     onNewProject: (projectName) => dispatch(projectListActions.addNewProject(projectName)),
-    onProjectChoice: (projectId) => dispatch(projectListActions.projectChoice(projectId)),
+    onProjectChoice: (projectId, projectName, projectOwner) => dispatch(projectListActions.projectChoice(projectId, projectName, projectOwner)),
     onDuplicate: (projectId) => dispatch(projectListActions.duplicateProject(projectId)),
     onShare: (projectId) => dispatch(projectListActions.shareProject(projectId)),
     onDelete: (projectId) => dispatch(projectListActions.deleteProject(projectId)),

@@ -15,6 +15,12 @@ export {
     closeModal
 } from './projectsList';
 
+export {
+    initProject,
+    openModalProject,
+    closeModalProject
+} from './project';
+
 export {} from './home';
 
 export {

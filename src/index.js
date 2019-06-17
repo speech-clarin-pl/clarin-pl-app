@@ -13,6 +13,7 @@ import segmentationReducer from './store/reducers/toolsReducers/segmentationRedu
 import repoReducer from './store/reducers/repoReducer';
 import thunk from 'redux-thunk';
 import axios from 'axios';
+import projectReducer from './store/reducers/projectReducer';
 
 //dev tools extensions instalation
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -24,23 +25,26 @@ axios.defaults.baseURL = 'http://localhost:1234';
 
 const rootReducer = combineReducers({
     homeR: homeReducer,
+    projectR: projectReducer,
     prolistR: projectsListReducer,
     recR: recognitionReducer,
     segR: segmentationReducer,
     repoR: repoReducer
 });
 
+
+// dla asynchronicznych zadan
 const store = createStore(rootReducer, composeEnhancers(
     applyMiddleware(thunk)
 ));
 
-    const app = (
-            <Provider store={store}>
-                <BrowserRouter>
-                    <App /> 
-                </BrowserRouter>
-            </Provider>
-    );
+const app = (
+        <Provider store={store}>
+            <BrowserRouter>
+                <App /> 
+            </BrowserRouter>
+        </Provider>
+);
 
 ReactDOM.render(app, document.getElementById('root'));
 

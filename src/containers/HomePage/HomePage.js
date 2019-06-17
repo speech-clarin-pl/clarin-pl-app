@@ -23,7 +23,7 @@ const homePage = (props) => {
             <Jumbotron />
            
            {
-                <LoginArea />
+               // <LoginArea />
            }
             
            

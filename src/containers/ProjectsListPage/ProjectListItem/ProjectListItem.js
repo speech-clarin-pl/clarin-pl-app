@@ -15,7 +15,11 @@ const projectListItem = (props) => {
                 <td className="projectTitle">
 
                     <Link to={{
-                            pathname: "/projects/" + encodeURIComponent(props.projektID)
+                            pathname: "/projects/" + encodeURIComponent(props.projektID),
+                            state: {
+                                projectTitle: props.title,
+                                projectOwner: props.owner,
+                            }
                         }}> {props.title}</Link>
 
                 </td>

@@ -4,10 +4,26 @@ import {updateObject} from '../../utility';
 
 const initialState = {
     filesToUpload: [],
+    modal: false, //controls if modal window is opened
 }
+
+const openModal = (state,action) => {
+    return updateObject(state, {
+        modal: true,
+    }) ;  
+}
+
+const closeModal = (state,action) => {
+    return updateObject(state, {
+        modal: false,
+    }) ;  
+}
+
+
 
 const dropFiles = (state, action) => {
     let fileList = [...state.filesToUpload, ...action.files];
+    console.log(fileList);
     return updateObject(state, {filesToUpload: fileList}) ;      
 }
 

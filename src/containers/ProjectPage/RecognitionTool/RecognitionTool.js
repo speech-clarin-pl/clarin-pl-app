@@ -10,6 +10,7 @@ import ButtonLeftBar from '../../../components/UI/ButtonLeftBar/ButtonLeftBar';
 import DragAndDrop from '../../../components/UI/DragAndDrop/DragAndDrop';
 import {connect} from 'react-redux';
 import * as recognitionActions from '../../../store/actions/index';
+import Modal from '../../../components/UI/Modal/Modal';
 
 import uuid  from 'uuid';
 
@@ -36,15 +37,27 @@ class RecognitionTool extends Component {
         this.props.onDrop(extFiles);
     }
 
+
+    //otwiera okno modalne
+    openModalHandler = () => {
+        this.props.onOpenModalHandler();
+    }
+
+    //zamyka okno modalne
+    closeModalHandler = () => {
+        this.props.onCloseModalHandler();
+    }
+
     render(){
+
+        
 
 
         let filelist = (
             <h4 style={{marginTop: '10px'}}>Wgraj pliki do rozpoznawania</h4>
         )
 
-       // console.log("FROM RECO TOOL")
-       // console.log(this.props.filesToUpload)
+       
 
         if(this.props.filesToUpload.length > 0 ){
         
@@ -61,9 +74,21 @@ class RecognitionTool extends Component {
         return(
             <Aux>
 
+                <Modal
+                    show={this.props.modalDisplay}
+                    modalClosed={this.closeModalHandler}
+                    title="Czy rozpoczac rozpoznawanie?">
+                    {
+                        <p>Tak / Nie</p>
+                    }
+                </Modal>
+
                 <LeftSiteBar czyTopPart="true" desc="Tutaj opis do rozpoznawania" >
 
-                    <ButtonLeftBar napis="Rozpocznij rozpoznawanie" iconType="fa-comments" whenClicked={null} />
+                    <ButtonLeftBar 
+                        napis="Rozpocznij rozpoznawanie" 
+                        iconType="fa-comments" 
+                        whenClicked={this.openModalHandler} />
                     <ButtonLeftBar napis="Zapisz wynik na Twoim dysku" disabled={true} iconType="fa-download" whenClicked={null}/>
                     <ButtonLeftBar napis="Zapisz wynik w repozytorium" disabled={true} iconType="fa-cloud-download-alt" whenClicked={null}/>
 
@@ -123,15 +148,16 @@ class RecognitionTool extends Component {
 const mapStateToProps = state => {
     return {
         filesToUpload: state.recR.filesToUpload,
+        modalDisplay: state.projectR.modal,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         onDrop: (files) => dispatch(recognitionActions.dropFiles(files)),
+        onOpenModalHandler: () => dispatch(recognitionActions.openModalProject()),
+        onCloseModalHandler: () => dispatch(recognitionActions.closeModalProject()),
     }
 }
-
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecognitionTool);

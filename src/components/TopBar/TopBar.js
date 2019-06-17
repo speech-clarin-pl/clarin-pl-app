@@ -42,7 +42,7 @@ const topBar = (props) => {
              <div className="projectTitleEdit">
              { czyInit ? null : (
                 <div>
-                    <Link to="/projects">
+                    <Link to="/projectsList">
                         <i className={["fas",  "fa-arrow-left"].join(' ')}></i>
                     </Link>
                         <span className="editField">{props.projectTitle}</span>
