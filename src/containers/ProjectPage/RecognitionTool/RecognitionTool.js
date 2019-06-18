@@ -20,7 +20,7 @@ class RecognitionTool extends Component {
 
         //extending the files by additionnal info about the status and load percentage
         //console.log("RECI HANDLE DROP")
-        console.log(files)
+        //console.log(files)
         let extFiles = [];
 
         Array.from(files).forEach(file => {
@@ -47,8 +47,22 @@ class RecognitionTool extends Component {
     }
 
     //rozpoczynam rozpoznawanie 
-    startRecognition = () => {
-        this.props.onStartBatchRecognition();
+    startBatchRecognition = () => {
+
+        
+        //wydobywam sama tablica plikow z entry 
+        //bo entry to moja struktura danych
+        const audioFilesArray = this.props.filesToUpload.map(entry => {
+            return entry.file;
+        })
+
+        const audioFilesIds = this.props.filesToUpload.map(entry => {
+            return entry.id;
+        })
+ 
+        //console.log(audioFilesArray)
+
+        this.props.onStartBatchRecognition(audioFilesArray, audioFilesIds);
         this.closeModalHandler();
     }
 
@@ -83,7 +97,7 @@ class RecognitionTool extends Component {
          
                     <button type="button" 
                         className="btn btn-primary"
-                        onClick={this.startRecognition}>Tak</button>
+                        onClick={this.startBatchRecognition}>Tak</button>
                     <button type="button" 
                         className="btn btn-outline-secondary"
                         onClick={this.closeModalHandler}>NIE</button>
@@ -165,7 +179,7 @@ const mapDispatchToProps = dispatch => {
         onDrop: (files) => dispatch(recognitionActions.dropFiles(files)),
         onOpenModalHandler: () => dispatch(recognitionActions.openModalProject()),
         onCloseModalHandler: () => dispatch(recognitionActions.closeModalProject()),
-        onStartBatchRecognition: () => dispatch(recognitionActions.initBatchRecognition())
+        onStartBatchRecognition: (audioFilesArray, audioFilesIds) => dispatch(recognitionActions.initBatchRecognition(audioFilesArray, audioFilesIds))
     }
 }
 

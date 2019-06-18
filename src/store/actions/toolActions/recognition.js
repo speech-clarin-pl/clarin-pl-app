@@ -11,9 +11,8 @@ export const dropFiles = (files) => {
 //####### SINGLE FILE RECOGNITION ########
 export const initFileRecognition = (file, entryId) =>{
     return dispatch => {
+
         const data = new FormData();
-        
-      
 
         data.append('entryId',entryId);
         data.append('audioFile',file);
@@ -37,9 +36,31 @@ export const initFileRecognition = (file, entryId) =>{
 
 
 //####### BATCH RECOGNITION ########
-export const initBatchRecognition = () => {
-    return {
-        type: actionTypes.INIT_BATCH_RECOGNITION,
+export const initBatchRecognition = (audioFilesArray, audioFilesIds) => {
+    return dispatch => {
+
+        let data = new FormData();
+        
+        for(var i = 0; i<audioFilesArray.length; i++) {
+            data.append('audioFiles', audioFilesArray[i]);
+        }
+
+        data.append('audioFilesIds',audioFilesIds);
+       
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        }
+        
+        
+        axios.post('/recognition/multipleFiles',data, config)
+            .then(response => {
+                console.log(response);
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
 }
 

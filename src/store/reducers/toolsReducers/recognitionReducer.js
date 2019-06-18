@@ -23,8 +23,8 @@ const closeModal = (state,action) => {
 
 const dropFiles = (state, action) => {
     let fileList = [...state.filesToUpload, ...action.files];
-    console.log("DONEEEEE");
-    console.log(fileList);
+    //console.log("DONEEEEE");
+    //console.log(fileList);
     return updateObject(state, {filesToUpload: fileList}) ;      
 }
 
@@ -38,11 +38,9 @@ const initFileRecognition = (state,action) => {
 const initBatchRecognition = (state,action) => {
 
     
-
+    console.log("INIT BATCH RECOGNITION")
     //jezali jest jakikolwiek plik do wyslania
     if(state.filesToUpload.length > 0) {
-        
-
         return updateObject(state, {});
     } else {
         return updateObject(state, {}); 
