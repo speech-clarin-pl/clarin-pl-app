@@ -23,6 +23,7 @@ const closeModal = (state,action) => {
 
 const dropFiles = (state, action) => {
     let fileList = [...state.filesToUpload, ...action.files];
+    console.log("DONEEEEE");
     console.log(fileList);
     return updateObject(state, {filesToUpload: fileList}) ;      
 }
@@ -33,10 +34,19 @@ const initFileRecognition = (state,action) => {
     return updateObject(state, {}) ;  
 }
 
+//rozpoczynam wysylke na serwer i przetwarzanie rozpoznawania
 const initBatchRecognition = (state,action) => {
 
-    // to do
-    return updateObject(state, {}) ;  
+    
+
+    //jezali jest jakikolwiek plik do wyslania
+    if(state.filesToUpload.length > 0) {
+        
+
+        return updateObject(state, {});
+    } else {
+        return updateObject(state, {}); 
+    }
 }
 
 const updateFileState = (state,action) => {

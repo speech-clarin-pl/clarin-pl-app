@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Aux from '../../../../hoc/Auxiliary';
 import './RecognitionItem.css';
 import * as actionTypes from '../../../../store/actions/actionsTypes';
+import * as recognitionActions from '../../../../store/actions/index';
 import {connect} from 'react-redux';
 
  
@@ -20,7 +21,7 @@ class RecognitionItem extends Component {
             file: foundfile,
         }
 
-        console.log(foundfile)
+        //console.log(foundfile)
     }
     
     
@@ -41,14 +42,23 @@ class RecognitionItem extends Component {
 
     fileUpload = (file) => {
         
+        this.reader.onloadstart = (evt) => {
+            console.log("ONLOADSTART");
+
+            let updatedFile = {
+                ...this.state.file,
+                status: 'toload',
+                loadedperc: 0
+            };
+            this.setState({
+                file: updatedFile
+            })
+
+            //console.log("onloadstart");
+
+              this.props.updateFileState(this.state.file.id, 'toload', 0);
+        }
     
-        this.reader.onload = (evt) => {
-
-           console.log("ONLOAD");
-
-            //this.props.updateFileState(this.state.file.id, 'loaded', 0);
-
-        };
 
         this.reader.onprogress = (evt) => {
             console.log("ONPROGRESS");
@@ -68,12 +78,30 @@ class RecognitionItem extends Component {
                         file: updatedFile
                     })
 
-                    this.props.updateFileState(this.state.file.id, 'toload', percentLoaded);
+                    //this.props.updateFileState(this.state.file.id, 'toload', percentLoaded);
                     //this.props.updateFileState(this.state.file.id, 'toload', percentLoaded);
 
                   
                 }
             }
+        }
+
+        // this.reader.onload = (evt) => {
+        //     console.log("ONLOAD");
+        //      //this.props.updateFileState(this.state.file.id, 'loaded', 0);
+        //  };
+
+        this.reader.onloadend = (evt) => {
+            console.log("ONLOADEND");
+            let updatedFile = {
+                ...this.state.file,
+                status: 'loaded',
+                loadedperc: 100
+            };
+            this.setState({
+                file: updatedFile
+            })
+            this.props.updateFileState(this.state.file.id, 'loaded', 100);
         }
 
         this.reader.onerror = (evt) => {
@@ -101,43 +129,16 @@ class RecognitionItem extends Component {
 
             this.props.updateFileState(this.state.file.id, 'error', 0);
               //this.props.updateFileState(this.state.file.id, 'error', 0);
-            
-        }
-
-        this.reader.onloadend = (evt) => {
-            console.log("ONLOADEND");
-            let updatedFile = {
-                ...this.state.file,
-                status: 'loaded',
-                loadedperc: 100
-            };
-            this.setState({
-                file: updatedFile
-            })
-            
-            this.props.updateFileState(this.state.file.id, 'loaded', 100);
-
-        }
-
-        this.reader.onloadstart = (evt) => {
-            console.log("ONLOADSTART");
-
-            let updatedFile = {
-                ...this.state.file,
-                status: 'toload',
-                loadedperc: 0
-            };
-            this.setState({
-                file: updatedFile
-            })
-
-            //console.log("onloadstart");
-
-              this.props.updateFileState(this.state.file.id, 'toload', 0);
         }
 
         this.reader.readAsBinaryString(file.file);
 
+      }
+
+
+      startFileRecognition = () => {
+        //console.log(this.state.file)
+        this.props.onFileRecognition(this.state.file.file, this.state.file.id);
       }
     
 
@@ -190,8 +191,8 @@ class RecognitionItem extends Component {
                     statusinfo = <span className="uploaded"><i className="fas fa-check"></i> Załadowany</span>;
                     ikonki = (
                         <>
+                        <a onClick={this.startFileRecognition} className="recognitionIcon"><i className="fas fa-comments"></i></a>
                         <a href="#" className="preview"><i className="fas fa-eye"></i></a>
-                        
                         <a href="#" className="remove"><i className="fas fa-times"></i></a>
                         </>
                     )
@@ -216,9 +217,9 @@ class RecognitionItem extends Component {
                             </span>);	
                     ikonki = (
                         <Aux>
-                        <a href="#" className="preview"><i className="fas fa-eye"></i></a>
-                        
-                        <a href="#" className="remove"><i className="fas fa-times"></i></a>
+                            
+                            <a  className="preview"><i className="fas fa-eye"></i></a>
+                            <a  className="remove"><i className="fas fa-times"></i></a>
                         </Aux>
                     )		
                 break; 
@@ -264,6 +265,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
        updateFileState: (fileID, status,percLoaded) => dispatch({type:actionTypes.UPDATE_FILE_STATE, fileID: fileID, status: status, percLoaded:percLoaded}),
+       onFileRecognition: (file, entryId) => dispatch(recognitionActions.initFileRecognition(file, entryId))
     }
 }
 

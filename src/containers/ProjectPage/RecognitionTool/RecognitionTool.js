@@ -19,21 +19,19 @@ class RecognitionTool extends Component {
     handleDrop = (files) => {
 
         //extending the files by additionnal info about the status and load percentage
-
+        //console.log("RECI HANDLE DROP")
+        console.log(files)
         let extFiles = [];
 
         Array.from(files).forEach(file => {
-            
             let newFile = Object.assign({},file);
             newFile.file = file;
             newFile.status = 'toload';
             newFile.loadedperc = 0;
             newFile.id = uuid.v4();
             extFiles.push(newFile);
-
         });
 
-        
         this.props.onDrop(extFiles);
     }
 
@@ -48,11 +46,15 @@ class RecognitionTool extends Component {
         this.props.onCloseModalHandler();
     }
 
+    //rozpoczynam rozpoznawanie 
+    startRecognition = () => {
+        this.props.onStartBatchRecognition();
+        this.closeModalHandler();
+    }
+
     render(){
 
         
-
-
         let filelist = (
             <h4 style={{marginTop: '10px'}}>Wgraj pliki do rozpoznawania</h4>
         )
@@ -78,9 +80,15 @@ class RecognitionTool extends Component {
                     show={this.props.modalDisplay}
                     modalClosed={this.closeModalHandler}
                     title="Czy rozpoczac rozpoznawanie?">
-                    {
-                        <p>Tak / Nie</p>
-                    }
+         
+                    <button type="button" 
+                        className="btn btn-primary"
+                        onClick={this.startRecognition}>Tak</button>
+                    <button type="button" 
+                        className="btn btn-outline-secondary"
+                        onClick={this.closeModalHandler}>NIE</button>
+                    
+                   
                 </Modal>
 
                 <LeftSiteBar czyTopPart="true" desc="Tutaj opis do rozpoznawania" >
@@ -108,7 +116,7 @@ class RecognitionTool extends Component {
                         <div className="row">
                             <div className="col-md">
 
-                                <DragAndDrop handleDrop={this.handleDrop}>
+                                <DragAndDrop whenDropped={this.handleDrop}>
                                        <DropFilesArea 
                                             mainTitle="Wgraj pliki z dysku"
                                             desc="Pliki zostaną zapisane jedynie tymczasowo na potrzeby przetwarzania. Po tym czasie są one usuwane bezpowrotnie usuwane z serwera"/>
@@ -157,6 +165,7 @@ const mapDispatchToProps = dispatch => {
         onDrop: (files) => dispatch(recognitionActions.dropFiles(files)),
         onOpenModalHandler: () => dispatch(recognitionActions.openModalProject()),
         onCloseModalHandler: () => dispatch(recognitionActions.closeModalProject()),
+        onStartBatchRecognition: () => dispatch(recognitionActions.initBatchRecognition())
     }
 }
 

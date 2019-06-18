@@ -24,7 +24,9 @@ export {
 export {} from './home';
 
 export {
-    dropFiles
+    dropFiles,
+    initBatchRecognition,
+    initFileRecognition
 } from './toolActions/recognition';
 
 export {
