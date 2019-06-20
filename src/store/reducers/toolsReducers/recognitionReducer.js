@@ -49,7 +49,7 @@ const initBatchRecognition = (state,action) => {
 
 const updateFileState = (state,action) => {
 
-    const fileID = action.fileID;
+            const fileID = action.fileID;
             const status = action.status;
             const percLoaded = action.percLoaded;
 

@@ -14,8 +14,9 @@ export const initFileRecognition = (file, entryId) =>{
 
         const data = new FormData();
 
-        data.append('entryId',entryId);
-        data.append('audioFile',file);
+        data.append('audioFiles',file);
+        data.append('audioFilesIds',entryId);
+        
 
         const config = {
             headers: {

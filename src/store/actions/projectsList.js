@@ -81,7 +81,8 @@ export const addNewProject = (projectName) => {
     return dispatch => {
             //ustawiam loaded na false w reducerze aby wylaczyc okienko dopiero gdy sie zaladuje
             dispatch(initNewProjectAction())
-        axios.post('/projectsList', {
+            
+             axios.post('/projectsList', {
                 projectName: projectName
             })
             .then(response => {
