@@ -12,27 +12,27 @@ import * as projectListActions from '../../store/actions/index';
 import ButtonLeftBar from '../../components/UI/ButtonLeftBar/ButtonLeftBar';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import SingleInputForm from '../../components/UI/SingleInputForm/SingleInputForm';
+import ConfirmationForm from '../../components/UI/ConfirmationForm/ConfirmationForm';
+
+const localActions = {
+  CREATE_NEW_PROJECT: 'CREATE_NEW_PROJECT',
+  EDIT_NAME_PROJECT: 'EDIT_NAME_PROJECT',
+  DELETE_PROJECT: 'DELETE_PROJECT',
+}
 
 class ProjectsListPage extends Component {
 
   state = {
     modalDisplay: false,
     newProjectName: '',
+    modalTitle: '', //tytutl okna modalnego
+    currentValue: '', //wpisywany do okna modalnego
   }
 
 
   componentDidMount = () => {
     this.props.onGetProjectsList("jakisUserId");
-    //pobieram z serwera liste projektow
-    // axios.get('/userProjest.json')
-    //   .then(response => {
-    //console.log(response);
-    //       this.setState({projects: response.data});
-    //   })
-    //   .catch(error => {
-    // console.log(error);
-    //    this.setState({error: true});
-    //  });
+
   }
 
   duplicateProjectHandler = (projectIndex) => {
@@ -76,18 +76,45 @@ class ProjectsListPage extends Component {
   }
 
   addNewProjectHandler = (event) => {
+   
     event.preventDefault();
     // dodaje nowy projekt tutaj TO DO
     let formIsValid = this.checkValidity(this.state.newProjectName);
     //console.log(formIsValid);
     
     if(formIsValid){
-      //console.log(this.state.newProjectName)
       this.props.onNewProject(this.state.newProjectName);
 
     } else {
-      //wyswietl komunikat
+      console.log('FORM IS INVALID!');
     }
+  }
+
+  // changeNameProjectHandler = (event) => {
+  //   event.preventDefault();
+    
+  //   let formIsValid = this.checkValidity(this.state.newProjectName);
+  //   if(formIsValid){
+  //     //console.log(this.state.newProjectName)
+  //     this.props.onNewNameProject(this.state.newProjectName);
+
+  //   } else {
+  //     console.log('FORM IS INVALID!');
+  //   }
+  // }
+
+  newProjectNameChangeHandler = (event) => {
+    //console.log(event.target.value)
+    console.log('newProjectNameChangeHandler');
+    event.preventDefault();
+    this.setState({
+      newProjectName: event.target.value,
+    })
+  }
+
+  editProjectNameSubmitHandler = (event) => {
+    event.preventDefault();
+    this.props.onNameEdit(this.props.projectId, this.state.newProjectName)
   }
 
   
@@ -95,17 +122,15 @@ class ProjectsListPage extends Component {
     this.closeModalHandler()
   }
 
-  newProjectNameChangeHandler = (event) => {
-    //console.log(event.target.value)
-    this.setState({
-      newProjectName: event.target.value,
-    })
-  }
+  
 
 
   //otwiera okno modalne
-  openModalHandler = () => {
-    this.props.onOpenModalHandler();
+  openModalHandler = (actionType, projectId, projectName) => {
+    this.setState({
+      newProjectName: projectName,
+    })
+    this.props.onOpenModalHandler(actionType,projectId, projectName);
   }
 
   //zamyka okno modalne
@@ -113,10 +138,15 @@ class ProjectsListPage extends Component {
     this.props.onCloseModalHandler();
   }
 
+  removeProjectHandler = (projectId) => {
+    this.props.onDelete(projectId);
+  }
+
   
   render() {
 
-    console.log(this.props.errorMessage)
+    //tworze formularz ktory pokaze sie w oknie modalnym
+    //w zaleznosci ktory przycisk zostal wcisniety
 
     //formularz dodawania nazwy dla nowego projektu
     const newProjectForm = (
@@ -124,12 +154,60 @@ class ProjectsListPage extends Component {
         <SingleInputForm
           onSubmitHandler={this.addNewProjectHandler}
           onChangeHandler={this.newProjectNameChangeHandler}
+          title="Stworz nowy projekt"
           placeholder="Podaj nazwe projektu"
           buttonLabel="Dodaj projekt"
+          value = {this.state.newProjectName}
           errorMessage = {this.props.errorMessage}
         />
       </Aux>
     );
+
+    //formularz edycji nazwy projektu
+    const editProjectName = (
+      <Aux>
+        <SingleInputForm
+          onSubmitHandler={this.editProjectNameSubmitHandler}
+         // onSubmitHandler={this.props.onNameEdit(this.props.projectId, this.state.newProjectName)}
+          //onSubmitHandler={this.props.onNameEdit(this.props.projectId, this.state.newProjectName)}
+          onChangeHandler={this.newProjectNameChangeHandler}
+          title="Edytuj nazwe projektu"
+          placeholder="Zmie nazwe projektu"
+          buttonLabel="Zmien"
+          value = {this.state.newProjectName}
+          errorMessage = {this.props.errorMessage}
+        />
+      </Aux>
+    );
+
+    const deleteProject = (
+      <Aux>
+        <ConfirmationForm
+          messageQuestion={"Czy na pewnoe chcesz usunac projekt?"}
+          onCancel={this.closeModalHandler}
+          onOk = {(projectId)=>this.removeProjectHandler(this.props.projectId)}
+          projectName = {this.props.projectName}
+        />
+      </Aux>
+    );
+
+    let modalContent = null;
+  
+
+    switch(this.props.localAction){
+      case(localActions.CREATE_NEW_PROJECT):
+        modalContent = newProjectForm;
+        break;
+      case(localActions.EDIT_NAME_PROJECT):
+        modalContent = editProjectName;
+        break;
+      case(localActions.DELETE_PROJECT):
+        modalContent = deleteProject;
+        break;
+      default:
+        modalContent = <p>Bledny typ akcji lokalnej</p>
+    }
+    
 
     //lewy sidebar
     const leftSiteBar = (
@@ -138,7 +216,7 @@ class ProjectsListPage extends Component {
           customeStyle={{ height: '50px' }}
           napis="Dodaj projekt"
           iconType="fa-plus"
-          whenClicked={this.openModalHandler} />
+          whenClicked={(actionType)=>this.openModalHandler(localActions.CREATE_NEW_PROJECT,'','')} />
       </LeftSiteBar>
     )
 
@@ -155,7 +233,7 @@ class ProjectsListPage extends Component {
         toDisplay = <Spinner />
       } else {
 
-        console.log(this.props.projectList);
+       // console.log(this.props.projectList);
 
         projectList = this.props.projectList
           .map((projekt, i) => {
@@ -165,12 +243,14 @@ class ProjectsListPage extends Component {
               projektID={projekt._id}
               title={projekt.name}
               owner={projekt.owner}
-              modified={projekt.modified}
+              modified={projekt.createdAt}
+              deleteProject={(actionType,projectId, projectName)=>this.openModalHandler(localActions.DELETE_PROJECT, projekt._id, projekt.name)}
               wyborprojektu={() => this.props.onProjectChoice(projekt._id, projekt.name, projekt.owner)}
-              duplicateProject={() => this.props.onDuplicate(projekt._id)}
-              editName={() => this.props.onNameEdit(projekt._id)}
-              shareProject={() => this.props.onShare(projekt._id)}
-              deleteProject={() => this.props.onDelete(projekt._id)}
+              //duplicateProject={() => this.props.onDuplicate(projekt._id)}
+              editName={(actionType,projectId, projectName)=>this.openModalHandler(localActions.EDIT_NAME_PROJECT,projekt._id, projekt.name)}
+   
+              //shareProject={() => this.props.onShare(projekt._id)}
+              //deleteProject={() => this.props.onDelete(projekt._id)}
             />
           });
 
@@ -201,8 +281,8 @@ class ProjectsListPage extends Component {
         <Modal
           show={this.props.modalDisplay}
           modalClosed={this.closeModalHandler}
-          title="Nowy projekt">
-          {newProjectForm}
+          >
+            {modalContent}
         </Modal>
 
 
@@ -213,9 +293,6 @@ class ProjectsListPage extends Component {
           projectTitle=""
           changeLn={this.props.changeLn}
           currLn={this.props.currLn} />
-
-
-
 
         {leftSiteBar}
 
@@ -231,28 +308,31 @@ class ProjectsListPage extends Component {
 
 const mapStateToProps = (state) => {
   return {
-
+    localAction: state.prolistR.localAction,
     modalDisplay: state.prolistR.modalDisplay,
     newProjectCreated: state.prolistR.loaded,
     projectList: state.prolistR.projects,
     ifError: state.prolistR.error,
     errorMessage: state.prolistR.errorMessage,
     ifProjectsLoading: state.prolistR.projectsLoading,
+    projectId: state.prolistR.projectId,  //wiem ktorego projektu dotyczy kliknieta akcja
+    projectName: state.prolistR.projectName,  //oraz jaka jest nazwa obecnego projektu
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onOpenModalHandler: () => dispatch(projectListActions.openModal()),
+    onOpenModalHandler: (actionType,projectId, projectName) => dispatch(projectListActions.openModal(actionType,projectId, projectName)),
     onCloseModalHandler: () => dispatch(projectListActions.closeModal()),
     onNewProjectDone: () => dispatch(projectListActions.addNewProjectDone()),
     onNewProject: (projectName) => dispatch(projectListActions.addNewProject(projectName)),
     onProjectChoice: (projectId, projectName, projectOwner) => dispatch(projectListActions.projectChoice(projectId, projectName, projectOwner)),
-    onDuplicate: (projectId) => dispatch(projectListActions.duplicateProject(projectId)),
-    onShare: (projectId) => dispatch(projectListActions.shareProject(projectId)),
+   // onDuplicate: (projectId) => dispatch(projectListActions.duplicateProject(projectId)),
+   // onShare: (projectId) => dispatch(projectListActions.shareProject(projectId)),
     onDelete: (projectId) => dispatch(projectListActions.deleteProject(projectId)),
-    onNameEdit: (projectId) => dispatch(projectListActions.editName(projectId)),
+    onNameEdit: (projectId, newProjectName) => dispatch(projectListActions.editName(projectId, newProjectName)),
     onGetProjectsList: (userId) => dispatch(projectListActions.getProjectsList(userId)),
+   
   }
 }
 

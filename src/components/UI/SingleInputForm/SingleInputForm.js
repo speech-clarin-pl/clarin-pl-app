@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 class SingleInputForm extends Component {
 
     state = {
-        inputValue: null,
+        value: '',
         isValid: false,
     }
 
@@ -15,7 +15,11 @@ class SingleInputForm extends Component {
 
         return (
 
+            
+
             <form onSubmit={this.props.onSubmitHandler}>
+                <h5 style={{textAlign:'left'}}>{this.props.title}</h5>
+                <hr/>
                 {
                     errorMessage ?
                         <div className="alert alert-danger" role="alert">
@@ -27,7 +31,8 @@ class SingleInputForm extends Component {
                         type="text"
                         className="form-control"
                         placeholder={this.props.placeholder}
-                        onChange={this.props.onChangeHandler} />
+                        onChange={this.props.onChangeHandler}
+                        value={this.props.value} />
                     <div className="input-group-append">
                         <button
                             className="btn btn-primary"

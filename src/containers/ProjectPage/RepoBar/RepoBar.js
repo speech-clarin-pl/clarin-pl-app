@@ -1,7 +1,30 @@
 import React from 'react';
 import Aux from '../../../hoc/Auxiliary';
 import './RepoBar.css';
+import { FileManager, FileNavigator } from '@opuscapita/react-filemanager';
+import connectorNodeV1 from '@opuscapita/react-filemanager-connector-node-v1';
 
+const apiOptions = {
+	...connectorNodeV1.apiOptions,
+	apiRoot: `http://127.0.0.1:1234` // Or you local Server Node V1 installation.
+  }
+
+  const fileManager = (
+	<div style={{ height: '480px' }}>
+	   <FileManager>
+		 <FileNavigator
+		   id="filemanager-1"
+		   api={connectorNodeV1.api}
+		   apiOptions={apiOptions}
+		   capabilities={connectorNodeV1.capabilities}
+		   listViewLayout={connectorNodeV1.listViewLayout}
+		   viewLayoutOptions={connectorNodeV1.viewLayoutOptions}
+		 />
+	   </FileManager>
+	 </div>
+   );
+
+  
 const repoBar = (props) => {
 
     return(
@@ -16,10 +39,7 @@ const repoBar = (props) => {
 				</div>
 			</div>
 			<div className="mainRepoContent" data-scrollbar>
-				<p>TO DO: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nec tellus diam. Quisque rhoncus facilisis metus et pulvinar. Mauris consequat ipsum fermentum massa finibus condimentum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean maximus tellus consequat, ultrices mi vel, efficitur dui. Quisque at venenatis ante. Nullam luctus dictum odio semper tempus. Proin eu lorem non diam iaculis egestas ac non tortor. Nullam viverra luctus leo in mollis.</p>
-
-				<p>TO DO: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nec tellus diam. Quisque rhoncus facilisis metus et pulvinar. Mauris consequat ipsum fermentum massa finibus condimentum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean maximus tellus consequat, ultrices mi vel, efficitur dui. Quisque at venenatis ante. Nullam luctus dictum odio semper tempus. Proin eu lorem non diam iaculis egestas ac non tortor. Nullam viverra luctus leo in mollis.</p>
-
+				{fileManager}
 			
 			</div>
 		</div>

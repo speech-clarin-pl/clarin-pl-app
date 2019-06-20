@@ -14,6 +14,10 @@ const initialState = {
     loaded: false, //gdy projekt z serwera juz sie zaladowal
     errorMessage: '',   //gdy nie przejdzie validacji po stronie serwera
     modalDisplay: false, //czy pokazywac modal
+
+    localAction: '', //po kliknieciu w przycisk wywolujacy okno modalne wiem po co zostalo ono klikniete
+    projectId: '',  //wiem ktorego projektu dotyczy kliknieta akcja
+    projectName: '',  //oraz jaka jest nazwa obecnego projektu
 }
 
 const choseProject = (state, action) => {
@@ -65,14 +69,68 @@ const shareProject = (state, action) => {
 
 const removeProject = (state, action) => {
 
-    // TO DO
-    return updateObject(state, {});
+    const projectId = action.projectId;
+    const message = action.message;
+
+    //robie immutable removing project
+    const projects = [...state.projects];
+
+    //znajduje index projektu do usuniecia
+    let index = 0;
+    let updatedProjects = projects.map((project,i) => {
+        if(project._id !== projectId){
+            return project;
+        } 
+        //jezeli znajdziemy to robimy update
+        index = i;
+    })
+
+    updatedProjects = [...updatedProjects.slice(0, index), ...updatedProjects.slice(index + 1)]
+
+    return updateObject(state, {
+        projects: updatedProjects
+    });
+}
+
+
+const editNameFailed = (state, action) => {
+   const error = action.error;
+
+   
+   return updateObject(state, {errorMessage: error, error: true});
 }
 
 const editName = (state, action) => {
 
-    // TO DO
-    return updateObject(state, {});
+    const projectId = action.projectId;
+    const newProjectName = action.newProjectName;
+    const message = action.message;
+
+    console.log(projectId)
+    console.log(newProjectName)
+    console.log(message)
+
+    //robie immutable updating projektow
+    const projects = [...state.projects];
+    const updatedProjects = projects.map(project => {
+        if(project._id !== projectId){
+            return project;
+        }
+
+        //jezeli znajdziemy to robimy update
+        return {
+            ...project,
+            name: newProjectName
+        }
+    })
+
+    //console.log(state)
+    //console.log("Musze updatowac widok teraz!!!! w reducerze")
+    
+    return updateObject(state, {
+        projects: updatedProjects,
+        errorMessage: '', 
+        error: false});
 }
 
 //pobieranie listy projektow
@@ -99,7 +157,10 @@ const getProjectsList = (state, action) => {
 const openModal = (state, action) => {
     return updateObject(state,
         {
-            modalDisplay: true
+            modalDisplay: true,
+            localAction: action.localActionType,
+            projectId: action.projectId,
+            projectName: action.projectName
         });
 }
 
@@ -127,8 +188,10 @@ const projectsListReducer = (state = initialState, action) => {
         case actionTypes.SHARE_PROJECT: return shareProject(state, action);
         case actionTypes.REMOVE_PROJECT: return removeProject(state, action);
         case actionTypes.EDIT_NAME: return editName(state, action);
+        case actionTypes.EDIT_NAME_FAILED: return editNameFailed(state, action);
         case actionTypes.OPEN_MODAL: return openModal(state, action);
         case actionTypes.CLOSE_MODAL: return closeModal(state, action);
+        
     }
 
     return state;

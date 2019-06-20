@@ -17,6 +17,7 @@
 
 .ProjectIcon {
     margin: 5px;
+    cursor: pointer;
 }
 
 .ProjectListItem .projectTitle {

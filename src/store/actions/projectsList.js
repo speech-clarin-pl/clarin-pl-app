@@ -2,9 +2,12 @@ import * as actionTypes from './actionsTypes';
 import axios from 'axios';
 
 //otwieram okno modalne
-export const openModal = () => {
+export const openModal = (actionType, projectId, projectName) => {
     return {
         type: actionTypes.OPEN_MODAL,
+        localActionType: actionType,
+        projectId: projectId,
+        projectName: projectName
     }
 }
 
@@ -16,8 +19,10 @@ export const closeModal = () => {
 }
 
 
-
+//###########################################
 //#########  pobieram liste projektow #########
+//###########################################
+
 export const getProjectsListAction = (userId, projects) => {
     //console.log(projects)
     return {
@@ -38,7 +43,7 @@ export const getProjectsList = (userId) => {
     return dispatch => {
         axios.get('/projectsList')
             .then(response => {
-                //console.log(response)
+                console.log(response)
                 dispatch(getProjectsListAction(userId, response.data.projects));
             })
             .catch(error => {
@@ -47,7 +52,9 @@ export const getProjectsList = (userId) => {
     }
 }
 
+//##################################################
 //#########  dodaje projekt ##########
+//##################################################
 export const addNewProjectAction = (projectName, messageFromServer, responsedNewProject) => {
     return {
         type: actionTypes.ADD_PROJECT,
@@ -79,12 +86,12 @@ export const addNewProjectDone = () => {
 
 export const addNewProject = (projectName) => {
     return dispatch => {
-            //ustawiam loaded na false w reducerze aby wylaczyc okienko dopiero gdy sie zaladuje
-            dispatch(initNewProjectAction())
-            
-             axios.post('/projectsList', {
-                projectName: projectName
-            })
+        //ustawiam loaded na false w reducerze aby wylaczyc okienko dopiero gdy sie zaladuje
+        dispatch(initNewProjectAction())
+
+        axios.post('/projectsList', {
+            projectName: projectName
+        })
             .then(response => {
                 //console.log("from action:")
                 //console.log(response)
@@ -97,8 +104,9 @@ export const addNewProject = (projectName) => {
     }
 }
 
-
+//########################################
 //#########  wybieram  projekt ##########
+//########################################
 export const projectChoice = (projectId, projectName, projectOwner) => {
     return {
         type: actionTypes.CHOSE_PROJECT,
@@ -122,19 +130,78 @@ export const shareProject = (projectId) => {
     }
 }
 
-export const deleteProject = (projectId) => {
+//################################################
+//################## USUWANIE PROJEKTU ###############
+//################################################
+
+export const deleteProjectAction = (projectId, message) => {
     return {
         type: actionTypes.REMOVE_PROJECT,
-        projectId: projectId
+        projectId: projectId,
+        message: message
+    }
+}
+
+export const deleteProject = (projectId) => {
+    return dispatch => {
+     
+        axios.delete('/projectsList/' + projectId, {
+             data: { idprojektu: projectId } 
+        })
+            .then(response => {
+                if(response.status !== 200 && response.status !== 201){
+                    throw new Error('Deleting a project failed');
+                }
+                dispatch(deleteProjectAction(response.data.projectId, response.data.message));
+                dispatch(closeModal());
+            })
+            .catch(error => {
+                console.log(error)
+               // dispatch(editNameProjectActionFailed(error));
+            });
+    }
+}
+
+//################################################
+//################## EDYCJA NAZWY ###############
+//################################################
+
+export const editNameProjectAction = (projectId, newProjectName, messageFromServer) => {
+    return {
+        type: actionTypes.EDIT_NAME,
+        projectId: projectId,
+        newProjectName: newProjectName,
+        message: messageFromServer,
+    }
+}
+
+export const editNameProjectActionFailed = (error) => {
+    return {
+        type: actionTypes.EDIT_NAME_FAILED,
+        error: error
     }
 }
 
 export const editName = (projectId, newName) => {
-    return {
-        type: actionTypes.EDIT_NAME,
-        projectId: projectId,
-        newName: newName
+    return dispatch => {
+
+        //console.log('EDIT NAME')
+        axios.put('/projectsList/' + projectId, {
+            newProjectName: newName,
+            projectId: projectId
+        })
+            .then(response => {
+                //console.log("from action:")
+                //console.log(response)
+                dispatch(editNameProjectAction(response.data.projectEntry._id, response.data.projectEntry.name, response.data.message));
+                dispatch(closeModal());
+            })
+            .catch(error => {
+                console.log(error)
+                dispatch(editNameProjectActionFailed(error));
+            });
     }
+
 }
 
 

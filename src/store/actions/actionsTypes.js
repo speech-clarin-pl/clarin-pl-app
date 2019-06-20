@@ -23,6 +23,7 @@ export const DUPLICATE_PROJECT = 'DUPLICATE_PROJECT';
 export const SHARE_PROJECT = 'SHARE_PROJECT';
 export const REMOVE_PROJECT = 'REMOVE_PROJECT';
 export const EDIT_NAME = 'EDIT_NAME';
+export const EDIT_NAME_FAILED = 'EDIT_NAME_FAILED';
 
 //project page
 export const INIT_PROJECT = 'INIT_PROJECT';
