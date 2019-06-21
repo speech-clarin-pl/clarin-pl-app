@@ -4,6 +4,7 @@
     bottom: 0px;
     top: 45px;
     right: 300px;
+    background: #394b55;
 }
 
 .ProjectPage .nav-tabs .nav-item:last-child{
@@ -13,4 +14,12 @@
 
 .ProjectPage .darkbg {
     background-color: #394b55;
+    overflow: hidden;
+    width: 560px;
+}
+
+.ProjectPage .Content {
+    background-color: #f5f8fa;
+    top: 88px;
+
 }

@@ -54,7 +54,7 @@ class ProjectPage extends Component {
             */}
             
 
-            <div className="ProjectPage">
+            <div className="ProjectPage" id="ProjectPage">
  
               <ul className={["nav nav-tabs", "darkbg"].join(' ')}>
                   <Tab  title="Dashboard" whereToLink={'/dashboard'}/>

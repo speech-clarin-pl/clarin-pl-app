@@ -21,7 +21,10 @@ export {
     closeModalProject
 } from './project';
 
-export {} from './home';
+export {
+    registerUser,
+    loginUser
+} from './home';
 
 export {
     dropFiles,

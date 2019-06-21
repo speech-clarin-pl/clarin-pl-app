@@ -5,6 +5,8 @@ const initialState = {
     isAuth: false,
     email: '',
     pass: '',
+    registrationMessage: '',
+    loginMessage: '',
 }
 
 const logIn = (state, action) => {
@@ -21,7 +23,24 @@ const logIn = (state, action) => {
 }
 
 const register = (state, action) => {
-    return updateObject(state,{isAuth: false});
+    const message = action.message;
+    const userId = action.userId;
+ 
+
+    return updateObject(state,{
+        isAuth: false,
+        registrationMessage: message
+    });
+}
+
+const registerFailed = (state, action) => {
+    const message = action.message;
+    const userId = action.userId;
+ 
+    return updateObject(state,{
+        isAuth: false,
+        registrationMessage: message
+    });
 }
 
 
@@ -29,7 +48,8 @@ const homeReducer = (state = initialState, action) => {
 
     switch(action.type){
         case actionTypes.LOG_IN: return logIn(state, action);
-        case actionTypes.REGISTER: return register(state,action);           
+        case actionTypes.REGISTER: return register(state,action); 
+        case actionTypes.REGISTER_FAILED: return registerFailed(state,action);           
     }
 
     return state;

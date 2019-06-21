@@ -4,6 +4,7 @@
 // home page actions
 export const LOG_IN = 'LOG_IN';
 export const REGISTER = 'REGISTER';
+export const REGISTER_FAILED = 'REGISTER_FAILED';
 export const SET_CURRENT_PROJECT_ID = 'SET_CURRENT_PROJECT_ID';
 
 // project list actions

@@ -8,7 +8,7 @@ const leftSiteBar = (props) => {
     return(
         <Aux>
 
-            <div className="LeftSiteBar">
+            <div className="LeftSiteBar" id="LeftSiteBar">
 				<div className={props.czyTopPart==="true" ? "topPart" : "resetTopPart"}>
 					
 				</div>

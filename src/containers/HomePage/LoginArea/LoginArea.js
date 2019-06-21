@@ -6,12 +6,14 @@ import {FormattedMessage} from 'react-intl';
 import {connect} from 'react-redux';
 import * as actionTypes from '../../../store/actions/actionsTypes';
 import Input from '../../../components/UI/Input/Input';
+import * as authActions from '../../../store/actions/index';
 
 
 class LoginArea extends Component {
 
     state = {
         loginform: {
+            
             loginemail: {
                 elementType: 'input',
                 elementConfig: {
@@ -42,6 +44,20 @@ class LoginArea extends Component {
             },
         },
         registerform: {
+            registerName: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Podaj swoje imie'
+                },
+                value: '',
+                validation: {
+                    required: true,
+                    minLength: 2
+                },
+                valid: false,
+                touched: false
+            },
             registeremail: {
                 elementType: 'input',
                 elementConfig: {
@@ -124,8 +140,8 @@ class LoginArea extends Component {
         }
 
         //console.log(registerData);
-
-        this.props.onRegister(registerData.registeremail, registerData.registerpass);
+        
+        this.props.onRegister(registerData.registerName, registerData.registeremail, registerData.registerpass);
         
     }
 
@@ -138,6 +154,18 @@ class LoginArea extends Component {
         }
 
         switch(event.target.name){
+            case 'registerName':
+                //immutable update
+                const updatedRegisterName = {
+                    ...updatedRegisterForm.registerName
+                }
+                updatedRegisterName.value = event.target.value;
+                updatedRegisterName.valid = this.checkValidity(updatedRegisterName.value, updatedRegisterName.validation);
+                updatedRegisterName.touched = true;
+                //assembling back after update
+                updatedRegisterForm.registerName = updatedRegisterName;
+
+                break;
             case 'registerEmail':
                 //immutable update
                 const updatedRegisterEmail = {
@@ -236,7 +264,7 @@ class LoginArea extends Component {
 
         let messageForLogin = '';
         if(this.props.isAuth==false){
-            messageForLogin = 'Zaloguj się testowo jako admin, admin';
+            messageForLogin = 'Zaloguj się';
         } else {
             messageForLogin = 'Jesteś zalogowany jako:';
 
@@ -246,7 +274,18 @@ class LoginArea extends Component {
             <div className="col">
                                 
                             <h3>Zarejestruj się</h3>
-                            <form onSubmit={this.registerHandler}>   
+                            <form onSubmit={this.registerHandler}>  
+                                <div className="form-group">
+                                    <Input 
+                                        inputtype="input" 
+                                        type="text"
+                                        label="Imie"
+                                        placeholder="Podaj swoje imie"
+                                        name="registerName"
+                                        touched = {this.state.registerform.registerName.touched}
+                                        invalid={!this.state.registerform.registerName.valid}
+                                        whenchanged={(event) => this.inputRegisterChangedHandler(event)}/>
+                                </div> 
                                 <div className="form-group">
                                     <Input 
                                         inputtype="input" 
@@ -287,7 +326,8 @@ class LoginArea extends Component {
 
                             
                             <form onSubmit={this.loginHandler}> 
-                                <h3>Zaloguj się testowo jako admin, admin</h3>
+                                <h3>Zaloguj się</h3>
+                                
                                 <div className="form-group">
                                     <Input 
                                         inputtype="input" 
@@ -374,7 +414,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onLogIn: (login, pass) => dispatch({type:actionTypes.LOG_IN, login: login, pass: pass}),
-        onRegister: (email, pass) => dispatch({type:actionTypes.REGISTER, email: email, pass: pass}),
+        onRegister: (userName, userEmail, userPass) => dispatch(authActions.registerUser(userName, userEmail, userPass)),
+        
     }
 }
 
