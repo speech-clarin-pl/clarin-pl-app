@@ -413,9 +413,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onLogIn: (login, pass) => dispatch({type:actionTypes.LOG_IN, login: login, pass: pass}),
+        //onLogIn: (login, pass) => dispatch({type:actionTypes.LOG_IN, login: login, pass: pass}),
+        onLogIn: (email, pass) => dispatch(authActions.loginUser(email, pass)),
         onRegister: (userName, userEmail, userPass) => dispatch(authActions.registerUser(userName, userEmail, userPass)),
-        
+        //onGetProjectsList: (userId) => dispatch(projectListActions.getProjectsList(userId)),
+   
     }
 }
 
