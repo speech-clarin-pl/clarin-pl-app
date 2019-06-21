@@ -3,6 +3,7 @@
 
 // home page actions
 export const LOG_IN = 'LOG_IN';
+export const LOG_OUT = 'LOG_OUT';
 export const LOG_IN_FAILED = 'LOG_IN_FAILED';
 export const SET_AUTO_LOGOUT = 'SET_AUTO_LOGOUT';
 export const REGISTER = 'REGISTER';

@@ -31,9 +31,40 @@ class ProjectsListPage extends Component {
 
 
   componentDidMount = () => {
-    this.props.onGetProjectsList("jakisUserId");
+    const token = localStorage.getItem('token');
+    const expiryDate = localStorage.getItem('expiryDate');
+    if (!token || !expiryDate) {
+      return;
+    }
+    if (new Date(expiryDate) <= new Date()) {
+      this.logoutHandler();
+      return;
+    }
+    const userId = localStorage.getItem('userId');
+    const userName = localStorage.getItem('userName');
+    const remainingMilliseconds =
+      new Date(expiryDate).getTime() - new Date().getTime();
+
+    console.log(userId)
+    console.log(userName)
+    console.log(token)
+    this.props.onSetLoggedIn(userId,userName, token);
+    //this.setState({ isAuth: true, token: token, userId: userId });
+    //this.setAutoLogout(remainingMilliseconds);
+    
+    this.props.onGetProjectsList(userId, token);
 
   }
+
+  // logoutHandler = () => {
+  //   this.props.onLogout();
+  // };
+
+  // setAutoLogout = milliseconds => {
+  //   setTimeout(() => {
+  //     this.logoutHandler();
+  //   }, milliseconds);
+  // };
 
   duplicateProjectHandler = (projectIndex) => {
     alert('duplicate');
@@ -83,7 +114,7 @@ class ProjectsListPage extends Component {
     //console.log(formIsValid);
     
     if(formIsValid){
-      this.props.onNewProject(this.state.newProjectName);
+      this.props.onNewProject(this.state.newProjectName, this.props.userId, this.props.token);
 
     } else {
       console.log('FORM IS INVALID!');
@@ -114,7 +145,11 @@ class ProjectsListPage extends Component {
 
   editProjectNameSubmitHandler = (event) => {
     event.preventDefault();
-    this.props.onNameEdit(this.props.projectId, this.state.newProjectName)
+    this.props.onNameEdit(
+      this.props.projectId, 
+      this.state.newProjectName,
+      this.props.userId,
+      this.props.token)
   }
 
   
@@ -139,7 +174,7 @@ class ProjectsListPage extends Component {
   }
 
   removeProjectHandler = (projectId) => {
-    this.props.onDelete(projectId);
+    this.props.onDelete(projectId, this.props.userId, this.props.token);
   }
 
   
@@ -308,6 +343,9 @@ class ProjectsListPage extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    userId: state.homeR.userId,
+    userName: state.homeR.userName,
+    token: state.homeR.token,
     localAction: state.prolistR.localAction,
     modalDisplay: state.prolistR.modalDisplay,
     newProjectCreated: state.prolistR.loaded,
@@ -325,14 +363,14 @@ const mapDispatchToProps = dispatch => {
     onOpenModalHandler: (actionType,projectId, projectName) => dispatch(projectListActions.openModal(actionType,projectId, projectName)),
     onCloseModalHandler: () => dispatch(projectListActions.closeModal()),
     onNewProjectDone: () => dispatch(projectListActions.addNewProjectDone()),
-    onNewProject: (projectName) => dispatch(projectListActions.addNewProject(projectName)),
+    onNewProject: (projectName, userId, token) => dispatch(projectListActions.addNewProject(projectName, userId, token)),
     onProjectChoice: (projectId, projectName, projectOwner) => dispatch(projectListActions.projectChoice(projectId, projectName, projectOwner)),
    // onDuplicate: (projectId) => dispatch(projectListActions.duplicateProject(projectId)),
    // onShare: (projectId) => dispatch(projectListActions.shareProject(projectId)),
-    onDelete: (projectId) => dispatch(projectListActions.deleteProject(projectId)),
-    onNameEdit: (projectId, newProjectName) => dispatch(projectListActions.editName(projectId, newProjectName)),
-    onGetProjectsList: (userId) => dispatch(projectListActions.getProjectsList(userId)),
-   
+    onDelete: (projectId, userId, token) => dispatch(projectListActions.deleteProject(projectId, userId, token)),
+    onNameEdit: (projectId, newProjectName,userId, token) => dispatch(projectListActions.editName(projectId, newProjectName,userId, token)),
+    onGetProjectsList: (userId, token) => dispatch(projectListActions.getProjectsList(userId, token)),
+    onSetLoggedIn:(userId, userName, token) => dispatch(projectListActions.setLoggedIn(userId, userName, token))
   }
 }
 

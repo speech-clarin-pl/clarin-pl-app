@@ -11,7 +11,9 @@ class SingleInputForm extends Component {
 
     render() {
 
-        const errorMessage = this.props.errorMessage;
+        const errorMessage = this.props.errorMessage || false;
+
+        
 
         return (
 
@@ -21,7 +23,7 @@ class SingleInputForm extends Component {
                 <h5 style={{textAlign:'left'}}>{this.props.title}</h5>
                 <hr/>
                 {
-                    errorMessage ?
+                    errorMessage !== false ?
                         <div className="alert alert-danger" role="alert">
                             {this.props.errorMessage}
                         </div> : null

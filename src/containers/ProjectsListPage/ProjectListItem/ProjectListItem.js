@@ -23,7 +23,10 @@ const projectListItem = (props) => {
                         }}> {props.title}</Link>
 
                 </td>
-                <td>{props.owner}</td>
+                {
+                    //<td>{props.owner}</td>
+                }
+                
                 <td>{props.modified}</td>
                 <td>
                     {

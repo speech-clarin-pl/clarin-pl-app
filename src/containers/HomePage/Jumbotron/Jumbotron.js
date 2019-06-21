@@ -27,12 +27,13 @@ const jumbotron = (props) => {
                                 />
                     </p>
                     <p></p>
-
-                    <Link to="/projectsList">
-                          <button className="btn btn-primary btn-lg btn-block gotoprojects">
-                              Przejdz do listy projektow
-                           </button>
-                    </Link>
+                {
+                    // <Link to="/projectsList">
+                    //       <button className="btn btn-primary btn-lg btn-block gotoprojects">
+                    //           Przejdz do listy projektow
+                    //        </button>
+                    // </Link>
+                }
 
                     {
                     /*

@@ -23,7 +23,9 @@ export {
 
 export {
     registerUser,
-    loginUser
+    loginUser,
+    logout,
+    setLoggedIn
 } from './home';
 
 export {

@@ -5,6 +5,7 @@ const initialState = {
     isAuth: false,
     email: '',
     pass: '',
+    userName: '',
     registrationMessage: '',
     loginMessage: '',
 
@@ -17,9 +18,10 @@ const initialState = {
 }
 
 const logIn = (state, action) => {
-        console.log(action)
+       // console.log(action)
         return updateObject(state,{
             isAuth: action.isAuth,
+            userName: action.userName,
             token: action.token,
             authLoading: action.authLoading,
             userId:action.userId
@@ -63,11 +65,26 @@ const autoLogout = (state,action) => {
     });
 }
 
+const logOut = (state,action) => {
+
+    localStorage.removeItem('token');
+    localStorage.removeItem('expiryDate');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userName');
+    
+    return updateObject(state,{
+        isAuth: false,
+        token:'',
+        userId:'', 
+    });
+}
+
 
 const homeReducer = (state = initialState, action) => {
 
     switch(action.type){
         case actionTypes.LOG_IN: return logIn(state, action);
+        case actionTypes.LOG_OUT: return logOut(state, action);
         case actionTypes.LOG_IN_FAILED: return logInFailed(state, action);
         case actionTypes.REGISTER: return register(state,action); 
         case actionTypes.REGISTER_FAILED: return registerFailed(state,action);

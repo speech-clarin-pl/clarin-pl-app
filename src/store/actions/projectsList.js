@@ -39,9 +39,15 @@ export const getProjectsListFailed = (error) => {
     }
 }
 
-export const getProjectsList = (userId) => {
+export const getProjectsList = (userId, token) => {
     return dispatch => {
-        axios.get('/projectsList')
+        //const header = Authorization: `Bearer-${token}`;
+        //return axios.get(URLConstants.USER_URL, { headers: { header } });
+        axios.get('/projectsList',{
+            headers: {
+                Authorization: 'Bearer ' + token
+            }
+        })
             .then(response => {
                 console.log(response)
                 dispatch(getProjectsListAction(userId, response.data.projects));
@@ -55,13 +61,14 @@ export const getProjectsList = (userId) => {
 //##################################################
 //#########  dodaje projekt ##########
 //##################################################
-export const addNewProjectAction = (projectName, messageFromServer, responsedNewProject) => {
+export const addNewProjectAction = (projectName, messageFromServer, responsedNewProject, userId, token) => {
     return {
         type: actionTypes.ADD_PROJECT,
         projectName: projectName,
         messageFromServer: messageFromServer,
         responsedNewProject: responsedNewProject,
-        userId: "jakiesIdUsera"
+        userId: userId,
+        token: token,
     }
 }
 
@@ -84,18 +91,21 @@ export const addNewProjectDone = () => {
     }
 }
 
-export const addNewProject = (projectName) => {
+export const addNewProject = (projectName, userId, token) => {
     return dispatch => {
         //ustawiam loaded na false w reducerze aby wylaczyc okienko dopiero gdy sie zaladuje
         dispatch(initNewProjectAction())
 
         axios.post('/projectsList', {
-            projectName: projectName
-        })
+            projectName: projectName,
+        },{
+            headers: {
+                Authorization: 'Bearer ' + token
+        }})
             .then(response => {
                 //console.log("from action:")
                 //console.log(response)
-                dispatch(addNewProjectAction(projectName, response.data.message, response.data.project));
+                dispatch(addNewProjectAction(projectName, response.data.message, response.data.project, userId, token));
                 dispatch(addNewProjectDone());
             })
             .catch(error => {
@@ -134,25 +144,30 @@ export const shareProject = (projectId) => {
 //################## USUWANIE PROJEKTU ###############
 //################################################
 
-export const deleteProjectAction = (projectId, message) => {
+export const deleteProjectAction = (projectId, message,userId, token) => {
     return {
         type: actionTypes.REMOVE_PROJECT,
         projectId: projectId,
-        message: message
+        message: message,
+        userId: userId,
+        token: token,
     }
 }
 
-export const deleteProject = (projectId) => {
+export const deleteProject = (projectId, userId, token) => {
     return dispatch => {
      
         axios.delete('/projectsList/' + projectId, {
-             data: { idprojektu: projectId } 
+             data: { idprojektu: projectId },
+             headers: {
+                Authorization: 'Bearer ' + token
+            } 
         })
             .then(response => {
                 if(response.status !== 200 && response.status !== 201){
                     throw new Error('Deleting a project failed');
                 }
-                dispatch(deleteProjectAction(response.data.projectId, response.data.message));
+                dispatch(deleteProjectAction(response.data.projectId, response.data.message, userId, token));
                 dispatch(closeModal());
             })
             .catch(error => {
@@ -166,34 +181,40 @@ export const deleteProject = (projectId) => {
 //################## EDYCJA NAZWY ###############
 //################################################
 
-export const editNameProjectAction = (projectId, newProjectName, messageFromServer) => {
+export const editNameProjectAction = (projectId, newProjectName, messageFromServer, userId, token) => {
     return {
         type: actionTypes.EDIT_NAME,
         projectId: projectId,
         newProjectName: newProjectName,
         message: messageFromServer,
+        userId: userId,
+        token: token,
     }
 }
 
 export const editNameProjectActionFailed = (error) => {
     return {
         type: actionTypes.EDIT_NAME_FAILED,
-        error: error
+        error: error.message
     }
 }
 
-export const editName = (projectId, newName) => {
+export const editName = (projectId, newName, userId, token) => {
     return dispatch => {
 
         //console.log('EDIT NAME')
         axios.put('/projectsList/' + projectId, {
             newProjectName: newName,
-            projectId: projectId
+            projectId: projectId,
+        },{
+            headers: {
+                Authorization: 'Bearer ' + token
+            }
         })
             .then(response => {
                 //console.log("from action:")
                 //console.log(response)
-                dispatch(editNameProjectAction(response.data.projectEntry._id, response.data.projectEntry.name, response.data.message));
+                dispatch(editNameProjectAction(response.data.projectEntry._id, response.data.projectEntry.name, response.data.message, userId, token));
                 dispatch(closeModal());
             })
             .catch(error => {

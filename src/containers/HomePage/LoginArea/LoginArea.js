@@ -37,7 +37,7 @@ class LoginArea extends Component {
                 value: '',
                 validation: {
                     required: true,
-                    minLength: 5
+                    minLength: 6
                 },
                 valid: false,
                 touched: false
@@ -81,7 +81,7 @@ class LoginArea extends Component {
                 value: '',
                 validation: {
                     required: true,
-                    minLength: 5
+                    minLength: 6
                 },
                 valid: false,
                 touched: false
@@ -251,8 +251,13 @@ class LoginArea extends Component {
         //sprawdzam czy jestesmy zalogowaniu poraz pierwszy
         //jezeli tak to przechodzimy do listy projektow
         if (this.props.isAuth !== prevProps.isAuth) {
-            this.props.history.push("/projects");
+            //this.props.history.push("/projectsList");
         }
+      }
+
+      logOutHandler = () => {
+        this.props.onLogOut();
+        this.props.history.push("/");
       }
 
     
@@ -364,9 +369,9 @@ class LoginArea extends Component {
                             
                             <div>
 
-                                <h4>Jesteś obecnie zalogowany jako: <span className="loggedAs">{this.props.loggedEmail}</span></h4>
+                                <h4>Witaj: <span className="loggedAs">{this.props.userName}</span></h4>
 
-                                <Link to="/projects">
+                                <Link to="/projectsList">
                                     <button className="btn btn-primary btn-lg btn-block gotoprojects">
                                         Przejdź do listy projektów
                                     </button>
@@ -374,7 +379,9 @@ class LoginArea extends Component {
 
                                 <div> lub </div>
 
-                                <button className="btn btn-secondary">
+                                <button 
+                                    className="btn btn-secondary"
+                                    onClick={this.logOutHandler}>
 
                                     Wyloguj się
                                 
@@ -408,6 +415,7 @@ const mapStateToProps = state => {
     return {
         isAuth: state.homeR.isAuth,
         loggedEmail: state.homeR.email,
+        userName: state.homeR.userName
     }
 }
 
@@ -416,7 +424,7 @@ const mapDispatchToProps = dispatch => {
         //onLogIn: (login, pass) => dispatch({type:actionTypes.LOG_IN, login: login, pass: pass}),
         onLogIn: (email, pass) => dispatch(authActions.loginUser(email, pass)),
         onRegister: (userName, userEmail, userPass) => dispatch(authActions.registerUser(userName, userEmail, userPass)),
-        //onGetProjectsList: (userId) => dispatch(projectListActions.getProjectsList(userId)),
+        onLogOut: () => dispatch(authActions.logout())
    
     }
 }

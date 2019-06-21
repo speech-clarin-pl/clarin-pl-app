@@ -44,13 +44,14 @@ export const registerUser = (userName, userEmail, userPass) => {
 //########################################
 
 
-export const loginUserAction = (isAuth, token, authLoading, userId) => {
+export const loginUserAction = (isAuth, token, authLoading, userId,userName) => {
     return {
         type: actionTypes.LOG_IN,
         isAuth: isAuth,
         token: token,
         authLoading: authLoading,
-        userId: userId
+        userId: userId,
+        userName: userName,
 
     }
 }
@@ -73,6 +74,18 @@ export const setAutoLogout = (aftermilliseconds) => {
     }
 }
 
+export const logout = () => {
+    console.log('LOG OUT');
+    return {
+        type: actionTypes.LOG_OUT
+    }
+}
+
+// wywolywane pod odwiezeniu strony gdy token jest jeszcze w przegladarce
+export const setLoggedIn = (userId, userName, token) => {
+    return loginUserAction(true,token,false,userId,userName)
+}
+
 export const loginUser = (userEmail, userPass) => {
     return dispatch => {
         
@@ -93,11 +106,12 @@ export const loginUser = (userEmail, userPass) => {
                 console.log(response);
                 //ustawic state na auth false i authloading na false
                 //przekierowanie
-                dispatch(loginUserAction(true, response.data.token,false,response.data.userId));
+                dispatch(loginUserAction(true, response.data.token,false,response.data.userId,response.data.userName));
                 localStorage.setItem('token',response.data.token);
                 localStorage.setItem('userId', response.data.userId);
-                //gasnie za 3h
-                const remainingMilliseconds = 60 * 60 * 3000;
+                localStorage.setItem('userName', response.data.userName);
+                //gasnie za 10h
+                const remainingMilliseconds = 60 * 60 * 10000;
                 const expiryDate = new Date(
                     new Date().getTime() + remainingMilliseconds
                 );

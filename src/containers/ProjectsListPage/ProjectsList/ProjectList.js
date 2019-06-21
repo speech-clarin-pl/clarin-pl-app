@@ -9,7 +9,10 @@ const projectsList = (props) => {
      const listHeader = (
             <tr className="thead-dark">
                 <td className="title">Tytuł</td>
-                <td >Właściciel</td>
+                {
+                    //<td >Właściciel</td>
+                }
+                
                 <td >Data utworzenia</td>
                 <td >Akcje</td>
             </tr>

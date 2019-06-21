@@ -7,6 +7,7 @@ import ProjectsListPage from './containers/ProjectsListPage/ProjectsListPage';
 import HelpPage from './components/HelpPage/HelpPage';
 import {IntlProvider, addLocaleData} from 'react-intl';
 import {connect} from 'react-redux';
+import * as homeActions from './store/actions/index';
 
 import en from 'react-intl/locale-data/en';
 import pl from 'react-intl/locale-data/pl';
@@ -28,6 +29,35 @@ class App extends Component{
   state = {
     currln: "pl",
   }
+
+  componentDidMount() {
+    const token = localStorage.getItem('token');
+    const expiryDate = localStorage.getItem('expiryDate');
+    if (!token || !expiryDate) {
+      return;
+    }
+    if (new Date(expiryDate) <= new Date()) {
+      this.logoutHandler();
+      return;
+    }
+    const userId = localStorage.getItem('userId');
+    const userName = localStorage.getItem('userName');
+    const remainingMilliseconds =
+      new Date(expiryDate).getTime() - new Date().getTime();
+    this.props.onSetLoggedIn(userId, userName, token)
+    //this.setState({ isAuth: true, token: token, userId: userId });
+    this.setAutoLogout(remainingMilliseconds);
+  }
+
+  logoutHandler = () => {
+    this.props.onLogout();
+  };
+
+  setAutoLogout = milliseconds => {
+    setTimeout(() => {
+      this.logoutHandler();
+    }, milliseconds);
+  };
 
  
 
@@ -94,7 +124,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-      
+    onLogout: () => dispatch(homeActions.logout()),
+   // this.setState({ isAuth: true, token: token, userId: userId });
+    onSetLoggedIn: (userId, userName, token) => dispatch(homeActions.setLoggedIn(userId,userName, token))
   }
 }
 
