@@ -22,18 +22,39 @@ import * as projectActions from '../../store/actions/index';
 class ProjectPage extends Component {
 
 
+  componentWillMount = () => {
 
-  componentWillMount() {
+    const token = localStorage.getItem('token');
+    const expiryDate = localStorage.getItem('expiryDate');
+    if (!token || !expiryDate) {
+      return;
+    }
+
+    if (new Date(expiryDate) <= new Date()) {
+      this.props.onLogOut(); 
+      return;
+    }
+    const userId = localStorage.getItem('userId');
+    const userName = localStorage.getItem('userName');
+    const remainingMilliseconds =
+      new Date(expiryDate).getTime() - new Date().getTime();
+
+    console.log(userId)
+    console.log(userName)
+    console.log(token)
+    this.props.onSetLoggedIn(userId,userName, token);    
+
     //laduje podstawowe informacje o projekcie
     //pozostale rzeczy beda pochodzic z serwera i db
 
     //jezeli user przeszedl do projektu z listy projektow
     if(this.props.location.state) {
+      
       const projectId = this.props.match.params.projectID;
       const projectTitle = this.props.location.state.projectTitle;
-      const projectOwner = this.props.location.state.projectOwner;
+      const projectOwnerId = this.props.location.state.projectOwner;
 
-      this.props.onInitProjectHandler(projectId, projectTitle, projectOwner);
+      this.props.onInitProjectHandler(projectId, projectTitle, projectOwnerId);
     }
 
   }
@@ -97,7 +118,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
   return {
      onInitProjectHandler: (projectId, projectTitle, projectOwner) => dispatch(projectActions.initProject(projectId, projectTitle, projectOwner)),
-  }
+     onSetLoggedIn:(userId, userName, token) => dispatch(projectActions.setLoggedIn(userId, userName, token)),
+     onLogOut: () => dispatch(projectActions.logout()),
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectPage);

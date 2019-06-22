@@ -1,4 +1,12 @@
-export {} from './repo';
+export {
+    handleCreateFolder,
+    handleCreateFiles,
+    handleRenameFolder,
+    handleRenameFile,
+    handleDeleteFolder,
+    handleDeleteFile,
+    getProjectFilesForUser,
+} from './repo';
 
 export {
     projectChoice,

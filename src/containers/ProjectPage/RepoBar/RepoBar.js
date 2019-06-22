@@ -3,170 +3,37 @@ import Aux from '../../../hoc/Auxiliary';
 import './RepoBar.css';
 import Moment from 'moment';
 import FileBrowser, {Icons} from 'react-keyed-file-browser';
-// import { FileManager, FileNavigator } from '@opuscapita/react-filemanager';
-// import connectorNodeV1 from '@opuscapita/react-filemanager-connector-node-v1';
+import { connect } from 'react-redux';
+import * as repoActions from '../../../store/actions/index';
 
-// const apiOptions = {
-// 	...connectorNodeV1.apiOptions,
-// 	apiRoot: 'http://127.0.0.1:1234' // Or you local Server Node V1 installation.
-//   }
-
-//   const fileManager = (
-// 	<div style={{ height: '480px' }}>
-// 	   <FileManager>
-// 		 <FileNavigator
-// 		   id="filemanager-1"
-// 		   api={connectorNodeV1.api}
-// 		   apiOptions={apiOptions}
-// 		   capabilities={connectorNodeV1.capabilities}
-// 		   listViewLayout={connectorNodeV1.listViewLayout}
-// 		   viewLayoutOptions={connectorNodeV1.viewLayoutOptions}
-// 		 />
-// 	   </FileManager>
-// 	 </div>
-//    );
-
-  
 class repoBar extends Component  {
 
-	state = {
-		files: [
-		  {
-			key: 'photos/animals/cat in a hat.png',
-			modified: +Moment().subtract(1, 'hours'),
-			size: 1.5 * 1024 * 1024,
-		  },
-		  {
-			key: 'photos/animals/kitten_ball.png',
-			modified: +Moment().subtract(3, 'days'),
-			size: 545 * 1024,
-		  },
-		  {
-			key: 'photos/animals/elephants.png',
-			modified: +Moment().subtract(3, 'days'),
-			size: 52 * 1024,
-		  },
-		  {
-			key: 'photos/funny fall.gif',
-			modified: +Moment().subtract(2, 'months'),
-			size: 13.2 * 1024 * 1024,
-		  },
-		  {
-			key: 'photos/holiday.jpg',
-			modified: +Moment().subtract(25, 'days'),
-			size: 85 * 1024,
-		  },
-		  {
-			key: 'documents/letter chunks.doc',
-			modified: +Moment().subtract(15, 'days'),
-			size: 480 * 1024,
-		  },
-		  {
-			key: 'documents/export.pdf',
-			modified: +Moment().subtract(15, 'days'),
-			size: 4.2 * 1024 * 1024,
-		  },
-		],
-	  }
+	componentDidMount() {
+		//wysylam zadanie aby pobrac aktualne pliki w katalogu uzytkownika
+		const currentProjectID = this.props.currentProjectID;
+		const currentProjectOwner =  this.props.currentProjectOwner; //Owner id
+		console.log(currentProjectID)
+		console.log(currentProjectOwner)
+		this.props.onGetProjectFilesForUser(currentProjectOwner, currentProjectID, this.props.token);
+	}
 
 	  handleCreateFolder = (key) => {
-		this.setState(state => {
-		  state.files = state.files.concat([{
-			key: key,
-		  }])
-		  return state
-		})
+		this.props.onHandleCreateFolder(key); 
 	  }
 	  handleCreateFiles = (files, prefix) => {
-		this.setState(state => {
-		  const newFiles = files.map((file) => {
-			let newKey = prefix
-			if (prefix !== '' && prefix.substring(prefix.length - 1, prefix.length) !== '/') {
-			  newKey += '/'
-			}
-			newKey += file.name
-			return {
-			  key: newKey,
-			  size: file.size,
-			  modified: +Moment(),
-			}
-		  })
-	
-		  const uniqueNewFiles = []
-		  newFiles.map((newFile) => {
-			let exists = false
-			state.files.map((existingFile) => {
-			  if (existingFile.key === newFile.key) {
-				exists = true
-			  }
-			})
-			if (!exists) {
-			  uniqueNewFiles.push(newFile)
-			}
-		  })
-		  state.files = state.files.concat(uniqueNewFiles)
-		  return state
-		})
+		this.props.onHandleCreateFiles(files, prefix); 
 	  }
 	  handleRenameFolder = (oldKey, newKey) => {
-		this.setState(state => {
-		  const newFiles = []
-		  state.files.map((file) => {
-			if (file.key.substr(0, oldKey.length) === oldKey) {
-			  newFiles.push({
-				...file,
-				key: file.key.replace(oldKey, newKey),
-				modified: +Moment(),
-			  })
-			} else {
-			  newFiles.push(file)
-			}
-		  })
-		  state.files = newFiles
-		  return state
-		})
+		this.props.onHandleRenameFolder(oldKey, newKey);
 	  }
 	  handleRenameFile = (oldKey, newKey) => {
-		this.setState(state => {
-		  const newFiles = []
-		  state.files.map((file) => {
-			if (file.key === oldKey) {
-			  newFiles.push({
-				...file,
-				key: newKey,
-				modified: +Moment(),
-			  })
-			} else {
-			  newFiles.push(file)
-			}
-		  })
-		  state.files = newFiles
-		  return state
-		})
+		this.props.onHandleRenameFile(oldKey, newKey);
 	  }
 	  handleDeleteFolder = (folderKey) => {
-		this.setState(state => {
-		  const newFiles = []
-		  state.files.map((file) => {
-			if (file.key.substr(0, folderKey.length) !== folderKey) {
-			  newFiles.push(file)
-			}
-		  })
-		  state.files = newFiles
-		  return state
-		})
+		this.props.onHandleDeleteFolder(folderKey);
 	  }
 	  handleDeleteFile = (fileKey) => {
-		this.setState(state => {
-		  const newFiles = []
-		  state.files.map((file) => {
-			if (file.key !== fileKey) {
-			  newFiles.push(file)
-			}
-		  })
-		  state.files = newFiles
-		  return state
-		})
+		this.props.onHandleDeleteFile(fileKey);
 	  }
 
 	  
@@ -177,7 +44,6 @@ class repoBar extends Component  {
 	  }
 
 	  	
-
 	  //resize the element
 		Resize =(e) =>{
 			const repoBar = document.getElementById('RepoBar');
@@ -195,9 +61,6 @@ class repoBar extends Component  {
 			window.removeEventListener('mousemove', this.Resize, false);
 			window.removeEventListener('mouseup', this.stopResize, false);
 		}
-
-	  
-	
 
 	render(){
 		window.addEventListener('onresize', this.Resize, false);
@@ -219,15 +82,13 @@ class repoBar extends Component  {
 
 				
 				<div className="mainRepoContent" data-scrollbar>
-					{
-						//fileManager
-						}
+					
 
 			<div className="scrollStrip"
 				onMouseDown={this.startResizeRepo}></div>
 
 			<FileBrowser
-				files={this.state.files}
+				files={this.props.files}
 				icons={{
 					File: <i className="fas fa-file"></i>,
 					Image: <i className="fas fa-image"></i>,
@@ -260,4 +121,26 @@ class repoBar extends Component  {
     
 }
 
-export default repoBar;
+const mapStateToProps = (state) => {
+	return {
+	  currentProjectID: state.projectR.currentProjectID,
+	  currentProjectName: state.projectR.currentProjectName,
+	  currentProjectOwner: state.projectR.currentProjectOwner,
+	  files: state.repoR.files,
+	  token: state.homeR.token,
+	}
+  }
+  
+  const mapDispatchToProps = dispatch => {
+	return {
+		onHandleCreateFolder: (key) => dispatch(repoActions.handleCreateFolder(key)),
+		onHandleCreateFiles: (files, prefix) => dispatch(repoActions.handleCreateFiles(files, prefix)),
+		onHandleRenameFolder: (oldKey, newKey) => dispatch(repoActions.handleRenameFolder((oldKey, newKey))),
+		onHandleRenameFile: (oldKey, newKey) => dispatch(repoActions.handleRenameFile(oldKey, newKey)),
+		onHandleDeleteFolder: (folderKey) => dispatch(repoActions.handleDeleteFolder(folderKey)),
+		onHandleDeleteFile: (fileKey) => dispatch(repoActions.handleDeleteFile(fileKey)),
+		onGetProjectFilesForUser: (userId, projectId, token) => dispatch(repoActions.getProjectFilesForUser(userId,projectId, token))
+	}
+  }
+
+export default connect(mapStateToProps, mapDispatchToProps)(repoBar);

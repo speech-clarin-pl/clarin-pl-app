@@ -37,7 +37,7 @@ class ProjectsListPage extends Component {
       return;
     }
     if (new Date(expiryDate) <= new Date()) {
-      this.logoutHandler();
+      this.props.onLogOut(); 
       return;
     }
     const userId = localStorage.getItem('userId');
@@ -370,7 +370,8 @@ const mapDispatchToProps = dispatch => {
     onDelete: (projectId, userId, token) => dispatch(projectListActions.deleteProject(projectId, userId, token)),
     onNameEdit: (projectId, newProjectName,userId, token) => dispatch(projectListActions.editName(projectId, newProjectName,userId, token)),
     onGetProjectsList: (userId, token) => dispatch(projectListActions.getProjectsList(userId, token)),
-    onSetLoggedIn:(userId, userName, token) => dispatch(projectListActions.setLoggedIn(userId, userName, token))
+    onSetLoggedIn:(userId, userName, token) => dispatch(projectListActions.setLoggedIn(userId, userName, token)),
+    onLogOut: () => dispatch(projectListActions.logout()),
   }
 }
 

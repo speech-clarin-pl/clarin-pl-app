@@ -97,11 +97,11 @@ export const addNewProject = (projectName, userId, token) => {
         dispatch(initNewProjectAction())
 
         axios.post('/projectsList', {
-            projectName: projectName,
-        },{
-            headers: {
-                Authorization: 'Bearer ' + token
-        }})
+                projectName: projectName,
+            },{
+                headers: {
+                    Authorization: 'Bearer ' + token
+            }})
             .then(response => {
                 //console.log("from action:")
                 //console.log(response)
