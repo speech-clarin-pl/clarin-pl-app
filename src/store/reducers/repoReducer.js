@@ -178,7 +178,6 @@ const repoDeleteFolder = (state, action) => {
     
     return updateObject(state,
         {files: newFiles});
-    
 }
 
 
@@ -197,7 +196,6 @@ const repoDeleteFile = (state, action) => {
         } else {
             //jezeli jest usuniety z folderu to musze posotawic folder
             let n = fileKey.lastIndexOf("/");
-
             //to oznacza ze plik jest w jakim podfoldrze
             if(n > 1){
                //wtedy zwracam tylko sam folder - bez pliku w nim

@@ -30,7 +30,7 @@ class repoBar extends Component  {
 		this.props.onHandleRenameFile(oldKey, newKey, this.props.currentProjectID, this.props.currentProjectOwner, this.props.token);
 	  }
 	  handleDeleteFolder = (folderKey) => {
-		this.props.onHandleDeleteFolder(folderKey, this.props.currentProjectID, this.props.token);
+		this.props.onHandleDeleteFolder(folderKey, this.props.currentProjectID, this.props.currentProjectOwner, this.props.token);
 	  }
 	  handleDeleteFile = (fileKey) => {
 		this.props.onHandleDeleteFile(fileKey, this.props.currentProjectID, this.props.currentProjectOwner, this.props.token);
@@ -140,7 +140,7 @@ const mapStateToProps = (state) => {
 		onHandleCreateFiles: (files, prefix) => dispatch(repoActions.handleCreateFiles(files, prefix)),
 		onHandleRenameFolder: (oldKey, newKey,projectId, userId, token) => dispatch(repoActions.handleRenameFolder(oldKey, newKey, projectId, userId, token)),
 		onHandleRenameFile: (oldKey, newKey, projectId, userId, token) => dispatch(repoActions.handleRenameFile(oldKey, newKey, projectId, userId, token)),
-		onHandleDeleteFolder: (folderKey, projectId, token) => dispatch(repoActions.handleDeleteFolder(folderKey, projectId, token)),
+		onHandleDeleteFolder: (folderKey, projectId,userId, token) => dispatch(repoActions.handleDeleteFolder(folderKey, projectId,userId, token)),
 		onHandleDeleteFile: (fileKey, projectId, userId, token) => dispatch(repoActions.handleDeleteFile(fileKey, projectId, userId, token)),
 		onGetProjectFilesForUser: (userId, projectId, token) => dispatch(repoActions.getProjectFilesForUser(userId,projectId, token))
 	}

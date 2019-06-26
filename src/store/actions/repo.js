@@ -215,12 +215,16 @@ export const handleDeleteFolderActionFailed = (error) => {
         error: error.toString(),
     }
 }
-export const handleDeleteFolder = (folderKey, projectId,token) => {
+export const handleDeleteFolder = (folderKey, projectId, userId,token) => {
     console.log('DELETE FOLDER:' + folderKey);
     return dispatch => {
-        axios.delete('/repoFiles/deleteFolder/' + projectId, 
+        axios.delete('/repoFiles/deleteFolder/', 
         {
-            data: { folderKey: folderKey  },
+            data: { 
+                folderKey: folderKey,  
+                projectId: projectId,
+                userId: userId,
+            },
             headers: {
                Authorization: 'Bearer ' + token
            } 
