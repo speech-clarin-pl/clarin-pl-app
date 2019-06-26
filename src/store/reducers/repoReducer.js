@@ -11,6 +11,7 @@ const initialState = {
     //       key: 'cat in a hat.mp3',
     //       modified: +Moment().subtract(1, 'hours'),
     //       size: 1.5 * 1024 * 1024,
+    //       url: ????
     //     },
     //     {
     //       key: 'photos/animals/kitten_ball.png',

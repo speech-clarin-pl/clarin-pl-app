@@ -5,8 +5,13 @@ import Moment from 'moment';
 import FileBrowser, {Icons} from 'react-keyed-file-browser';
 import { connect } from 'react-redux';
 import * as repoActions from '../../../store/actions/index';
+import { Redirect, withRouter } from 'react-router-dom'
 
 class repoBar extends Component  {
+
+	state = {
+		openPreview: false,
+	}
 
 	componentDidMount() {
 		//wysylam zadanie aby pobrac aktualne pliki w katalogu uzytkownika
@@ -36,7 +41,57 @@ class repoBar extends Component  {
 		this.props.onHandleDeleteFile(fileKey, this.props.currentProjectID, this.props.currentProjectOwner, this.props.token);
 	  }
 
-	  
+	  handleSelect = (key) => {
+		console.log("handleSelect")
+		console.log(key)
+	  }
+
+	  // Called after onSelect, only on file selection
+	  handleSelectFile = (file) => {
+		console.log("handleSelectFile")
+		console.log(file)
+	  }
+
+	  // Called after onSelect, only on folder selection
+	  handleSelectFolder = (folder) => {
+		console.log("handleSelectFolder")
+		console.log(folder)
+	  }
+
+	  //dwukrotne klikniecie powoduje uruchomienie w podgladzie
+	  handlePreviewOpen = (file) => {
+		console.log("handlePreviewOpen")
+		console.log(file)
+		console.log(this.props)
+		let toURL = this.props.match.url + '/preview';
+		this.props.history.push({
+			pathname: toURL,
+			//search: '?key='+file.key,
+			state: { url: file.url }
+		  });
+		
+		// return <Redirect to={{
+        //     pathname: this.props.match.url + '/preview',
+        //     state: { id: '123' }
+        // }} />
+
+	  }
+
+	  handlePreviewClose = (file) => {
+		console.log("handlePreviewClose")
+		console.log(file)
+	  }
+
+	  handleFolderOpen = (folder) => {
+		console.log("handleFolderOpen")
+		console.log(folder)
+	  }
+
+	  handleFolderClose = (folder) => {
+		console.log("handleFolderClose")
+		console.log(folder)
+	  }
+
 
 	  startResizeRepo=() => {
 		window.addEventListener('mousemove', this.Resize, false);
@@ -111,6 +166,29 @@ class repoBar extends Component  {
 				onRenameFile={this.handleRenameFile} 
 				onDeleteFolder={this.handleDeleteFolder}
 				onDeleteFile={this.handleDeleteFile} 
+
+				// Always called when a file or folder is selected
+				onSelect={this.handleSelect}
+				// Called after onSelect, only on file selection
+				onSelectFile={this.handleSelectFile}
+				// Called after onSelect, only on folder selection
+				onSelectFolder={this.handleSelectFolder}
+				onPreviewOpen={this.handlePreviewOpen}
+				onPreviewClose={this.handlePreviewClose}
+				onFolderOpen={this.handleFolderOpen}
+				onFolderClose={this.handleFolderClose}
+
+	// 			onSelect: (fileOrFolder) => {}, // Always called when a file or folder is selected
+    // onSelectFile: (file) => {}, //    Called after onSelect, only on file selection
+    // onSelectFolder: (folder) => {}, //    Called after onSelect, only on folder selection
+
+    // onPreviewOpen: (file) => {}, // File opened
+    // onPreviewClose: (file) => {}, // File closed
+
+    // onFolderOpen: (folder) => {}, // Folder opened
+    // onFolderClose: (folder) => {}, // Folder closed
+			
+
 			/>
 
 			{mount[0]}
@@ -146,4 +224,4 @@ const mapStateToProps = (state) => {
 	}
   }
 
-export default connect(mapStateToProps, mapDispatchToProps)(repoBar);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(repoBar));

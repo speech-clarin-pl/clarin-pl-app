@@ -7,6 +7,13 @@
     right: 0px;
 }
 
+#div1 {
+    width: 350px;
+    height: 70px;
+    padding: 10px;
+    border: 1px solid black;
+  }
+
 .TranscriptTool {
     padding-top: 1em;
 }
