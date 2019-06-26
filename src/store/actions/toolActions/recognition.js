@@ -8,16 +8,40 @@ export const dropFiles = (files) => {
     }
 }
 
+//################# updating file state ###########
+export const updateFileState = (fileID, status,percLoaded) => {
+    return {
+            type: actionTypes.UPDATE_FILE_STATE, 
+            fileID: fileID, 
+            status: status, 
+            percLoaded:percLoaded,
+        }
+}
+
+
+//########################################
 //####### SINGLE FILE RECOGNITION ########
-export const initFileRecognition = (file, entryId) =>{
+//#########################################
+
+export const finishFileRecognitionAction = (message, entryId) => {
+    return updateFileState(entryId, 'done',100);
+        
+}
+
+export const finishFileRecognitionActionFailed = (message, entryId) => {
+    return updateFileState(entryId, 'error',0);
+}
+
+export const initFileRecognition = (file, entryId, userId,projectId) =>{
     return dispatch => {
 
         const data = new FormData();
 
         data.append('audioFiles',file);
         data.append('audioFilesIds',entryId);
+        data.append('projectId', projectId);
+        data.append('userId', userId);
         
-
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
@@ -27,9 +51,15 @@ export const initFileRecognition = (file, entryId) =>{
 
         axios.post('/recognition/singleFile',data, config)
             .then(response => {
+                const message = response.data.message;
+                const entryId = response.data.sentEntryId.sentEntryId;
+                console.log(message)
+                console.log(entryId)
+                dispatch(finishFileRecognitionAction(message, entryId));
                 console.log(response);
             })
             .catch(error => {
+                dispatch(finishFileRecognitionActionFailed('Recognition error', entryId));
                 console.log(error);
             })
     }
@@ -57,6 +87,7 @@ export const initBatchRecognition = (audioFilesArray, audioFilesIds) => {
         
         axios.post('/recognition/multipleFiles',data, config)
             .then(response => {
+               
                 console.log(response);
             })
             .catch(error => {

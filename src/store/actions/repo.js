@@ -29,41 +29,73 @@ export const getProjectFilesForUser = (userId, projectId, token) => {
         //     userId: userId,
         //     projectId: projectId,
         // },
-         axios.get(('/repoFiles/'+userId),{
-                    headers: {
-                        Authorization: 'Bearer ' + token
-                     },
-                     params: {
-                        projectId: projectId
-                     }
-                })
-             .then(response => {
+        axios.get(('/repoFiles/' + userId), {
+            headers: {
+                Authorization: 'Bearer ' + token
+            },
+            params: {
+                projectId: projectId
+            }
+        })
+            .then(response => {
 
-                 console.log(response)
-                 dispatch(getProjectFilesForUserAction(userId, response.data.files));
-             })
+                console.log(response)
+                dispatch(getProjectFilesForUserAction(userId, response.data.files));
+            })
             .catch(error => {
                 dispatch(getProjectFilesForUserActionFailed(error));
             });
     }
 }
 
-//tworzenie nowego folderu
-export const handleCreateFolder = (key) => {
-    
-        console.log('CREATE NEW FOLDER:' + key);
-        return {
-            type: actionTypes.REPO_CREATE_FOLDER,
-            key: key,
-        }
-  
-        
+//###########################################
+//#######   tworzenie nowego folderu
+//#########################################
+
+export const handleCreateFolderAction = (key, message) => {
+    return {
+        type: actionTypes.REPO_CREATE_FOLDER,
+        key: key,
+        message: message,
+    }
 }
 
-//tworzenie nowych plikow
-export const handleCreateFiles = (files, prefix) => {
-    
-    console.log('CREATE NEW FILES:' + files);
+export const handleCreateFolderActionFailed = (error) => {
+    return {
+        type: actionTypes.REPO_CREATE_FOLDER_FAILED,
+        error: error.toString(),
+    }
+}
+
+export const handleCreateFolder = (key, projectId, userId, token) => {
+    console.log('CREATE NEW FOLDER:' + key);
+    return dispatch => {
+        axios.post(('/repoFiles/createFolder/'), {
+            key: key, //np key: "nowyfolder/" lub "nowyfolder/innypodfolder/"
+            projectId: projectId,
+            userId: userId,
+        }, {
+            headers: {
+                Authorization: 'Bearer ' + token
+            },
+        })
+            .then(response => {
+                console.log(response)
+                dispatch(handleCreateFolderAction(response.data.key, response.data.message));
+            })
+            .catch(error => {
+                dispatch(handleCreateFolderActionFailed(error));
+            });
+    }
+}
+
+//############################################
+//#########tworzenie nowych plikow
+//  TO DO: poki co nie ma mozliwosci wgrania plikow osobno do repo
+// tylko przez usluge
+//##############################################
+
+export const handleCreateFilesAction = (files, prefix) => {
     return {
         type: actionTypes.REPO_CREATE_FILES,
         files: files,
@@ -71,48 +103,180 @@ export const handleCreateFiles = (files, prefix) => {
     }
 }
 
-//zmiana nazwy folderu
-export const handleRenameFolder = (oldKey, newKey) => {
-    
-    console.log('RENAME FOLDER:' + oldKey + ' into ' + newKey);
+export const handleCreateFiles = (files, prefix) => {
+    console.log('CREATE NEW FILES:' + files);
+    return dispatch => {
+        dispatch(handleCreateFilesAction(files, prefix));
+    }
+}
+
+//#############################################
+//######### zmiana nazwy folderu
+//#############################################
+export const handleRenameFolderAction = (oldKey, newKey, message) => {
     return {
         type: actionTypes.REPO_RENAME_FOLDER,
         oldKey: oldKey,
         newKey: newKey,
+        message: message,
     }
-
 }
 
-//zmiana nazwy pliku
-export const handleRenameFile = (oldKey, newKey) => {
-    console.log('RENAME FILE:' + oldKey + ' into ' + newKey);
+export const handleRenameFolderActionFailed = (error) => {
+    return {
+        type: actionTypes.REPO_RENAME_FOLDER_FAILED,
+        error: error.toString()
+    }
+}
+
+export const handleRenameFolder = (oldKey, newKey, projectId, userId, token) => {
+    console.log('RENAME FOLDER:' + oldKey + ' into ' + newKey);
+    //RENAME FOLDER:alaMaKota/ into alaMaKota222/
+    return dispatch => {
+        axios.put(('/repoFiles/renameFolder/'), {
+            oldKey: oldKey, 
+            newKey: newKey,
+            userId: userId,
+            projectId: projectId,
+        }, {
+            headers: {
+                Authorization: 'Bearer ' + token
+            },
+        })
+            .then(response => {
+                console.log(response)
+                dispatch(handleRenameFolderAction(response.data.oldKey, response.data.newKey, response.data.message));
+            })
+            .catch(error => {
+                dispatch(handleRenameFolderActionFailed(error));
+            });
+    }
+}
+
+//#####################################################
+//################zmiana nazwy pliku/folderu
+//################ takze przenoszenie pliku/folderu
+//#####################################################
+export const handleRenameFileAction = (oldKey, newKey, message) => {
     return {
         type: actionTypes.REPO_RENAME_FILE,
         oldKey: oldKey,
         newKey: newKey,
+        message: message
     }
-
-  
 }
 
-//usuwanie folderu
-export const handleDeleteFolder = (folderKey) => {
-    console.log('DELETE FOLDER:' + folderKey);
+export const handleRenameFileActionFailed = (error) => {
+    return {
+        type: actionTypes.REPO_RENAME_FILE,
+        error: error.toString()
+    }
+}
+
+export const handleRenameFile = (oldKey, newKey, projectId, userId, token) => {
+    console.log('RENAME FILE:' + oldKey + ' into ' + newKey);
+    console.log('projectId:' + projectId );
+    console.log('token:' + token );
+    return dispatch => {
+        axios.put(('/repoFiles/renameFile/'), {
+            oldKey: oldKey, 
+            newKey: newKey,
+            projectId: projectId,
+            userId: userId,
+        }, {
+            headers: {
+                Authorization: 'Bearer ' + token
+            },
+        })
+            .then(response => {
+                console.log(response)
+                dispatch(handleRenameFileAction(response.data.oldKey, response.data.newKey, response.data.message));
+            })
+            .catch(error => {
+                dispatch(handleRenameFolderActionFailed(error));
+            });
+        
+    }
+}
+
+//############################################
+//########### usuwanie folderu ##############
+//##########################################
+export const handleDeleteFolderAction = (folderKey) => {
     return {
         type: actionTypes.REPO_DELETE_FOLDER,
         folderKey: folderKey,
     }
-
-  
 }
 
-//usuwanie pliku
-export const handleDeleteFile = (fileKey) => {
-    console.log('DELETE FILE:' + fileKey);
+export const handleDeleteFolderActionFailed = (error) => {
+    return {
+        type: actionTypes.REPO_DELETE_FOLDER_FAILED,
+        error: error.toString(),
+    }
+}
+export const handleDeleteFolder = (folderKey, projectId,token) => {
+    console.log('DELETE FOLDER:' + folderKey);
+    return dispatch => {
+        axios.delete('/repoFiles/deleteFolder/' + projectId, 
+        {
+            data: { folderKey: folderKey  },
+            headers: {
+               Authorization: 'Bearer ' + token
+           } 
+       })
+
+           .then(response => {
+               dispatch(handleDeleteFolderAction(response.data.folderKey));
+           })
+           .catch(error => {
+               console.log(error)
+               dispatch(handleDeleteFolderActionFailed(error));
+           });
+
+      
+    }
+}
+
+//##############################################
+//############# usuwanie pliku
+//#############################################
+export const handleDeleteFileAction = (fileKey, message) => {
     return {
         type: actionTypes.REPO_DELETE_FILE,
         fileKey: fileKey,
+        message: message,
     }
+}
 
+export const handleDeleteFileActionFailed = (error) => {
+    return {
+        type: actionTypes.REPO_DELETE_FILE_FAILED,
+        error: error.toString(),
+    }
+}
+
+export const handleDeleteFile = (fileKey, projectId, userId, token) => {
+    console.log('DELETE FILE:' + fileKey);
+    return dispatch => {
+            axios.delete('/repoFiles/deleteFile/' + projectId, 
+            {
+                data: { 
+                    fileKey: fileKey,
+                    projectId: projectId,
+                    userId: userId,
+                 },
+                headers: {
+                   Authorization: 'Bearer ' + token
+               } 
+           })
+               .then(response => {
+                    dispatch(handleDeleteFileAction(response.data.fileKey, response.data.message));
+               })
+               .catch(error => {
+                   console.log(error)
+                   dispatch(handleDeleteFileActionFailed(error));
+               });
+    }
 }
 

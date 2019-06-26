@@ -10,7 +10,7 @@ const projectsList = (props) => {
             <tr className="thead-dark">
                 <td className="title">Tytuł</td>
                 {
-                    //<td >Właściciel</td>
+                    //<tSuperMpongoDBd >Właściciel</td>
                 }
                 
                 <td >Data utworzenia</td>

@@ -12,51 +12,64 @@ class RecognitionItem extends Component {
     constructor(props){
         super(props);
 
-        //wszytskie do tej pory wgrane pliki z reducera
-        let allFiles =  this.props.allFiles;
-        //znajduje plik przekazany jako parametr we wszystkich plikach przekazanych z reducera
-        const foundfile = allFiles.find(obj => obj.id == this.props.fileID);
-    
-        this.state = {
-            file: foundfile,
-        }
+       // this.state = {
+        //    file: foundfile,
+       // }
 
         //console.log(foundfile)
     }
     
     
 
-    componentDidMount(){
+    componentWillMount = () => {
        // console.log("COMPOJNENT DID MOUNT")
        this.reader = new FileReader(); 
-        
+
+        //wszytskie do tej pory wgrane pliki z reducera
+        let allFiles =  this.props.allFiles;
+        //znajduje plik przekazany jako parametr we wszystkich plikach przekazanych z reducera
+        const foundEntry = allFiles.find(obj => obj.id == this.props.fileID);
+    // [{
+        // file: File {name: "__mowa16000.wav", lastModified: 1560968256333, lastModifiedDate: Wed Jun 19 2019 20:17:36 GMT+0200 (Central European Summer Time), webkitRelativePath: "", size: 1235820, …}
+        // id: "01f0a209-a29f-407a-9b8a-12cdebd1e1fd"
+        // loadedperc: 0
+        // status: "toload"
+    // }]
+
        //upload file only if the status is not loaded
-       if(this.state.file.status !== 'loaded') {
-        this.fileUpload(this.state.file);
+       console.log(foundEntry.status)
+       if(foundEntry.status !== 'loaded' && 
+          foundEntry.status !== 'done' &&
+          foundEntry.status !== 'error' &&
+          foundEntry.status !== 'progress' &&
+          foundEntry.status !== 'ready') {
+            console.log("Wlaczam upload pliku")
+            this.fileUpload(foundEntry.file, foundEntry.id);
        }
+
     }
 
-    componentWillUnmount(){
-       this.reader.abort();
+    componentWillUnmount = () => {
+       //this.reader.abort();
     }
 
-    fileUpload = (file) => {
+    fileUpload = (file, fileEntryId) => {
         
         this.reader.onloadstart = (evt) => {
             console.log("ONLOADSTART");
 
-            let updatedFile = {
-                ...this.state.file,
-                status: 'toload',
-                loadedperc: 0
-            };
-            this.setState({
-                file: updatedFile
-            })
+            // let updatedFile = {
+            //     ...this.state.file,
+            //     status: 'toload',
+            //     loadedperc: 0
+            // };
+            // this.setState({
+            //     file: updatedFile
+            // })
 
             //console.log("onloadstart");
 
-              this.props.updateFileState(this.state.file.id, 'toload', 0);
+              this.props.updateFileState(fileEntryId, 'toload', 0);
         }
     
 
@@ -69,14 +82,16 @@ class RecognitionItem extends Component {
                 if (percentLoaded < 100) {
                  // console.log(percentLoaded + "%");
 
-                    let updatedFile = {
-                        ...this.state.file,
-                        status: 'toload',
-                        loadedperc: percentLoaded
-                    };
-                    this.setState({
-                        file: updatedFile
-                    })
+                    // let updatedFile = {
+                    //     ...this.state.file,
+                    //     status: 'toload',
+                    //     loadedperc: percentLoaded
+                    // };
+                    // this.setState({
+                    //     file: updatedFile
+                    // })
+
+                    this.props.updateFileState(fileEntryId, 'toload', percentLoaded);
 
                     //this.props.updateFileState(this.state.file.id, 'toload', percentLoaded);
                     //this.props.updateFileState(this.state.file.id, 'toload', percentLoaded);
@@ -93,15 +108,17 @@ class RecognitionItem extends Component {
 
         this.reader.onloadend = (evt) => {
             console.log("ONLOADEND");
-            let updatedFile = {
-                ...this.state.file,
-                status: 'loaded',
-                loadedperc: 100
-            };
-            this.setState({
-                file: updatedFile
-            })
-            this.props.updateFileState(this.state.file.id, 'loaded', 100);
+            // let updatedFile = {
+            //     ...this.state.file,
+            //     status: 'loaded',
+            //     loadedperc: 100
+            // };
+            // this.setState({
+            //     file: updatedFile
+            // })
+
+            this.props.updateFileState(fileEntryId, 'loaded', 100);
+            //this.props.updateFileState(this.state.file.id, 'loaded', 100);
         }
 
         this.reader.onerror = (evt) => {
@@ -118,27 +135,34 @@ class RecognitionItem extends Component {
                   alert('An error occurred reading this file.');
               };
 
-              let updatedFile = {
-                ...this.state.file,
-                status: 'error',
-                loadedperc: 0
-            };
-            this.setState({
-                file: updatedFile
-            })
+            //   let updatedFile = {
+            //     ...this.state.file,
+            //     status: 'error',
+            //     loadedperc: 0
+            // };
+            // this.setState({
+            //     file: updatedFile
+            // })
 
-            this.props.updateFileState(this.state.file.id, 'error', 0);
+            this.props.updateFileState(fileEntryId, 'error', 0);
+            //this.props.updateFileState(this.state.file.id, 'error', 0);
               //this.props.updateFileState(this.state.file.id, 'error', 0);
         }
 
-        this.reader.readAsBinaryString(file.file);
+        console.log("reader zaczyna czytanie pliku: ")
+        console.log(file)
+        this.reader.readAsBinaryString(file);
 
       }
 
 
-      startFileRecognition = () => {
-        //console.log(this.state.file)
-        this.props.onFileRecognition(this.state.file.file, this.state.file.id);
+      startFileRecognition = (fileId) => {
+        let allFiles =  this.props.allFiles;
+        //znajduje plik przekazany jako parametr we wszystkich plikach przekazanych z reducera
+        const foundEntry = allFiles.find(obj => obj.id == this.props.fileID);
+
+        this.props.updateFileState(fileId, 'progress', 100);
+        this.props.onFileRecognition(foundEntry.file, foundEntry.id, this.props.userId, this.props.projectId );
       }
     
 
@@ -148,8 +172,11 @@ class RecognitionItem extends Component {
 
         let ikonki = null;
 
+        let allFiles =  this.props.allFiles;
+        const foundEntry = allFiles.find(obj => obj.id == this.props.fileID);
+
         // formatowanie wielkosci pliku
-        let nBytes = this.state.file.file.size;
+        let nBytes = foundEntry.file.size;
         let filesize = nBytes + " bytes";
 
         for (let aMultiples = ["KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"], nMultiple = 0, nApprox = nBytes / 1024; nApprox > 1; nApprox /= 1024, nMultiple++) {
@@ -158,14 +185,14 @@ class RecognitionItem extends Component {
 
     
 
-        switch(this.state.file.status){
+        switch(foundEntry.status){
             case ('toload'):
                     statusinfo = (<span className="loading">
                     <div className="spinner-border text-primary" role="status">
                         <span className="sr-only">loading... </span>
                     </div>
     
-                         Ładowanie pliku {this.state.file.loadedperc + '%'}
+                         Ładowanie pliku {foundEntry.loadedperc + '%'}
                     </span>);
 
                     ikonki = (
@@ -191,7 +218,7 @@ class RecognitionItem extends Component {
                     statusinfo = <span className="uploaded"><i className="fas fa-check"></i> Załadowany</span>;
                     ikonki = (
                         <>
-                        <a onClick={this.startFileRecognition} className="recognitionIcon"><i className="fas fa-comments"></i></a>
+                        <a onClick={(fileId)=>this.startFileRecognition(this.props.fileID)} className="recognitionIcon"><i className="fas fa-comments"></i></a>
                         <a href="#" className="preview"><i className="fas fa-eye"></i></a>
                         <a href="#" className="remove"><i className="fas fa-times"></i></a>
                         </>
@@ -213,16 +240,27 @@ class RecognitionItem extends Component {
                                     <span className="sr-only">Loading...</span>
                                 </div>
     
-                                 Rozpoznawanie
+                                 Rozpoznawanie...
                             </span>);	
                     ikonki = (
                         <Aux>
                             
-                            <a  className="preview"><i className="fas fa-eye"></i></a>
+                            
                             <a  className="remove"><i className="fas fa-times"></i></a>
                         </Aux>
                     )		
-                break; 
+                break;
+            case ('done'):
+                    statusinfo = <span className="done"><i className="fas fa-check"></i> Rozpoznawanie zakonczone</span>;	
+                    this.props.onGetProjectFilesForUser(this.props.userId, this.props.projectId, this.props.token)
+                    ikonki = (
+                        <Aux>
+                            
+                            <a href="#" className="preview"><i className="fas fa-eye"></i></a>
+                            <a  className="remove"><i className="fas fa-times"></i></a>
+                        </Aux>
+                    )		
+                break;  
             default:
                     statusinfo = null;
                     ikonki = null;
@@ -235,7 +273,7 @@ class RecognitionItem extends Component {
                   <div className={["row", "fileItem", "RecognitionItem"].join(' ')}>
                         <div className="col-sm file-info">
                             <i className="fas fa-desktop"></i>
-                            <span className={"fileName"}>{this.state.file.file.name}</span>
+                            <span className={"fileName"}>{foundEntry.file.name}</span>
                             <span className={"fileSize"}>({filesize})</span>
                         </div>
     
@@ -259,13 +297,18 @@ class RecognitionItem extends Component {
 const mapStateToProps = state => {
     return {
         allFiles: state.recR.filesToUpload,
+        userId: state.projectR.currentProjectOwner,
+        projectId: state.projectR.currentProjectID,
+        token: state.homeR.token,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-       updateFileState: (fileID, status,percLoaded) => dispatch({type:actionTypes.UPDATE_FILE_STATE, fileID: fileID, status: status, percLoaded:percLoaded}),
-       onFileRecognition: (file, entryId) => dispatch(recognitionActions.initFileRecognition(file, entryId))
+       updateFileState: (fileID, status,percLoaded) => dispatch(recognitionActions.updateFileState(fileID, status,percLoaded)),
+       onGetProjectFilesForUser: (userId, projectId, token) => dispatch(recognitionActions.getProjectFilesForUser(userId,projectId, token)),
+       onFileRecognition: (file, entryId,userId, projectId) => dispatch(recognitionActions.initFileRecognition(file, entryId, userId, projectId)),
+      // onRepoUpdate: (userId, projectId, token) => dispatch(recognitionActions.getProjectFilesForUser(userId,projectId, token))
     }
 }
 

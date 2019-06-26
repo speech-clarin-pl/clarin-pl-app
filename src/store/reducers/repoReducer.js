@@ -17,33 +17,12 @@ const initialState = {
     //       modified: +Moment().subtract(3, 'days'),
     //       size: 545 * 1024,
     //     },
-    //     {
-    //       key: 'photos/animals/elephants.png',
-    //       modified: +Moment().subtract(3, 'days'),
-    //       size: 52 * 1024,
-    //     },
-    //     {
-    //       key: 'photos/funny fall.gif',
-    //       modified: +Moment().subtract(2, 'months'),
-    //       size: 13.2 * 1024 * 1024,
-    //     },
-    //     {
-    //       key: 'photos/holiday.jpg',
-    //       modified: +Moment().subtract(25, 'days'),
-    //       size: 85 * 1024,
-    //     },
-    //     {
-    //       key: 'documents/letter chunks.doc',
-    //       modified: +Moment().subtract(15, 'days'),
-    //       size: 480 * 1024,
-    //     },
-    //     {
-    //       key: 'documents/export.pdf',
-    //       modified: +Moment().subtract(15, 'days'),
-    //       size: 4.2 * 1024 * 1024,
-    //     },
     //   ],
 }
+
+//##########################################
+//############ tworzenie nowego folderu
+//#########################################
 
 const repoCreateFolder = (state, action) => {
 
@@ -105,13 +84,32 @@ const repoCreateFiles = (state, action) => {
 	//   }
 }
 
+
+//##########################################
+//############ zmiana nazwy folderu w repo
+//#########################################
+
 const repoRenameFolder = (state, action) => {
 
     const oldKey = action.oldKey;
     const newKey = action.newKey;
 
+    console.log('ZMIOANA NAZWY FOLDERU')
+
+    const newFiles = [];
+    state.files.map((file) => {
+
+        if(oldKey !== newKey){
+            newFiles.push({
+                ...file,
+                key: file.key.replace(oldKey, newKey),
+                modified: +Moment(),
+            })
+        }
+    })
+    
     return updateObject(state,
-        {});
+        {files: newFiles});
     
 
     // handleRenameFolder = (oldKey, newKey) => {
@@ -134,74 +132,86 @@ const repoRenameFolder = (state, action) => {
 	//   }
 }
 
+//##########################################
+//############ zmiana nazwy pliku w repo
+//#########################################
+
 const repoRenameFile = (state, action) => {
 
     const oldKey = action.oldKey;
     const newKey = action.newKey;
 
-    return updateObject(state,
-        {});
+    const newFiles = [];
+    
+    state.files.map((file) => {
+		if (file.key === oldKey) {
+			newFiles.push({
+                ...file,
+                key: newKey,
+                modified: +Moment(),
+			})
+		} else {
+			  newFiles.push(file)
+			}
+		})
+		
 
-      // handleRenameFile = (oldKey, newKey) => {
-	// 	this.setState(state => {
-	// 	  const newFiles = []
-	// 	  state.files.map((file) => {
-	// 		if (file.key === oldKey) {
-	// 		  newFiles.push({
-	// 			...file,
-	// 			key: newKey,
-	// 			modified: +Moment(),
-	// 		  })
-	// 		} else {
-	// 		  newFiles.push(file)
-	// 		}
-	// 	  })
-	// 	  state.files = newFiles
-	// 	  return state
-	// 	})
-	//   }
+    return updateObject(state,
+        {files: newFiles});
+
 }
+
+//##########################################
+//############ usuwanie folderow z repo
+//#########################################
 
 const repoDeleteFolder = (state, action) => {
 
     const folderKey = action.folderKey;
 
-    return updateObject(state,
-        {});
+    const newFiles = [];
+    state.files.map((file) => {
+        if (file.key.substr(0, folderKey.length) !== folderKey) {
+            newFiles.push(file)
+        }
+    })
     
-      // handleDeleteFolder = (folderKey) => {
-	// 	this.setState(state => {
-	// 	  const newFiles = []
-	// 	  state.files.map((file) => {
-	// 		if (file.key.substr(0, folderKey.length) !== folderKey) {
-	// 		  newFiles.push(file)
-	// 		}
-	// 	  })
-	// 	  state.files = newFiles
-	// 	  return state
-	// 	})
-	//   }
+    return updateObject(state,
+        {files: newFiles});
+    
 }
+
+
+//##########################################
+//############ usuwanie plikow z repo ######
+//##########################################
 
 const repoDeleteFile = (state, action) => {
 
     const fileKey = action.fileKey;
+
+    const newFiles = [];
+    state.files.map((file) => {
+        if (file.key !== fileKey) {
+            newFiles.push(file)
+        } else {
+            //jezeli jest usuniety z folderu to musze posotawic folder
+            let n = fileKey.lastIndexOf("/");
+
+            //to oznacza ze plik jest w jakim podfoldrze
+            if(n > 1){
+               //wtedy zwracam tylko sam folder - bez pliku w nim
+               console.log(file)
+               let onlyFolders = file.key.substring(0,n+1);
+               console.log(onlyFolders)
+               file.key = onlyFolders;
+               newFiles.push(file);
+            }
+        }
+    })
   
     return updateObject(state,
-        {});
-    
-     // handleDeleteFile = (fileKey) => {
-	// 	this.setState(state => {
-	// 	  const newFiles = []
-	// 	  state.files.map((file) => {
-	// 		if (file.key !== fileKey) {
-	// 		  newFiles.push(file)
-	// 		}
-	// 	  })
-	// 	  state.files = newFiles
-	// 	  return state
-	// 	})
-	//   }
+        {files: newFiles});
 }
 
 const repoGetUserProjectFiles = (state, action) => {

@@ -63,6 +63,7 @@ class ProjectPage extends Component {
 
     return (
         <Aux>
+         
             <TopBar 
                   version="longinit" 
                   wide="yes" 

@@ -39,7 +39,8 @@ export {
 export {
     dropFiles,
     initBatchRecognition,
-    initFileRecognition
+    initFileRecognition,
+    updateFileState
 } from './toolActions/recognition';
 
 export {

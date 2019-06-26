@@ -18,22 +18,22 @@ class repoBar extends Component  {
 	}
 
 	  handleCreateFolder = (key) => {
-		this.props.onHandleCreateFolder(key); 
+		this.props.onHandleCreateFolder(key, this.props.currentProjectID, this.props.currentProjectOwner, this.props.token); 
 	  }
 	  handleCreateFiles = (files, prefix) => {
 		this.props.onHandleCreateFiles(files, prefix); 
 	  }
 	  handleRenameFolder = (oldKey, newKey) => {
-		this.props.onHandleRenameFolder(oldKey, newKey);
+		this.props.onHandleRenameFolder(oldKey, newKey, this.props.currentProjectID, this.props.currentProjectOwner, this.props.token);
 	  }
 	  handleRenameFile = (oldKey, newKey) => {
-		this.props.onHandleRenameFile(oldKey, newKey);
+		this.props.onHandleRenameFile(oldKey, newKey, this.props.currentProjectID, this.props.currentProjectOwner, this.props.token);
 	  }
 	  handleDeleteFolder = (folderKey) => {
-		this.props.onHandleDeleteFolder(folderKey);
+		this.props.onHandleDeleteFolder(folderKey, this.props.currentProjectID, this.props.token);
 	  }
 	  handleDeleteFile = (fileKey) => {
-		this.props.onHandleDeleteFile(fileKey);
+		this.props.onHandleDeleteFile(fileKey, this.props.currentProjectID, this.props.currentProjectOwner, this.props.token);
 	  }
 
 	  
@@ -73,6 +73,10 @@ class repoBar extends Component  {
 			<div className="RepoBar" id="RepoBar">
 				<div className="topPart">
 					<div className="repoTab" >
+						<div className="scrollStrip"
+							onMouseDown={this.startResizeRepo}>
+								<i class="fas fa-arrows-alt-h"></i>
+							</div>
 						Repozytorium
 					</div>
 					<div className="repoNav" >
@@ -84,8 +88,7 @@ class repoBar extends Component  {
 				<div className="mainRepoContent" data-scrollbar>
 					
 
-			<div className="scrollStrip"
-				onMouseDown={this.startResizeRepo}></div>
+			
 
 			<FileBrowser
 				files={this.props.files}
@@ -100,14 +103,14 @@ class repoBar extends Component  {
 					Loading: <i className="fas fa-spinner"></i>,
 				  }}
 
-				onCreateFolder={this.handleCreateFolder}
+				onCreateFolder={this.handleCreateFolder} 
 				onCreateFiles={this.handleCreateFiles}
-				onMoveFolder={this.handleRenameFolder}
-				onMoveFile={this.handleRenameFile}
-				onRenameFolder={this.handleRenameFolder}
-				onRenameFile={this.handleRenameFile}
+				onMoveFolder={this.handleRenameFolder} 
+				onMoveFile={this.handleRenameFile} 
+				onRenameFolder={this.handleRenameFolder} 
+				onRenameFile={this.handleRenameFile} 
 				onDeleteFolder={this.handleDeleteFolder}
-				onDeleteFile={this.handleDeleteFile}
+				onDeleteFile={this.handleDeleteFile} 
 			/>
 
 			{mount[0]}
@@ -133,12 +136,12 @@ const mapStateToProps = (state) => {
   
   const mapDispatchToProps = dispatch => {
 	return {
-		onHandleCreateFolder: (key) => dispatch(repoActions.handleCreateFolder(key)),
+		onHandleCreateFolder: (key,projectId, userId, token) => dispatch(repoActions.handleCreateFolder(key, projectId, userId, token)),
 		onHandleCreateFiles: (files, prefix) => dispatch(repoActions.handleCreateFiles(files, prefix)),
-		onHandleRenameFolder: (oldKey, newKey) => dispatch(repoActions.handleRenameFolder((oldKey, newKey))),
-		onHandleRenameFile: (oldKey, newKey) => dispatch(repoActions.handleRenameFile(oldKey, newKey)),
-		onHandleDeleteFolder: (folderKey) => dispatch(repoActions.handleDeleteFolder(folderKey)),
-		onHandleDeleteFile: (fileKey) => dispatch(repoActions.handleDeleteFile(fileKey)),
+		onHandleRenameFolder: (oldKey, newKey,projectId, userId, token) => dispatch(repoActions.handleRenameFolder(oldKey, newKey, projectId, userId, token)),
+		onHandleRenameFile: (oldKey, newKey, projectId, userId, token) => dispatch(repoActions.handleRenameFile(oldKey, newKey, projectId, userId, token)),
+		onHandleDeleteFolder: (folderKey, projectId, token) => dispatch(repoActions.handleDeleteFolder(folderKey, projectId, token)),
+		onHandleDeleteFile: (fileKey, projectId, userId, token) => dispatch(repoActions.handleDeleteFile(fileKey, projectId, userId, token)),
 		onGetProjectFilesForUser: (userId, projectId, token) => dispatch(repoActions.getProjectFilesForUser(userId,projectId, token))
 	}
   }

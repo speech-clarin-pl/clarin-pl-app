@@ -3,7 +3,14 @@ import {updateObject} from '../../utility';
 
 
 const initialState = {
-    filesToUpload: [],
+    filesToUpload: [], 
+    //w formacie np. 
+    // [{
+        // file: File {name: "__mowa16000.wav", lastModified: 1560968256333, lastModifiedDate: Wed Jun 19 2019 20:17:36 GMT+0200 (Central European Summer Time), webkitRelativePath: "", size: 1235820, …}
+        // id: "01f0a209-a29f-407a-9b8a-12cdebd1e1fd"
+        // loadedperc: 0
+        // status: "toload"
+    // }]
     modal: false, //controls if modal window is opened
 }
 

@@ -35,6 +35,14 @@
     color: #28a745;
 }
 
+.RecognitionItem .done {
+    color: #28a745;
+}
+
+.RecognitionItem .error {
+    color: red;
+}
+
 .RecognitionItem .recognitionIcon {
     color: #3498db;
     cursor: pointer;

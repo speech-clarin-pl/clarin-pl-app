@@ -17,7 +17,6 @@ import uuid  from 'uuid';
 class RecognitionTool extends Component {
 
     handleDrop = (files) => {
-
         //extending the files by additionnal info about the status and load percentage
         //console.log("RECI HANDLE DROP")
         //console.log(files)
@@ -35,6 +34,17 @@ class RecognitionTool extends Component {
         this.props.onDrop(extFiles);
     }
 
+    //kiedy uzytkownik recznie wybral pliki
+    whenFilesChose = (e) => {
+        const inputControl = e.currentTarget;
+        let fileList = [];
+        for(var i=0;i<inputControl.files.length;i++){
+            fileList.push(inputControl.files[i]);
+        }
+        //console.log(fileList);
+        this.handleDrop(fileList);
+    }
+
 
     //otwiera okno modalne
     openModalHandler = () => {
@@ -49,7 +59,6 @@ class RecognitionTool extends Component {
     //rozpoczynam rozpoznawanie 
     startBatchRecognition = () => {
 
-        
         //wydobywam sama tablica plikow z entry 
         //bo entry to moja struktura danych
         const audioFilesArray = this.props.filesToUpload.map(entry => {
@@ -132,6 +141,7 @@ class RecognitionTool extends Component {
 
                                 <DragAndDrop whenDropped={this.handleDrop}>
                                        <DropFilesArea 
+                                            whenFilesChose={this.whenFilesChose}
                                             mainTitle="Wgraj pliki z dysku"
                                             desc="Pliki zostaną zapisane jedynie tymczasowo na potrzeby przetwarzania. Po tym czasie są one usuwane bezpowrotnie usuwane z serwera"/>
                                 </DragAndDrop>
