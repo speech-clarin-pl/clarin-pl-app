@@ -10,6 +10,7 @@ import homeReducer from './store/reducers/homeReducer';
 import projectsListReducer from './store/reducers/projectsListReducer';
 import recognitionReducer from './store/reducers/toolsReducers/recognitionReducer';
 import segmentationReducer from './store/reducers/toolsReducers/segmentationReducer';
+import previewReducer from './store/reducers/toolsReducers/previewReducer';
 import repoReducer from './store/reducers/repoReducer';
 import thunk from 'redux-thunk';
 import axios from 'axios';
@@ -29,7 +30,8 @@ const rootReducer = combineReducers({
     prolistR: projectsListReducer,
     recR: recognitionReducer,
     segR: segmentationReducer,
-    repoR: repoReducer
+    repoR: repoReducer,
+    previewR: previewReducer,
 });
 
 

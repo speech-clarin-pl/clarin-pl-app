@@ -4,53 +4,79 @@ import './TranscriptTool.css';
 import SettingBar from '../SettingBar/SettingBar';
 import FooterTool from '../FooterTool/FooterTool';
 import LeftSiteBar from '../LeftSiteBar/LeftSiteBar';
-import {withRouter } from 'react-router-dom'
+import {withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import * as previewActions from '../../../store/actions/index';
 
-
+//sorry for the name of this class - to be changed...
 class TranscriptTool extends Component {
 
    state = {
        txtContent: '',
        txtDisplayed: false,
-       fileName: '',
+       txtfileName: '',
    }
 
     getExt = (path) => {
         return (path.match(/(?:.+..+[^\/]+$)/ig) != null) ? path.split('.').slice(-1)[0]: 'null';
     }
 
+    txtAreaChangedHandler = (e) => {
+       // console.log(e.currentTarget.value);
+       this.props.onUpdateTxtArea(e.currentTarget.value, null);
+    }
+
    
 
     render() {
 
-       
-
-        console.log(this.props.location.state)
-        if(this.props.location.state){
-            const urlToFile = this.props.location.state.url;
-            const fileExt = this.getExt(urlToFile);
-            console.log(urlToFile)
-            console.log(fileExt)
-
-            if(this.state.txtDisplayed === false){
-                fetch(urlToFile)
-                .then((r) => r.text())
-                .then(text  => {
-    
-                    //console.log(text);
-                    this.setState({
-                        txtContent: text,
-                        txtDisplayed: true,
+        if(this.props.txtfileName !== ''){
+            
+            if(this.props.txtDisplayed === false){
+                //console.log('AAAAAA')
+                fetch(this.props.txtFileUrl)
+                    .then((r) => r.text())
+                    .then(text  => {
+                        console.log(text)
+                        //console.log(text);
+                        this.props.onUpdateTxtArea(text, this.props.txtfileName)
                     })
-                })
             }
-              
         }
 
+        // //to oznacza ze zakladka jest otworzona gdy 
+        // //uzytkownik kliknal w plik w repo
+        // if(this.props.location.state){
+        //     const urlToFile = this.props.location.state.url;
+        //     const fileKey = this.props.location.state.key;
+        //     const fileExt = this.getExt(urlToFile);
+        //     //console.log(urlToFile)
+        //     //console.log(fileExt)
 
-       
-        
-      
+        //     //gdy to jest plik txt
+        //     if(fileExt === 'txt'){
+        //         //aby wykonalo sie tylko raz
+        //         if(this.props.txtDisplayed === false){
+        //             fetch(urlToFile)
+        //             .then((r) => r.text())
+        //             .then(text  => {
+
+        //                 //console.log(text);
+        //                 this.props.onUpdateTxtArea(text, fileKey)
+                        
+        //             })
+        //         }
+        //     } 
+        // }
+
+
+        let headerTxtField = (
+                <p style={{fontWeight: 'bold'}}>
+                    Podgld pliku <span style={{fontSize: 'bigger'}}>
+                                     {this.props.txtfileName}
+                                </span>
+                </p>
+            );
         
 
         return(
@@ -132,20 +158,21 @@ class TranscriptTool extends Component {
     
                             
                             <div className="form-group">
-                            
+
+                           {headerTxtField}
+
+                           
                             <textarea 
                                 className="form-control" 
                                 className="TranskriptInput" 
                                 placeholder="Zaznacz plik txt w repozytorium" 
-                                value= {this.state.txtContent}
+                                value= {this.props.txtContent}
+                                onChange={this.txtAreaChangedHandler}
                                 >
                             </textarea>
                                 
                             </div>
-    
-                            
-    
-    
+  
                         </div>
     
                     </div>
@@ -163,4 +190,21 @@ class TranscriptTool extends Component {
 
 }
 
-export default withRouter(TranscriptTool);
+const mapStateToProps = (state) => {
+	return {
+      txtContent: state.previewR.txtContent,
+      txtDisplayed: state.previewR.txtDisplayed,
+      txtfileName: state.previewR.txtfileName,
+      txtFileUrl: state.previewR.txtFileUrl,
+
+	}
+  }
+  
+  const mapDispatchToProps = dispatch => {
+	return {
+		//onHandleCreateFolder: (key,projectId, userId, token) => dispatch(repoActions.handleCreateFolder(key, projectId, userId, token)),
+        onUpdateTxtArea: (newValue, fileKey) => dispatch(previewActions.updateTxtPreview(newValue, fileKey)),
+	}
+  }
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(TranscriptTool));

@@ -37,6 +37,13 @@ export {
 } from './home';
 
 export {
+    updateTxtPreview,
+    openFilePreview
+} from './toolActions/preview';
+
+
+
+export {
     dropFiles,
     initBatchRecognition,
     initFileRecognition,

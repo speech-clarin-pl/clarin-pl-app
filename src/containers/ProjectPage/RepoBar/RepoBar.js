@@ -60,21 +60,37 @@ class repoBar extends Component  {
 
 	  //dwukrotne klikniecie powoduje uruchomienie w podgladzie
 	  handlePreviewOpen = (file) => {
-		console.log("handlePreviewOpen")
-		console.log(file)
-		console.log(this.props)
-		let toURL = this.props.match.url + '/preview';
-		this.props.history.push({
-			pathname: toURL,
-			//search: '?key='+file.key,
-			state: { url: file.url }
-		  });
-		
-		// return <Redirect to={{
-        //     pathname: this.props.match.url + '/preview',
-        //     state: { id: '123' }
-        // }} />
 
+		console.log(this.props.location.pathname);
+
+		//sprawdzam czy juz jestem na stronie podgladu
+		if(!this.props.location.pathname.includes('preview')){
+
+			let toURL = this.props.match.url + '/preview';
+			this.props.history.push({
+				pathname: toURL,
+			  });
+		}
+	
+		this.props.onOpenFilePreview(file);
+
+		
+		
+		
+
+
+		// console.log("handlePreviewOpen")
+		// console.log(file)
+		// console.log(this.props)
+		// let toURL = this.props.match.url + '/preview';
+		// this.props.history.push({
+		// 	pathname: toURL,
+		// 	//search: '?key='+file.key,
+		// 	state: { 
+		// 		url: file.url,
+		// 		key: file.key
+		// 	}
+		//   });
 	  }
 
 	  handlePreviewClose = (file) => {
@@ -220,7 +236,8 @@ const mapStateToProps = (state) => {
 		onHandleRenameFile: (oldKey, newKey, projectId, userId, token) => dispatch(repoActions.handleRenameFile(oldKey, newKey, projectId, userId, token)),
 		onHandleDeleteFolder: (folderKey, projectId,userId, token) => dispatch(repoActions.handleDeleteFolder(folderKey, projectId,userId, token)),
 		onHandleDeleteFile: (fileKey, projectId, userId, token) => dispatch(repoActions.handleDeleteFile(fileKey, projectId, userId, token)),
-		onGetProjectFilesForUser: (userId, projectId, token) => dispatch(repoActions.getProjectFilesForUser(userId,projectId, token))
+		onGetProjectFilesForUser: (userId, projectId, token) => dispatch(repoActions.getProjectFilesForUser(userId,projectId, token)),
+		onOpenFilePreview: (file) => dispatch(repoActions.openFilePreview(file)),
 	}
   }
 
