@@ -22,7 +22,6 @@ const getExt = (path) => {
 
 
 const updateTxtPreview = (state, action) => {
-    
     return updateObject(state, {
         txtContent: action.newContent,
         //txtfileName: action.fileName,
