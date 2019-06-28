@@ -12,12 +12,23 @@ const initialState = {
     audiofileName: '',
     audioDisplayed: false,
     audioFileUrl: '',
+    waveSurferLoaded: false, //indicates when the waveSurfer is initialized
+
+    playing: false, //if playing....
 
 }
 
 //zwraca rozszerzenie pliku
 const getExt = (path) => {
     return (path.match(/(?:.+..+[^\/]+$)/ig) != null) ? path.split('.').slice(-1)[0]: 'null';
+}
+
+const updateAudioPreview = (state, action) => {
+    return updateObject(state, {
+        //audiofileName: action.fileKey,
+        //txtfileName: action.fileName,
+        audioDisplayed: true,
+    }) ;      
 }
 
 
@@ -37,21 +48,51 @@ const openFilePreview = (state,action) => {
     const fileUrl = action.fileUrl;
     const fileExt = getExt(fileKey);
 
+
     if(fileExt === 'txt'){
         return updateObject(state, {
             txtfileName: fileKey,
             txtFileUrl: fileUrl,
             txtDisplayed: false,
         })
+    } else if(fileExt === 'wav' ||
+              fileExt === 'mp3' ||
+              fileExt === 'au'  ){
+        
+        return updateObject(state, {
+            audiofileName: fileKey,
+            audioFileUrl: fileUrl,
+            audioDisplayed: false,
+        })
+
     }
 }
 
+const waveSurferLoaded = (state, action) => {
+    return updateObject(state, {
+        waveSurferLoaded: action.ifYes,
+    })
+}
 
+const togglePlayingPreview = (state, action) => {
+    if(state.playing){
+        return updateObject(state, {
+            playing: false
+        })
+    } else {
+        return updateObject(state, {
+            playing: true
+        })
+    }
+}
 
 const previewReducer = (state = initialState, action) => {
     switch(action.type){
         case actionTypes.UPDATE_TXT_PREVIEW: return updateTxtPreview(state, action);
+        case actionTypes.UPDATE_AUDIO_PREVIEW: return updateAudioPreview(state, action);
         case actionTypes.OPEN_FILE_PREVIEW: return openFilePreview(state,action);
+        case actionTypes.WAVESURFER_LOADED: return waveSurferLoaded(state,action);
+        case actionTypes.TOGGLE_PLAYING_PREVIEW: return togglePlayingPreview(state,action);
     }
 
     return state;

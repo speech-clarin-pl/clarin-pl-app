@@ -75,9 +75,6 @@ class repoBar extends Component  {
 		this.props.onOpenFilePreview(file);
 
 		
-		
-		
-
 
 		// console.log("handlePreviewOpen")
 		// console.log(file)

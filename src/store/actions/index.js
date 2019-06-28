@@ -38,7 +38,10 @@ export {
 
 export {
     updateTxtPreview,
-    openFilePreview
+    updateAudioPreview,
+    openFilePreview,
+    weveSurferLoaded,
+    togglePlaying
 } from './toolActions/preview';
 
 

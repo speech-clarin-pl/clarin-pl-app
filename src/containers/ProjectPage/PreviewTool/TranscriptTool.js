@@ -1,3 +1,5 @@
+
+import WaveSurfer from 'wavesurfer.js';
 import React, { Component } from 'react';
 import Aux from '../../../hoc/Auxiliary';
 import './TranscriptTool.css';
@@ -7,93 +9,78 @@ import LeftSiteBar from '../LeftSiteBar/LeftSiteBar';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as previewActions from '../../../store/actions/index';
+//import Wavesurfer from 'react-wavesurfer';
 
 //sorry for the name of this class - to be changed...
+
+
+
 class TranscriptTool extends Component {
 
-    state = {
-        debugInfo: '',
+   
+    constructor(props){
+        super(props);
+     
+        let wavesurfer = null;
+   
+        this.handleTogglePlay = this.handleTogglePlay.bind(this);
+        this.handlePosChange = this.handlePosChange.bind(this);
+        //this.loadAudioFileForPreview = this.loadAudioFileForPreview.bind(this);
+      }
+
+      handleTogglePlay = () => {
+        //this.wavesurfer.load('http://localhost:1234/repo/5d0e20536c8ef65ef77e7e65/5d0e206f6c8ef65ef77e7e66/test.wav');
+        if(this.props.playing){
+            this.wavesurfer.pause();
+        } else {
+            this.wavesurfer.play();
+        }
+
+        this.props.onTooglePlaying();
+      }
+
+      handlePosChange = (e) => {
+        this.setState({
+          pos: e.originalArgs[0]
+        });
+      }
+
+
+    componentDidMount = () => {
+
+        this.wavesurfer = WaveSurfer.create({
+            container: '#waveform',
+            waveColor: '#6f8796',
+            progressColor: '#3498db',
+            responsive: true,
+            //backend: 'MediaElement',
+            plugins: []
+        });
+
+        this.wavesurfer.on('loading', function (e) {
+            console.log(e);
+        }.bind(this));
+
+
+        // Time stretcher
+        this.wavesurfer.on('ready', function () {
+            this.updateAudioArea();
+           // this.props.onUpdateAudioArea(this.props.fileKey)
+         }.bind(this));
+
+         this.props.onWeveSurferLoaded(true);
+        
     }
 
-    // componentWillMount = () => {
+    componentWillUnmount = () => {
+        this.props.onWeveSurferLoaded(false);
+        this.wavesurfer.stop();
+        this.wavesurfer = null;
+    }
 
-    //     let wavesurfer = WaveSurfer.create({
-    //         container: '#waveform',
-    //         waveColor: '#6f8796',
-    //         progressColor: '#3498db',
-    //         responsive: true,
-    //         backend: 'MediaElement',
-    //         plugins: []
-    //     });
-
-    //     this.wavesurfer.on('loading', function (e) {
-    //         console.log(e);
-    //         //$('#debuginfo').html('Ladowanie pliku: ' + e + ' %');
-    //     });
-
-
-    //     // Time stretcher
-    //     wavesurfer.on('ready', function () {
-    //         var st = new window.soundtouch.SoundTouch(
-    //             wavesurfer.backend.ac.sampleRate
-    //         );
-    //         var buffer = wavesurfer.backend.buffer;
-    //         var channels = buffer.numberOfChannels;
-    //         var l = buffer.getChannelData(0);
-    //         var r = channels > 1 ? buffer.getChannelData(1) : l;
-    //         var length = buffer.length;
-    //         var seekingPos = null;
-    //         var seekingDiff = 0;
-
-    //         var source = {
-    //             extract: function (target, numFrames, position) {
-    //                 if (seekingPos != null) {
-    //                     seekingDiff = seekingPos - position;
-    //                     seekingPos = null;
-    //                 }
-
-    //                 position += seekingDiff;
-
-    //                 for (var i = 0; i < numFrames; i++) {
-    //                     target[i * 2] = l[i + position];
-    //                     target[i * 2 + 1] = r[i + position];
-    //                 }
-
-    //                 return Math.min(numFrames, length - position);
-    //             }
-    //         };
-
-    //         var soundtouchNode;
-
-    //         wavesurfer.on('play', function () {
-    //             seekingPos = ~~(wavesurfer.backend.getPlayedPercents() * length);
-    //             st.tempo = wavesurfer.getPlaybackRate();
-
-    //             if (st.tempo === 1) {
-    //                 wavesurfer.backend.disconnectFilters();
-    //             } else {
-    //                 if (!soundtouchNode) {
-    //                     var filter = new window.soundtouch.SimpleFilter(source, st);
-    //                     soundtouchNode = window.soundtouch.getWebAudioNode(
-    //                         wavesurfer.backend.ac,
-    //                         filter
-    //                     );
-    //                 }
-    //                 wavesurfer.backend.setFilter(soundtouchNode);
-    //             }
-    //         });
-
-    //         wavesurfer.on('pause', function () {
-    //             soundtouchNode && soundtouchNode.disconnect();
-    //         });
-
-    //         wavesurfer.on('seek', function () {
-    //             seekingPos = ~~(wavesurfer.backend.getPlayedPercents() * length);
-    //         });
-    //     });
-
-    // }
-
+    updateAudioArea = () => {
+        this.props.onUpdateAudioArea(this.props.fileKey)
+    }
 
     getExt = (path) => {
         return (path.match(/(?:.+..+[^\/]+$)/ig) != null) ? path.split('.').slice(-1)[0] : 'null';
@@ -104,12 +91,20 @@ class TranscriptTool extends Component {
         this.props.onUpdateTxtArea(e.currentTarget.value, null);
     }
 
+    loadAudioFileForPreview = (audioUrl) => {
+        console.log('loadAudioFileForPreview')
+        if(this.props.waveSurferLoaded){
+            console.log(this.testowy)
+            this.wavesurfer.load(audioUrl);
+        }
+    }
+   
 
 
     render() {
 
+        //obsluga podgladu pliku txt
         if (this.props.txtfileName !== '') {
-
             if (this.props.txtDisplayed === false) {
                 //console.log('AAAAAA')
                 fetch(this.props.txtFileUrl)
@@ -119,6 +114,17 @@ class TranscriptTool extends Component {
                         //console.log(text);
                         this.props.onUpdateTxtArea(text, this.props.txtfileName)
                     })
+            }
+        }
+
+        //obsluga podgladu pliku audio
+        if (this.props.audiofileName !== '') {
+            if (this.props.waveSurferLoaded) {
+                if(this.props.audioDisplayed === false){
+                    console.log("aaaaaaaa")
+                    this.loadAudioFileForPreview(this.props.audioFileUrl);
+                }
+                
             }
         }
 
@@ -150,10 +156,27 @@ class TranscriptTool extends Component {
 
         let headerTxtField = (
             <p style={{ fontWeight: 'bold' }}>
-                Podgld pliku <span style={{ fontSize: 'bigger' }}>
+                Podgld pliku txt<span style={{ fontSize: 'bigger' }}>
                     {this.props.txtfileName}
                 </span>
             </p>
+        );
+
+        let headerAudioField = (
+            <p style={{ fontWeight: 'bold' }}>
+                Podgld pliku audio <span style={{ fontSize: 'bigger' }}>
+                    {this.props.audiofileName}
+                </span>
+            </p>
+        );
+
+        let controlBtns = (
+            <button type="button" onClick={this.handleTogglePlay} className="btn btn-primary" id="play">
+                {
+                this.props.playing? <i className="fas fa-pause"></i>  : <i className="fas fa-play"></i>
+                }
+                                
+            </button>
         );
 
 
@@ -171,18 +194,20 @@ class TranscriptTool extends Component {
                     <div className={["container-fluid", "TranscriptTool"].join(' ')}>
                         <div className="tool-desc">
 
-                            <h4>Podgląd plikow</h4>
+                            
                         </div>
 
                         <div className="tool-body">
 
-
-
+                            {headerAudioField}
                             <div id="debuginfo"></div>
                             <div id="waveform"></div>
 
-                            {
+                            {this.props.audioDisplayed? controlBtns: null}
+                            
 
+                            {
+/*
                                 <div class="btn-group" role="group">
                                     <button type="button" className="btn btn-secondary" id="play"><i className="fas fa-play"></i></button>
                                     <button type="button" className="btn btn-secondary" id="stop"><i className="fas fa-stop"></i></button>
@@ -208,7 +233,7 @@ class TranscriptTool extends Component {
                                     </button>
 
                                 </div>
-
+*/
 
                             }
 
@@ -275,6 +300,11 @@ const mapStateToProps = (state) => {
         txtfileName: state.previewR.txtfileName,
         txtFileUrl: state.previewR.txtFileUrl,
 
+        audiofileName: state.previewR.audiofileName,
+        audioDisplayed: state.previewR.audioDisplayed,
+        audioFileUrl:  state.previewR.audioFileUrl,
+        waveSurferLoaded: state.previewR.waveSurferLoaded,
+        playing: state.previewR.playing,
     }
 }
 
@@ -282,6 +312,9 @@ const mapDispatchToProps = dispatch => {
     return {
         //onHandleCreateFolder: (key,projectId, userId, token) => dispatch(repoActions.handleCreateFolder(key, projectId, userId, token)),
         onUpdateTxtArea: (newValue, fileKey) => dispatch(previewActions.updateTxtPreview(newValue, fileKey)),
+        onUpdateAudioArea: (fileKey) => dispatch(previewActions.updateAudioPreview(fileKey)),
+        onWeveSurferLoaded: (ifyes) => dispatch(previewActions.weveSurferLoaded(ifyes)),
+        onTooglePlaying: () => dispatch(previewActions.togglePlaying()),
     }
 }
 
