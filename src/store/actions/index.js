@@ -50,14 +50,18 @@ export {
     dropFiles,
     initBatchRecognition,
     initFileRecognition,
-    updateFileState
+    updateFileState,
+    removeRecognitionItem,
+    openRecognitionAudioPreview
 } from './toolActions/recognition';
 
 export {
     dropAudioFiles,
     dropTxtFiles,
     changeAudioListOrder,
-    changeTxtListOrder
+    changeTxtListOrder,
+    removeSegmentItem,
+    startSegmentItem
 } from './toolActions/segmentation';
 
 

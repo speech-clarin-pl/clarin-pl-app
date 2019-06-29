@@ -147,13 +147,18 @@ class RecognitionTool extends Component {
                                 </DragAndDrop>
                                 
                             </div>
-                            <div className="col-md">
-                                    <div className="uploadFromRepo">
-                                        <h2>Wgraj pliki z repozytorium</h2>
-                                        <p>Przeciągnij pliki z repozytorium. Podczas przetwarzania nie bedziesz mógł wykonywać żadnych dodatkowych operacji na tych plikach</p>
-                                        <i className="fas fa-cloud-upload-alt"></i>
-                                    </div>
-                            </div>
+                            {
+                                /*
+                                <div className="col-md">
+                                <div className="uploadFromRepo">
+                                    <h2>Wgraj pliki z repozytorium</h2>
+                                    <p>Przeciągnij pliki z repozytorium. Podczas przetwarzania nie bedziesz mógł wykonywać żadnych dodatkowych operacji na tych plikach</p>
+                                    <i className="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                </div>
+                                */
+                            }
+                           
                         </div>
     
                         <div className="file-list">

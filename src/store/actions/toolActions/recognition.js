@@ -8,6 +8,15 @@ export const dropFiles = (files) => {
     }
 }
 
+//################# removing item #################
+export const removeRecognitionItem = (fileId) => {
+    console.log('REMOVING: ' + fileId)
+    return {
+        type: actionTypes.REMOVE_RECOGNITION_ITEM, 
+        fileId: fileId, 
+    }
+}
+
 //################# updating file state ###########
 export const updateFileState = (fileID, status,percLoaded) => {
     return {
@@ -62,6 +71,14 @@ export const initFileRecognition = (file, entryId, userId,projectId) =>{
                 dispatch(finishFileRecognitionActionFailed('Recognition error', entryId));
                 console.log(error);
             })
+    }
+}
+
+//######### opening file recognition to preview #####
+export const openRecognitionAudioPreview = (entryId) => {
+    return {
+        type: actionTypes.OPEN_AUDIO_RECOGNITION_PREVIEW, 
+        fileID: entryId, 
     }
 }
 

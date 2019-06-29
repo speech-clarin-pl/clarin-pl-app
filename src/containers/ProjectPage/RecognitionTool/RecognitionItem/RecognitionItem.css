@@ -27,6 +27,10 @@
     font-size: small;
 }
 
+.RecognitionItem .actionIcon {
+    cursor: pointer;
+}
+
 .RecognitionItem .ready {
     color: #28a745;
 }
@@ -44,7 +48,7 @@
 }
 
 .RecognitionItem .recognitionIcon {
-    color: #3498db;
+    color: #3498db !important;
     cursor: pointer;
 }
 

@@ -4,7 +4,7 @@ import './RecognitionItem.css';
 import * as actionTypes from '../../../../store/actions/actionsTypes';
 import * as recognitionActions from '../../../../store/actions/index';
 import {connect} from 'react-redux';
-
+import {withRouter } from 'react-router-dom'
  
 
 class RecognitionItem extends Component {
@@ -164,6 +164,19 @@ class RecognitionItem extends Component {
         this.props.updateFileState(fileId, 'progress', 100);
         this.props.onFileRecognition(foundEntry.file, foundEntry.id, this.props.userId, this.props.projectId );
       }
+
+      previewItem = (fileID) => {
+       
+        let toURL = this.props.match.url;
+        toURL = toURL.replace('recognition','preview')
+        console.log(toURL)
+        this.props.history.push({
+            pathname: toURL,
+            
+            });
+
+		this.props.onOpenRecognitionAudioPreview(fileID);
+      }
     
 
     render(){
@@ -183,7 +196,23 @@ class RecognitionItem extends Component {
             filesize = nApprox.toFixed(1) + " " + aMultiples[nMultiple];
         }
 
-    
+        const removeIcon = (
+            <Aux>
+                <a className="actionIcon remove" onClick={() => this.props.onRemoveItem(this.props.fileID)}>
+                    <i className="fas fa-times " ></i>
+                </a>
+            </Aux>
+        );
+
+        const previewIcon = null;
+        // const previewIcon = (
+        //     <Aux>
+        //         <a className="actionIcon preview" onClick={() => this.previewItem(this.props.fileID)}>
+        //             <i className="fas fa-eye"></i>
+        //         </a>
+        //     </Aux>
+        // );
+
 
         switch(foundEntry.status){
             case ('toload'):
@@ -197,7 +226,7 @@ class RecognitionItem extends Component {
 
                     ikonki = (
                         <Aux>
-                        <a href="#" className="remove"><i className="fas fa-times"></i></a>
+                            {removeIcon}
                         </Aux>
                     )
 
@@ -207,10 +236,10 @@ class RecognitionItem extends Component {
                     statusinfo = <span className="ready"><i className="fas fa-check"></i> Gotowe</span>;
                     ikonki = (
                         <Aux>
-                        <a href="#" className="preview"><i className="fas fa-eye"></i></a>
-                        <a href="#" className="download"><i className="fas fa-download"></i></a>
-                        <a href="#" className="downloadRepo"><i className="fas fa-cloud-download-alt"></i></a>
-                        <a href="#" className="remove"><i className="fas fa-times"></i></a>
+                        {previewIcon}
+                        <a href="#" className="actionIcon download"><i className="fas fa-download"></i></a>
+                        <a href="#" className="actionIcon downloadRepo"><i className="fas fa-cloud-download-alt"></i></a>
+                        {removeIcon}
                         </Aux>
                     )
                 break;
@@ -218,9 +247,9 @@ class RecognitionItem extends Component {
                     statusinfo = <span className="uploaded"><i className="fas fa-check"></i> Załadowany</span>;
                     ikonki = (
                         <>
-                        <a onClick={(fileId)=>this.startFileRecognition(this.props.fileID)} className="recognitionIcon"><i className="fas fa-comments"></i></a>
-                        <a href="#" className="preview"><i className="fas fa-eye"></i></a>
-                        <a href="#" className="remove"><i className="fas fa-times"></i></a>
+                        <a onClick={(fileId)=>this.startFileRecognition(this.props.fileID)} className="actionIcon recognitionIcon"><i className="fas fa-comments"></i></a>
+                        {previewIcon}
+                        {removeIcon}
                         </>
                     )
                 break;
@@ -228,9 +257,7 @@ class RecognitionItem extends Component {
                     statusinfo = <span className="error"><i className="fas fa-exclamation-triangle"></i> Błąd</span>;
                     ikonki = (
                         <Aux>
-                        
-                        <a href="#" className="remove"><i className="fas fa-times"></i></a>
-
+                            {removeIcon}
                         </Aux>
                     )
                 break;  
@@ -246,7 +273,7 @@ class RecognitionItem extends Component {
                         <Aux>
                             
                             
-                            <a  className="remove"><i className="fas fa-times"></i></a>
+                            {removeIcon}
                         </Aux>
                     )		
                 break;
@@ -256,8 +283,8 @@ class RecognitionItem extends Component {
                     ikonki = (
                         <Aux>
                             
-                            <a href="#" className="preview"><i className="fas fa-eye"></i></a>
-                            <a  className="remove"><i className="fas fa-times"></i></a>
+                            {previewIcon}
+                            {removeIcon}
                         </Aux>
                     )		
                 break;  
@@ -308,9 +335,11 @@ const mapDispatchToProps = dispatch => {
        updateFileState: (fileID, status,percLoaded) => dispatch(recognitionActions.updateFileState(fileID, status,percLoaded)),
        onGetProjectFilesForUser: (userId, projectId, token) => dispatch(recognitionActions.getProjectFilesForUser(userId,projectId, token)),
        onFileRecognition: (file, entryId,userId, projectId) => dispatch(recognitionActions.initFileRecognition(file, entryId, userId, projectId)),
-      // onRepoUpdate: (userId, projectId, token) => dispatch(recognitionActions.getProjectFilesForUser(userId,projectId, token))
+       onRemoveItem:(fileId) => dispatch(recognitionActions.removeRecognitionItem(fileId)),
+       onOpenRecognitionAudioPreview:(entryId) => dispatch(recognitionActions.openRecognitionAudioPreview(entryId))
+       // onRepoUpdate: (userId, projectId, token) => dispatch(recognitionActions.getProjectFilesForUser(userId,projectId, token))
     }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(RecognitionItem);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(RecognitionItem));

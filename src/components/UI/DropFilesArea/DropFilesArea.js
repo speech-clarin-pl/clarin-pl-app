@@ -6,8 +6,6 @@ class DropFilesArea extends Component {
       
       render() {
 
-        
-
         return (
         <div className="DropFilesArea">
           <div id="react-file-drop">

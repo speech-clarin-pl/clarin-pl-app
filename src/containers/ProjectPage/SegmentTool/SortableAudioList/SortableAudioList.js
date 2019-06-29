@@ -30,9 +30,16 @@ const sortableAudioList = ({ items, onChange }) => {
                     <div className="col-sm">
                             <span className="file-name">{val.file.name}</span>
                     </div>
-                    <div className="col-sm-auto">
-                            <i className="fas fa-play preview"></i>
-                    </div>
+                    {
+
+                            /*
+                            <div className="col-sm-auto">
+                                    <i className="fas fa-play preview"></i>
+                            </div>
+                            */
+
+                    }
+                    
             </div>
         </div>
     ));

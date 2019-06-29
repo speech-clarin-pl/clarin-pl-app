@@ -19,28 +19,52 @@ const dropAudioFiles = (state, action) => {
 
     //OK
     if (AudioFileList.length >= state.txtList.length) {
-
+     
         //make txtArray equally length
         const ilebrakuje = AudioFileList.length - state.txtList.length;
         let txtArray = [...state.txtList, ...new Array(ilebrakuje)];
 
         SegmentEntryList = AudioFileList.map((audioentry, i) => {
+
+            //status to tell if entry has both audio and txt
+            let status = 'novalid';
+            let txtItem = txtArray[i];
+            //console.log(txtItem)
+            if(txtItem===undefined){
+                status = 'novalid';
+            } else {
+                status = 'valid';
+            }
+            //console.log(status)
             return ({
                 audioEntry: Object.assign({}, audioentry),
-                txtEntry: Object.assign({}, txtArray[i]),
+                txtEntry: Object.assign({}, txtItem),
+                status: status,
                 id: uuid.v4()
             }
             );
         });
     } else {
+        
         //make txtArray equally length
         const ilebrakuje = state.txtList.length - AudioFileList.length;
         let audioArray = [...AudioFileList, ...new Array(ilebrakuje)];
 
         SegmentEntryList = state.txtList.map((txtentry, i) => {
+
+            let status = 'novalid';
+            let audioItem = audioArray[i];
+            //console.log(txtItem)
+            if(audioItem===undefined){
+                status = 'novalid';
+            } else {
+                status = 'valid';
+            }
+
             return ({
                 audioEntry: Object.assign({}, audioArray[i]),
                 txtEntry: Object.assign({}, txtentry),
+                status: status,
                 id: uuid.v4()
             }
             );
@@ -70,11 +94,23 @@ const dropTxtFiles = (state, action) => {
         //make txtArray equally length
         const ilebrakuje = TxtFileList.length - state.audioList.length;
         let audioArray = [...state.audioList, ...new Array(ilebrakuje)];
+        
 
         SegmentEntryList = TxtFileList.map((txtentry, i) => {
+
+            let status = 'novalid';
+            let audioItem = audioArray[i];
+            //console.log(txtItem)
+            if(audioItem===undefined){
+                status = 'novalid';
+            } else {
+                status = 'valid';
+            }
+
             return ({
                 audioEntry: Object.assign({}, audioArray[i]),
                 txtEntry: Object.assign({}, txtentry),
+                status:status,
                 id: uuid.v4()
             }
             );
@@ -84,12 +120,24 @@ const dropTxtFiles = (state, action) => {
         const ilebrakuje = state.audioList.length - TxtFileList.length;
         let txtArray = [...TxtFileList, ...new Array(ilebrakuje)];
 
-        console.log(txtArray)
+        
 
         SegmentEntryList = state.audioList.map((audioentry, i) => {
+
+            //status to tell if entry has both audio and txt
+            let status = 'novalid';
+            let txtItem = txtArray[i];
+            //console.log(txtItem)
+            if(txtItem===undefined){
+                status = 'novalid';
+            } else {
+                status = 'valid';
+            }
+
             return ({
                 audioEntry: Object.assign({}, audioentry),
                 txtEntry: Object.assign({}, txtArray[i]),
+                status: status,
                 id: uuid.v4()
             }
             );
@@ -236,6 +284,45 @@ const initFileSegmentation = (state,action) => {
     return updateObject(state, {}) ;  
 }
 
+const removeSegmentEntry = (state,action) => {
+    const entryId = action.entryId;
+
+    let entryAudioId = '';
+    let entryTxtId = '';
+    const newsegmentEntry = state.segmentEntry.filter((item, index) => {
+        //zapisuje z jakich elementow sklada sie segmentEntry
+        if(item.audioEntry !== undefined) entryAudioId = item.audioEntry.id;
+        if(item.txtEntry !== undefined) entryTxtId = item.txtEntry.id;
+        
+        return item.id !== entryId
+    })
+
+    /*
+    const newAudioList = state.audioList.filter((item, index) => {
+        if(entryAudioId !== ''){
+            return  item.id !== entryAudioId;
+        } else {
+            return true;
+        }
+    })
+
+    const newtxtList = state.txtList.filter((item, index) => {
+        if(entryTxtId !== ''){
+            return  item.id !== entryTxtId;
+        } else {
+            return true;
+        }
+    })
+    */
+
+
+    return updateObject(state, {
+        segmentEntry: newsegmentEntry,
+       // audioList: newAudioList,
+       // txtList: newtxtList,
+    }) ; 
+}
+
 const segmentationReducer = (state = initialState, action) => {
 
 
@@ -247,6 +334,7 @@ const segmentationReducer = (state = initialState, action) => {
         case actionTypes.CHANGE_TXT_LIST_ORDER: return changeTxtListOrder(state, action);
         case actionTypes.INIT_BATCH_SEGMENTATION: return initBatchSegmentation(state, action);
         case actionTypes.INIT_FILE_SEGMENTATION: return initFileSegmentation(state,action);
+        case actionTypes.REMOVE_SEGMENT_ENTRY: return removeSegmentEntry(state,action);
     }
 
     return state;

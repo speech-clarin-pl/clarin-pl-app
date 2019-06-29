@@ -28,9 +28,16 @@ const sortableTxtList = ({ items, onChange }) => {
                     <div className="col-sm">
                             <span className="file-name">{val.file.name}</span>
                     </div>
+                    {
+                        /*
+
                     <div className="col-sm-auto">
                             <i className="fas fa-eye preview"></i>
                     </div>
+                    
+                        */
+                    }
+                    
             </div>
         </div>
     ));

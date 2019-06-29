@@ -1,5 +1,5 @@
 import * as actionTypes from '../actionsTypes';
-
+import axios from 'axios';
 
 //action creator for dropping audio files
 export const dropAudioFiles = (audioFiles) => {
@@ -35,6 +35,61 @@ export const changeTxtListOrder = (txtIdsOrder) => {
         txtIdsOrder: txtIdsOrder
     }
 }
+
+export const removeSegmentItem = (entryId) => {
+    return {
+        type: actionTypes.REMOVE_SEGMENT_ENTRY,
+        entryId: entryId
+    }
+}
+
+//############### start segmentation entry ############
+//#################################################
+export const startSegmentItem = (entryId, userId, projectId, audioFile, txtFile, token) => {
+    //(segmentId, userId, projectId, audioFile, txtFile, token)
+    return dispatch => {
+
+        const data = new FormData();
+        data.append('entryId',entryId);
+        data.append('userId',userId);
+        data.append('projectId',projectId);
+        data.append('audioFiles',audioFile);
+        data.append('audioFiles',txtFile);
+        //data.append('txtFile',txtFile);
+        //data.append('token', entryId);
+
+        console.log("WYSYLAM")
+        console.log(entryId)
+        console.log(userId)
+        console.log(projectId)
+        console.log(audioFile)
+        console.log(txtFile)
+       
+        
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        }
+        
+        axios.post('/segmentation/singleFile',data, config)
+            .then(response => {
+                console.log(response);
+                //const message = response.data.message;
+                //const entryId = response.data.sentEntryId.sentEntryId;
+                //console.log(message)
+                //console.log(entryId)
+                //dispatch(finishFileRecognitionAction(message, entryId));
+                //console.log(response);
+            })
+            .catch(error => {
+                //dispatch(finishFileRecognitionActionFailed('Recognition error', entryId));
+                console.log(error);
+            })
+    }
+}
+
+
 
 
 //export const INIT_BATCH_SEGMENTATION = 'INIT_BATCH_SEGMENTATION';

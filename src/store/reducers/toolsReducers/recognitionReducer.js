@@ -1,5 +1,6 @@
 import * as actionTypes from '../../actions/actionsTypes';
 import {updateObject} from '../../utility';
+//import { removeRecognitionItem } from '../../actions';
 
 
 const initialState = {
@@ -12,6 +13,7 @@ const initialState = {
         // status: "toload"
     // }]
     modal: false, //controls if modal window is opened
+    recoFileForPreview: '', //indicates which file is chosen for preview
 }
 
 const openModal = (state,action) => {
@@ -74,12 +76,37 @@ const updateFileState = (state,action) => {
     return updateObject(state, { filesToUpload: currentfileList}) ;  
 }
 
+const removeRecognitionItem = (state, action)=>{
+    const itemId = action.fileId;
+
+    const newFilesToUpload = state.filesToUpload.filter((item, index) => {
+        return item.id !== itemId
+    })
+    
+    return updateObject(state, { filesToUpload: newFilesToUpload}) ; 
+
+}
+
+const openAudioRecPreview = (state, action) => {
+    const entryId = action.fileID;
+
+    //znajduje pozycje w filesToUpload aby wyciagnac z niej plik audio
+
+    let foundEntry = state.filesToUpload.find(obj => obj.id == entryId);
+    console.log(foundEntry.file)
+
+    return updateObject(state, { recoFileForPreview: foundEntry.file}) ; 
+
+}
+
 const recognitionReducer = (state = initialState, action) => {
     switch(action.type){
         case actionTypes.DROP_FILES: return dropFiles(state, action);
         case actionTypes.INIT_BATCH_RECOGNITION: return initBatchRecognition(state,action);
         case actionTypes.INIT_FILE_RECOGNITION: return initFileRecognition(state,action);
         case actionTypes.UPDATE_FILE_STATE: return updateFileState(state, action);
+        case actionTypes.REMOVE_RECOGNITION_ITEM: return removeRecognitionItem(state,action);
+        case actionTypes.OPEN_AUDIO_RECOGNITION_PREVIEW: return openAudioRecPreview(state, action);
     }
 
     return state;

@@ -23,8 +23,26 @@
 
 .SegmentItem .preview {
     color: #28a745;
+    cursor: pointer;
 }
 
+.SegmentItem .startSegment{
+    color: #3498db;
+    cursor: pointer;
+}
+
+.SegmentItem .warning {
+    color: orange;
+   
+}
+
+
+
+.SegmentItem .removeItem{
+    cursor: pointer;
+    position:absolute;
+    z-index: 999999;
+}
 
 
 .SegmentItem .fileAudio {
