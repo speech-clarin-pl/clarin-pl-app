@@ -29,11 +29,13 @@ const logIn = (state, action) => {
 }
 
 const logInFailed = (state, action) => {
+
     return updateObject(state,{
         isAuth: action.isAuth,
         token: action.token,
         authLoading: action.authLoading,
-        userId:action.userId
+        userId:action.userId,
+        loginMessage: action.message,
     });
 }
 
@@ -50,7 +52,6 @@ const register = (state, action) => {
 
 const registerFailed = (state, action) => {
     const message = action.message;
-    const userId = action.userId;
  
     return updateObject(state,{
         isAuth: false,

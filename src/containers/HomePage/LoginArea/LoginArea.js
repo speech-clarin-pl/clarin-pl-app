@@ -275,10 +275,29 @@ class LoginArea extends Component {
 
         }
 
+        let errorRegisterInfo = (
+            
+            <div className="alert alert-warning" role="alert">
+                 {this.props.registrationMessage}
+            </div>
+        )
+
+        let errorLoginInfo = (
+            <div className="alert alert-warning" role="alert">
+                 {this.props.loginMessage}
+            </div>
+        )
+
         const registerArea = (
             <div className="col">
-                                
+                            
                             <h3>Zarejestruj się</h3>
+                           
+                            {
+                                this.props.registrationMessage !== ''?
+                                errorRegisterInfo : null
+                            }
+                             
                             <form onSubmit={this.registerHandler}>  
                                 <div className="form-group">
                                     <Input 
@@ -333,6 +352,10 @@ class LoginArea extends Component {
                             <form onSubmit={this.loginHandler}> 
                                 <h3>Zaloguj się</h3>
                                 
+                                {
+                                    this.props.loginMessage !== ''?
+                                    errorLoginInfo: null 
+                                }
                                 <div className="form-group">
                                     <Input 
                                         inputtype="input" 
@@ -415,7 +438,9 @@ const mapStateToProps = state => {
     return {
         isAuth: state.homeR.isAuth,
         loggedEmail: state.homeR.email,
-        userName: state.homeR.userName
+        userName: state.homeR.userName,
+        registrationMessage: state.homeR.registrationMessage,
+        loginMessage: state.homeR.loginMessage,
     }
 }
 

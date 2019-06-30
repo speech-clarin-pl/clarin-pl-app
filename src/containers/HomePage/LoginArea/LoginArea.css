@@ -3,6 +3,10 @@
     padding-bottom: 2em;
 }
 
+.LoginArea .errorRegisterInfo {
+ 
+}
+
 .LoginArea .loggedAs {
     font-size: smaller;
 }

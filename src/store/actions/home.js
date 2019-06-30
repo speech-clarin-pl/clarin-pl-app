@@ -5,10 +5,21 @@ import axios from 'axios';
 //##################### rejestracja #######################
 //#######################################################
 
-export const registerUserActionFailed = (message) => {
+export const registerUserActionFailed = (error) => {
+
+    let finalMessage = error.response.data.message;
+
+    if(error.response.data.data.length >= 1) {
+        for(let i =0; i< error.response.data.data.length; i++){
+            finalMessage = finalMessage + '\n';
+            finalMessage = finalMessage + error.response.data.data[i].msg;
+        }
+    }
+
+
     return {
         type: actionTypes.REGISTER_FAILED,
-        message: message,
+        message: finalMessage,
     }
 }
 
@@ -32,8 +43,8 @@ export const registerUser = (userName, userEmail, userPass) => {
                 dispatch(registerUserAction(response.message, response.userId));
             })
             .catch(error => {
-                console.log(error)
-                dispatch(registerUserActionFailed('Niepowodzenie w rejestracji'));
+                //console.log(error)
+                dispatch(registerUserActionFailed(error));
             });
     }
 
@@ -56,13 +67,17 @@ export const loginUserAction = (isAuth, token, authLoading, userId,userName) => 
     }
 }
 
-export const loginUserActionFailed = (isAuth, authLoading, error) => {
+export const loginUserActionFailed = (error) => {
+    
+   
+    let finalMessage = error.response.data.message;
+
+
     return {
         type: actionTypes.LOG_IN_FAILED,
-        isAuth: isAuth,
-        authLoading: authLoading,
-        error: error
-
+        isAuth: false,
+        authLoading: false,
+        message: finalMessage
     }
 }
 
@@ -106,10 +121,12 @@ export const loginUser = (userEmail, userPass) => {
                 console.log(response);
                 //ustawic state na auth false i authloading na false
                 //przekierowanie
-                dispatch(loginUserAction(true, response.data.token,false,response.data.userId,response.data.userName));
+                
                 localStorage.setItem('token',response.data.token);
                 localStorage.setItem('userId', response.data.userId);
                 localStorage.setItem('userName', response.data.userName);
+
+                dispatch(loginUserAction(true, response.data.token,false,response.data.userId,response.data.userName));
                 //gasnie za 10h
                 const remainingMilliseconds = 60 * 60 * 10000;
                 const expiryDate = new Date(
@@ -122,7 +139,7 @@ export const loginUser = (userEmail, userPass) => {
             })
             .catch(error => {
                 console.log(error)
-                dispatch(loginUserActionFailed(false,false,error));
+                dispatch(loginUserActionFailed(error));
             });
     }
    
