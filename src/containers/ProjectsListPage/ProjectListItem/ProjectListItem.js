@@ -3,6 +3,7 @@ import Aux from '../../../hoc/Auxiliary';
 import './ProjectListItem.css';
 import {Link} from 'react-router-dom';
 
+
 const projectListItem = (props) => {
 
     
@@ -14,6 +15,7 @@ const projectListItem = (props) => {
              <tr className="ProjectListItem">   
                 <td className="projectTitle">
 
+                     
                     <Link to={{
                             pathname: "/projects/" + encodeURIComponent(props.projektID),
                             state: {

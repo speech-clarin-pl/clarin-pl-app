@@ -45,6 +45,29 @@ export const removeSegmentItem = (entryId) => {
 
 //############### start segmentation entry ############
 //#################################################
+
+export const initSegmentProcessing = (entryId) => {
+    return {
+        type: actionTypes.INIT_FILE_SEGMENTATION,
+        entryId: entryId
+    }
+}
+
+export const finishFileSegmentationSuccess = (entryId) =>{
+    return {
+        type: actionTypes.FILE_SEGMENTATION_SUCCESS,
+        entryId: entryId
+    }
+}
+
+export const finishFileSegmentationFailed = (error, entryId) =>{
+    return {
+        type: actionTypes.FILE_SEGMENTATION_FAILED,
+        error: error.toString(),
+        entryId: entryId,
+    }
+}
+
 export const startSegmentItem = (entryId, userId, projectId, audioFile, txtFile, token) => {
     //(segmentId, userId, projectId, audioFile, txtFile, token)
     return dispatch => {
@@ -71,6 +94,8 @@ export const startSegmentItem = (entryId, userId, projectId, audioFile, txtFile,
                 'content-type': 'multipart/form-data'
             }
         }
+
+        //dispatch(startSegmentItemAction(entryId));
         
         axios.post('/segmentation/singleFile',data, config)
             .then(response => {
@@ -79,11 +104,12 @@ export const startSegmentItem = (entryId, userId, projectId, audioFile, txtFile,
                 //const entryId = response.data.sentEntryId.sentEntryId;
                 //console.log(message)
                 //console.log(entryId)
-                //dispatch(finishFileRecognitionAction(message, entryId));
+                dispatch(finishFileSegmentationSuccess(entryId));
+               
                 //console.log(response);
             })
             .catch(error => {
-                //dispatch(finishFileRecognitionActionFailed('Recognition error', entryId));
+                dispatch(finishFileSegmentationFailed(error, entryId));
                 console.log(error);
             })
     }
@@ -91,10 +117,3 @@ export const startSegmentItem = (entryId, userId, projectId, audioFile, txtFile,
 
 
 
-
-//export const INIT_BATCH_SEGMENTATION = 'INIT_BATCH_SEGMENTATION';
-//export const INIT_FILE_SEGMENTATION = 'INIT_BATCH_SEGMENTATION';
-//export const DROP_AUDIO_FILES = 'DROP_AUDIO_FILES';
-//export const DROP_TXT_FILES = 'DROP_TXT_FILES';
-//export const CHANGE_AUDIO_LIST_ORDER = 'CHANGE_AUDIO_LIST_ORDER';
-//export const CHANGE_TXT_LIST_ORDER = 'CHANGE_TXT_LIST_ORDER';

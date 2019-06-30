@@ -21,9 +21,24 @@
     text-align: center;
 }
 
-.SegmentItem .preview {
+.SegmentItem .ready {
+    
+    cursor: pointer;
+}
+
+.SegmentItem .complete {
     color: #28a745;
     cursor: pointer;
+}
+
+.SegmentItem .error {
+    color: red;
+    cursor: pointer;
+}
+
+.SegmentItem .inprogress {
+    position:relative;
+    top: -7px;
 }
 
 .SegmentItem .startSegment{

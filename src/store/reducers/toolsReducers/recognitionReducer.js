@@ -16,6 +16,14 @@ const initialState = {
     recoFileForPreview: '', //indicates which file is chosen for preview
 }
 
+const clearRecoStore = (state,action) => {
+    return updateObject(state, {
+        filesToUpload: [], 
+        modal: false, 
+        recoFileForPreview: '', 
+    });  
+}
+
 const openModal = (state,action) => {
     return updateObject(state, {
         modal: true,
@@ -107,6 +115,7 @@ const recognitionReducer = (state = initialState, action) => {
         case actionTypes.UPDATE_FILE_STATE: return updateFileState(state, action);
         case actionTypes.REMOVE_RECOGNITION_ITEM: return removeRecognitionItem(state,action);
         case actionTypes.OPEN_AUDIO_RECOGNITION_PREVIEW: return openAudioRecPreview(state, action);
+        case actionTypes.CLEAR_RECO_STORE: return clearRecoStore(state, action);
     }
 
     return state;

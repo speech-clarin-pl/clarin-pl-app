@@ -9,6 +9,14 @@ const initialState = {
     txtList: [],
 }
 
+const clearSegmentStore = (state,action) => {
+    return updateObject(state, {
+        segmentEntry: [],
+        audioList: [],
+        txtList: [],
+    });
+}
+
 const dropAudioFiles = (state, action) => {
 
     let SegmentEntryList = [];
@@ -39,7 +47,8 @@ const dropAudioFiles = (state, action) => {
             return ({
                 audioEntry: Object.assign({}, audioentry),
                 txtEntry: Object.assign({}, txtItem),
-                status: status,
+                status: status, //status if audio and text together
+                processingStatus: 'prepared', 
                 id: uuid.v4()
             }
             );
@@ -65,6 +74,7 @@ const dropAudioFiles = (state, action) => {
                 audioEntry: Object.assign({}, audioArray[i]),
                 txtEntry: Object.assign({}, txtentry),
                 status: status,
+                processingStatus: 'prepared', 
                 id: uuid.v4()
             }
             );
@@ -111,6 +121,7 @@ const dropTxtFiles = (state, action) => {
                 audioEntry: Object.assign({}, audioArray[i]),
                 txtEntry: Object.assign({}, txtentry),
                 status:status,
+                processingStatus: 'prepared', 
                 id: uuid.v4()
             }
             );
@@ -119,8 +130,6 @@ const dropTxtFiles = (state, action) => {
         //make txtArray equally length
         const ilebrakuje = state.audioList.length - TxtFileList.length;
         let txtArray = [...TxtFileList, ...new Array(ilebrakuje)];
-
-        
 
         SegmentEntryList = state.audioList.map((audioentry, i) => {
 
@@ -138,6 +147,7 @@ const dropTxtFiles = (state, action) => {
                 audioEntry: Object.assign({}, audioentry),
                 txtEntry: Object.assign({}, txtArray[i]),
                 status: status,
+                processingStatus: 'prepared', 
                 id: uuid.v4()
             }
             );
@@ -178,9 +188,22 @@ const changeAudioListOrder = (state, action) => {
         let txtArray = [...state.txtList, ...new Array(ilebrakuje)];
 
         SegmentEntryList = newAudioList.map((audioentry, i) => {
+
+            //status to tell if entry has both audio and txt
+            let status = 'novalid';
+            let txtItem = txtArray[i];
+            //console.log(txtItem)
+            if(txtItem===undefined){
+                status = 'novalid';
+            } else {
+                status = 'valid';
+            }
+
             return ({
                 audioEntry: Object.assign({}, audioentry),
                 txtEntry: Object.assign({}, txtArray[i]),
+                status: status,
+                processingStatus: 'prepared', 
                 id: uuid.v4()
             }
             );
@@ -191,9 +214,22 @@ const changeAudioListOrder = (state, action) => {
         let audioArray = [...newAudioList, ...new Array(ilebrakuje)];
 
         SegmentEntryList = state.txtList.map((txtentry, i) => {
+
+             //status to tell if entry has both audio and txt
+             let status = 'novalid';
+             let audioItem = audioArray[i];
+            
+             if(audioItem===undefined){
+                 status = 'novalid';
+             } else {
+                 status = 'valid';
+             }
+
             return ({
                 audioEntry: Object.assign({}, audioArray[i]),
                 txtEntry: Object.assign({}, txtentry),
+                status: status,
+                processingStatus: 'prepared', 
                 id: uuid.v4()
             }
             );
@@ -201,8 +237,6 @@ const changeAudioListOrder = (state, action) => {
     }
 
     // console.log(SegmentEntryList)
-
-
 
 
     return updateObject(state, {
@@ -238,9 +272,22 @@ const changeTxtListOrder = (state, action) => {
         let audioArray = [...state.audioList, ...new Array(ilebrakuje)];
 
         SegmentEntryList = newTxtList.map((txtentry, i) => {
+
+            //status to tell if entry has both audio and txt
+            let status = 'novalid';
+            let audioItem = audioArray[i];
+           
+            if(audioItem===undefined){
+                status = 'novalid';
+            } else {
+                status = 'valid';
+            }
+
             return ({
                 audioEntry: Object.assign({}, audioArray[i]),
                 txtEntry: Object.assign({}, txtentry),
+                status: status,
+                processingStatus: 'prepared', 
                 id: uuid.v4()
 
             }
@@ -254,9 +301,23 @@ const changeTxtListOrder = (state, action) => {
         console.log(txtArray)
 
         SegmentEntryList = state.audioList.map((audioentry, i) => {
+
+            //status to tell if entry has both audio and txt
+            let status = 'novalid';
+            let txtItem = txtArray[i];
+           
+            if(txtItem===undefined){
+                status = 'novalid';
+            } else {
+                status = 'valid';
+            }
+
+
             return ({
                 audioEntry: Object.assign({}, audioentry),
                 txtEntry: Object.assign({}, txtArray[i]),
+                status: status,
+                processingStatus: 'prepared', 
                 id: uuid.v4()
             }
             );
@@ -272,16 +333,26 @@ const changeTxtListOrder = (state, action) => {
 
 
 
-const initBatchSegmentation = (state,action) => {
+// const initBatchSegmentation = (state,action) => {
 
-    // to do
-    return updateObject(state, {}) ;  
-}
+//     // to do
+//     return updateObject(state, {}) ;  
+// }
 
 const initFileSegmentation = (state,action) => {
+    const entryId = action.entryId;
+ 
+    let newSegmentEntry = state.segmentEntry.map((entry, i) => {
+        //status to tell if entry has both audio and txt
+        let newEntry = Object.assign({}, entry);
+       if(newEntry.id === entryId){
+            newEntry.processingStatus = 'inProgress';
+       }
 
-    // to do
-    return updateObject(state, {}) ;  
+       return newEntry;
+    });
+
+    return updateObject(state, {segmentEntry: newSegmentEntry}) ;  
 }
 
 const removeSegmentEntry = (state,action) => {
@@ -323,18 +394,55 @@ const removeSegmentEntry = (state,action) => {
     }) ; 
 }
 
+const fileSegmentationSuccess = (state,action) => {
+    const entryId = action.entryId;
+    //znajduje to entry i ustawiam mu odpowiedni status processingStatus
+    console.log(entryId)
+    let newSegmentEntry = state.segmentEntry.map((entry, i) => {
+        //status to tell if entry has both audio and txt
+        let newEntry = Object.assign({}, entry);
+       if(newEntry.id === entryId){
+            newEntry.processingStatus = 'done';
+       }
+
+       return newEntry;
+    });
+
+    console.log(newSegmentEntry)
+
+    return updateObject(state, {segmentEntry: newSegmentEntry}) ;  
+}
+
+const fileSegmentationFailed = (state,action) => {
+    const entryId = action.entryId;
+    //znajduje to entry i ustawiam mu odpowiedni status processingStatus
+
+    let newSegmentEntry = state.segmentEntry.map((entry, i) => {
+        //status to tell if entry has both audio and txt
+        let newEntry = Object.assign({}, entry);
+       if(newEntry.id === entryId){
+            newEntry.processingStatus = 'error';
+       }
+
+       return newEntry;
+    });
+
+    return updateObject(state, {segmentEntry: newSegmentEntry}) ;  
+}
+
 const segmentationReducer = (state = initialState, action) => {
-
-
 
     switch (action.type) {
         case actionTypes.DROP_AUDIO_FILES: return dropAudioFiles(state, action);
         case actionTypes.DROP_TXT_FILES: return dropTxtFiles(state, action);
         case actionTypes.CHANGE_AUDIO_LIST_ORDER: return changeAudioListOrder(state, action);
         case actionTypes.CHANGE_TXT_LIST_ORDER: return changeTxtListOrder(state, action);
-        case actionTypes.INIT_BATCH_SEGMENTATION: return initBatchSegmentation(state, action);
+        //case actionTypes.INIT_BATCH_SEGMENTATION: return initBatchSegmentation(state, action);
         case actionTypes.INIT_FILE_SEGMENTATION: return initFileSegmentation(state,action);
         case actionTypes.REMOVE_SEGMENT_ENTRY: return removeSegmentEntry(state,action);
+        case actionTypes.CLEAR_SEGMENT_STORE: return clearSegmentStore(state, action);
+        case actionTypes.FILE_SEGMENTATION_SUCCESS: return fileSegmentationSuccess(state,action);
+        case actionTypes.FILE_SEGMENTATION_FAILED: return fileSegmentationFailed(state,action);
     }
 
     return state;

@@ -114,6 +114,8 @@ class RecognitionTool extends Component {
                    
                 </Modal>
 
+{
+    /*
                 <LeftSiteBar czyTopPart="true" desc="Tutaj opis do rozpoznawania" >
 
                     <ButtonLeftBar 
@@ -124,6 +126,13 @@ class RecognitionTool extends Component {
                     <ButtonLeftBar napis="Zapisz wynik w repozytorium" disabled={true} iconType="fa-cloud-download-alt" whenClicked={null}/>
 
                 </LeftSiteBar>
+    */
+}
+                
+
+                <LeftSiteBar 
+                czyTopPart="true"
+                desc="Tutaj opis do rozpoznawania" />
 
                  <SettingBar />
     

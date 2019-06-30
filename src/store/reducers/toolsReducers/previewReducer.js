@@ -18,6 +18,22 @@ const initialState = {
 
 }
 
+const clearPreviewStore = (state,action) => {
+    return updateObject(state, {
+        txtContent: '',
+        txtDisplayed: false,
+        txtfileName: '',
+        txtFileUrl: '',
+    
+        audiofileName: '',
+        audioDisplayed: false,
+        audioFileUrl: '',
+        waveSurferLoaded: false, 
+    
+        playing: false, 
+    }) ; 
+}
+
 //zwraca rozszerzenie pliku
 const getExt = (path) => {
     return (path.match(/(?:.+..+[^\/]+$)/ig) != null) ? path.split('.').slice(-1)[0]: 'null';
@@ -49,7 +65,8 @@ const openFilePreview = (state,action) => {
     const fileExt = getExt(fileKey);
 
 
-    if(fileExt === 'txt'){
+    if(fileExt === 'txt' ||
+       fileExt === 'ctm' ){
         return updateObject(state, {
             txtfileName: fileKey,
             txtFileUrl: fileUrl,
@@ -93,6 +110,7 @@ const previewReducer = (state = initialState, action) => {
         case actionTypes.OPEN_FILE_PREVIEW: return openFilePreview(state,action);
         case actionTypes.WAVESURFER_LOADED: return waveSurferLoaded(state,action);
         case actionTypes.TOGGLE_PLAYING_PREVIEW: return togglePlayingPreview(state,action);
+        case actionTypes.CLEAR_PREVIEW_STORE: return clearPreviewStore(state, action);
     }
 
     return state;

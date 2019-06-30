@@ -37,7 +37,7 @@ class ProjectPage extends Component {
     const userId = localStorage.getItem('userId');
     const userName = localStorage.getItem('userName');
     const remainingMilliseconds =
-      new Date(expiryDate).getTime() - new Date().getTime();
+    new Date(expiryDate).getTime() - new Date().getTime();
 
     console.log(userId)
     console.log(userName)
@@ -55,6 +55,9 @@ class ProjectPage extends Component {
       const projectOwnerId = this.props.location.state.projectOwner;
 
       this.props.onInitProjectHandler(projectId, projectTitle, projectOwnerId);
+      this.props.onClearRecoStore();
+      this.props.onClearSegmentStore();
+      this.props.onClearPreviewStore();
     }
 
   }
@@ -121,6 +124,9 @@ const mapDispatchToProps = dispatch => {
      onInitProjectHandler: (projectId, projectTitle, projectOwner) => dispatch(projectActions.initProject(projectId, projectTitle, projectOwner)),
      onSetLoggedIn:(userId, userName, token) => dispatch(projectActions.setLoggedIn(userId, userName, token)),
      onLogOut: () => dispatch(projectActions.logout()),
+     onClearRecoStore: () => dispatch(projectActions.clearRecoStore()),
+     onClearSegmentStore: () => dispatch(projectActions.clearSegmentStore()),
+     onClearPreviewStore: () => dispatch(projectActions.clearPreviewStore()),
     }
 }
 

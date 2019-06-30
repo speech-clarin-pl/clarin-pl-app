@@ -26,7 +26,10 @@ export {
 export {
     initProject,
     openModalProject,
-    closeModalProject
+    closeModalProject,
+    clearRecoStore,
+    clearSegmentStore,
+    clearPreviewStore,
 } from './project';
 
 export {
@@ -61,7 +64,8 @@ export {
     changeAudioListOrder,
     changeTxtListOrder,
     removeSegmentItem,
-    startSegmentItem
+    startSegmentItem,
+    initSegmentProcessing,
 } from './toolActions/segmentation';
 
 

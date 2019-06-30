@@ -19,6 +19,8 @@ class SegmentItem extends Component {
         const currentEntry = this.props.segmentEntry.find(entry => entry.id == entryId);
         const audioFile = currentEntry.audioEntry.file;
         const txtFile = currentEntry.txtEntry.file;
+
+        this.props.onInitSegmentProcess(entryId);
         
         this.props.onStartSegmentItem(
             entryId, 
@@ -28,22 +30,74 @@ class SegmentItem extends Component {
             txtFile, 
             this.props.token
             );
+    }
 
+    refreshRepo = () => {
+        this.props.onRefreshRepo(
+            this.props.userId, 
+            this.props.projectId, 
+            this.props.token)
     }
 
     render() {
 
-        let statusIcon = null;
+        let statusIcon = null;  //status entry
+        let starterIcon = null; //do odpalania segmentacji
+
+        
         
         if(this.props.status === 'valid'){
             statusIcon = (
-                <span className="segmenticon preview"><i className="fas fa-check"></i></span>
+                <span className="segmenticon ready"><i className="fas fa-check"></i></span>
+            );
+            starterIcon = (
+                <a onClick={()=>this.startSegmentation(this.props.entryId)}>
+                    <i className="startSegment fas fa-cogs" ></i>
+                </a> 
             );
         } else {
             statusIcon = (
                 <span className="segmenticon warning"><i className="fas fa-exclamation"></i></span>
             );
+            starterIcon = null;
         }
+
+        //znajduje siebie na liscie
+        let foundEntry = this.props.segmentEntry.find(entry => entry.id === this.props.entryId)
+
+        if(foundEntry.processingStatus === 'inProgress'){
+            statusIcon = (
+                <span className="inprogress">
+                        <div className="spinner-border text-primary" role="status">
+                            <span className="sr-only">Segmentacja...</span>
+                        </div>
+                </span>
+            );
+
+            starterIcon = null;
+        }
+
+        if(foundEntry.processingStatus === 'done'){
+            statusIcon = (
+                <span className="segmenticon complete"><i className="fas fa-check"></i></span>
+            );
+            starterIcon = null;
+
+            this.refreshRepo();
+        }
+
+        if(foundEntry.processingStatus === 'error'){
+            statusIcon = (
+                <span className="error"><i className="fas fa-exclamation-triangle"></i> Błąd</span>
+            );
+            starterIcon = null;
+        }
+
+        
+
+        
+
+   
         
         return(
             <Aux>
@@ -66,10 +120,9 @@ class SegmentItem extends Component {
                     </div>
     
                     <div className="col-sm-auto pair-icons">
-                        
-                         <a onClick={()=>this.startSegmentation(this.props.entryId)}>
-                            <i className="startSegment fas fa-cogs" ></i>
-                        </a>
+
+                        { starterIcon}
+                         
 
                             {
                                 /*
@@ -102,7 +155,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
        onRemoveSegmentItem: (segmentId) => dispatch(segmentActions.removeSegmentItem(segmentId)),
-       onStartSegmentItem: (segmentId, userId, projectId, audioFile, txtFile, token) => dispatch(segmentActions.startSegmentItem(segmentId, userId, projectId, audioFile, txtFile, token))
+       onStartSegmentItem: (segmentId, userId, projectId, audioFile, txtFile, token) => dispatch(segmentActions.startSegmentItem(segmentId, userId, projectId, audioFile, txtFile, token)),
+       onInitSegmentProcess: (entryId) => dispatch(segmentActions.initSegmentProcessing(entryId)),
+       onRefreshRepo: (userId, projectId, token) => dispatch(segmentActions.getProjectFilesForUser(userId, projectId, token))
+       
     }
 }
 

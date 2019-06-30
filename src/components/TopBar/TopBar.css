@@ -6,6 +6,10 @@
 
 }
 
+.TopBar .fas {
+    margin-right: 5px;
+}
+
 .TopBar a {
    color: #d4d8da;
 }

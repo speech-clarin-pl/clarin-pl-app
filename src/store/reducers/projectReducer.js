@@ -40,6 +40,8 @@ const projectReducer = (state = initialState, action) => {
         case actionTypes.INIT_PROJECT: return initProject(state, action);
         case actionTypes.OPEN_MODAL_PROJECT: return openModalProject(state, action);
         case actionTypes.CLOSE_MODAL_PROJECT: return closeModalProject(state, action);
+
+
     }
 
     return state;

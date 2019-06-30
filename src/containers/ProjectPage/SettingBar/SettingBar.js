@@ -9,7 +9,9 @@ const settingBar = (props) => {
                 <nav className="navbar navbar-expand-lg">
                     <div className=" navbar-collapse">
                     
-                        Setting here
+                        {
+                            //TO DO
+                        }
 
                     </div>
                 </nav>

@@ -46,7 +46,12 @@ const topBar = (props) => {
                         <i className={["fas",  "fa-arrow-left"].join(' ')}></i>
                     </Link>
                         <span className="editField">{props.projectTitle}</span>
-                    <a href="#"><i className={["fas", "fa-edit"].join(' ')}></i></a>
+                        {
+                            /*
+                                <a href="#"><i className={["fas", "fa-edit"].join(' ')}></i></a>
+                            */
+                        }
+                   
                 </div>
                 ) }
 			</div>
@@ -56,14 +61,10 @@ const topBar = (props) => {
 
             <ul className="navbar-nav">
 
-               
-
-
-
           
                 { 
-                    // jezyk 
-                }
+                  /*
+                
                 <li className={["nav-item", "dropdown"].join(' ')}>
                 <a  className={["nav-link", "dropdown-toggle", "navLink"].join(' ')} 
                     href="#" 
@@ -79,6 +80,8 @@ const topBar = (props) => {
                     <a className="dropdown-item" onClick={() => props.changeLn("en")}>EN</a>
                 </div>
                 </li>
+                    */
+                }
 
                 { 
                     // pomoc 
@@ -91,12 +94,10 @@ const topBar = (props) => {
                         role="button" 
                         aria-haspopup="true" 
                         aria-expanded="false">
+                            
                         <i className="fas fa-question-circle"></i> 
 
-                        <FormattedMessage
-                            id="TopBar.help"
-                            defaultMessage=" Pomoc"
-                            />
+                            Pomoc
                         
                         </Link>
                 </li>
@@ -104,7 +105,9 @@ const topBar = (props) => {
              
                 { 
                     // konto 
-                }
+               
+
+                /*
 
                 { czyInit ? null : (
                 <li className="nav-item">
@@ -124,6 +127,9 @@ const topBar = (props) => {
                             </a>
                 </li>
                 )}
+                        */
+
+                }
             </ul>
 
             </div>

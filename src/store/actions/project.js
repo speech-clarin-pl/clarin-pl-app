@@ -23,3 +23,24 @@ export const closeModalProject = () => {
     }
 }
 
+export const clearRecoStore = () => {
+    return {
+        type: actionTypes.CLEAR_RECO_STORE,
+    }
+}
+
+export const clearSegmentStore = () => {
+    return {
+        type: actionTypes.CLEAR_SEGMENT_STORE,
+    }
+}
+
+export const clearPreviewStore = () => {
+    return {
+        type: actionTypes.CLEAR_PREVIEW_STORE,
+    }
+}
+
+
+
+
