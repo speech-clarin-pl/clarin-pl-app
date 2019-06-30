@@ -20,7 +20,7 @@ import projectReducer from './store/reducers/projectReducer';
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 //ustawiam domyslny adres dla API
-axios.defaults.baseURL = 'http://localhost:1234';
+axios.defaults.baseURL = process.env.API_URL || 'http://localhost:1234';
 //axios.defaults.headers.common['Authorization'] = 'AUTH TOKEN';
 //axios.defaults.headers.post['Content-Type'] = 'application/json';
 
