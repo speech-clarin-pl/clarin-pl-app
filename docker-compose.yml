@@ -1,0 +1,23 @@
+version: '3.3'
+services:
+  worker:
+    volumes:
+      - repo:/work
+    environment:
+      - DB_HOST=db
+      - TOOLS=/
+    image: "speechclarinpl/website-worker"
+  db:
+    image: "mongo"
+  api:
+    volumes:
+      - repo:/usr/src/app/repo
+    environment:
+      - DB_PATH=mongodb://db:27017/workers
+    image: "speechclarinpl/website-api"
+  app:
+    environment:
+      - API_URL=http://api:1234
+    ports:
+      - "8080:8888"
+    image: "speechclarinpl/website-app"
