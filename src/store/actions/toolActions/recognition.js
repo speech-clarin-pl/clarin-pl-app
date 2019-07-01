@@ -113,6 +113,14 @@ export const initBatchRecognition = (audioFilesArray, audioFilesIds) => {
     }
 }
 
+export const setRefusedFiles = (refusedFiled) => {
+    return {
+        type: actionTypes.REFUSE_RECO_FILES, 
+        refusedFileList: refusedFiled, 
+    }
+}
+
+
 
 //export const INIT_BATCH_RECOGNITION = 'INIT_BATCH_RECOGNITION';
 //export const INIT_FILE_RECOGNITION = 'INIT_BATCH_RECOGNITION';

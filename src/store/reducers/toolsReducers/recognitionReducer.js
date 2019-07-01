@@ -5,6 +5,7 @@ import {updateObject} from '../../utility';
 
 const initialState = {
     filesToUpload: [], 
+    refusedFileList: [],  //refused files
     //w formacie np. 
     // [{
         // file: File {name: "__mowa16000.wav", lastModified: 1560968256333, lastModifiedDate: Wed Jun 19 2019 20:17:36 GMT+0200 (Central European Summer Time), webkitRelativePath: "", size: 1235820, …}
@@ -14,6 +15,14 @@ const initialState = {
     // }]
     modal: false, //controls if modal window is opened
     recoFileForPreview: '', //indicates which file is chosen for preview
+
+}
+
+const setRefusedFiles = (state, action) => {
+    return updateObject(state, {
+        filesToUpload: [], 
+        refusedFileList: action.refusedFileList, 
+    });
 }
 
 const clearRecoStore = (state,action) => {
@@ -116,6 +125,7 @@ const recognitionReducer = (state = initialState, action) => {
         case actionTypes.REMOVE_RECOGNITION_ITEM: return removeRecognitionItem(state,action);
         case actionTypes.OPEN_AUDIO_RECOGNITION_PREVIEW: return openAudioRecPreview(state, action);
         case actionTypes.CLEAR_RECO_STORE: return clearRecoStore(state, action);
+        case actionTypes.REFUSE_RECO_FILES: return setRefusedFiles(state, action);
     }
 
     return state;

@@ -11,7 +11,7 @@ import DragAndDrop from '../../../components/UI/DragAndDrop/DragAndDrop';
 import {connect} from 'react-redux';
 import * as recognitionActions from '../../../store/actions/index';
 import Modal from '../../../components/UI/Modal/Modal';
-
+import {getExt} from '../../../utils/utils';
 import uuid  from 'uuid';
 
 class RecognitionTool extends Component {
@@ -38,10 +38,27 @@ class RecognitionTool extends Component {
     whenFilesChose = (e) => {
         const inputControl = e.currentTarget;
         let fileList = [];
+        let refusedFileList = [];
         for(var i=0;i<inputControl.files.length;i++){
-            fileList.push(inputControl.files[i]);
+            let file = inputControl.files[i];
+            let fileExtention = getExt(file.name)[0];
+            //rozpoznaje tylko pliki audio
+            if(fileExtention === "wav" ||
+               fileExtention === "WAV" ||
+               fileExtention === "mp3" ||
+               fileExtention === "au"){
+               fileList.push(inputControl.files[i]);
+            } else {
+               refusedFileList.push(inputControl.files[i]);
+            }  
+        } 
+
+        if(refusedFileList.length > 0){
+            this.props.onSetRefusionFiles(refusedFileList);
+            this.props.onOpenModalHandler();
         }
-        //console.log(fileList);
+       
+        
         this.handleDrop(fileList);
     }
 
@@ -77,6 +94,13 @@ class RecognitionTool extends Component {
 
     render(){
 
+        let refusedFileNames = null;
+        if(this.props.refusedFileList.length > 0){
+            refusedFileNames = this.props.refusedFileList.map(file=>{
+                return <div>{file.name}</div>;
+            })
+        }
+
         
         let filelist = (
             <h4 style={{marginTop: '10px'}}>Wgraj pliki do rozpoznawania</h4>
@@ -102,16 +126,20 @@ class RecognitionTool extends Component {
                 <Modal
                     show={this.props.modalDisplay}
                     modalClosed={this.closeModalHandler}
-                    title="Czy rozpoczac rozpoznawanie?">
+                    >
+
+                        <div class="alert alert-warning" role="alert">
+                            <p>Ponizsze pliki nie sa plikami audio. 
+                                <br></br>Nie zostana one dodane do kolejki rozpoznawania
+                            </p>
+                            {refusedFileNames }
+                        </div>
+                    
          
-                    <button type="button" 
-                        className="btn btn-primary"
-                        onClick={this.startBatchRecognition}>Tak</button>
+                    
                     <button type="button" 
                         className="btn btn-outline-secondary"
-                        onClick={this.closeModalHandler}>NIE</button>
-                    
-                   
+                        onClick={this.closeModalHandler}>OK</button>
                 </Modal>
 
 {
@@ -195,6 +223,7 @@ const mapStateToProps = state => {
     return {
         filesToUpload: state.recR.filesToUpload,
         modalDisplay: state.projectR.modal,
+        refusedFileList: state.recR.refusedFileList
     }
 }
 
@@ -203,7 +232,8 @@ const mapDispatchToProps = dispatch => {
         onDrop: (files) => dispatch(recognitionActions.dropFiles(files)),
         onOpenModalHandler: () => dispatch(recognitionActions.openModalProject()),
         onCloseModalHandler: () => dispatch(recognitionActions.closeModalProject()),
-        onStartBatchRecognition: (audioFilesArray, audioFilesIds) => dispatch(recognitionActions.initBatchRecognition(audioFilesArray, audioFilesIds))
+        onStartBatchRecognition: (audioFilesArray, audioFilesIds) => dispatch(recognitionActions.initBatchRecognition(audioFilesArray, audioFilesIds)),
+        onSetRefusionFiles: (refusedFiles) => dispatch(recognitionActions.setRefusedFiles(refusedFiles))
     }
 }
 

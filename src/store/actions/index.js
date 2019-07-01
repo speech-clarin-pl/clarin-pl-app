@@ -55,7 +55,8 @@ export {
     initFileRecognition,
     updateFileState,
     removeRecognitionItem,
-    openRecognitionAudioPreview
+    openRecognitionAudioPreview,
+    setRefusedFiles
 } from './toolActions/recognition';
 
 export {
