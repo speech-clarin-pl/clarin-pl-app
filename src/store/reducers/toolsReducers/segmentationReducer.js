@@ -7,6 +7,24 @@ const initialState = {
     segmentEntry: [],
     audioList: [],
     txtList: [],
+
+    refusedAudioFileList: [],  //refused audio files
+    refusedTxtFileList: [],  //refused txt files
+    ifRefusedAudio: true, //which component refused files - audio or if false will be txt
+}
+
+const setRefusedTxtFiles = (state, action) => {
+    return updateObject(state, {
+        refusedTxtFileList: action.refusedFileList, 
+        ifRefusedAudio: false,
+    });
+}
+
+const setRefusedAudioFiles = (state, action) => {
+    return updateObject(state, {
+        refusedAudioFileList: action.refusedFileList, 
+        ifRefusedAudio: true,
+    });
 }
 
 const clearSegmentStore = (state,action) => {
@@ -443,6 +461,8 @@ const segmentationReducer = (state = initialState, action) => {
         case actionTypes.CLEAR_SEGMENT_STORE: return clearSegmentStore(state, action);
         case actionTypes.FILE_SEGMENTATION_SUCCESS: return fileSegmentationSuccess(state,action);
         case actionTypes.FILE_SEGMENTATION_FAILED: return fileSegmentationFailed(state,action);
+        case actionTypes.REFUSE_SEGMENT_AUDIO_FILES: return setRefusedAudioFiles(state, action);
+        case actionTypes.REFUSE_SEGMENT_TXT_FILES: return setRefusedTxtFiles(state, action);
     }
 
     return state;

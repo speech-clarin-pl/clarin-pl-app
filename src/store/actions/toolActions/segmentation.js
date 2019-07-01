@@ -9,6 +9,24 @@ export const dropAudioFiles = (audioFiles) => {
     }
 }
 
+//for refusing audio files in segmentation
+export const setRefusedSegmentAudioFiles = (refusedFiled) => {
+    //console.log(refusedFiled)
+    return {
+        type: actionTypes.REFUSE_SEGMENT_AUDIO_FILES, 
+        refusedFileList: refusedFiled, 
+    }
+}
+
+//for refusing audio files in segmentation
+export const setRefusedSegmentTxtFiles = (refusedFiled) => {
+    //console.log(refusedFiled)
+    return {
+        type: actionTypes.REFUSE_SEGMENT_TXT_FILES, 
+        refusedFileList: refusedFiled, 
+    }
+}
+
 
 //action creator to dropping txt files
 export const dropTxtFiles = (txtFiles) => {

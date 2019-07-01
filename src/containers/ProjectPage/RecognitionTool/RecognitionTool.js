@@ -22,7 +22,29 @@ class RecognitionTool extends Component {
         //console.log(files)
         let extFiles = [];
 
-        Array.from(files).forEach(file => {
+        let fileList = [];
+        let refusedFileList = [];
+
+        for(var i=0;i<files.length;i++){
+            let file = files[i];
+            let fileExtention = getExt(file.name)[0];
+            //rozpoznaje tylko pliki audio
+            if(fileExtention === "wav" ||
+               fileExtention === "WAV" ||
+               fileExtention === "mp3" ||
+               fileExtention === "au"){
+                fileList.push(file);
+            } else {
+               refusedFileList.push(file);
+            }  
+        } 
+
+        if(refusedFileList.length > 0){
+            this.props.onSetRefusionFiles(refusedFileList);
+            this.props.onOpenModalHandler();
+        }
+
+        Array.from(fileList).forEach(file => {
             let newFile = Object.assign({},file);
             newFile.file = file;
             newFile.status = 'toload';
@@ -33,6 +55,8 @@ class RecognitionTool extends Component {
 
         this.props.onDrop(extFiles);
     }
+
+   
 
     //kiedy uzytkownik recznie wybral pliki
     whenFilesChose = (e) => {
@@ -128,7 +152,7 @@ class RecognitionTool extends Component {
                     modalClosed={this.closeModalHandler}
                     >
 
-                        <div class="alert alert-warning" role="alert">
+                        <div className="alert alert-warning" role="alert">
                             <p>Ponizsze pliki nie sa plikami audio. 
                                 <br></br>Nie zostana one dodane do kolejki rozpoznawania
                             </p>

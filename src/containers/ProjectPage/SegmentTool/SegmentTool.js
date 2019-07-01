@@ -13,6 +13,8 @@ import uuid from 'uuid';
 import * as segmentActions from '../../../store/actions/index';
 import SortableAudioList from './SortableAudioList/SortableAudioList';
 import SortableTxtList from './SortableTxtList/SortableTxtList';
+import {getExt} from '../../../utils/utils';
+import Modal from '../../../components/UI/Modal/Modal';
 
 class SegmentTool extends Component {
 
@@ -20,7 +22,30 @@ class SegmentTool extends Component {
 
 		let extAudioFiles = [];
 
-		Array.from(audiofiles).forEach(file => {
+		let fileList = [];
+        let refusedAudioFileList = [];
+
+        for(var i=0;i<audiofiles.length;i++){
+            let file = audiofiles[i];
+            let fileExtention = getExt(file.name)[0];
+            //rozpoznaje tylko pliki audio
+            if(fileExtention === "wav" ||
+               fileExtention === "WAV" ||
+               fileExtention === "mp3" ||
+               fileExtention === "au"){
+                fileList.push(file);
+            } else {
+				refusedAudioFileList.push(file);
+            }  
+        } 
+
+        if(refusedAudioFileList.length > 0){
+            this.props.onSetRefusionAudioFiles(refusedAudioFileList);
+			this.props.onOpenModalHandler();
+			//console.log(refusedAudioFileList)
+        }
+
+		Array.from(fileList).forEach(file => {
 			let newFile = Object.assign({}, file);
 			newFile.file = file;
 			newFile.status = 'toload';
@@ -29,8 +54,8 @@ class SegmentTool extends Component {
 			extAudioFiles.push(newFile);
 		});
 
-		console.log("extAudioFiles")
-		console.log(extAudioFiles)
+		//console.log("extAudioFiles")
+		//console.log(extAudioFiles)
 
 		this.props.onAudioDrop(extAudioFiles);
 	}
@@ -40,7 +65,31 @@ class SegmentTool extends Component {
 		const inputControl = e.currentTarget;
 		let extAudioFiles = [];
 
-		Array.from(inputControl.files).forEach(file => {
+		let fileList = [];
+        let refusedAudioFileList = [];
+
+        for(var i=0;i<inputControl.files.length;i++){
+            let file = inputControl.files[i];
+            let fileExtention = getExt(file.name)[0];
+            //rozpoznaje tylko pliki audio
+            if(fileExtention === "wav" ||
+               fileExtention === "WAV" ||
+               fileExtention === "mp3" ||
+               fileExtention === "au"){
+                fileList.push(file);
+            } else {
+				refusedAudioFileList.push(file);
+            }  
+        } 
+
+        if(refusedAudioFileList.length > 0){
+            this.props.onSetRefusionAudioFiles(refusedAudioFileList);
+			this.props.onOpenModalHandler();
+			//console.log(refusedAudioFileList)
+        }
+
+
+		Array.from(fileList).forEach(file => {
 			let newFile = Object.assign({}, file);
 			newFile.file = file;
 			newFile.status = 'toload';
@@ -49,16 +98,34 @@ class SegmentTool extends Component {
 			extAudioFiles.push(newFile);
 		});
 
-		console.log("extAudioFiles")
-		console.log(extAudioFiles)
-
 		this.props.onAudioDrop(extAudioFiles);
 	}
 
 	handleDropTxt = (txtfiles) => {
 		let extTxtFiles = [];
 
-		Array.from(txtfiles).forEach(file => {
+		let fileList = [];
+        let refusedTxtFileList = [];
+
+        for(var i=0;i<txtfiles.length;i++){
+            let file = txtfiles[i];
+            let fileExtention = getExt(file.name)[0];
+            //rozpoznaje tylko pliki audio
+            if(fileExtention === "txt"){
+                fileList.push(file);
+            } else {
+				refusedTxtFileList.push(file);
+            }  
+        } 
+
+        if(refusedTxtFileList.length > 0){
+            this.props.onSetRefusionTxtFiles(refusedTxtFileList);
+			this.props.onOpenModalHandler();
+			//console.log(refusedAudioFileList)
+        }
+
+
+		Array.from(fileList).forEach(file => {
 			let newFile = Object.assign({}, file);
 			newFile.file = file;
 			newFile.status = 'toload';
@@ -78,7 +145,27 @@ class SegmentTool extends Component {
 
 		let extTxtFiles = [];
 
-		Array.from(inputControl.files).forEach(file => {
+		let fileList = [];
+        let refusedTxtFileList = [];
+
+        for(var i=0;i<inputControl.files.length;i++){
+            let file = inputControl.files[i];
+            let fileExtention = getExt(file.name)[0];
+            //rozpoznaje tylko pliki audio
+            if(fileExtention === "txt"){
+                fileList.push(file);
+            } else {
+				refusedTxtFileList.push(file);
+            }  
+        } 
+
+        if(refusedTxtFileList.length > 0){
+            this.props.onSetRefusionTxtFiles(refusedTxtFileList);
+			this.props.onOpenModalHandler();
+			//console.log(refusedAudioFileList)
+        }
+
+		Array.from(fileList).forEach(file => {
 			let newFile = Object.assign({}, file);
 			newFile.file = file;
 			newFile.status = 'toload';
@@ -87,11 +174,22 @@ class SegmentTool extends Component {
 			extTxtFiles.push(newFile);
 		});
 
-		console.log("extTxtFiles")
-		console.log(extTxtFiles)
+		//console.log("extTxtFiles")
+		//console.log(extTxtFiles)
 
 		this.props.onTxtDrop(extTxtFiles);
 	}
+
+
+	//otwiera okno modalne
+    openModalHandler = () => {
+        this.props.onOpenModalHandler();
+    }
+
+    //zamyka okno modalne
+    closeModalHandler = () => {
+        this.props.onCloseModalHandler();
+    }
 
 
 
@@ -112,11 +210,45 @@ class SegmentTool extends Component {
 			)
 		}
 
+		let refusedAudioFileNames = null;
+		refusedAudioFileNames = this.props.refusedAudioFileList.map((file,i)=>{
+			return <div key={i}>{file.name}</div>
+		})
+
+		let refusedTxtFileNames = null;
+		refusedTxtFileNames = this.props.refusedTxtFileList.map((file,i)=>{
+			return <div key={i}>{file.name}</div>
+		})
+
+		let modalContent = null;
+
+		if(this.props.ifRefusedAudio)
+		{
+			modalContent = (
+				<div className="alert alert-warning" role="alert">
+					<p>Ponizsze pliki nie sa plikami audio. 
+						<br></br>Nie zostana one dodane do kolejki segmentacji
+					</p>
+					{refusedAudioFileNames }
+				</div>
+			)
+		} else {
+			modalContent = (
+				<div className="alert alert-warning" role="alert">
+					<p>Ponizsze pliki nie sa plikami txt. 
+						<br></br>Nie zostana one dodane do kolejki segmentacji
+					</p>
+					{refusedTxtFileNames }
+				</div>
+			)
+		}
+
 
 		return (
 			<Aux>
 
 				{
+
 					/*
 					<LeftSiteBar czyTopPart="true" desc="Tutaj opis do segmentacji" >
 				
@@ -127,6 +259,21 @@ class SegmentTool extends Component {
 							</LeftSiteBar>
 					*/
 				}
+
+				<Modal
+                    show={this.props.modalDisplay}
+                    modalClosed={this.closeModalHandler}
+                    >
+
+
+                        {modalContent}
+                    
+         
+                    
+                    <button type="button" 
+                        className="btn btn-outline-secondary"
+                        onClick={this.closeModalHandler}>OK</button>
+                </Modal>
 
 
 				<LeftSiteBar
@@ -239,7 +386,11 @@ const mapStateToProps = state => {
 	return {
 		segmentEntry: state.segR.segmentEntry,
 		audioList: state.segR.audioList,
-		txtList: state.segR.txtList
+		txtList: state.segR.txtList,
+		refusedAudioFileList: state.segR.refusedAudioFileList,
+		refusedTxtFileList: state.segR.refusedTxtFileList,
+		modalDisplay: state.projectR.modal,
+		ifRefusedAudio: state.segR.ifRefusedAudio,
 	}
 }
 
@@ -249,7 +400,10 @@ const mapDispatchToProps = dispatch => {
 		onTxtDrop: (txtFiles) => dispatch(segmentActions.dropTxtFiles(txtFiles)),
 		onChangeAudioListOrder: (idsOrder) => dispatch(segmentActions.changeAudioListOrder(idsOrder)),
 		onChangeTxtListOrder: (idsOrder) => dispatch(segmentActions.changeTxtListOrder(idsOrder)),
-
+		onSetRefusionAudioFiles: (refusedFiles) => dispatch(segmentActions.setRefusedSegmentAudioFiles(refusedFiles)),
+		onSetRefusionTxtFiles: (refusedFiles) => dispatch(segmentActions.setRefusedSegmentTxtFiles(refusedFiles)),
+		onOpenModalHandler: () => dispatch(segmentActions.openModalProject()),
+        onCloseModalHandler: () => dispatch(segmentActions.closeModalProject()),
 	}
 }
 

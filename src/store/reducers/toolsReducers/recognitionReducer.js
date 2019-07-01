@@ -20,7 +20,6 @@ const initialState = {
 
 const setRefusedFiles = (state, action) => {
     return updateObject(state, {
-        filesToUpload: [], 
         refusedFileList: action.refusedFileList, 
     });
 }

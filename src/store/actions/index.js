@@ -67,6 +67,8 @@ export {
     removeSegmentItem,
     startSegmentItem,
     initSegmentProcessing,
+    setRefusedSegmentAudioFiles,
+    setRefusedSegmentTxtFiles
 } from './toolActions/segmentation';
 
 
