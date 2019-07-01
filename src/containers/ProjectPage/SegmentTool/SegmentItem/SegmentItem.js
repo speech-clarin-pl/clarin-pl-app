@@ -125,12 +125,12 @@ class SegmentItem extends Component {
                          
 
                             {
-                                /*
+                               
                                     <a onClick={()=>this.removeSegmentItem(this.props.entryId)}>
                                             <i className="removeItem fas fa-times" ></i>
                                     </a>
 
-                                */
+                               
                             }
                         
 
