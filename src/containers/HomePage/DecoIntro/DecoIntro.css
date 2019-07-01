@@ -9,4 +9,7 @@
 
 .introButton {
     padding: 1em;
+    color: white !important;
+    text-decoration:none !important;
+    cursor: pointer !important;
 }

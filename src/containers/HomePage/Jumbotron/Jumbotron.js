@@ -14,19 +14,28 @@ const jumbotron = (props) => {
                 <div className="container">
                     <h1 className="display-4">CLARIN-PL</h1>
                     <p className="lead">
-                        <FormattedMessage
+                        {
+/*
+
+ <FormattedMessage
                                 id="Jumbotron.lead"
                                 defaultMessage="Łatwa w użyciu platfroma do analizy sygnału mowy w nagraniach dźwiękowych"
                                 />
+
+                                */
+                        }
+                        Łatwa w użyciu platfroma do analizy sygnału mowy w nagraniach dźwiękowych
+                       
                     </p>
                     <hr className="my-4" />
                     <p>
-                         <FormattedMessage
-                                id="Jumbotron.sublead"
-                                defaultMessage="Znajdziesz tutaj narzędzia do rozpoznawania mowy, transkrypcji, segmentacji, analizy itp."
-                                />
+                        Znajdziesz tutaj narzędzia do m.in. do rozpoznawania mowy, segmentacji oraz transkrypcji.
+                        <br></br>Korzystanie z serwisu wymaga zalozenia konta
                     </p>
-                    <p></p>
+                  
+              
+                          
+                   
                 {
                     // <Link to="/projectsList">
                     //       <button className="btn btn-primary btn-lg btn-block gotoprojects">

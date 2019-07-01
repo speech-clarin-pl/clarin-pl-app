@@ -275,18 +275,38 @@ class LoginArea extends Component {
 
         }
 
-        let errorRegisterInfo = (
-            
-            <div className="alert alert-warning" role="alert">
-                 {this.props.registrationMessage}
-            </div>
-        )
+        let errorRegisterInfo = null;
+        if(this.props.resRegistrationStatus === 201 || this.props.resRegistrationStatus === 200){
+            errorRegisterInfo = (
+                <div className="alert alert-success" role="alert">
+                     {this.props.registrationMessage}
+                </div>
+            )
+        } else if(this.props.resRegistrationStatus !== 0){
+                 errorRegisterInfo = (
+                    <div className="alert alert-warning" role="alert">
+                         {this.props.registrationMessage}
+                    </div>
+                )
+    
+        }
 
-        let errorLoginInfo = (
-            <div className="alert alert-warning" role="alert">
-                 {this.props.loginMessage}
-            </div>
-        )
+        let errorLoginInfo = null;
+        if(this.props.resLoginStatus === 201 || this.props.resLoginStatus === 200){
+            errorLoginInfo = (
+                <div className="alert alert-success" role="alert">
+                     {this.props.loginMessage}
+                </div>
+            )
+        } else if(this.props.resLoginStatus !== 0){
+            errorLoginInfo = (
+                <div className="alert alert-warning" role="alert">
+                     {this.props.loginMessage}
+                </div>
+            )
+        }
+
+        
 
         const registerArea = (
             <div className="col">
@@ -421,8 +441,9 @@ class LoginArea extends Component {
             <Aux>
                 <div className={myclasses.join(' ')}>
                     <div className="container">
+                        
                         <div className="row">
-
+                            
                             {this.props.isAuth? loginArea : [registerArea, loginArea]}
                                                 
                         </div>
@@ -441,6 +462,8 @@ const mapStateToProps = state => {
         userName: state.homeR.userName,
         registrationMessage: state.homeR.registrationMessage,
         loginMessage: state.homeR.loginMessage,
+        resRegistrationStatus: state.homeR.resRegistrationStatus,
+        resLoginStatus: state.homeR.resLoginStatus,
     }
 }
 

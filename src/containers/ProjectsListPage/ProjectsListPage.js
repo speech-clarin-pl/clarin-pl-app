@@ -4,7 +4,7 @@ import ProjectListItem from './ProjectListItem/ProjectListItem';
 import LeftSiteBar from '../ProjectPage/LeftSiteBar/LeftSiteBar';
 import ProjectsList from './ProjectsList/ProjectList';
 import TopBar from '../../components/TopBar/TopBar';
-import { Route } from 'react-router-dom';
+import {withRouter, Route } from 'react-router-dom';
 import ProjectPage from '../ProjectPage/ProjectPage';
 import Modal from '../../components/UI/Modal/Modal';
 import { connect } from 'react-redux';
@@ -177,6 +177,22 @@ class ProjectsListPage extends Component {
     this.props.onDelete(projectId, this.props.userId, this.props.token);
   }
 
+  wyborProjektuOK = (projektId, projektName, projektOwner) => {
+    {
+      /*
+    <Link to={{
+      pathname: "/projects/" + encodeURIComponent(props.projektID),
+      state: {
+          projectTitle: props.title,
+          projectOwner: props.owner,
+      }
+      */
+    }
+
+    this.props.onProjectChoice(projektId, projektName, projektOwner)
+    this.props.history.push("/projects/"+projektId);
+  }
+
   
   render() {
 
@@ -278,9 +294,10 @@ class ProjectsListPage extends Component {
               projektID={projekt._id}
               title={projekt.name}
               owner={projekt.owner}
-              modified={projekt.createdAt}
+              modified={projekt.projectCreated}
               deleteProject={(actionType,projectId, projectName)=>this.openModalHandler(localActions.DELETE_PROJECT, projekt._id, projekt.name)}
-              wyborprojektu={() => this.props.onProjectChoice(projekt._id, projekt.name, projekt.owner)}
+              wyborprojektu = {(projektId, projektName, projektOwner)=>this.wyborProjektuOK(projekt._id, projekt.name, projekt.owner)}
+              //wyborprojektu={() => this.props.onProjectChoice(projekt._id, projekt.name, projekt.owner)}
               //duplicateProject={() => this.props.onDuplicate(projekt._id)}
               editName={(actionType,projectId, projectName)=>this.openModalHandler(localActions.EDIT_NAME_PROJECT,projekt._id, projekt.name)}
    
@@ -375,5 +392,5 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectsListPage);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ProjectsListPage));
 

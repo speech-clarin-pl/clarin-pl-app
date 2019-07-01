@@ -48,17 +48,21 @@ class ProjectPage extends Component {
     //pozostale rzeczy beda pochodzic z serwera i db
 
     //jezeli user przeszedl do projektu z listy projektow
-    if(this.props.location.state) {
+    //if(this.props.location.state) {
       
-      const projectId = this.props.match.params.projectID;
-      const projectTitle = this.props.location.state.projectTitle;
-      const projectOwnerId = this.props.location.state.projectOwner;
+      
+      const projectId = this.props.currentProjectID;
+      const projectTitle = this.props.currentProjectName;
+      const projectOwnerId = this.props.currentProjectOwner;
+      console.log(projectId)
+      console.log(projectTitle)
+      console.log(projectOwnerId)
 
       this.props.onInitProjectHandler(projectId, projectTitle, projectOwnerId);
       this.props.onClearRecoStore();
       this.props.onClearSegmentStore();
       this.props.onClearPreviewStore();
-    }
+    //}
 
   }
 
@@ -112,9 +116,9 @@ class ProjectPage extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    currentProjectID: state.projectR.currentProjectID,
-    currentProjectName: state.projectR.currentProjectName,
-    currentProjectOwner: state.projectR.currentProjectOwner,
+    currentProjectID: state.prolistR.chosenProjectID,
+    currentProjectName: state.prolistR.chosenProjectName,
+    currentProjectOwner: state.prolistR.chosenProjectOwner,
     
   }
 }

@@ -11,27 +11,24 @@ const decointro = (props) => {
     return(
         <Aux>
             <div className="container-fluid">
+                
                 <div className="container">
                     <div className="row">
                         <div className="col">
-                            <button type="button" 
-                                    className={btnclasses.join(' ')}>
+                            <a href="#mowa" className={btnclasses.join(' ')}>
                                     Narzędzia do rozpoznawania mowy
-                            </button>
-                            <button type="button" 
-                                    className={btnclasses.join(' ')}>
+                            </a>
+                            <a href="#pliki" className={btnclasses.join(' ')}>
                                     Przetwarzanie dużej ilości plików
-                            </button>
+                            </a>
                         </div>
                         <div className="col">
-                            <button type="button" 
-                                    className={btnclasses.join(' ')}>
+                            <a href="#bezpieczenstwo" className={btnclasses.join(' ')}>
                                     Bezpieczeństwo danych
-                            </button>
-                            <button type="button" 
-                                    className={btnclasses.join(' ')}>
+                            </a>
+                            <a href="#latwosc" className={btnclasses.join(' ')}>
                                     Łatwość obsługi
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div> 

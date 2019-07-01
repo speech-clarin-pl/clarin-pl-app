@@ -15,14 +15,10 @@ const projectListItem = (props) => {
              <tr className="ProjectListItem">   
                 <td className="projectTitle">
 
-                     
-                    <Link to={{
-                            pathname: "/projects/" + encodeURIComponent(props.projektID),
-                            state: {
-                                projectTitle: props.title,
-                                projectOwner: props.owner,
-                            }
-                        }}> {props.title}</Link>
+                     <a onClick={props.wyborprojektu}>
+                        {props.title}
+                     </a>
+                   
 
                 </td>
                 {

@@ -8,6 +8,7 @@ import axios from 'axios';
 export const registerUserActionFailed = (error) => {
 
     let finalMessage = error.response.data.message;
+    let status = error.response.status;
 
     if(error.response.data.data.length >= 1) {
         for(let i =0; i< error.response.data.data.length; i++){
@@ -16,18 +17,19 @@ export const registerUserActionFailed = (error) => {
         }
     }
 
-
     return {
         type: actionTypes.REGISTER_FAILED,
         message: finalMessage,
+        resRegistrationStatus: status,
     }
 }
 
-export const registerUserAction = (message, userId) => {
+export const registerUserAction = (message, userId, resStatus) => {
     return {
         type: actionTypes.REGISTER,
         message: message,
         userId: userId,
+        resRegistrationStatus: resStatus,
     }
 }
 export const registerUser = (userName, userEmail, userPass) => {
@@ -40,7 +42,7 @@ export const registerUser = (userName, userEmail, userPass) => {
         })
             .then(response => {
                 console.log(response)
-                dispatch(registerUserAction(response.message, response.userId));
+                dispatch(registerUserAction(response.data.message, response.data.userId, response.status));
             })
             .catch(error => {
                 //console.log(error)
@@ -55,7 +57,7 @@ export const registerUser = (userName, userEmail, userPass) => {
 //########################################
 
 
-export const loginUserAction = (isAuth, token, authLoading, userId,userName) => {
+export const loginUserAction = (isAuth, token, authLoading, userId,userName,resStatus) => {
     return {
         type: actionTypes.LOG_IN,
         isAuth: isAuth,
@@ -63,21 +65,22 @@ export const loginUserAction = (isAuth, token, authLoading, userId,userName) => 
         authLoading: authLoading,
         userId: userId,
         userName: userName,
+        resLoginStatus: resStatus,
 
     }
 }
 
 export const loginUserActionFailed = (error) => {
     
-   
     let finalMessage = error.response.data.message;
-
+    let status = error.response.status;
 
     return {
         type: actionTypes.LOG_IN_FAILED,
         isAuth: false,
         authLoading: false,
-        message: finalMessage
+        message: finalMessage,
+        resLoginStatus: status,
     }
 }
 
@@ -126,7 +129,7 @@ export const loginUser = (userEmail, userPass) => {
                 localStorage.setItem('userId', response.data.userId);
                 localStorage.setItem('userName', response.data.userName);
 
-                dispatch(loginUserAction(true, response.data.token,false,response.data.userId,response.data.userName));
+                dispatch(loginUserAction(true, response.data.token,false,response.data.userId,response.data.userName, response.status));
                 //gasnie za 10h
                 const remainingMilliseconds = 60 * 60 * 10000;
                 const expiryDate = new Date(

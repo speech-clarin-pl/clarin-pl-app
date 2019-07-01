@@ -1,3 +1,8 @@
 .HomeText {
     padding-top:2em;
+    text-align: left;
+}
+
+.HomeText h2 {
+    text-align: center;
 }

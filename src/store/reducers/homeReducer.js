@@ -8,6 +8,9 @@ const initialState = {
     userName: '',
     registrationMessage: '',
     loginMessage: '',
+    resRegistrationStatus: 0,
+    resLoginStatus: 0,
+    
 
     token: '',
     authLoading: false,
@@ -24,7 +27,8 @@ const logIn = (state, action) => {
             userName: action.userName,
             token: action.token,
             authLoading: action.authLoading,
-            userId:action.userId
+            userId:action.userId,
+            resLoginStatus: action.resLoginStatus,
         });
 }
 
@@ -36,17 +40,19 @@ const logInFailed = (state, action) => {
         authLoading: action.authLoading,
         userId:action.userId,
         loginMessage: action.message,
+        resLoginStatus: action.resLoginStatus,
     });
 }
 
 const register = (state, action) => {
     const message = action.message;
     const userId = action.userId;
- 
+    const resRegistrationStatus = action.resRegistrationStatus;
 
     return updateObject(state,{
         isAuth: false,
-        registrationMessage: message
+        registrationMessage: message,
+        resRegistrationStatus: resRegistrationStatus,
     });
 }
 
@@ -55,14 +61,15 @@ const registerFailed = (state, action) => {
  
     return updateObject(state,{
         isAuth: false,
-        registrationMessage: message
+        registrationMessage: message,
+        resRegistrationStatus: action.resRegistrationStatus,
     });
 }
 
 const autoLogout = (state,action) => {
     const autoLogoutAfter = action.autoLogoutAfter;
     return updateObject(state,{
-        autoLogoutAfter: autoLogoutAfter
+        autoLogoutAfter: autoLogoutAfter,
     });
 }
 
