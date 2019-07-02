@@ -22,8 +22,6 @@ services:
       - "db"        
     image: "speechclarinpl/website-api"
   app:
-    environment:
-      - API_URL=http://localhost:1234
     ports:
       - "8888:8888"
     depends_on:
