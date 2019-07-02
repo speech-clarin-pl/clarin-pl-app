@@ -262,7 +262,9 @@ class ProjectsListPage extends Component {
 
     //lewy sidebar
     const leftSiteBar = (
-      <LeftSiteBar czyTopPart={false} desc="Tutaj opis do listy projektow" >
+      <LeftSiteBar czyTopPart={false} 
+        desc="W tym miejscu można tworzyć nowe projekty które stanowią przestrzeń roboczą dla wgranych plików. Projekty są przydzielane i wydoczne tylko dla zalogowanego użytkownika. UWAGA! w przypadku usunięcia projektu, zostaną usunięte również wszystkie wgrane do niego pliki"
+         >
         <ButtonLeftBar
           customeStyle={{ height: '50px' }}
           napis="Dodaj projekt"

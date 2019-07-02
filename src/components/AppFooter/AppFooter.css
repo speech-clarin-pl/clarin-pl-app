@@ -1,3 +1,7 @@
 .AppFooter {
     padding: 1em;
 }
+
+.AppFooter .contactInfo {
+    font-size: 0.8em;
+}

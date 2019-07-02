@@ -25,7 +25,7 @@ class Dashboard extends Component {
     
                 <LeftSiteBar 
                     czyTopPart="true"
-                    desc="Tutaj opis do dashoardu" />
+                    desc="W tym miejscu znajdują się statystyki aktualnie wykonywanych usług oraz przestrzeni zajmowanej przez wgrane pliki do projektu" />
     
                 <SettingBar />
     
@@ -34,7 +34,9 @@ class Dashboard extends Component {
     
                     <div className={["container-fluid", "Dashboard"].join(' ')}>
                     <div className="tool-desc">
-                        <p>Tutaj opis narzędzia. Mauris consequat ipsum fermentum massa finibus condimentum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean maximus tellus consequat, ultrices mi vel, efficitur dui. Quisque at venenatis ante. Nullam luctus dictum odio semper tempus. Proin eu lorem non diam iaculis egestas ac non tortor. Nullam viverra luctus leo in mollis.</p>
+                        <p>
+                            Obecnie dwie usługi posiadają interfejs graficzny: rozpoznawanie mowy oraz segmentacja. Pozostałe usługi dostępne są w poprzedniej wersji strony dostępnej <a href="http://mowa.clarin-pl.eu/tools/" target="blank">pod tym linkiem</a>.
+                        </p>
                     </div>
     
                     <div className="tool-body">
@@ -140,7 +142,7 @@ class Dashboard extends Component {
     
                 
     
-                    <p> Mauris consequat ipsum fermentum massa finibus condimentum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean maximus tellus consequat, ultrices mi vel, efficitur dui. Quisque at venenatis ante. Nullam luctus dictum odio semper tempus. Proin eu lorem non diam iaculis egestas ac non tortor. Nullam viverra luctus leo in mollis.</p>
+                    <p> </p>
                                 
                     </div>
     

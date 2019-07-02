@@ -185,7 +185,7 @@ class TranscriptTool extends Component {
 
                 <LeftSiteBar
                     czyTopPart="true"
-                    desc="Tutaj opis do podglądu plików" />
+                    desc="W tym miejscu istnieje możliwość podglądu wyniku wykonywanych usług oraz odłuchania plików dźwiękowych z repozytorium" />
 
                 <SettingBar />
 
