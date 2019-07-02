@@ -17,26 +17,25 @@ const helpPage = (props) => {
 
             <div className="container HelpPage">
                 
-                <h2>Najczesciej zadawane pytania</h2>
                 <p></p>
                 <div className="faq">
-                    <h5>Jak zalozyc konto</h5>
+                    <h5>W jakim celu należy się zarejestrować?</h5>
                     <p>
-                        Some quick example text to build on the card title and make up the bulk of the card's content.
+                        Dzięki rejestracji istnieje możliwość zarządzania swoimi plikami w obrębie tworzonych projektów. Ponadto przydzielana jest prywatna przestrzeń na pliki użytkownika.
                     </p>
                 </div>
 
                 <div className="faq">
-                    <h5 >Zapomnialem hasla</h5>
+                    <h5 >Zapomniałem hasło, co robić?</h5>
                     <p>
-                        Some quick example text to build on the card title and make up the bulk of the card's content.
+                        Póki co serwis nie posiada funkcjonalności przypomnienia hasła. Napisz do nas maila (adres w stopce na dole strony) abyśmy mogli zresetować hasło za Ciebie.
                     </p>
                 </div>
 
                 <div className="faq">
-                    <h5 > Card title</h5>
+                    <h5 >Czy moje pliki są bezpieczne?</h5>
                     <p>
-                        Some quick example text to build on the card title and make up the bulk of the card's content.
+                        Pliki są przechowywane w centralnym repozytorium do którego dostęp posiada tylko zarejestrowana osoba. Pliki można ewentualnie usunąć po zapisaniu wyników usług.
                     </p>
                 </div>
   

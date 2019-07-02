@@ -378,37 +378,38 @@ const removeSegmentEntry = (state,action) => {
 
     let entryAudioId = '';
     let entryTxtId = '';
+    
     const newsegmentEntry = state.segmentEntry.filter((item, index) => {
         //zapisuje z jakich elementow sklada sie segmentEntry
-        if(item.audioEntry !== undefined) entryAudioId = item.audioEntry.id;
-        if(item.txtEntry !== undefined) entryTxtId = item.txtEntry.id;
-        
-        return item.id !== entryId
-    })
-
-    /*
-    const newAudioList = state.audioList.filter((item, index) => {
-        if(entryAudioId !== ''){
-            return  item.id !== entryAudioId;
+        let czyzostawic = true;
+        if(item.id !== entryId){
+            czyzostawic = true;
         } else {
-            return true;
+            //wtedy usuwam ten element
+            czyzostawic = false;
+            entryAudioId = item.audioEntry.id;
+            entryTxtId = item.txtEntry.id;
         }
+        return czyzostawic
     })
 
-    const newtxtList = state.txtList.filter((item, index) => {
-        if(entryTxtId !== ''){
-            return  item.id !== entryTxtId;
-        } else {
-            return true;
-        }
-    })
-    */
+    //teraz usuwam z listy audio oraz txt elementy o tym id
+    const newAudioList = state.audioList.filter((audioItem, index) => {
+        return audioItem.id !== entryAudioId;
+    });
 
+    const newTxtList = state.txtList.filter((txtItem, index) => {
+        return txtItem.id !== entryTxtId;
+    });
+
+    console.log(entryId)
+    console.log(entryAudioId)
+    console.log(entryTxtId)
 
     return updateObject(state, {
         segmentEntry: newsegmentEntry,
-       // audioList: newAudioList,
-       // txtList: newtxtList,
+        audioList: newAudioList,
+        txtList: newTxtList,
     }) ; 
 }
 

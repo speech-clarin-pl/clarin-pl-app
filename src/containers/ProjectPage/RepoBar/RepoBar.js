@@ -143,20 +143,24 @@ class repoBar extends Component  {
 					<div className="repoTab" >
 						<div className="scrollStrip"
 							onMouseDown={this.startResizeRepo}>
-								<i class="fas fa-arrows-alt-h"></i>
+								<i className="fas fa-arrows-alt-h"></i>
 							</div>
 						Repozytorium
 					</div>
+					{
+						/*
 					<div className="repoNav" >
-						Navigation to repo
+						
 					</div>
+						*/
+					}
+					
 				</div>
 
 				
 				<div className="mainRepoContent" data-scrollbar>
 					
 
-			
 
 			<FileBrowser
 				files={this.props.files}

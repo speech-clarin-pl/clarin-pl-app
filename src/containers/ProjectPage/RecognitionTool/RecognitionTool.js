@@ -184,7 +184,7 @@ class RecognitionTool extends Component {
 
                 <LeftSiteBar 
                 czyTopPart="true"
-                desc="Tutaj opis do rozpoznawania" />
+                desc="W tym miejscu istnieje możliwość wykonywania automatycznego rozpoznawania mowy z nagrań dźwiękowych" />
 
                  <SettingBar />
     
@@ -192,7 +192,10 @@ class RecognitionTool extends Component {
     
                     <div className={["container-fluid", "RecognitionTool"].join(' ')}>
                     <div className="tool-desc">
-                        <p>Tutaj opis narzędzia. Mauris consequat ipsum fermentum massa finibus condimentum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean maximus tellus consequat, ultrices mi vel, efficitur dui. Quisque at venenatis ante. Nullam luctus dictum odio semper tempus. Proin eu lorem non diam iaculis egestas ac non tortor. Nullam viverra luctus leo in mollis.</p>
+                        <p>Zamiana nagrania mowy na zapis ortograficzny. Pliki audio przekazywane do tej usługi muszą być w odpowiednim formacie (WAV, 16kHz, mono, 16-bit). Jeśli plik nie jest w odpowiednim formacie, można skorzystać z usługi normalizacji audio do odpowiedniego przekonwertowania pliku znajdujące się na  <a href="http://mowa.clarin-pl.eu/tools/ui/audio/normalize" target="blank">TEJ stronie</a>. 
+                        </p>
+                        <p>Narzędzie umożliwia wgranie wielu plików jednocześnie i uruchomienie usługi na wszystkich jednocześnie. W trakcie wykonywania usługi nie należy odświeżać strony.</p>
+                      
                     </div>
     
                     <div className="tool-body">

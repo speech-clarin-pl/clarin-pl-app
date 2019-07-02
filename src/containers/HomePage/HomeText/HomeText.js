@@ -10,18 +10,18 @@ const hometext = (props) => {
             <div className={myclasses.join(' ')}>
                 <div className="row">
                     <dir className="col" >
-                        <h2 id="mowa">Narzędzia do rozpoznawania mowy</h2>
-                        <p>consectetur adipiscing elit. Pellentesque id eleifend magna. In ut varius tortor, quis sagittis felis. Suspendisse dapibus lorem at dui interdum, a placerat purus sodales. Vestibulum mattis mauris rhoncus diam posuere iaculis. Quisque ultricies, purus ac imperdiet elementum, massa lacus rhoncus magna, non molestie urna risus sed risus. Nunc euismod augue ligula, id suscipit odio vestibulum id. Donec malesuada odio at lacus ullamcorper fringilla. Mauris auctor commodo mattis. Nullam rutrum sodales arcu. Phasellus euismod tellus id leo imperdiet, id vehicula justo blandit. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+                        <h3 id="mowa">Narzędzia do rozpoznawania mowy</h3>
+                        <p>Serwis udostępnia narzędzia do rozpoznawania mowy z nagrań dźwiękowych. Robi to w sposób automatyczny, wyręczając użytkownika w dokonywaniu transkrypcji w sposób manualny. </p>
 
-                        <h2 id="pliki">Przetwarzanie dużej ilości plików</h2>
-                        <p>consectetur adipiscing elit. Pellentesque id eleifend magna. In ut varius tortor, quis sagittis felis. Suspendisse dapibus lorem at dui interdum, a placerat purus sodales. Vestibulum mattis mauris rhoncus diam posuere iaculis. Quisque ultricies, purus ac imperdiet elementum, massa lacus rhoncus magna, non molestie urna risus sed risus. Nunc euismod augue ligula, id suscipit odio vestibulum id. Donec malesuada odio at lacus ullamcorper fringilla. Mauris auctor commodo mattis. Nullam rutrum sodales arcu. Phasellus euismod tellus id leo imperdiet, id vehicula justo blandit. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+                        <h3 id="pliki">Przetwarzanie dużej ilości plików</h3>
+                        <p>W przypadku posiadania w swoich zasobach wielu plików które wymagają analizy, istnieje możliwość  uruchomienia zadania rozpoznawania na wszystkich wgranych plikach jednocześnie.</p>
                     </dir>
                     <dir className="col" id="bezpieczenstwo">
-                        <h2 id="bezpieczenstwo">Bezpieczeństwo danych</h2>
-                        <p>consectetur adipiscing elit. Pellentesque id eleifend magna. In ut varius tortor, quis sagittis felis. Suspendisse dapibus lorem at dui interdum, a placerat purus sodales. Vestibulum mattis mauris rhoncus diam posuere iaculis. Quisque ultricies, purus ac imperdiet elementum, massa lacus rhoncus magna, non molestie urna risus sed risus. Nunc euismod augue ligula, id suscipit odio vestibulum id. Donec malesuada odio at lacus ullamcorper fringilla. Mauris auctor commodo mattis. Nullam rutrum sodales arcu. Phasellus euismod tellus id leo imperdiet, id vehicula justo blandit. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+                        <h3 id="bezpieczenstwo">Bezpieczeństwo danych</h3>
+                        <p>Twoje pliki są chronione a dostęp do nich jest możliwy tylko dla zarejestrowanych użytkowników. Dzięki podglądowi plików w repozytorium, istnieje możliwość ich zarządzania oraz usuwania po wykonaniu zadania. </p>
                         
-                        <h2 id="latwosc">Łatwość obsługi</h2>
-                        <p>consectetur adipiscing elit. Pellentesque id eleifend magna. In ut varius tortor, quis sagittis felis. Suspendisse dapibus lorem at dui interdum, a placerat purus sodales. Vestibulum mattis mauris rhoncus diam posuere iaculis. Quisque ultricies, purus ac imperdiet elementum, massa lacus rhoncus magna, non molestie urna risus sed risus. Nunc euismod augue ligula, id suscipit odio vestibulum id. Donec malesuada odio at lacus ullamcorper fringilla. Mauris auctor commodo mattis. Nullam rutrum sodales arcu. Phasellus euismod tellus id leo imperdiet, id vehicula justo blandit. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+                        <h3 id="latwosc">Łatwość obsługi</h3>
+                        <p>Serwis został tak zaprojektowany aby w maksymalny sposób ułatwić jego obsługę. Nawigacja w serwisie nie sprawi żadnego problemu. Interfejs użytkownika przewiduje dostępność wszystkich funkcjonalności w jednym miejscu, bez konieczności nawigowania w strukturze serwisu.</p>
                     </dir>
                 </div>
             </div>
