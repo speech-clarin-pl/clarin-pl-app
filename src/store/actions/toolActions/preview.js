@@ -66,22 +66,21 @@ export const openTxtFileToPreview = (file) => {
 
 //############### Audio File Preview ##############
 
-export const openAudioFileToPreviewAction = (key, url) => {
+export const openAudioFileToPreviewAction = (key, url,waveSurferInitialized) => {
     return {
         type: actionTypes.OPEN_AUDIO_FILE_PREVIEW,
         fileUrl: url,
         fileKey: key,
+        waveSurferInitialized: waveSurferInitialized,
     }
 }
 
 
-export const openAudioFileToPreview = (file) => {
-
-
+export const openAudioFileToPreview = (file, waveSurferInitialized) => {
 
     return dispatch => {
 
-        dispatch(openAudioFileToPreviewAction(file.key, file.url));
+        dispatch(openAudioFileToPreviewAction(file.key, file.url, waveSurferInitialized));
 
         // const ctx = new AudioContext();
         // let audio;

@@ -116,9 +116,7 @@ class TranscriptTool extends Component {
         if (this.props.audiofileName !== '') {
             if (this.props.waveSurferInitialized==true) {
                 if(this.props.audioDisplayed === false){
-                    //if(this.props.audioContent !== null){
                         this.onLoadAudioToWaveSurfer(this.props.audioFileUrl);
-                    //}
                 }
             }
         }

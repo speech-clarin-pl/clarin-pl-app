@@ -64,8 +64,13 @@ class repoBar extends Component {
 
 		//sprawdzam czy juz jestem na stronie podgladu.
 		//jak nie to tam przechodze
+
+		let czyjestem = true;
+
 		if (!this.props.location.pathname.includes('preview')) {
+		
 			let toURL = this.props.match.url + '/preview';
+			czyjestem = false;
 			this.props.history.push({
 				pathname: toURL,
 			});
@@ -79,14 +84,14 @@ class repoBar extends Component {
 		ext === 'TXT' || ext === 'CTM' || ext === 'ZIP' || ext === 'JSON') {
 
 			if(file.url !== this.props.txtFileUrl){
-				this.props.onOpenTxtFileToPreview(file);
+				this.props.onOpenTxtFileToPreview(file, czyjestem);
 			}
 
 		} else if (ext === 'wav' || ext === 'mp3' || ext === 'au' ||
 			ext === 'WAV' || ext === 'MP3' || ext === 'AU' ) {
 
 				if(file.url !== this.props.audioFileUrl){
-					this.props.onOpenAudioFileToPreview(file);
+					this.props.onOpenAudioFileToPreview(file, czyjestem);
 				}
 
 		}
@@ -252,8 +257,8 @@ const mapDispatchToProps = dispatch => {
 		onHandleDeleteFolder: (folderKey, projectId, userId, token) => dispatch(repoActions.handleDeleteFolder(folderKey, projectId, userId, token)),
 		onHandleDeleteFile: (fileKey, projectId, userId, token) => dispatch(repoActions.handleDeleteFile(fileKey, projectId, userId, token)),
 		onGetProjectFilesForUser: (userId, projectId, token) => dispatch(repoActions.getProjectFilesForUser(userId, projectId, token)),
-		onOpenTxtFileToPreview: (file) => dispatch(repoActions.openTxtFileToPreview(file)),
-		onOpenAudioFileToPreview: (file) => dispatch(repoActions.openAudioFileToPreview(file))
+		onOpenTxtFileToPreview: (file, ifWaveSurferIsInitialized) => dispatch(repoActions.openTxtFileToPreview(file,ifWaveSurferIsInitialized)),
+		onOpenAudioFileToPreview: (file,ifWaveSurferIsInitialized) => dispatch(repoActions.openAudioFileToPreview(file,ifWaveSurferIsInitialized))
 	}
 }
 

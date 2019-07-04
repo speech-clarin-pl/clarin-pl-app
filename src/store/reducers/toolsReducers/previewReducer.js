@@ -80,12 +80,15 @@ const openAudioFilePreview = (state,action) => {
 
     const fileUrl = action.fileUrl;
     const fileKey = action.fileKey;
+    const wsinit = action.waveSurferInitialized;
+
+    console.log(wsinit)
 
     return updateObject(state, {
         audiofileName: fileKey,
         audioDisplayed: false,
         audioFileUrl: fileUrl,
-        waveSurferInitialized: false, //indicates when the waveSurfer is initialized
+        waveSurferInitialized: wsinit, //indicates when the waveSurfer is initialized
         playing: false, //if playing....
     })
 
