@@ -58,24 +58,27 @@ class TranscriptTool extends Component {
         });
 
         this.wavesurfer.on('loading', function (e) {
-            console.log(e);
+           // console.log(e);
         }.bind(this));
 
 
         // Time stretcher
         this.wavesurfer.on('ready', function () {
-            this.updateAudioArea();
-           // this.props.onUpdateAudioArea(this.props.fileKey)
+           this.updateAudioArea(); //audioDisplayed: ustawia na true
          }.bind(this));
 
-         this.props.onWeveSurferLoaded(true);
+         this.props.onWeveSurferInitialized(true); //waveSurferInitialized: ustawia na true
+
+         
         
     }
 
     componentWillUnmount = () => {
-        this.props.onWeveSurferLoaded(false);
+        //this.props.onWeveSurferInitialized(false);
         this.wavesurfer.stop();
-        this.wavesurfer = null;
+        this.props.onWeveSurferInitialized(false); 
+        this.props.onAudioDisplayed(false);
+        //this.wavesurfer = null;
     }
 
     updateAudioArea = () => {
@@ -91,12 +94,9 @@ class TranscriptTool extends Component {
         this.props.onUpdateTxtArea(e.currentTarget.value, null);
     }
 
-    loadAudioFileForPreview = (audioUrl) => {
-        console.log('loadAudioFileForPreview')
-        if(this.props.waveSurferLoaded){
-            console.log(this.testowy)
-            this.wavesurfer.load(audioUrl);
-        }
+    onLoadAudioToWaveSurfer = (audioFileUrl) => {
+            console.log(audioFileUrl)
+            this.wavesurfer.load(audioFileUrl);
     }
    
 
@@ -105,26 +105,21 @@ class TranscriptTool extends Component {
 
         //obsluga podgladu pliku txt
         if (this.props.txtfileName !== '') {
+            //aby nie ladowac jak jest juz zaladowane....
             if (this.props.txtDisplayed === false) {
-                //console.log('AAAAAA')
-                fetch(this.props.txtFileUrl)
-                    .then((r) => r.text())
-                    .then(text => {
-                        console.log(text)
-                        //console.log(text);
-                        this.props.onUpdateTxtArea(text, this.props.txtfileName)
-                    })
+                this.props.onUpdateTxtArea(this.props.txtContent, this.props.txtfileName)
             }
         }
 
+       
         //obsluga podgladu pliku audio
         if (this.props.audiofileName !== '') {
-            if (this.props.waveSurferLoaded) {
+            if (this.props.waveSurferInitialized==true) {
                 if(this.props.audioDisplayed === false){
-                    console.log("aaaaaaaa")
-                    this.loadAudioFileForPreview(this.props.audioFileUrl);
+                    //if(this.props.audioContent !== null){
+                        this.onLoadAudioToWaveSurfer(this.props.audioFileUrl);
+                    //}
                 }
-                
             }
         }
 
@@ -303,7 +298,7 @@ const mapStateToProps = (state) => {
         audiofileName: state.previewR.audiofileName,
         audioDisplayed: state.previewR.audioDisplayed,
         audioFileUrl:  state.previewR.audioFileUrl,
-        waveSurferLoaded: state.previewR.waveSurferLoaded,
+        waveSurferInitialized: state.previewR.waveSurferInitialized,
         playing: state.previewR.playing,
     }
 }
@@ -313,8 +308,9 @@ const mapDispatchToProps = dispatch => {
         //onHandleCreateFolder: (key,projectId, userId, token) => dispatch(repoActions.handleCreateFolder(key, projectId, userId, token)),
         onUpdateTxtArea: (newValue, fileKey) => dispatch(previewActions.updateTxtPreview(newValue, fileKey)),
         onUpdateAudioArea: (fileKey) => dispatch(previewActions.updateAudioPreview(fileKey)),
-        onWeveSurferLoaded: (ifyes) => dispatch(previewActions.weveSurferLoaded(ifyes)),
+        onWeveSurferInitialized: (ifyes) => dispatch(previewActions.weveSurferInitialized(ifyes)),
         onTooglePlaying: () => dispatch(previewActions.togglePlaying()),
+        onAudioDisplayed: (ifYes) => dispatch(previewActions.changeAudioDisplayed(ifYes))
     }
 }
 

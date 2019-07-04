@@ -1,5 +1,6 @@
 import * as actionTypes from '../../actions/actionsTypes';
 import {updateObject} from '../../utility';
+import { changeAudioDisplayed } from '../../actions';
 
 
 const initialState = {
@@ -10,9 +11,10 @@ const initialState = {
     txtFileUrl: '',
 
     audiofileName: '',
+    audioContent: null,
     audioDisplayed: false,
     audioFileUrl: '',
-    waveSurferLoaded: false, //indicates when the waveSurfer is initialized
+    waveSurferInitialized: false, //indicates when the waveSurfer is initialized
 
     playing: false, //if playing....
 
@@ -28,7 +30,7 @@ const clearPreviewStore = (state,action) => {
         audiofileName: '',
         audioDisplayed: false,
         audioFileUrl: '',
-        waveSurferLoaded: false, 
+        waveSurferInitialized: false, 
     
         playing: false, 
     }) ; 
@@ -58,36 +60,46 @@ const updateTxtPreview = (state, action) => {
 
 
 
-const openFilePreview = (state,action) => {
+const openTxtFilePreview = (state,action) => {
 
-    const fileKey = action.fileKey;
+    const fileContent = action.fileContent;
     const fileUrl = action.fileUrl;
-    const fileExt = getExt(fileKey);
+    const fileKey = action.fileKey;
 
+    return updateObject(state, {
+        txtfileName: fileKey,
+        txtFileUrl: fileUrl,
+        txtDisplayed: false,
+        txtContent: fileContent,
+    })
 
-    if(fileExt === 'txt' ||
-       fileExt === 'ctm' ){
-        return updateObject(state, {
-            txtfileName: fileKey,
-            txtFileUrl: fileUrl,
-            txtDisplayed: false,
-        })
-    } else if(fileExt === 'wav' ||
-              fileExt === 'mp3' ||
-              fileExt === 'au'  ){
-        
-        return updateObject(state, {
-            audiofileName: fileKey,
-            audioFileUrl: fileUrl,
-            audioDisplayed: false,
-        })
-
-    }
 }
 
-const waveSurferLoaded = (state, action) => {
+
+const openAudioFilePreview = (state,action) => {
+
+    const fileUrl = action.fileUrl;
+    const fileKey = action.fileKey;
+
     return updateObject(state, {
-        waveSurferLoaded: action.ifYes,
+        audiofileName: fileKey,
+        audioDisplayed: false,
+        audioFileUrl: fileUrl,
+        waveSurferInitialized: false, //indicates when the waveSurfer is initialized
+        playing: false, //if playing....
+    })
+
+}
+
+const changeAudioDisplay = (state, action) => {
+    return updateObject(state, {
+        audioDisplayed: action.ifYes,
+    })
+}
+
+const waveSurferInitialized = (state, action) => {
+    return updateObject(state, {
+        waveSurferInitialized: action.ifYes,
     })
 }
 
@@ -107,10 +119,12 @@ const previewReducer = (state = initialState, action) => {
     switch(action.type){
         case actionTypes.UPDATE_TXT_PREVIEW: return updateTxtPreview(state, action);
         case actionTypes.UPDATE_AUDIO_PREVIEW: return updateAudioPreview(state, action);
-        case actionTypes.OPEN_FILE_PREVIEW: return openFilePreview(state,action);
-        case actionTypes.WAVESURFER_LOADED: return waveSurferLoaded(state,action);
+        case actionTypes.OPEN_TXT_FILE_PREVIEW: return openTxtFilePreview(state,action);
+        case actionTypes.OPEN_AUDIO_FILE_PREVIEW: return openAudioFilePreview(state,action);
+        case actionTypes.WAVESURFER_INITIALIZED: return waveSurferInitialized(state,action);
         case actionTypes.TOGGLE_PLAYING_PREVIEW: return togglePlayingPreview(state,action);
         case actionTypes.CLEAR_PREVIEW_STORE: return clearPreviewStore(state, action);
+        case actionTypes.CHANGE_AUDIO_DISPLAYED: return changeAudioDisplay(state,action);
     }
 
     return state;

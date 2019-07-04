@@ -84,6 +84,17 @@ const logOut = (state,action) => {
         isAuth: false,
         token:'',
         userId:'', 
+        email: '',
+        pass: '',
+        userName: '',
+        registrationMessage: '',
+        loginMessage: '',
+        resRegistrationStatus: 0,
+        resLoginStatus: 0,
+        token: '',
+        authLoading: false,
+        error: '',
+        autoLogoutAfter: 0 //po ilu milisekundach bedzie wylogowanie
     });
 }
 

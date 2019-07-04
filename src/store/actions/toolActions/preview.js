@@ -16,9 +16,17 @@ export const updateAudioPreview = (fileKey) => {
     }
 }
 
-export const weveSurferLoaded = (ifyes) => {
+export const changeAudioDisplayed = (ifyes) => {
     return {
-        type: actionTypes.WAVESURFER_LOADED,
+        type: actionTypes.CHANGE_AUDIO_DISPLAYED,
+        ifYes:ifyes,
+    }
+}
+
+
+export const weveSurferInitialized = (ifyes) => {
+    return {
+        type: actionTypes.WAVESURFER_INITIALIZED,
         ifYes:ifyes,
     }
 }
@@ -30,12 +38,67 @@ export const togglePlaying = () => {
 }
 
 
+//############### Txt File Preview ##############
 
-
-export const openFilePreview = (file) => {
+export const openTxtFileToPreviewAction = (key, url, content) => {
     return {
-        type: actionTypes.OPEN_FILE_PREVIEW,
-        fileKey: file.key,
-        fileUrl: file.url,
+        type: actionTypes.OPEN_TXT_FILE_PREVIEW,
+        fileUrl: url,
+        fileContent: content,
+        fileKey: key,
     }
 }
+
+
+export const openTxtFileToPreview = (file) => {
+    return dispatch => {
+        fetch(file.url)
+        .then(response => {
+            response.text().then(content => {
+                dispatch(openTxtFileToPreviewAction(file.key, file.url, content));
+            })
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }
+}
+
+//############### Audio File Preview ##############
+
+export const openAudioFileToPreviewAction = (key, url) => {
+    return {
+        type: actionTypes.OPEN_AUDIO_FILE_PREVIEW,
+        fileUrl: url,
+        fileKey: key,
+    }
+}
+
+
+export const openAudioFileToPreview = (file) => {
+
+
+
+    return dispatch => {
+
+        dispatch(openAudioFileToPreviewAction(file.key, file.url));
+
+        // const ctx = new AudioContext();
+        // let audio;
+
+        // fetch(file.url)
+        // .then(response => {
+        //     response.arrayBuffer().then(arrayBuffer => {
+        //         ctx.decodeAudioData(arrayBuffer).then(decodedAudio => {
+        //             audio = decodedAudio;
+        //             dispatch(openAudioFileToPreviewAction(file.key, file.url, audio));
+        //         })
+        //     })
+        // })
+        // .catch(error => {
+        //     console.log(error)
+        // })
+    }
+
+}
+

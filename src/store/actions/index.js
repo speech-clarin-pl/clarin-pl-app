@@ -42,9 +42,11 @@ export {
 export {
     updateTxtPreview,
     updateAudioPreview,
-    openFilePreview,
-    weveSurferLoaded,
-    togglePlaying
+    openTxtFileToPreview,
+    openAudioFileToPreview,
+    weveSurferInitialized,
+    togglePlaying,
+    changeAudioDisplayed
 } from './toolActions/preview';
 
 
