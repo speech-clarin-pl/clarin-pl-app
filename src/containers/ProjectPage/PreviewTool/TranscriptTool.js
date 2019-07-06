@@ -100,7 +100,6 @@ class TranscriptTool extends Component {
     }
    
 
-
     render() {
 
         //obsluga podgladu pliku txt

@@ -20,8 +20,8 @@ import projectReducer from './store/reducers/projectReducer';
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 //ustawiam domyslny adres dla API
-//axios.defaults.baseURL = 'http://localhost:1234';
-axios.defaults.baseURL = 'http://clarin.korzinek.com:1234';
+axios.defaults.baseURL = 'http://localhost:1234';
+//axios.defaults.baseURL = 'http://clarin.korzinek.com:1234';
 //axios.defaults.baseURL = 'http://mowa.clarin-pl.eu:1234';
 
 //axios.defaults.headers.common['Authorization'] = 'AUTH TOKEN';

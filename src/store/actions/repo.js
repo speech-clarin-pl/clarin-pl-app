@@ -130,7 +130,7 @@ export const handleRenameFolderActionFailed = (error) => {
 }
 
 export const handleRenameFolder = (oldKey, newKey, projectId, userId, token) => {
-    console.log('RENAME FOLDER:' + oldKey + ' into ' + newKey);
+    //console.log('RENAME FOLDER:' + oldKey + ' into ' + newKey);
     //RENAME FOLDER:alaMaKota/ into alaMaKota222/
     return dispatch => {
         axios.put(('/repoFiles/renameFolder/'), {
@@ -145,7 +145,9 @@ export const handleRenameFolder = (oldKey, newKey, projectId, userId, token) => 
         })
             .then(response => {
                 console.log(response)
+                //this.getProjectFilesForUser(userId, projectId, token);
                 dispatch(handleRenameFolderAction(response.data.oldKey, response.data.newKey, response.data.message));
+                //dispatch(handleRenameFolderAction(response.data.oldKey, response.data.newKey, response.data.message));
             })
             .catch(error => {
                 dispatch(handleRenameFolderActionFailed(error));

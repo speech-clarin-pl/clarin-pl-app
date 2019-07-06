@@ -125,7 +125,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onLogout: () => dispatch(homeActions.logout()),
-   // this.setState({ isAuth: true, token: token, userId: userId });
     onSetLoggedIn: (userId, userName, token) => dispatch(homeActions.setLoggedIn(userId,userName, token))
   }
 }
