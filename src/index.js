@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {BrowserRouter} from 'react-router-dom';
-import {Provider} from 'react-redux';
-import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import homeReducer from './store/reducers/homeReducer';
 import projectsListReducer from './store/reducers/projectsListReducer';
 import recognitionReducer from './store/reducers/toolsReducers/recognitionReducer';
@@ -16,13 +16,16 @@ import thunk from 'redux-thunk';
 import axios from 'axios';
 import projectReducer from './store/reducers/projectReducer';
 
-//dev tools extensions instalation
+
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-//ustawiam domyslny adres dla API
-axios.defaults.baseURL = 'http://localhost:1234';
-//axios.defaults.baseURL = 'http://clarin.korzinek.com:1234';
-//axios.defaults.baseURL = 'http://mowa.clarin-pl.eu:1234';
+
+if (process.env.NODE_ENV !== 'development') {
+    console.log = () => {}
+  }
+
+//the address for api
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 //axios.defaults.headers.common['Authorization'] = 'AUTH TOKEN';
 //axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -44,11 +47,11 @@ const store = createStore(rootReducer, composeEnhancers(
 ));
 
 const app = (
-        <Provider store={store}>
-            <BrowserRouter>
-                <App /> 
-            </BrowserRouter>
-        </Provider>
+    <Provider store={store}>
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
+    </Provider>
 );
 
 ReactDOM.render(app, document.getElementById('root'));

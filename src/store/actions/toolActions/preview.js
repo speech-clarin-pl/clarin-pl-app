@@ -1,7 +1,7 @@
 import * as actionTypes from '../actionsTypes';
 import axios from 'axios';
 
- export const updateTxtPreview = (newContent, fileName) => {
+export const updateTxtPreview = (newContent, fileName) => {
     return {
         type: actionTypes.UPDATE_TXT_PREVIEW,
         newContent: newContent,
@@ -19,7 +19,7 @@ export const updateAudioPreview = (fileKey) => {
 export const changeAudioDisplayed = (ifyes) => {
     return {
         type: actionTypes.CHANGE_AUDIO_DISPLAYED,
-        ifYes:ifyes,
+        ifYes: ifyes,
     }
 }
 
@@ -27,7 +27,7 @@ export const changeAudioDisplayed = (ifyes) => {
 export const weveSurferInitialized = (ifyes) => {
     return {
         type: actionTypes.WAVESURFER_INITIALIZED,
-        ifYes:ifyes,
+        ifYes: ifyes,
     }
 }
 
@@ -53,20 +53,20 @@ export const openTxtFileToPreviewAction = (key, url, content) => {
 export const openTxtFileToPreview = (file) => {
     return dispatch => {
         fetch(file.url)
-        .then(response => {
-            response.text().then(content => {
-                dispatch(openTxtFileToPreviewAction(file.key, file.url, content));
+            .then(response => {
+                response.text().then(content => {
+                    dispatch(openTxtFileToPreviewAction(file.key, file.url, content));
+                })
             })
-        })
-        .catch(error => {
-            console.log(error)
-        })
+            .catch(error => {
+                console.log(error)
+            })
     }
 }
 
 //############### Audio File Preview ##############
 
-export const openAudioFileToPreviewAction = (key, url,waveSurferInitialized) => {
+export const openAudioFileToPreviewAction = (key, url, waveSurferInitialized) => {
     return {
         type: actionTypes.OPEN_AUDIO_FILE_PREVIEW,
         fileUrl: url,

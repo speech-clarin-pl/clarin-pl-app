@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import HomePage from './containers/HomePage/HomePage';
-import {Route, Switch} from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import ProjectPage from './containers/ProjectPage/ProjectPage';
 import ProjectsListPage from './containers/ProjectsListPage/ProjectsListPage';
 import HelpPage from './components/HelpPage/HelpPage';
-import {IntlProvider, addLocaleData} from 'react-intl';
-import {connect} from 'react-redux';
+import { IntlProvider, addLocaleData } from 'react-intl';
+import { connect } from 'react-redux';
 import * as homeActions from './store/actions/index';
 
 import en from 'react-intl/locale-data/en';
@@ -24,7 +24,7 @@ const messages = {
 
 const language = navigator.language.split(/[-_]/)[0];  // language without region code
 
-class App extends Component{
+class App extends Component {
 
   state = {
     currln: "pl",
@@ -59,18 +59,20 @@ class App extends Component{
     }, milliseconds);
   };
 
- 
 
-  changeLnHandler=(ln)=>{
+
+  changeLnHandler = (ln) => {
     this.setState({
       currln: ln,
     })
   }
 
-  render(){
+  render() {
 
-   
-    if(this.props.chosenProjectID !== null){
+
+
+
+    if (this.props.chosenProjectID !== null) {
 
     }
 
@@ -78,37 +80,37 @@ class App extends Component{
       <div className="App">
         <IntlProvider locale={this.state.currln} defaultLocale="pl" messages={messages[this.state.currln]}>
 
-           
-           {
-            
-            }
-            
 
-            <Switch>
+          {
 
-                    <Route path="/projects/:projectID" render={(props) => (
-                       <ProjectPage {...props} 
-                            changeLn={this.changeLnHandler}
-                            currLn = {this.state.currln} />
-                    )}/>
+          }
 
-                  <Route path="/projectsList" render={(props) => (
-                       <ProjectsListPage {...props} 
-                            changeLn={this.changeLnHandler} 
-                            currLn = {this.state.currln}/>
-                    )}/>
 
-                    <Route path="/help" render={(props) => (
-                       <HelpPage {...props} 
-                            changeLn={this.changeLnHandler}
-                            currLn = {this.state.currln} />
-                    )}/>
-                    <Route path="/" render={(props) => (
-                       <HomePage {...props} 
-                            changeLn={this.changeLnHandler}
-                            currLn = {this.state.currln} />
-                    )}/>
-            </Switch>
+          <Switch>
+
+            <Route path="/projects/:projectID" render={(props) => (
+              <ProjectPage {...props}
+                changeLn={this.changeLnHandler}
+                currLn={this.state.currln} />
+            )} />
+
+            <Route path="/projectsList" render={(props) => (
+              <ProjectsListPage {...props}
+                changeLn={this.changeLnHandler}
+                currLn={this.state.currln} />
+            )} />
+
+            <Route path="/help" render={(props) => (
+              <HelpPage {...props}
+                changeLn={this.changeLnHandler}
+                currLn={this.state.currln} />
+            )} />
+            <Route path="/" render={(props) => (
+              <HomePage {...props}
+                changeLn={this.changeLnHandler}
+                currLn={this.state.currln} />
+            )} />
+          </Switch>
         </IntlProvider>
       </div>
     );
@@ -117,15 +119,15 @@ class App extends Component{
 
 const mapStateToProps = state => {
   return {
-      isAuth: state.homeR.isAuth,
-      chosenProjectID: state.prolistR.chosenProjectID
+    isAuth: state.homeR.isAuth,
+    chosenProjectID: state.prolistR.chosenProjectID
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     onLogout: () => dispatch(homeActions.logout()),
-    onSetLoggedIn: (userId, userName, token) => dispatch(homeActions.setLoggedIn(userId,userName, token))
+    onSetLoggedIn: (userId, userName, token) => dispatch(homeActions.setLoggedIn(userId, userName, token))
   }
 }
 

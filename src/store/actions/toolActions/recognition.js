@@ -10,21 +10,21 @@ export const dropFiles = (files) => {
 
 //################# removing item #################
 export const removeRecognitionItem = (fileId) => {
-    console.log('REMOVING: ' + fileId)
+    //console.log('REMOVING: ' + fileId)
     return {
-        type: actionTypes.REMOVE_RECOGNITION_ITEM, 
-        fileId: fileId, 
+        type: actionTypes.REMOVE_RECOGNITION_ITEM,
+        fileId: fileId,
     }
 }
 
 //################# updating file state ###########
-export const updateFileState = (fileID, status,percLoaded) => {
+export const updateFileState = (fileID, status, percLoaded) => {
     return {
-            type: actionTypes.UPDATE_FILE_STATE, 
-            fileID: fileID, 
-            status: status, 
-            percLoaded:percLoaded,
-        }
+        type: actionTypes.UPDATE_FILE_STATE,
+        fileID: fileID,
+        status: status,
+        percLoaded: percLoaded,
+    }
 }
 
 
@@ -33,43 +33,43 @@ export const updateFileState = (fileID, status,percLoaded) => {
 //#########################################
 
 export const finishFileRecognitionAction = (message, entryId) => {
-    return updateFileState(entryId, 'done',100);
-        
+    return updateFileState(entryId, 'done', 100);
+
 }
 
 export const finishFileRecognitionActionFailed = (message, entryId) => {
-    return updateFileState(entryId, 'error',0);
+    return updateFileState(entryId, 'error', 0);
 }
 
-export const initFileRecognition = (file, entryId, userId,projectId) =>{
+export const initFileRecognition = (file, entryId, userId, projectId) => {
     return dispatch => {
 
         const data = new FormData();
 
-        data.append('audioFiles',file);
-        data.append('audioFilesIds',entryId);
+        data.append('audioFiles', file);
+        data.append('audioFilesIds', entryId);
         data.append('projectId', projectId);
         data.append('userId', userId);
-        
+
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
             }
         }
-        
 
-        axios.post('/recognition/singleFile',data, config)
+
+        axios.post('/recognition/singleFile', data, config)
             .then(response => {
                 const message = response.data.message;
                 const entryId = response.data.sentEntryId.sentEntryId;
-                console.log(message)
-                console.log(entryId)
+                //console.log(message)
+                // console.log(entryId)
                 dispatch(finishFileRecognitionAction(message, entryId));
-                console.log(response);
+                //console.log(response);
             })
             .catch(error => {
                 dispatch(finishFileRecognitionActionFailed('Recognition error', entryId));
-                console.log(error);
+                // console.log(error);
             })
     }
 }
@@ -77,8 +77,8 @@ export const initFileRecognition = (file, entryId, userId,projectId) =>{
 //######### opening file recognition to preview #####
 export const openRecognitionAudioPreview = (entryId) => {
     return {
-        type: actionTypes.OPEN_AUDIO_RECOGNITION_PREVIEW, 
-        fileID: entryId, 
+        type: actionTypes.OPEN_AUDIO_RECOGNITION_PREVIEW,
+        fileID: entryId,
     }
 }
 
@@ -88,24 +88,24 @@ export const initBatchRecognition = (audioFilesArray, audioFilesIds) => {
     return dispatch => {
 
         let data = new FormData();
-        
-        for(var i = 0; i<audioFilesArray.length; i++) {
+
+        for (var i = 0; i < audioFilesArray.length; i++) {
             data.append('audioFiles', audioFilesArray[i]);
         }
 
-        data.append('audioFilesIds',audioFilesIds);
-       
+        data.append('audioFilesIds', audioFilesIds);
+
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
             }
         }
-        
-        
-        axios.post('/recognition/multipleFiles',data, config)
+
+
+        axios.post('/recognition/multipleFiles', data, config)
             .then(response => {
-               
-                console.log(response);
+
+                // console.log(response);
             })
             .catch(error => {
                 console.log(error);
@@ -115,8 +115,8 @@ export const initBatchRecognition = (audioFilesArray, audioFilesIds) => {
 
 export const setRefusedFiles = (refusedFiled) => {
     return {
-        type: actionTypes.REFUSE_RECO_FILES, 
-        refusedFileList: refusedFiled, 
+        type: actionTypes.REFUSE_RECO_FILES,
+        refusedFileList: refusedFiled,
     }
 }
 
