@@ -265,7 +265,7 @@ export const handleDeleteFileActionFailed = (error) => {
 export const handleDeleteFile = (fileKey, projectId, userId, token) => {
     console.log('DELETE FILE:' + fileKey);
     return dispatch => {
-            axios.delete('/repoFiles/deleteFile/' + projectId, 
+            axios.delete('/repoFiles/deleteFile/', 
             {
                 data: { 
                     fileKey: fileKey,
