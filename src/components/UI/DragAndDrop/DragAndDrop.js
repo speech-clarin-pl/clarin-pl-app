@@ -38,6 +38,7 @@ class DragAndDrop extends Component {
   }
   handleDragIn = (e) => {
     console.log("handleDragIn " + this.dragCounter)
+    //console.log(e)
     e.preventDefault()
     e.stopPropagation()
     this.dragCounter++
@@ -56,10 +57,12 @@ class DragAndDrop extends Component {
   }
   handleDrop = (e) => {
     console.log("handleDrop")
-    console.log(e)
+    console.log(e.dataTransferItem)
     console.log(e.target)
     console.log(e.currentTarget)
     console.log(e.dataTransfer)
+    console.log(e.path)
+    console.log(e.srcElement)
     e.preventDefault()
     e.stopPropagation()
     this.setState({drag: false})
