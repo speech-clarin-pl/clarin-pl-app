@@ -42,6 +42,10 @@ class repoBar extends Component {
 		this.props.onHandleDeleteFile(fileKey, this.props.currentProjectID, this.props.currentProjectOwner, this.props.token);
 	}
 
+	handleDownloadFile = (fileKey) => {
+		this.props.onHandleDownloadFile(fileKey, this.props.currentProjectID, this.props.currentProjectOwner, this.props.token);
+	}
+
 	handleSelect = (key) => {
 		console.log("handleSelect")
 		console.log(key)
@@ -102,6 +106,8 @@ class repoBar extends Component {
 		console.log("handlePreviewClose")
 		console.log(file)
 	}
+
+	
 
 	handleFolderOpen = (folder) => {
 		console.log("handleFolderOpen")
@@ -181,6 +187,7 @@ class repoBar extends Component {
 								FolderOpen: <i className="fas fa-folder-open"></i>,
 								Delete: <i className="fas fa-trash"></i>,
 								Loading: <i className="fas fa-spinner"></i>,
+								Download: <i className="fas fa-download"></i>,
 							}}
 
 							onCreateFolder={this.handleCreateFolder}
@@ -191,6 +198,7 @@ class repoBar extends Component {
 							onRenameFile={this.handleRenameFile}
 							onDeleteFolder={this.handleDeleteFolder}
 							onDeleteFile={this.handleDeleteFile}
+							onDownloadFile={this.handleDownloadFile}
 
 							// Always called when a file or folder is selected
 							onSelect={this.handleSelect}
@@ -258,7 +266,8 @@ const mapDispatchToProps = dispatch => {
 		onHandleDeleteFile: (fileKey, projectId, userId, token) => dispatch(repoActions.handleDeleteFile(fileKey, projectId, userId, token)),
 		onGetProjectFilesForUser: (userId, projectId, token) => dispatch(repoActions.getProjectFilesForUser(userId, projectId, token)),
 		onOpenTxtFileToPreview: (file, ifWaveSurferIsInitialized) => dispatch(repoActions.openTxtFileToPreview(file,ifWaveSurferIsInitialized)),
-		onOpenAudioFileToPreview: (file,ifWaveSurferIsInitialized) => dispatch(repoActions.openAudioFileToPreview(file,ifWaveSurferIsInitialized))
+		onOpenAudioFileToPreview: (file,ifWaveSurferIsInitialized) => dispatch(repoActions.openAudioFileToPreview(file,ifWaveSurferIsInitialized)),
+		onHandleDownloadFile: (fileKey, projectId, userId, token) => dispatch(repoActions.handleDownloadFile(fileKey, projectId, userId, token))
 	}
 }
 

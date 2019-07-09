@@ -57,6 +57,9 @@ class DragAndDrop extends Component {
   handleDrop = (e) => {
     console.log("handleDrop")
     console.log(e)
+    console.log(e.target)
+    console.log(e.currentTarget)
+    console.log(e.dataTransfer)
     e.preventDefault()
     e.stopPropagation()
     this.setState({drag: false})

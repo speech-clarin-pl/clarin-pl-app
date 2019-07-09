@@ -6,6 +6,7 @@ export {
     handleDeleteFolder,
     handleDeleteFile,
     getProjectFilesForUser,
+    handleDownloadFile
 } from './repo';
 
 export {

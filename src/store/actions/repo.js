@@ -1,5 +1,8 @@
 import * as actionTypes from './actionsTypes';
 import axios from 'axios';
+import { saveAs } from 'file-saver';
+//import { saveSync } from 'save-file';
+//import streamSaver from 'StreamSaver';
 
 //#################################################################
 //############## get user project files ######################
@@ -259,6 +262,46 @@ export const handleDeleteFileActionFailed = (error) => {
     return {
         type: actionTypes.REPO_DELETE_FILE_FAILED,
         error: error.toString(),
+    }
+}
+
+// #################################
+// ###### Usuwanie pliku
+// ############################
+export const handleDownloadFileAction = (fileURL) => {
+    return {
+        type: actionTypes.REPO_DOWNLOAD_FILE,
+        downloadedFile: fileURL,
+    }
+}
+
+export const handleDownloadFile = (fileKey, projectId, userId, token) => {
+    console.log(fileKey)
+    return dispatch => {
+        axios.get('/repoFiles/downloadFile/', {
+            headers: {
+                Authorization: 'Bearer ' + token
+            },
+            params: {
+                fileKey: fileKey,
+                projectId: projectId,
+                userId: userId,
+            }
+        })
+               .then(response => {
+                    console.log(response)
+                    let url = response.data.pathToDownload;
+                    let nazwaPliku = url.split('/');
+                    nazwaPliku = nazwaPliku[nazwaPliku.length -1];
+                    
+                    saveAs(url, nazwaPliku, { autoBom: true });
+
+               })
+               
+               .catch(error => {
+                   console.log(error)
+                   //dispatch(handleDownloadFileActionError(error));
+               });
     }
 }
 

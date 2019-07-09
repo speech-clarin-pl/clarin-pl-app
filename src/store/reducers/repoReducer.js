@@ -6,6 +6,7 @@ const initialState = {
     errorMessage: '',
     error: false,
     files: [],
+    downloadedFile: '',
     // files: [
     //     {
     //       key: 'cat in a hat.mp3',
@@ -226,6 +227,11 @@ const repoGetUserProjectFilesFailed = (state, action) => {
         error: true});
 }
 
+const repoDownloadFile = (state,action) => {
+    return updateObject(state,
+        {downloadedFile: action.downloadedFile});
+}
+
 const repoReducer = (state = initialState, action) => {
     switch(action.type){
         //case actionTypes.REPO_UPLOAD_FILE: return repoUploadFile(state,action);
@@ -237,7 +243,7 @@ const repoReducer = (state = initialState, action) => {
         case actionTypes.REPO_DELETE_FILE: return repoDeleteFile(state,action);
         case actionTypes.REPO_GET_USER_PROJECT_FILES: return repoGetUserProjectFiles(state,action);
         case actionTypes.REPO_GET_USER_PROJECT_FILES_FAILED: return repoGetUserProjectFilesFailed(state,action);
-
+        case actionTypes.REPO_DOWNLOAD_FILE: return repoDownloadFile(state,action);
     }
 
     return state;
