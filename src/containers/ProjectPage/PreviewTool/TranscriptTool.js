@@ -302,7 +302,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        //onHandleCreateFolder: (key,projectId, userId, token) => dispatch(repoActions.handleCreateFolder(key, projectId, userId, token)),
         onUpdateTxtArea: (newValue, fileKey) => dispatch(previewActions.updateTxtPreview(newValue, fileKey)),
         onUpdateAudioArea: (fileKey) => dispatch(previewActions.updateAudioPreview(fileKey)),
         onWeveSurferInitialized: (ifyes) => dispatch(previewActions.weveSurferInitialized(ifyes)),
