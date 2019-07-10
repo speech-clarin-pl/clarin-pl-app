@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './DragAndDrop.css';
+	
 
 const dragAndDropStyles = {
   position: 'relative',
@@ -90,7 +91,8 @@ class DragAndDrop extends Component {
   render() {
     return (
 
-      <div className="DragAndDrop" style={dragAndDropStyles} ref={this.dropRef} >
+      <div className="DragAndDrop folder" style={dragAndDropStyles} ref={this.dropRef} >
+      
 
         {
             this.state.drag?
@@ -101,7 +103,10 @@ class DragAndDrop extends Component {
               null
         }
 
+
         {this.props.children}
+
+      
       </div>
 
     )
