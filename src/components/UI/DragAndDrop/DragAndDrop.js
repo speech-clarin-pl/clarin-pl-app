@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './DragAndDrop.css';
-	
+import { DropTarget } from 'react-dnd'
+import { NativeTypes } from 'react-dnd-html5-backend'
+  
 
 const dragAndDropStyles = {
   position: 'relative',
@@ -22,6 +24,7 @@ const dropIndicationStyles = {
   alignItems: 'center',
   justifyContent: 'center',
 };
+
 
 
 
@@ -58,12 +61,12 @@ class DragAndDrop extends Component {
   }
   handleDrop = (e) => {
     console.log("handleDrop")
-    console.log(e.dataTransferItem)
-    console.log(e.target)
-    console.log(e.currentTarget)
-    console.log(e.dataTransfer)
-    console.log(e.path)
-    console.log(e.srcElement)
+   console.log(e.dataTransfer.getData("fileURL"))
+   // console.log(e.target)
+    //console.log(e.currentTarget)
+    //console.log(e.dataTransfer)
+    //console.log(e.path)
+    //console.log(e.srcElement)
     e.preventDefault()
     e.stopPropagation()
     this.setState({drag: false})
@@ -89,6 +92,9 @@ class DragAndDrop extends Component {
     div.removeEventListener('drop', this.handleDrop)
   }
   render() {
+
+    const {isOver, canDrop,connectDropTarget} = this.props;
+
     return (
 
       <div className="DragAndDrop folder" style={dragAndDropStyles} ref={this.dropRef} >
@@ -112,4 +118,4 @@ class DragAndDrop extends Component {
     )
   }
 }
-export default DragAndDrop
+export default DragAndDrop;

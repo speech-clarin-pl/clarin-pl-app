@@ -16,6 +16,7 @@ import thunk from 'redux-thunk';
 import axios from 'axios';
 import projectReducer from './store/reducers/projectReducer';
 
+
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 
@@ -29,6 +30,9 @@ if (process.env.NODE_ENV === 'production') {
 } else {
     axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 }
+
+console.log(process.env.NODE_ENV)
+console.log(axios.defaults.baseURL)
 
 //axios.defaults.headers.common['Authorization'] = 'AUTH TOKEN';
 //axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -50,11 +54,13 @@ const store = createStore(rootReducer, composeEnhancers(
 ));
 
 const app = (
+  
     <Provider store={store}>
         <BrowserRouter>
             <App />
         </BrowserRouter>
     </Provider>
+
 );
 
 ReactDOM.render(app, document.getElementById('root'));

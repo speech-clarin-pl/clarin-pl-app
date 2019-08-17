@@ -1,8 +1,31 @@
+var path = require('path');
+var fs = require('fs');
 
+const {
+    override,
+    addDecoratorsLegacy,
+    babelInclude,
+    disableEsLint,
+} = require("customize-cra");
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
+module.exports = function(config,env){
+    return Object.assign(config, override(
+        //disableEsLint(),
+        //addDecoratorsLegacy(),
+        babelInclude([
+            path.resolve('src'),
+            fs.realpathSync('node_modules/react-keyed-file-browser-clarin/src')
+        ])
+        )(config, env)
+    )
+}
+
+
 module.exports = function override(config, env) {
+
+    
     if (!config.plugins) {
         config.plugins = [];
     }

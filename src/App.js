@@ -81,11 +81,6 @@ class App extends Component {
         <IntlProvider locale={this.state.currln} defaultLocale="pl" messages={messages[this.state.currln]}>
 
 
-          {
-
-          }
-
-
           <Switch>
 
             <Route path="/projects/:projectID" render={(props) => (

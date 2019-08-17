@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import Aux from '../../../hoc/Auxiliary';
 import './RepoBar.css';
 import Moment from 'moment';
-import FileBrowser, { Icons } from 'react-keyed-file-browser';
+import FileBrowser, { Icons } from 'react-keyed-file-browser-clarin';
 import { connect } from 'react-redux';
 import * as repoActions from '../../../store/actions/index';
 import { Redirect, withRouter } from 'react-router-dom';
 import { getExt } from '../../../utils/utils';
-
+  
 class repoBar extends Component {
 
 	state = {
