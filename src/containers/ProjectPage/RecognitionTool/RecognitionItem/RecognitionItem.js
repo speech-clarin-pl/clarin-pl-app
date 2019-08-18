@@ -299,7 +299,10 @@ class RecognitionItem extends Component {
             <Aux>
                   <div className={["row", "fileItem", "RecognitionItem"].join(' ')}>
                         <div className="col-sm file-info">
-                            <i className="fas fa-desktop"></i>
+                            {foundEntry.from === 'local'?
+                            <i className="fas fa-desktop"></i>:
+                            <i className="fas fa-cloud"></i>}
+                            
                             <span className={"fileName"}>{foundEntry.file.name}</span>
                             <span className={"fileSize"}>({filesize})</span>
                         </div>

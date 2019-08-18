@@ -9,3 +9,8 @@ export function bytesToSize(bytes){
 export function getExt(path){
     return (path.match(/(?:.+..+[^\/]+$)/ig) != null) ? path.split('.').slice(-1): 'null';
 }
+
+export function getFilenameFromURL(url){
+    let filename = url.substring(url.lastIndexOf('/')+1);
+    return filename;
+}
