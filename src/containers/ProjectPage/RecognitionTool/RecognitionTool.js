@@ -18,42 +18,88 @@ class RecognitionTool extends Component {
 
     handleDrop = (files) => {
         //extending the files by additionnal info about the status and load percentage
-        //console.log("RECI HANDLE DROP")
-        //console.log(files)
+        console.log("HANDLE DROP")
+        console.log(files)
         let extFiles = [];
 
         let fileList = [];
         let refusedFileList = [];
 
-        for(var i=0;i<files.length;i++){
-            let file = files[i];
-            let fileExtention = getExt(file.name)[0];
+        console.log(typeof files)
+
+        //checking if the file/s is from repo or from local env
+        if(typeof files== "object") {
+            for(var i=0;i<files.length;i++){
+                let file = files[i];
+                let fileExtention = getExt(file.name)[0];
+                //rozpoznaje tylko pliki audio
+                if(fileExtention === "wav" ||
+                   fileExtention === "WAV" ||
+                   fileExtention === "mp3" ||
+                   fileExtention === "au"){
+                    fileList.push(file);
+                } else {
+                   refusedFileList.push(file);
+                }  
+            } 
+    
+            if(refusedFileList.length > 0){
+                this.props.onSetRefusionFiles(refusedFileList);
+                this.props.onOpenModalHandler();
+            }
+    
+            Array.from(fileList).forEach(file => {
+                let newFile = Object.assign({},file);
+                newFile.file = file;
+                newFile.status = 'toload';
+                newFile.loadedperc = 0;
+                newFile.id = uuid.v4();
+                extFiles.push(newFile);
+            });
+    
+            this.props.onDrop(extFiles);
+        } else if(typeof files== "string")  {
+            //then the file is comming from the repo...
+            let f = files; //narazie mozna przeciagnac tylko jeden plik
+            let fileExtention = getExt(f)[0];
+            console.log(fileExtention)
             //rozpoznaje tylko pliki audio
             if(fileExtention === "wav" ||
                fileExtention === "WAV" ||
                fileExtention === "mp3" ||
                fileExtention === "au"){
-                fileList.push(file);
+                fileList.push(f);
             } else {
-               refusedFileList.push(file);
-            }  
-        } 
+               refusedFileList.push(f);
+            } 
 
-        if(refusedFileList.length > 0){
-            this.props.onSetRefusionFiles(refusedFileList);
-            this.props.onOpenModalHandler();
+            if(refusedFileList.length > 0){
+                this.props.onSetRefusionFiles(refusedFileList);
+                this.props.onOpenModalHandler();
+            }
+    
+          
+                let newFile = {
+                    "file": {
+                        "name": "wyciagnac z urla.wav"
+                    },
+                    "status": "loaded",
+                    "loadedperc": 100,
+                    "id": uuid.v4(),
+                    "url": f
+                }
+               
+
+                console.log(newFile)
+
+                extFiles.push(newFile);
+           
+    
+            this.props.onDrop(extFiles);
+
         }
 
-        Array.from(fileList).forEach(file => {
-            let newFile = Object.assign({},file);
-            newFile.file = file;
-            newFile.status = 'toload';
-            newFile.loadedperc = 0;
-            newFile.id = uuid.v4();
-            extFiles.push(newFile);
-        });
 
-        this.props.onDrop(extFiles);
     }
 
    

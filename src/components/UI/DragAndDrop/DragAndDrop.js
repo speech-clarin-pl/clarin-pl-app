@@ -26,8 +26,6 @@ const dropIndicationStyles = {
 };
 
 
-
-
 class DragAndDrop extends Component {
   state = {
     drag: false
@@ -61,19 +59,23 @@ class DragAndDrop extends Component {
   }
   handleDrop = (e) => {
     console.log("handleDrop")
-   console.log(e.dataTransfer.getData("fileURL"))
-   // console.log(e.target)
-    //console.log(e.currentTarget)
-    //console.log(e.dataTransfer)
-    //console.log(e.path)
-    //console.log(e.srcElement)
+    //console.log(e.dataTransfer.getData("fileURL"))
+    
     e.preventDefault()
     e.stopPropagation()
     this.setState({drag: false})
+    //checking if files are from local storage
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       this.props.whenDropped(e.dataTransfer.files)
       e.dataTransfer.clearData()
       this.dragCounter = 0    
+    } 
+    
+    //checking if files come from repo
+    if(e.dataTransfer.getData("fileURL").length > 0){
+      this.props.whenDropped(e.dataTransfer.getData("fileURL"))
+      e.dataTransfer.clearData();
+      console.log(e.dataTransfer.getData("fileURL"))
     }
   }
   componentDidMount() {
@@ -93,7 +95,6 @@ class DragAndDrop extends Component {
   }
   render() {
 
-    const {isOver, canDrop,connectDropTarget} = this.props;
 
     return (
 
