@@ -107,6 +107,13 @@ class repoBar extends Component {
 		console.log(file)
 	}
 
+	handleRightClickOnFile = (e, data, target) => {
+		console.log('output z REPO BAR');
+		console.log(e);
+		console.log(data);
+		console.log(target);
+	}
+
 	
 
 	handleFolderOpen = (folder) => {
@@ -210,6 +217,8 @@ class repoBar extends Component {
 							onPreviewClose={this.handlePreviewClose}
 							onFolderOpen={this.handleFolderOpen}
 							onFolderClose={this.handleFolderClose}
+
+							onRightClickOnFile={this.handleRightClickOnFile}
 
 						// 			onSelect: (fileOrFolder) => {}, // Always called when a file or folder is selected
 						// onSelectFile: (file) => {}, //    Called after onSelect, only on file selection
