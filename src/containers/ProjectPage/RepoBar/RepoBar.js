@@ -7,12 +7,16 @@ import { connect } from 'react-redux';
 import * as repoActions from '../../../store/actions/index';
 import { Redirect, withRouter } from 'react-router-dom';
 import { getExt } from '../../../utils/utils';
+import Modal from '../../../components/UI/Modal/Modal';
+import Preview from '../../../components/Preview/Preview'
   
 class repoBar extends Component {
 
 	state = {
-		openPreview: false,
-	}
+        openPreview: false,
+        modal: false,
+        fileToPreview: '',
+    }
 
 	componentDidMount() {
 		//wysylam zadanie aby pobrac aktualne pliki w katalogu uzytkownika
@@ -108,10 +112,22 @@ class repoBar extends Component {
 	}
 
 	handleRightClickOnFile = (e, data, target) => {
-		console.log('output z REPO BAR');
-		console.log(e);
-		console.log(data);
-		console.log(target);
+		let fileURL = target.getElementsByTagName("a")[0].href;
+
+        if (data.action === 'Preview') {
+            console.log("Preview file: ")
+            console.log(fileURL)
+            this.setState({
+                openPreview: true,
+                modal: true,
+                fileToPreview: fileURL,
+            });
+        }
+
+        if (data.action === 'Remove') {
+            console.log("Remove file: ")
+            console.log(fileURL)
+        }
 	}
 
 	
@@ -131,6 +147,12 @@ class repoBar extends Component {
 		window.addEventListener('mousemove', this.Resize, false);
 		window.addEventListener('mouseup', this.stopResize, false);
 	}
+
+	closeModalHandler = () => {
+        this.setState({
+            modal: false,
+        })
+    }
 
 
 	//resize the element
@@ -157,8 +179,20 @@ class repoBar extends Component {
 
 		const mount = document.querySelectorAll('div.demo-mount-nested-editable');
 
+		let modalContent = (
+            <Preview fileToPreview={this.state.fileToPreview}/>
+		)
+		
 		return (
 			<Aux>
+
+				<Modal 
+                    show={this.state.modal}
+                    modalClosed={this.closeModalHandler}
+                >
+                    {modalContent}
+                </Modal> 
+
 				<div className="RepoBar" id="RepoBar">
 					<div className="topPart">
 						<div className="repoTab" >
@@ -180,8 +214,6 @@ class repoBar extends Component {
 
 
 					<div className="mainRepoContent" data-scrollbar>
-
-
 
 						<FileBrowser
 							files={this.props.files}
@@ -229,7 +261,6 @@ class repoBar extends Component {
 
 						// onFolderOpen: (folder) => {}, // Folder opened
 						// onFolderClose: (folder) => {}, // Folder closed
-
 
 						/>
 
