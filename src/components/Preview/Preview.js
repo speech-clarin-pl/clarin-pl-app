@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import Aux from '../../hoc/Auxiliary';
 import { getExt } from '../../utils/utils';
 import { extensionMapping } from '../../utils/fileTypes';
-//import ReactPlayer from 'react-player'
+import AudioPlayer from '../../components/AudioPlayer/AudioPlayer'
 
 
 class Preview extends Component {
+
+    
 
     render(){
 
@@ -20,11 +22,14 @@ class Preview extends Component {
 		if (extensionMapping[ext] === "Audio") {
             typPliku = "Audio";
 
-            //podgladPliku = (
-            //    <ReactPlayer url={fileToPreview} playing />
-            //)
+            podgladPliku = (
 
-            podgladPliku = "Audio player tutaj";
+                <AudioPlayer audioURL={fileToPreview} />
+
+             )
+
+         
+
 		} else if(extensionMapping[ext] === "Text") {
             typPliku = "Text";
         } else {
