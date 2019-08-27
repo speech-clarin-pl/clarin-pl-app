@@ -21,8 +21,16 @@ import * as projectActions from '../../store/actions/index';
 
 class ProjectPage extends Component {
 
+  componentWillUnmount = () => {
+    localStorage.removeItem('projectId');
+    localStorage.removeItem('projectTitle');
+    localStorage.removeItem('projectOwnerId');
+  }
+
 
   componentWillMount = () => {
+
+    //pod odświeżeniu strony...
 
     const token = localStorage.getItem('token');
     const expiryDate = localStorage.getItem('expiryDate');
@@ -42,6 +50,7 @@ class ProjectPage extends Component {
     console.log(userId)
     console.log(userName)
     console.log(token)
+
     this.props.onSetLoggedIn(userId,userName, token);    
 
     //laduje podstawowe informacje o projekcie
@@ -50,20 +59,35 @@ class ProjectPage extends Component {
     //jezeli user przeszedl do projektu z listy projektow
     //if(this.props.location.state) {
       
-      
-      const projectId = this.props.currentProjectID;
-      const projectTitle = this.props.currentProjectName;
-      const projectOwnerId = this.props.currentProjectOwner;
-      console.log(projectId)
-      console.log(projectTitle)
-      console.log(projectOwnerId)
+    let projectId = this.props.currentProjectID;
+    let projectTitle = this.props.currentProjectName;
+    let projectOwnerId = this.props.currentProjectOwner;
 
-      this.props.onInitProjectHandler(projectId, projectTitle, projectOwnerId);
-      this.props.onClearRecoStore();
-      this.props.onClearSegmentStore();
-      this.props.onClearPreviewStore();
-    //}
+    if (localStorage["projectId"]) {
+        //jeżeli użytkownik odświeżył strone 
 
+        projectId = localStorage.getItem('projectId');
+        projectTitle = localStorage.getItem('projectTitle');
+        projectOwnerId = localStorage.getItem('projectOwnerId');
+
+
+    } else {
+
+      localStorage.setItem('projectId',projectId);
+      localStorage.setItem('projectTitle', projectTitle);
+      localStorage.setItem('projectOwnerId', projectOwnerId);
+
+    }
+
+    console.log(projectId)
+    console.log(projectTitle)
+    console.log(projectOwnerId)
+
+    this.props.onInitProjectHandler(projectId, projectTitle, projectOwnerId);
+    this.props.onClearRecoStore();
+    this.props.onClearSegmentStore();
+    this.props.onClearPreviewStore();
+  
   }
 
   render() {
@@ -103,7 +127,6 @@ class ProjectPage extends Component {
                 <Route component={ErrorPage}/> 
               </Switch>
               
-
             </div>
 
             <RepoBar />
@@ -117,9 +140,12 @@ class ProjectPage extends Component {
 const mapStateToProps = (state) => {
   return {
     currentProjectID: state.prolistR.chosenProjectID,
+    //currentProjectID: state.projectR.currentProjectID,
     currentProjectName: state.prolistR.chosenProjectName,
+   // currentProjectName: state.projectR.currentProjectName,
     currentProjectOwner: state.prolistR.chosenProjectOwner,
-    
+    //currentProjectOwner: state.projectR.currentProjectOwner,
+
   }
 }
 

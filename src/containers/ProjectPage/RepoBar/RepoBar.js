@@ -116,10 +116,10 @@ class repoBar extends Component {
 
         if (data.action === 'Preview') {
             console.log("Preview file: ")
-            console.log(fileURL)
+			console.log(fileURL)
+			this.props.onOpenModalHandler();
             this.setState({
                 openPreview: true,
-                modal: true,
                 fileToPreview: fileURL,
             });
         }
@@ -149,9 +149,8 @@ class repoBar extends Component {
 	}
 
 	closeModalHandler = () => {
-        this.setState({
-            modal: false,
-        })
+        
+		this.props.onCloseModalHandler();
     }
 
 
@@ -180,14 +179,14 @@ class repoBar extends Component {
 		const mount = document.querySelectorAll('div.demo-mount-nested-editable');
 
 		let modalContent = (
-            <Preview fileToPreview={this.state.fileToPreview}/>
+            <Preview fileToPreview={this.state.fileToPreview} onClose={this.closeModalHandler}/>
 		)
 		
 		return (
 			<Aux>
 
 				<Modal 
-                    show={this.state.modal}
+                    show={this.props.modal}
                     modalClosed={this.closeModalHandler}
                 >
                     {modalContent}
@@ -283,6 +282,8 @@ const mapStateToProps = (state) => {
 		files: state.repoR.files,
 		token: state.homeR.token,
 
+		modal: state.projectR.modal,
+
 
         txtDisplayed: state.previewR.txtDisplayed,
         txtfileName: state.previewR.txtfileName,
@@ -298,6 +299,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
 	return {
+		onOpenModalHandler: () => dispatch(repoActions.openModalProject()),
+		onCloseModalHandler: () => dispatch(repoActions.closeModalProject()),
+
 		onHandleCreateFolder: (key, projectId, userId, token) => dispatch(repoActions.handleCreateFolder(key, projectId, userId, token)),
 		onHandleCreateFiles: (files, prefix) => dispatch(repoActions.handleCreateFiles(files, prefix)),
 		onHandleRenameFolder: (oldKey, newKey, projectId, userId, token) => dispatch(repoActions.handleRenameFolder(oldKey, newKey, projectId, userId, token)),

@@ -5,6 +5,48 @@ import { saveAs } from 'file-saver';
 //import streamSaver from 'StreamSaver';
 
 //#################################################################
+//############## edycja pliku txt ######################
+//####################################################
+
+export const handleUpdateTxtFileAction = (key, message) => {
+    return {
+        type: actionTypes.REPO_EDIT_TXT_SUCCESS,
+        file: key,
+    }
+}
+
+export const handleUpdateTxtFileActionFailed = (key, message) => {
+    return {
+        type: actionTypes.REPO_EDIT_TXT_FAILED,
+        file: key,
+    }
+}
+
+export const handleUpdateTxtFile = (userId, projectId, token, key, newContent) => {
+    console.log('UPDATE TXT FILE:' + key);
+    return dispatch => {
+        axios.put(('/repoFiles/editTxtFile/'), {
+            key: key, //np key: "nowyfolder/" lub "nowyfolder/innypodfolder/"
+            newContent: newContent,
+            userId: userId,
+            projectId: projectId,
+        }, {
+            headers: {
+                Authorization: 'Bearer ' + token
+            },
+        })
+            .then(response => {
+                console.log(response)
+                dispatch(handleUpdateTxtFileAction(response.data.key, response.data.message));
+            })
+            .catch(error => {
+                dispatch(handleUpdateTxtFileActionFailed(error));
+            });
+    }
+}
+
+
+//#################################################################
 //############## get user project files ######################
 //####################################################
 

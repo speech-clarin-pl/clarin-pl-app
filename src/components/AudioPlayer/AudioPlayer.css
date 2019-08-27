@@ -1,0 +1,8 @@
+#audioPlayerControls .audioPlayerStats {
+    font-size: 0.8em;
+    margin-top: 15px;
+}
+
+#audioPlayerControls .suwak, #audioPlayerControls .progressBar {
+    width: 100%;
+}

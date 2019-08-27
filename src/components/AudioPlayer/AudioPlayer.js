@@ -4,6 +4,7 @@ import { getExt } from '../../utils/utils';
 import { extensionMapping } from '../../utils/fileTypes';
 import ReactPlayer from 'react-player'
 import Duration from '../../utils/Duration'
+import './AudioPlayer.css'
 
 
 class AudioPlayer extends Component {
@@ -181,107 +182,51 @@ class AudioPlayer extends Component {
                     />
                 </div>
 
-                <table>
-                    <tbody>
-                        <tr>
-                            <th>Controls</th>
-                            <td>
-                                <button onClick={this.handleStop}>Stop</button>
-                                <button onClick={this.handlePlayPause}>{playing ? 'Pause' : 'Play'}</button>
-                                {
-                                    /*
-                                        //prepared for video...
-                                         <button onClick={this.handleClickFullscreen}>Fullscreen</button>
-                                {light &&
-                                    <button onClick={() => this.player.showPreview()}>Show preview</button>}
-                                {ReactPlayer.canEnablePIP(url) &&
-                                    <button onClick={this.handleTogglePIP}>{pip ? 'Disable PiP' : 'Enable PiP'}</button>}
-                                    */
-                                }
+                <div className="row" id="audioPlayerControls">
+                    <div className="col">
+                        <button className="btn btn-primary" onClick={this.handlePlayPause}>{playing ? 'Pause' : 'Play'}</button>
+                        <button className="btn btn-info" onClick={this.handleSetPlaybackRate} value={1}>1x</button>
+                        <button className="btn btn-info" onClick={this.handleSetPlaybackRate} value={1.5}>1.5x</button>
+                        <button className="btn btn-info" onClick={this.handleSetPlaybackRate} value={2}>2x</button>
+                    
+                        <div className="audioPlayerStats">
+                            <div><b>played:</b> {(played*100).toFixed(0)} %</div>
+                            <div><b>loaded:</b> {(loaded*100).toFixed(0)} %</div>
+                            <div><b>duration:</b> <Duration seconds={duration} /></div>
+                            <div><b>elapsed:</b> <Duration seconds={duration * played} /></div>
+                            <div><b>remaining:</b> <Duration seconds={duration * (1 - played)} /></div>
+                        </div>
 
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Speed</th>
-                            <td>
-                                <button onClick={this.handleSetPlaybackRate} value={1}>1x</button>
-                                <button onClick={this.handleSetPlaybackRate} value={1.5}>1.5x</button>
-                                <button onClick={this.handleSetPlaybackRate} value={2}>2x</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Seek</th>
-                            <td>
-                                <input
-                                    type='range' min={0} max={1} step='any'
-                                    value={played}
-                                    onMouseDown={this.handleSeekMouseDown}
-                                    onChange={this.handleSeekChange}
-                                    onMouseUp={this.handleSeekMouseUp}
-                                />
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Volume</th>
-                            <td>
-                                <input type='range' min={0} max={1} step='any' value={volume} onChange={this.handleVolumeChange} />
-                            </td>
-                        </tr>
+                    </div>
+                    <div className="col">
+                        <div>
+                            <input
+                                            type='range' min={0} max={1} step='any'
+                                            value={played}
+                                            onMouseDown={this.handleSeekMouseDown}
+                                            onChange={this.handleSeekChange}
+                                            onMouseUp={this.handleSeekMouseUp}
+                                            className="suwak"
+                            />
+                        </div>
+                        <div>
+                            Played: <progress max={1} value={played} className="progressBar" />
+                        </div>
+                        <div>
+                            Loaded: <progress max={1} value={loaded} className="progressBar"/>
+                        </div>
+                    
 
-                        <tr>
-                            <th>Played</th>
-                            <td><progress max={1} value={played} /></td>
-                        </tr>
-                        <tr>
-                            <th>Loaded</th>
-                            <td><progress max={1} value={loaded} /></td>
-                        </tr>
-                    </tbody>
-                </table>
+                    </div>
 
-                <table>
-                    <tbody>
-                        {
-/*
-<tr>
-                            <th>url</th>
-                            <td className={!url ? 'faded' : ''}>
-                                {(url instanceof Array ? 'Multiple' : url) || 'null'}
-                            </td>
-                        </tr>
-*/
-                        }
+                </div>
+                
+
+                       
+                      
+                    
                         
-                        <tr>
-                            <th>playing</th>
-                            <td>{playing ? 'true' : 'false'}</td>
-                        </tr>
-                        <tr>
-                            <th>volume</th>
-                            <td>{volume.toFixed(3)}</td>
-                        </tr>
-                        <tr>
-                            <th>played</th>
-                            <td>{played.toFixed(3)}</td>
-                        </tr>
-                        <tr>
-                            <th>loaded</th>
-                            <td>{loaded.toFixed(3)}</td>
-                        </tr>
-                        <tr>
-                            <th>duration</th>
-                            <td><Duration seconds={duration} /></td>
-                        </tr>
-                        <tr>
-                            <th>elapsed</th>
-                            <td><Duration seconds={duration * played} /></td>
-                        </tr>
-                        <tr>
-                            <th>remaining</th>
-                            <td><Duration seconds={duration * (1 - played)} /></td>
-                        </tr>
-                    </tbody>
-                </table>
+
             </Aux>
         )
     }

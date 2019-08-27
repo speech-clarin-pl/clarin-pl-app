@@ -7,6 +7,7 @@ const initialState = {
     error: false,
     files: [],
     downloadedFile: '',
+    editTxtFileOK: false,
     // files: [
     //     {
     //       key: 'cat in a hat.mp3',
@@ -232,9 +233,22 @@ const repoDownloadFile = (state,action) => {
         {downloadedFile: action.downloadedFile});
 }
 
+const repoEditFileSuccess = (state,action) => {
+    return updateObject(state,
+        {editTxtFileOK: true});
+}
+
+const repoEditFileFailed = (state,action) => {
+    return updateObject(state,
+        {editTxtFileOK: false});
+}
+
 const repoReducer = (state = initialState, action) => {
     switch(action.type){
         //case actionTypes.REPO_UPLOAD_FILE: return repoUploadFile(state,action);
+        case actionTypes.REPO_EDIT_TXT_SUCCESS: return repoEditFileSuccess(state,action);
+        case actionTypes.REPO_EDIT_TXT_FAILED: return repoEditFileFailed(state,action);
+
         case actionTypes.REPO_CREATE_FOLDER: return repoCreateFolder(state,action);
         case actionTypes.REPO_CREATE_FILES: return repoCreateFiles(state,action);
         case actionTypes.REPO_RENAME_FOLDER: return repoRenameFolder(state,action);
