@@ -189,7 +189,11 @@ class ProjectsListPage extends Component {
       */
     }
 
-    this.props.onProjectChoice(projektId, projektName, projektOwner)
+    this.props.onProjectChoice(projektId, projektName, projektOwner);
+    this.props.onInitProjectHandler(projektId,projektName,projektOwner);
+
+   
+
     this.props.history.push("/projects/"+projektId);
   }
 
@@ -379,6 +383,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    onInitProjectHandler: (projectId, projectTitle, projectOwner) => dispatch(projectListActions.initProject(projectId, projectTitle, projectOwner)),
     onOpenModalHandler: (actionType,projectId, projectName) => dispatch(projectListActions.openModal(actionType,projectId, projectName)),
     onCloseModalHandler: () => dispatch(projectListActions.closeModal()),
     onNewProjectDone: () => dispatch(projectListActions.addNewProjectDone()),

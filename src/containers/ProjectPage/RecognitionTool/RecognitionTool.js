@@ -17,6 +17,10 @@ import { extensionMapping } from '../../../utils/fileTypes';
 
 class RecognitionTool extends Component {
 
+    state = {
+        modal: false,
+    }
+
     handleDrop = (files) => {
         //extending the files by additionnal info about the status and load percentage
         console.log("HANDLE DROP")
@@ -26,10 +30,11 @@ class RecognitionTool extends Component {
         let fileList = [];
         let refusedFileList = [];
 
-        console.log(typeof files)
+       // console.log(typeof files)
 
         //checking if the file/s is from repo or from local env
-        if (typeof files == "object") {
+        if (files instanceof FileList) {
+            console.log("rozpoznalem FILELIST")
             for (var i = 0; i < files.length; i++) {
                 let file = files[i];
                 let fileExtention = getExt(file.name)[0];
@@ -37,7 +42,8 @@ class RecognitionTool extends Component {
 
                 //console.log(extensionMapping)
 
-                if (extensionMapping.hasOwnProperty(fileExtention)) {
+                if (extensionMapping.hasOwnProperty(fileExtention) &&
+                    (extensionMapping[fileExtention] == "Audio")) {
                     fileList.push(file);
                 } else {
                     refusedFileList.push(file);
@@ -46,7 +52,10 @@ class RecognitionTool extends Component {
 
             if (refusedFileList.length > 0) {
                 this.props.onSetRefusionFiles(refusedFileList);
-                this.props.onOpenModalHandler();
+                this.setState({
+                    modal: true,
+                });
+                //this.props.onOpenModalHandler();
             }
 
             Array.from(fileList).forEach(file => {
@@ -56,45 +65,52 @@ class RecognitionTool extends Component {
                 newFile.loadedperc = 0;
                 newFile.id = uuid.v4();
                 newFile.from = 'local';
+
                 extFiles.push(newFile);
             });
 
             this.props.onDrop(extFiles);
-        } else if (typeof files == "string") {
+
+        } else if (files instanceof Object && (files["fileURL"] != undefined)) {
+            console.log("rozpoznalem OBJECT")
             //then the file is comming from the repo...
             let f = files; //narazie mozna przeciagnac tylko jeden plik
-            let fileExtention = getExt(f)[0];
-            //console.log(fileExtention)
+            let fileExtention = getExt(f.fileURL)[0];
+
             //rozpoznaje tylko pliki audio
-            if (extensionMapping.hasOwnProperty(fileExtention)) {
+            if (extensionMapping.hasOwnProperty(fileExtention) &&
+                (extensionMapping[fileExtention] == "Audio")) {
                 fileList.push(f);
+                console.log("dodano")
             } else {
                 refusedFileList.push(f);
             }
 
             if (refusedFileList.length > 0) {
                 this.props.onSetRefusionFiles(refusedFileList);
-                this.props.onOpenModalHandler();
+                //this.props.onOpenModalHandler();
+                this.setState({
+                    modal: true,
+                });
             }
 
+            Array.from(fileList).forEach(file => {
+                let newFile = Object.assign({}, file);
+                newFile.file = {
+                    "name": getFilenameFromURL(file.fileURL),
+                    "size": file.fileSize,
+                };
+                newFile.status = "loaded";
+                newFile.loadedperc = 100;
+                newFile.id = uuid.v4();
+                newFile.url = file.fileURL;
+                newFile.from = "repo";
 
-            let newFile = {
-                "file": {
-                    "name": getFilenameFromURL(f)
-                },
-                "status": "loaded",
-                "loadedperc": 100,
-                "id": uuid.v4(),
-                "url": f,
-                "from": "repo",
-            }
-
-
-            console.log(newFile)
-
-            extFiles.push(newFile);
+                extFiles.push(newFile);
+            });
 
             this.props.onDrop(extFiles);
+
 
         }
     }
@@ -106,7 +122,10 @@ class RecognitionTool extends Component {
         let refusedFileList = [];
         for (var i = 0; i < inputControl.files.length; i++) {
             let file = inputControl.files[i];
+            console.log(file)
+            console.log(file.name)
             let fileExtention = getExt(file.name)[0];
+            
             //rozpoznaje tylko pliki audio
             if (fileExtention === "wav" ||
                 fileExtention === "WAV" ||
@@ -120,7 +139,10 @@ class RecognitionTool extends Component {
 
         if (refusedFileList.length > 0) {
             this.props.onSetRefusionFiles(refusedFileList);
-            this.props.onOpenModalHandler();
+            this.setState({
+                modal: true,
+            });
+            //this.props.onOpenModalHandler();
         }
 
 
@@ -135,7 +157,10 @@ class RecognitionTool extends Component {
 
     //zamyka okno modalne
     closeModalHandler = () => {
-        this.props.onCloseModalHandler();
+        //this.props.onCloseModalHandler();
+        this.setState({
+            modal: false,
+        })
     }
 
     //rozpoczynam rozpoznawanie 
@@ -159,12 +184,14 @@ class RecognitionTool extends Component {
 
     render() {
 
+        /*
         let refusedFileNames = null;
         if (this.props.refusedFileList.length > 0) {
             refusedFileNames = this.props.refusedFileList.map(file => {
                 return <div>{file.name}</div>;
             })
         }
+        */
 
 
         let filelist = (
@@ -189,17 +216,14 @@ class RecognitionTool extends Component {
             <Aux>
 
                 <Modal
-                    show={this.props.modalDisplay}
+                    show={this.state.modal}
                     modalClosed={this.closeModalHandler}
                 >
 
                     <div className="alert alert-warning" role="alert">
-                        <p>Ponizsze pliki nie sa plikami audio.
-                                <br></br>Nie zostana one dodane do kolejki rozpoznawania
-                            </p>
-                        {refusedFileNames}
-                    </div>
+                        <p>Niektóre z plików nie są plikami audio dlatego nie zostaną dodane do kolejki.</p>
 
+                    </div>
 
 
                     <button type="button"

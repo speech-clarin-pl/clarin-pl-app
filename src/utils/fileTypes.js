@@ -1,9 +1,4 @@
 const FILETYPE_EXTENSIONS = {
-  Archive: [
-    'zip','ZIP',
-    'rar','RAR',
-    '7z',
-  ],
   Audio: [
     'mp3','MP3',
     'ogg',
@@ -11,11 +6,10 @@ const FILETYPE_EXTENSIONS = {
     'aac','AAC',
     'au',
   ],
-  SpeechToolsOutput: [
-    'ctm','CTM',
-  ],
   Text: [
     'txt','TXT',
+    'ctm','CTM',
+    'json','JSON',
   ],
 }
 

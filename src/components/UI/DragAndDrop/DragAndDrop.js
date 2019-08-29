@@ -73,9 +73,16 @@ class DragAndDrop extends Component {
     
     //checking if files come from repo
     if(e.dataTransfer.getData("fileURL").length > 0){
-      this.props.whenDropped(e.dataTransfer.getData("fileURL"))
+
+      //składam obiekt z danymi pobranymi z repo
+      const draggedFile = {
+        "fileURL": e.dataTransfer.getData("fileURL"),
+        "fileSize": e.dataTransfer.getData("fileSize"),
+      }
+
+      this.props.whenDropped(draggedFile)
       e.dataTransfer.clearData();
-      console.log(e.dataTransfer.getData("fileURL"))
+      //console.log(e.dataTransfer.getData("fileURL"))
     }
   }
   componentDidMount() {

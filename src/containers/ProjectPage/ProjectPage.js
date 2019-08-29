@@ -141,8 +141,8 @@ const mapStateToProps = (state) => {
   return {
     currentProjectID: state.prolistR.chosenProjectID,
     //currentProjectID: state.projectR.currentProjectID,
-    currentProjectName: state.prolistR.chosenProjectName,
-   // currentProjectName: state.projectR.currentProjectName,
+   // currentProjectName: state.prolistR.chosenProjectName,
+    currentProjectName: state.projectR.currentProjectName,
     currentProjectOwner: state.prolistR.chosenProjectOwner,
     //currentProjectOwner: state.projectR.currentProjectOwner,
 

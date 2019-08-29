@@ -7,7 +7,9 @@ export function bytesToSize(bytes){
 }
 
 export function getExt(path){
+    console.log(path)
     return (path.match(/(?:.+..+[^\/]+$)/ig) != null) ? path.split('.').slice(-1): 'null';
+  // return  path.split('.').slice(-1);
 }
 
 export function getFilenameFromURL(url){
@@ -22,6 +24,5 @@ export function getFileKeyFromURL(url){
     var a=[],i=-1;
     while((i=url.indexOf('/',i+1)) >= 0) a.push(i);
     let fileKey = url.substring(a[4]+1);
-    console.log(fileKey)
     return fileKey;
 }
