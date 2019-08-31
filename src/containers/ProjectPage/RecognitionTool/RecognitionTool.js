@@ -65,7 +65,6 @@ class RecognitionTool extends Component {
                 newFile.loadedperc = 0;
                 newFile.id = uuid.v4();
                 newFile.from = 'local';
-
                 extFiles.push(newFile);
             });
 
@@ -120,21 +119,23 @@ class RecognitionTool extends Component {
         const inputControl = e.currentTarget;
         let fileList = [];
         let refusedFileList = [];
+        let extFiles = [];
+        
         for (var i = 0; i < inputControl.files.length; i++) {
             let file = inputControl.files[i];
             console.log(file)
             console.log(file.name)
             let fileExtention = getExt(file.name)[0];
-            
-            //rozpoznaje tylko pliki audio
-            if (fileExtention === "wav" ||
-                fileExtention === "WAV" ||
-                fileExtention === "mp3" ||
-                fileExtention === "au") {
-                fileList.push(inputControl.files[i]);
-            } else {
-                refusedFileList.push(inputControl.files[i]);
-            }
+
+             //rozpoznaje tylko pliki audio
+             if (extensionMapping.hasOwnProperty(fileExtention) &&
+                    (extensionMapping[fileExtention] == "Audio")) {
+                    fileList.push(inputControl.files[i]);
+           
+                } else {
+                    refusedFileList.push(inputControl.files[i]);
+                }
+
         }
 
         if (refusedFileList.length > 0) {
@@ -145,8 +146,17 @@ class RecognitionTool extends Component {
             //this.props.onOpenModalHandler();
         }
 
+        Array.from(fileList).forEach(file => {
+            let newFile = Object.assign({}, file);
+            newFile.file = file;
+            newFile.status = 'toload';
+            newFile.loadedperc = 0;
+            newFile.id = uuid.v4();
+            newFile.from = 'local';
+            extFiles.push(newFile);
+        });
 
-        this.handleDrop(fileList);
+        this.props.onDrop(extFiles);
     }
 
 

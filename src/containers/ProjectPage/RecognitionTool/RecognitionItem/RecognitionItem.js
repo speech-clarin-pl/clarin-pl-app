@@ -157,12 +157,18 @@ class RecognitionItem extends Component {
 
 
       startFileRecognition = (fileId) => {
+          console.log(fileId)
         let allFiles =  this.props.allFiles;
         //znajduje plik przekazany jako parametr we wszystkich plikach przekazanych z reducera
         const foundEntry = allFiles.find(obj => obj.id == this.props.fileID);
 
+        console.log(foundEntry)
+
+        //czy audio pochodzi z "repo" czy z "local"
+        const audioFrom = foundEntry.from;
+
         this.props.updateFileState(fileId, 'progress', 100);
-        this.props.onFileRecognition(foundEntry.file, foundEntry.id, this.props.userId, this.props.projectId );
+        this.props.onFileRecognition(foundEntry.file, foundEntry.id, this.props.userId, this.props.projectId, audioFrom );
       }
 
       previewItem = (fileID) => {
@@ -237,8 +243,8 @@ class RecognitionItem extends Component {
                     ikonki = (
                         <Aux>
                         {previewIcon}
-                        <a href="#" className="actionIcon download"><i className="fas fa-download"></i></a>
-                        <a href="#" className="actionIcon downloadRepo"><i className="fas fa-cloud-download-alt"></i></a>
+                            <a href="#" className="actionIcon download"><i className="fas fa-download"></i></a>
+                            <a href="#" className="actionIcon downloadRepo"><i className="fas fa-cloud-download-alt"></i></a>
                         {removeIcon}
                         </Aux>
                     )
@@ -337,7 +343,7 @@ const mapDispatchToProps = dispatch => {
     return {
        updateFileState: (fileID, status,percLoaded) => dispatch(recognitionActions.updateFileState(fileID, status,percLoaded)),
        onGetProjectFilesForUser: (userId, projectId, token) => dispatch(recognitionActions.getProjectFilesForUser(userId,projectId, token)),
-       onFileRecognition: (file, entryId,userId, projectId) => dispatch(recognitionActions.initFileRecognition(file, entryId, userId, projectId)),
+       onFileRecognition: (file, entryId,userId, projectId, audioFrom) => dispatch(recognitionActions.initFileRecognition(file, entryId, userId, projectId, audioFrom)),
        onRemoveItem:(fileId) => dispatch(recognitionActions.removeRecognitionItem(fileId)),
        onOpenRecognitionAudioPreview:(entryId) => dispatch(recognitionActions.openRecognitionAudioPreview(entryId))
        // onRepoUpdate: (userId, projectId, token) => dispatch(recognitionActions.getProjectFilesForUser(userId,projectId, token))

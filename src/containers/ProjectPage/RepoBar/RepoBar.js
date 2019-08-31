@@ -8,14 +8,18 @@ import * as repoActions from '../../../store/actions/index';
 import { Redirect, withRouter } from 'react-router-dom';
 import { getExt } from '../../../utils/utils';
 import Modal from '../../../components/UI/Modal/Modal';
-import Preview from '../../../components/Preview/Preview'
+import Preview from '../../../components/Preview/Preview';
+import {getFileKeyFromURL} from '../../../utils/utils';
+import DragAndDrop from '../../../components/UI/DragAndDrop/DragAndDrop';
+import DropFilesArea from '../../../components/UI/DropFilesArea/DropFilesArea';
   
 class repoBar extends Component {
 
 	state = {
         openPreview: false,
         modal: false,
-        fileToPreview: '',
+		fileToPreview: '',
+		actionType: null, //która user wykonuje w repo aby rozpoznac co pokazac w modal
     }
 
 	componentDidMount() {
@@ -48,6 +52,15 @@ class repoBar extends Component {
 
 	handleDownloadFile = (fileKey) => {
 		this.props.onHandleDownloadFile(fileKey, this.props.currentProjectID, this.props.currentProjectOwner, this.props.token);
+	}
+
+	handleUploadFiles = (folderKey) => {
+		this.props.onOpenModalHandler();
+		this.setState({
+			actionType: "Upload",
+		});
+		
+		//this.props.onHandleUploadFiles(folderKey, this.props.currentProjectID, this.props.currentProjectOwner, this.props.token);
 	}
 
 	handleSelect = (key) => {
@@ -119,6 +132,7 @@ class repoBar extends Component {
 			console.log(fileURL)
 			this.props.onOpenModalHandler();
             this.setState({
+				actionType: "Preview",
                 openPreview: true,
                 fileToPreview: fileURL,
             });
@@ -126,7 +140,10 @@ class repoBar extends Component {
 
         if (data.action === 'Remove') {
             console.log("Remove file: ")
-            console.log(fileURL)
+			console.log(fileURL)
+			this.setState({
+				actionType: "Remove",
+            });
         }
 	}
 
@@ -178,16 +195,39 @@ class repoBar extends Component {
 
 		const mount = document.querySelectorAll('div.demo-mount-nested-editable');
 
-		let modalContent = (
-            <Preview fileToPreview={this.state.fileToPreview} onClose={this.closeModalHandler}/>
-		)
+		let modalContent = null;
+		let modalTitle = null;
+		
+		if(this.state.actionType === "Preview"){
+			modalContent = (
+				<Preview 
+					fileToPreview={this.state.fileToPreview} 
+					onClose={this.closeModalHandler}/>
+			);
+			
+			modalTitle = "Podgląd pliku: " + getFileKeyFromURL(this.state.fileToPreview);
+		} else if(this.state.actionType === "Upload"){
+			modalContent = (
+				<DragAndDrop whenDropped={()=> {}}>
+					<DropFilesArea
+						whenFilesChose={()=>{}}
+						mainTitle="Wgraj pliki z dysku"
+						desc="Pliki zostaną zapisane jedynie tymczasowo na potrzeby przetwarzania. Po tym czasie są one usuwane bezpowrotnie usuwane z serwera" />
+				</DragAndDrop>
+			);
+			modalTitle = "Upload plików";
+		}
+		
+            
+		
 		
 		return (
 			<Aux>
 
 				<Modal 
                     show={this.props.modal}
-                    modalClosed={this.closeModalHandler}
+					modalClosed={this.closeModalHandler}
+					modalTitle={modalTitle}
                 >
                     {modalContent}
                 </Modal> 
@@ -226,6 +266,7 @@ class repoBar extends Component {
 								Delete: <i className="fas fa-trash"></i>,
 								Loading: <i className="fas fa-spinner"></i>,
 								Download: <i className="fas fa-download"></i>,
+								Upload: <i class="fas fa-cloud-upload-alt"></i>
 							}}
 
 							onCreateFolder={this.handleCreateFolder}
@@ -237,6 +278,7 @@ class repoBar extends Component {
 							onDeleteFolder={this.handleDeleteFolder}
 							onDeleteFile={this.handleDeleteFile}
 							onDownloadFile={this.handleDownloadFile}
+							onUploadFiles={this.handleUploadFiles}
 
 							// Always called when a file or folder is selected
 							onSelect={this.handleSelect}

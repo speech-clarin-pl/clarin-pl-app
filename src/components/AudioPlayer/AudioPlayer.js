@@ -26,7 +26,7 @@ class AudioPlayer extends Component {
 
     load = url => {
         this.setState({
-            url,
+            url: url,
             played: 0,
             loaded: 0,
             pip: false
@@ -38,7 +38,7 @@ class AudioPlayer extends Component {
     }
 
     handleStop = () => {
-        this.setState({ playing: false })
+        this.setState({ url: null,playing: false })
     }
 
     componentWillUnmount = () => {
@@ -141,9 +141,18 @@ class AudioPlayer extends Component {
         this.player = player
     }
 
-    componentDidMount = () => {
-        this.load(this.props.audioURL)
+    loadAudioFile = (audioURL) => {
+        this.load(audioURL)
     }
+
+    
+    componentDidMount = () => {
+        console.log("AUDIO PLAYER")
+        this.loadAudioFile(this.props.audioURL)
+    }
+    
+
+
 
     render() {
 
@@ -221,12 +230,6 @@ class AudioPlayer extends Component {
 
                 </div>
                 
-
-                       
-                      
-                    
-                        
-
             </Aux>
         )
     }

@@ -41,15 +41,18 @@ export const finishFileRecognitionActionFailed = (message, entryId) => {
     return updateFileState(entryId, 'error', 0);
 }
 
-export const initFileRecognition = (file, entryId, userId, projectId) => {
+export const initFileRecognition = (file, entryId, userId, projectId, audioFrom) => {
     return dispatch => {
 
         const data = new FormData();
+
+        console.log(file)
 
         data.append('audioFiles', file);
         data.append('audioFilesIds', entryId);
         data.append('projectId', projectId);
         data.append('userId', userId);
+        data.append('audioFrom', audioFrom)
 
         const config = {
             headers: {

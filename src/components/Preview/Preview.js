@@ -9,7 +9,6 @@ import {getFileKeyFromURL} from '../../utils/utils';
 class Preview extends Component {
 
     
-
     render(){
 
         const fileToPreview = this.props.fileToPreview;
@@ -23,6 +22,8 @@ class Preview extends Component {
         
 		if (extensionMapping[ext] === "Audio") {
             typPliku = "Audio";
+
+            
 
             podgladPliku = (
                 <AudioPlayer audioURL={fileToPreview} />
@@ -45,7 +46,6 @@ class Preview extends Component {
 
         return(
             <Aux>
-                <p>Podgląd pliku: {fileKey}</p>
                 {podgladPliku}
             </Aux>
         )

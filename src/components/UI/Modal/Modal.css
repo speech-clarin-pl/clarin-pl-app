@@ -1,3 +1,7 @@
+.Modal .modalTitle {
+    
+}
+
 .Modal {
     position: fixed;
     z-index: 999999999999;
@@ -8,7 +12,9 @@
     box-shadow: 1px 1px 3px black;
     padding: 16px;
     left: 15%;
-    top: 30%;
+    top: 15%;
+    overflow:auto;
+    max-height: 75%;
     box-sizing: border-box;
     transition: all 0.3s ease-out;
 }
