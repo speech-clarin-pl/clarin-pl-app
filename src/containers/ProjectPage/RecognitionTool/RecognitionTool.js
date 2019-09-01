@@ -23,25 +23,21 @@ class RecognitionTool extends Component {
 
     handleDrop = (files) => {
         //extending the files by additionnal info about the status and load percentage
-        console.log("HANDLE DROP")
-        console.log(files)
-        let extFiles = [];
+       // console.log("HANDLE DROP")
+       // console.log(files)
 
+        let extFiles = [];
         let fileList = [];
         let refusedFileList = [];
 
-       // console.log(typeof files)
-
-        //checking if the file/s is from repo or from local env
+        //checking if the file/s is from local env
         if (files instanceof FileList) {
             console.log("rozpoznalem FILELIST")
             for (var i = 0; i < files.length; i++) {
                 let file = files[i];
                 let fileExtention = getExt(file.name)[0];
+
                 //rozpoznaje tylko pliki audio
-
-                //console.log(extensionMapping)
-
                 if (extensionMapping.hasOwnProperty(fileExtention) &&
                     (extensionMapping[fileExtention] == "Audio")) {
                     fileList.push(file);
@@ -50,26 +46,7 @@ class RecognitionTool extends Component {
                 }
             }
 
-            if (refusedFileList.length > 0) {
-                this.props.onSetRefusionFiles(refusedFileList);
-                this.setState({
-                    modal: true,
-                });
-                //this.props.onOpenModalHandler();
-            }
-
-            Array.from(fileList).forEach(file => {
-                let newFile = Object.assign({}, file);
-                newFile.file = file;
-                newFile.status = 'toload';
-                newFile.loadedperc = 0;
-                newFile.id = uuid.v4();
-                newFile.from = 'local';
-                extFiles.push(newFile);
-            });
-
-            this.props.onDrop(extFiles);
-
+            //checking if files come from repo
         } else if (files instanceof Object && (files["fileURL"] != undefined)) {
             console.log("rozpoznalem OBJECT")
             //then the file is comming from the repo...
@@ -80,83 +57,65 @@ class RecognitionTool extends Component {
             if (extensionMapping.hasOwnProperty(fileExtention) &&
                 (extensionMapping[fileExtention] == "Audio")) {
                 fileList.push(f);
-                console.log("dodano")
             } else {
                 refusedFileList.push(f);
             }
 
-            if (refusedFileList.length > 0) {
-                this.props.onSetRefusionFiles(refusedFileList);
-                //this.props.onOpenModalHandler();
-                this.setState({
-                    modal: true,
-                });
+            //checking if files come from browse btn
+        } else if ( files.currentTarget != null && files.currentTarget instanceof Element){
+            const inputControl = files.currentTarget;
+            
+            for (var i = 0; i < inputControl.files.length; i++) {
+                let file = inputControl.files[i];
+                let fileExtention = getExt(file.name)[0];
+    
+                 //rozpoznaje tylko pliki audio
+                 if (extensionMapping.hasOwnProperty(fileExtention) &&
+                        (extensionMapping[fileExtention] == "Audio")) {
+                        fileList.push(inputControl.files[i]);
+                    } else {
+                        refusedFileList.push(inputControl.files[i]);
+                    }
             }
-
-            Array.from(fileList).forEach(file => {
-                let newFile = Object.assign({}, file);
-                newFile.file = {
-                    "name": getFilenameFromURL(file.fileURL),
-                    "size": file.fileSize,
-                };
-                newFile.status = "loaded";
-                newFile.loadedperc = 100;
-                newFile.id = uuid.v4();
-                newFile.url = file.fileURL;
-                newFile.from = "repo";
-
-                extFiles.push(newFile);
-            });
-
-            this.props.onDrop(extFiles);
-
-
         }
-    }
 
-    //kiedy uzytkownik recznie wybral pliki
-    whenFilesChose = (e) => {
-        const inputControl = e.currentTarget;
-        let fileList = [];
-        let refusedFileList = [];
-        let extFiles = [];
-        
-        for (var i = 0; i < inputControl.files.length; i++) {
-            let file = inputControl.files[i];
-            console.log(file)
-            console.log(file.name)
-            let fileExtention = getExt(file.name)[0];
-
-             //rozpoznaje tylko pliki audio
-             if (extensionMapping.hasOwnProperty(fileExtention) &&
-                    (extensionMapping[fileExtention] == "Audio")) {
-                    fileList.push(inputControl.files[i]);
-           
-                } else {
-                    refusedFileList.push(inputControl.files[i]);
-                }
-
-        }
 
         if (refusedFileList.length > 0) {
             this.props.onSetRefusionFiles(refusedFileList);
             this.setState({
                 modal: true,
             });
-            //this.props.onOpenModalHandler();
         }
 
         Array.from(fileList).forEach(file => {
+
             let newFile = Object.assign({}, file);
-            newFile.file = file;
-            newFile.status = 'toload';
-            newFile.loadedperc = 0;
+            //musze sprawdzic czy plik pochodzi z repo czy z local
+            // bo jest inna struktura danych
+            //z repo
+            if(file["fileURL"] != undefined){
+                newFile.file = {
+                    "name": getFilenameFromURL(file.fileURL),
+                    "size": file.fileSize,
+                };
+                newFile.from = "repo";
+                newFile.loadedperc = 100;
+                newFile.url = file.fileURL;
+                newFile.status = "loaded";
+            //z local
+            } else {
+                newFile.file = file;
+                newFile.status = 'toload';
+                newFile.loadedperc = 0;
+                newFile.from = 'local';
+            }
+
             newFile.id = uuid.v4();
-            newFile.from = 'local';
             extFiles.push(newFile);
         });
 
         this.props.onDrop(extFiles);
+
     }
 
 
@@ -278,7 +237,7 @@ class RecognitionTool extends Component {
 
                                     <DragAndDrop whenDropped={this.handleDrop}>
                                         <DropFilesArea
-                                            whenFilesChose={this.whenFilesChose}
+                                            whenFilesChose={this.handleDrop}
                                             mainTitle="Wgraj pliki z dysku"
                                             desc="Pliki zostaną zapisane jedynie tymczasowo na potrzeby przetwarzania. Po tym czasie są one usuwane bezpowrotnie usuwane z serwera" />
                                     </DragAndDrop>

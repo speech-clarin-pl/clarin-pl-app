@@ -20,7 +20,8 @@ class repoBar extends Component {
         modal: false,
 		fileToPreview: '',
 		actionType: null, //która user wykonuje w repo aby rozpoznac co pokazac w modal
-    }
+		folderToUpload: '',
+	}
 
 	componentDidMount() {
 		//wysylam zadanie aby pobrac aktualne pliki w katalogu uzytkownika
@@ -58,6 +59,7 @@ class repoBar extends Component {
 		this.props.onOpenModalHandler();
 		this.setState({
 			actionType: "Upload",
+			folderToUpload: folderKey,
 		});
 		
 		//this.props.onHandleUploadFiles(folderKey, this.props.currentProjectID, this.props.currentProjectOwner, this.props.token);
@@ -212,7 +214,7 @@ class repoBar extends Component {
 					<DropFilesArea
 						whenFilesChose={()=>{}}
 						mainTitle="Wgraj pliki z dysku"
-						desc="Pliki zostaną zapisane jedynie tymczasowo na potrzeby przetwarzania. Po tym czasie są one usuwane bezpowrotnie usuwane z serwera" />
+						desc={"Pliki zostaną zapisane do repozytorium: " + this.state.folderToUpload} />
 				</DragAndDrop>
 			);
 			modalTitle = "Upload plików";
