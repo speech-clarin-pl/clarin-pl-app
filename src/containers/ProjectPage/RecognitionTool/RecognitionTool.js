@@ -63,6 +63,8 @@ class RecognitionTool extends Component {
 
             //checking if files come from browse btn
         } else if ( files.currentTarget != null && files.currentTarget instanceof Element){
+            console.log("rozpoznalem Element")
+            
             const inputControl = files.currentTarget;
             
             for (var i = 0; i < inputControl.files.length; i++) {

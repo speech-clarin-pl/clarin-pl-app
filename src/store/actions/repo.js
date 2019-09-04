@@ -5,6 +5,48 @@ import { saveAs } from 'file-saver';
 //import streamSaver from 'StreamSaver';
 
 //#################################################################
+//############# upload plików do repo ############################
+//################################################################
+
+export const uploadFilesFailed = () =>{
+    return {
+        type: actionTypes.REPO_UPLOAD_FILES_FAILED,
+    }
+}
+
+export const uploadFilesSuccess = (files) =>{
+    return {
+        type: actionTypes.REPO_UPLOAD_FILES_SUCCESS,
+        files: files,
+    }
+}
+
+export const uploadFiles = (entryList,folderKey,userId, projectId, token) => {
+    return dispatch => {
+        //tutaj powinniśmy zwrócić z serwera listę plikow z serwera któ©e zostały dodane
+        let files = [
+                {
+                key: '/lalala/test.wav',
+                modified: 1567318077468,
+                size: 250496,
+                url: 'http://localhost:1234/5d1db8a1ceb24447d9cdda0c/5d6b603c5be78a2d10b5f2a7/demo_files/test.wav',
+                relativeKey: '/lalala/test.wav'
+              },
+              {
+                key: '/koty/',
+                modified: 1567318077404,
+                size: 4096,
+                url: 'http://localhost:1234/5d1db8a1ceb24447d9cdda0c/5d6b603c5be78a2d10b5f2a7/my_files/',
+                relativeKey: '/koty/'
+              }
+
+            ];
+
+        dispatch(uploadFilesSuccess(files));
+    }
+}
+
+//#################################################################
 //############## edycja pliku txt ######################
 //####################################################
 

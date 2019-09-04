@@ -243,9 +243,28 @@ const repoEditFileFailed = (state,action) => {
         {editTxtFileOK: false});
 }
 
+//###################### upload plikow do repo ################
+//##############################################################
+const repoUploadFilesSuccess = (state,action) => {
+    
+
+    return updateObject(state,
+        {
+            files: state.files,
+        });
+}
+
+const repoUploadFilesFailed = (state,action) => {
+    return state;
+}
+
 const repoReducer = (state = initialState, action) => {
     switch(action.type){
         //case actionTypes.REPO_UPLOAD_FILE: return repoUploadFile(state,action);
+
+        case actionTypes.REPO_UPLOAD_FILES_SUCCESS: return repoUploadFilesSuccess(state,action); 
+        case actionTypes.REPO_UPLOAD_FILES_FAILED: return repoUploadFilesFailed(state,action); 
+
         case actionTypes.REPO_EDIT_TXT_SUCCESS: return repoEditFileSuccess(state,action);
         case actionTypes.REPO_EDIT_TXT_FAILED: return repoEditFileFailed(state,action);
 

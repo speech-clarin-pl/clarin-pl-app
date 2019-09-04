@@ -1,0 +1,206 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="generator" content="Jekyll v3.8.5">
+    <title>CLARIN-PL: help</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/starter-template/">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <style>
+        #navbar-example {
+            width: 300px;
+            position: fixed;
+            float: left;
+            bottom: 0px;
+            top: 0px;
+            text-align: left;
+            overflow: auto;
+            margin-top: 55px;
+        }
+
+        #doccontent {
+            float: right;
+            margin-left: 300px;
+            margin-top:55px;
+            padding: 2em;
+        }
+        #gornabelka{
+            position: fixed;
+            width: 100%;
+            z-index: 999;
+        }
+
+        .nav-pills .nav-link {
+            text-decoration: none;
+            color: #275c90;
+        }
+
+        .nav-pills .nav-link.active, .nav-pills .show >.nav-link {
+            background-color: #4183c4;
+        }
+
+        
+    </style>
+  </head>
+  <body style="position: relative" data-spy="scroll" data-target="#navbar-example">
+
+        <nav id="gornabelka" class="navbar navbar-dark bg-dark">
+                <a class="navbar-brand" href="#">Dokumentacja CLARIN-PL</a>
+        </nav>
+
+        <nav id="navbar-example" class="navbar navbar-light bg-light">
+                <nav class="nav nav-pills flex-column">
+                  <a class="nav-link" href="#wprowadzenie">Wprowadzenie</a>
+                  <nav class="nav nav-pills flex-column">
+                    <a class="nav-link ml-3 my-1" href="#zespol">Nasz zespół</a>
+                    <a class="nav-link ml-3 my-1" href="#naszkorpus">Korpus danych studyjnych</a>
+                  </nav>
+                  <a class="nav-link" href="#narzedziamowy">Narzędzia mowy</a>
+                  <nav class="nav nav-pills flex-column">
+                    <a class="nav-link ml-3 my-1" href="#g2p">Konwersja zapisu ortograficznego na fonetyczny </a>
+                    <a class="nav-link ml-3 my-1" href="#alignment">Dopasowanie tekstu do audio</a>
+                    <a class="nav-link ml-3 my-1" href="#det">Detekcja mowy</a>
+                    <a class="nav-link ml-3 my-1" href="#vad">Diaryzacja mówców</a>
+                    <a class="nav-link ml-3 my-1" href="#kws">Wykrywanie słów kluczowych</a>
+                    <a class="nav-link ml-3 my-1" href="#asr">Automatyczne rozpoznawanie mowy</a>
+                  </nav>
+
+                  <a class="nav-link" href="#item-3">Item 3</a>
+                  <nav class="nav nav-pills flex-column">
+                    <a class="nav-link ml-3 my-1" href="#item-3-1">Item 3-1</a>
+                    <a class="nav-link ml-3 my-1" href="#item-3-2">Item 3-2</a>
+                  </nav>
+                </nav>
+              </nav>
+              
+              <div id="doccontent" data-spy="scroll" data-target="#navbar-example" data-offset="0">
+
+<h4 id="wprowadzenie">Wprowadzenie</h4>
+<p>
+PJATK, jako jedna z niewielu Uczelni Wyższych w Polsce, zajmuje się analizą sygnału mowy. Celem naszych badań jest pomoc osobom zajmującym się naukami humanistycznymi oraz społecznymi w uzyskiwaniu jak największej ilości informacji z posiadanych nagrań dźwiękowych (nagrań mowy) oraz informacji tekstowych.
+</p>
+
+<p>
+Wiele danych wykorzystywanych w naukach humanistycznych i społecznych jest przychowywanych w formie nagrań audio. Przykładami mogą być nagrania radiowe bądź telewizyjne, wywiady, przemowy (parlamentu, publiczne wystąpienia itp.), wykłady, filmy, literatura czytana i inne nagrania mowy. 
+
+Głównym problemem jednak w przetwarzaniu danych akustycznych jest to iż wymagają znacznie więcej czasu niż tradycyjne dane tekstowe. Przytwarzanie tego typu danych wymaga przynajmniej podstawowego "know-how" w zakresie przechowywania tego typu danych ale również znacznego wysiłku aby wywnioskować z nagrań informacje nadające się do publikacji. Z tego powodu wydobywanie informacji z nagrań dźwiękowych bywa pomijane przez badaczy którzy albo nie posiadają wystarczającej ilości czasu lub nie chcą borykać się z w/w problemami. Dlatego też naszym głównym celem jest stworzenie darmowych oraz łatwo dostępnych narzędzi dla badaczy z dziedziń humanistycznych oraz społecznych.
+</p>
+
+<p>
+W PJATK budujemy połączenia łączące dane humiastyczne z technologią. Opracowujemy narzędzia informatyczne które pomagają porzetwarzać i analizować nagrania mowy. Istotnym celem naszych działań jest ich udostępnianie wszystkim którzy chcą wyciągnąć z nich jak najwięcej informacji. Głównym celem wykorzystania naszych narzędzi są badania naukowe ale nie tylko. Istotny jest dla nas łatwy dostęp do rozwijanych przez nas narzędzi. Dlatego też skupiamy się na tworzeniu łatwo dostępnych oraz zrozumiałych dla każdego interfejsów. Wyrazem tego dążenia jest nowy serwis on-line którego celem będzie połączenie wcześnij wypracowanych narzędzi w łatwo dostępny interfejs. 
+</p>
+
+Staramy się udostępniać nasze usługi za pośrednictwem stron internetowych. Obecnie można mieć do nich dostęp za pośrednictwem dwóch serwisów:
+</p>
+<ul>
+    <li>
+        <a href="https://mowa.clarin-pl.eu" target="_blank">
+            https://mowa.clarin-pl.eu
+        </a> (wersja starsza)
+    </li>
+    <li>
+        <a href="https://mowa.clarin-pl.eu:8433/" target="_blank">
+            https://mowa.clarin-pl.eu:8433/
+        </a> (nowsza wersja w wersji beta)
+    </li>
+</ul>
+
+
+
+<h5 id="zespol">Nasz zespół</h5>
+<p>Nasz zespół składa się z 5 członków:</p>
+<ul>
+    <li>
+        <b>Prof. dr hab. Krzysztof Marasek</b>
+        Kieronik projektu po stronie PJATK
+    </li>
+    <li>
+        <b>dr inż. Danijel Korzinek</b>
+        Analiza i rozpoznawanie mowy
+    </li>
+    <li>
+        <b>dr inż. Łukasz Brocki</b>
+        Rozpoznawanie mowy
+    </li>
+    <li>
+        <b>dr inż. Krzysztof Wołk</b>
+        Tłumaczenie maszynowe
+    </li>
+    <li>
+        <b>mgr inż. Mariusz Kleć</b>
+        Wydobywanie informacji muzycznej (MIR), deep learning, web development
+    </li>
+</ul>
+
+<h5 id="naszkorpus">Korpus danych studyjnych</h5>
+
+<p>
+ Jesteśmy autorem korpusu nagrań studyjnych który udostępniamy <a href="https://mowa.clarin-pl.eu/korpusy" target="">pod tym linkiem.</a>. Korpus ten posłużył do wytrenowania systemu rozpoznawania mowy dla języka polskiego (bazującego na sytemie Kaldi)
+</p>
+
+<p>
+Wiele narzędzi wspomnianych wcześniej wymaga dużego zbioru danych trenujących w postaci nagrań audio. Pozyskanie dobrej jakości nagrań mowy w danym języku jest kosztowne i często nieosiągalne przez większość badaczy. Do tej pory nie istniał darmowy, wysokiej jakości korpus nagrań mowy Polskiej z odpowiednio dużym słownikiem.
+</p>
+
+<p>
+Korpus został nagrany w laboratorium dźwiękowym na terenie PJATK z wykorzystaniem mikrofonów studyjnych. Korpus nagrywało 317 mówców w 554 sesjach, gdzie każda sesja składała się z 20 czytanych zdań oraz 10 fonetycznie bogatych słów pojedyńczych. W sumie zostało nagranych 56 godzin mowy składającej się z 356676 słów ze słownika o wielkości 46361. Obecnie korpus jest dostępny do <a href="https://ips-lmu.github.io/EMU-webApp/?autoConnect=true&serverUrl=wss:%2F%2Fmowa.clarin-pl.eu:17891%2Fclarin" target="_blank">łatwego przeglądania on-line za pośrednictwem systemu EMU-SDMS (EMU Speech Database Management System). </a>Środowisko EMU pozwala łatwe przeglądanie danych oraz wykonywanie obliczeń statystycznych dzięki integracji z środowiskiem R.
+</p>
+
+<h4 id="narzedziamowy">Narzędzia mowy</h4>
+
+<h5 id="g2p">Konwersja zapisu ortograficznego na fonetyczny </h5>
+<p>Narzędie to pozwala na konwersję każdego tekstu napisanego ortograficznie na jego formę fonetyczną (mówioną). Jest to jeden z podstawowych kroków w każdych procesie przetwarzania danych mowy. Narzędzie akceptuje każdą formę tekstu, jednakże nie wykonuje normalizacji tekstu. Oznacza to iż nie zamienia liczb, dat oraz skrótów w sposób automatyczny. 
+System jest stworzony przy użyciu systemu opartego o reguły. Dlatego też  zawiera listę wyjątków dla nazw zwłasnych, zagranicznych i słów nietypowych. 
+Narzędzie może generować zarówno listy wyrazów z różnymi wymowami jak również kanoniczną transkrypcję tekstu.
+</p>
+
+<p>
+Planuje się wdrożenie kilku rozszerzeń do tego narzędzia. Na pierwszym miejscu jest normalizacja tekstu (liczb, dat itp.) przed konwersją. Kolejnym rozszerzeniem jest dołączenie różnych form alfabetu fonetycznego oraz ewentualnie dodatnie dodatkowych poziomów annotacji (akcenty lub sylabizacja). Nie mniej jednak wdrożenie tych rozszerzeń zależy od zainteresowania środowiska wspomnianymi narzędziami.
+</p>
+
+<h5 id="alignment">Dopasowanie tekstu do audio</h5>
+<p>Tzw. "Speech alignment" jest jednym z bardziej użytecznych narzędzi. Jest używany do dopasowania sekwencji słów do dostarczonego nagrania audio zawierającego mowę. Wynik narzędzia może być rozumiany jak automatyczne generowanie kodów czasowych gdy znane są zarówno audio jak i jego transkrypcja. 
+Jest to o tyle użyteczne narzędzie ponieważ może być użyte do łatwego przeszukiwania konkretnych zdarzeń w dużych zbiorach nagrań. Umożliwia takżę obliczanie statystyk odnoszących się do czasu poszczególnych zdarzeń (oraz innych ich charakterystyk).
+</p>
+<p>
+Dopasowanie jest wykonywane zarówno na poziomie słów oraz fonemów. Obecnie narzędzie generuje wyjście w formacie TextGrid (natywnym dla programu Praat) lecz planuje się wdrożenie innych formatów.
+Narzędzie generuje również link to przeglądarki EMU-webApp która umożliwia przeglądanie rezultatów segmentacji bezpośrednio w przeglądarce www.
+</p>
+
+<p>
+W ramach rozszerzeń planuje się implementację lepszego modelu akustycznego. Adaptacja modelu akustycznego wraz z modelem języka byłaby również korzystna, szczególnie jeśli chodzi o zaszumione dane. Narzędzie działa poprawnie dla czystych i przewidywalnych danych. Może jednak produkować błędy bądź całkowicie zawieść dla sygnałów bardzo zaszumionych bądź o niskim poziomie energii.
+Rozszerzenie interfejsu byłoby również bardzo korzystne. Umożliwiałoby manualną poprawę dopasowania oraz poprawy niektórych informacji (np. transkrypcji ortograficznej bądź fonetycznej). Tego typu usprawnienia zmieniłyby obecny w pełni automatyczne narzędzie na semi-automatyczne.
+</p>
+
+<h5 id="det">Detekcja mowy</h5>
+<p>Deatakcja mowy (Voice activity detection: VAD) jest często używane na etapie pre-processingu do wielu narzędzi przetwarzania mowy. Jego celem jest odizolowanie części zawierających mowę od części zawierających inny typ zdarzeń (cisza, szum, muzyka itp.). Narzędzie to jest kompletnie niezależne od języka oraz domeny wypowiedzi. Nie mnie jednak może generować błędy przy bardzo zaszumionych danych. Niewielki eksperyment potwierdził wysoki poziom czułości (Recall ~ 99%) oraz średnią precyzję (Precision ~ 58%). Było to jednak zamierzonym celem aby nie utracić żadnych części zawierających mowę, akecptując czasami fragmenty które jej nie zawierają. Jest to spowodowane tym iż pozostałe narzędzia akceptują niewielką ilość zaszumionych danych, ale działają błędnie gdy jakakolwiek część mowy jest pominięta.</p>
+
+<h5 id="vad">Diaryzacja mówców</h5>
+<p>Narzędzie to jest używane do segmentacji dużych plików audio na części wypowiadane przez poszczególne osoby. Istnieje kilka typów strategii segmentacji mówców. Pierwsza to rozpoznawanie momentu zmiany mówcy na innego, druga to dodanie informacji który fragment należy do tego samego mówcy oraz trzecia strategia polega na identyfikacji rozpoznanych fragmentów tak aby wiedzieć kto dokładnie mówi w rozpoznanym segmentcie. Nasze narzędzie wspiera jednak drugą strategię w której rozpoznajemy zmiany mówców, wiemy ilu ich jest oraz w jakich momentach nagrania występując. Narzędzie jednak traktuje mówców w sposób anonimowy. Narzędzie to jest użyteczne do adaptacji różnych narzędzi oraz modeli do indywidualnych mówców ale również do innych typów anali które wymagają segmentacji mówców.</p>
+
+<h5 id="kws">Wykrywanie słów kluczowych</h5>
+<p>
+Często dokładna transkrypcja materiału audio nie jest konieczna ponieważ jesteśmy zainteresowani tylko występowaniem pojedyńczych słów. Wykrywanie słów kluczowych jest procesem który pobiera plik audio oraz listę słów kluczowych. Następnie generuje listę występowania tych słów w obrębie pliku audio. Należy jednak zwrócić uwagę że model języka ma ograniczoną wielkość słownika, dlatego też niemożliwym jest przewidzieć wszystkich możliwych wyrazów. Z tego powodu, system używa kombinacji słów oraz wyrazów w taki sposób że gdy jest potrzeba znalezienia słowa spoza słownika, używana jest reprezentacja sylabowa danego słowa. Dzięki temu system radzi sobie ze słowami które są spoza słownika, ale jest bardziej podatny na błędy gdy dostarczone są bardzo krótkie słowa kluczowe. W celu przetestowania narzędzia został przygotowany test który pokazał całkowitą precyzję na poziomie ~95% oraz poziom czułości (Recall) dla znanych wyrazów ~82% oraz niski poziom dla wyrazów nieznanych (~20%). Model oparty o sylaby wymaga poprawy w przyszłości aby uniknąć błędów w przypadku wyrazów nieznanych.
+</p>
+
+<h5 id="asr">Automatyczne rozpoznawanie mowy</h5>
+<p>Narzędzie to używa systemu rozpoznawania mowy do wygenerowania najbardziej prawdopodobnyej ortograficznej transliteracji nagrań dźwiękowych mowy Polskiej.</p>         
+                
+ </div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script>window.jQuery || document.write('<script src="/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')</script><script src="/docs/4.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script></body>
+</html>

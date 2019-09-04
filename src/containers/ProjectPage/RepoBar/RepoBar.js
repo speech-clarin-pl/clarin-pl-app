@@ -12,6 +12,8 @@ import Preview from '../../../components/Preview/Preview';
 import {getFileKeyFromURL} from '../../../utils/utils';
 import DragAndDrop from '../../../components/UI/DragAndDrop/DragAndDrop';
 import DropFilesArea from '../../../components/UI/DropFilesArea/DropFilesArea';
+import uuid from 'uuid';
+import { extensionMapping } from '../../../utils/fileTypes';
   
 class repoBar extends Component {
 
@@ -21,7 +23,78 @@ class repoBar extends Component {
 		fileToPreview: '',
 		actionType: null, //która user wykonuje w repo aby rozpoznac co pokazac w modal
 		folderToUpload: '',
+		filesToUpload: [],
+		refusedFiles: [],
 	}
+
+	handleDrop = (files) => {
+        console.log("HANDLE DROP")
+       // console.log(files)
+
+        let extFiles = [];
+        let fileList = [];
+        let refusedFileList = [];
+
+        //checking if the file/s is from local env
+        if (files instanceof FileList) {
+            console.log("rozpoznalem FILELIST")
+            for (var i = 0; i < files.length; i++) {
+                let file = files[i];
+                let fileExtention = getExt(file.name)[0];
+
+                //rozpoznaje tylko pliki audio
+                if (extensionMapping.hasOwnProperty(fileExtention) &&
+                    (extensionMapping[fileExtention] == "Audio")) {
+                    fileList.push(file);
+                } else {
+                    refusedFileList.push(file);
+                }
+            }
+
+           
+        }  else if ( files.currentTarget != null && files.currentTarget instanceof Element){
+            console.log("rozpoznalem Element")
+            
+            const inputControl = files.currentTarget;
+            
+            for (var i = 0; i < inputControl.files.length; i++) {
+                let file = inputControl.files[i];
+                let fileExtention = getExt(file.name)[0];
+    
+                 //rozpoznaje tylko pliki audio
+                 if (extensionMapping.hasOwnProperty(fileExtention) &&
+                        (extensionMapping[fileExtention] == "Audio")) {
+                        fileList.push(inputControl.files[i]);
+                    } else {
+                        refusedFileList.push(inputControl.files[i]);
+                    }
+            }
+        }
+
+
+        if (refusedFileList.length > 0) {
+            //this.props.onSetRefusionFiles(refusedFileList);
+            //this.setState({
+            //    modal: true,
+            //});
+        }
+
+        Array.from(fileList).forEach(file => {
+            let newFile = Object.assign({}, file);
+			newFile.file = file;
+			newFile.status = 'toload';
+			newFile.loadedperc = 0;
+			newFile.from = 'local';
+            newFile.id = uuid.v4();
+            extFiles.push(newFile);
+		});
+		
+		console.log(fileList);
+		console.log(refusedFileList);
+		
+		this.props.onUploadFiles(extFiles, this.state.folderToUpload, this.props.userId, this.props.projectId, this.props.token);
+
+    }
 
 	componentDidMount() {
 		//wysylam zadanie aby pobrac aktualne pliki w katalogu uzytkownika
@@ -210,9 +283,9 @@ class repoBar extends Component {
 			modalTitle = "Podgląd pliku: " + getFileKeyFromURL(this.state.fileToPreview);
 		} else if(this.state.actionType === "Upload"){
 			modalContent = (
-				<DragAndDrop whenDropped={()=> {}}>
+				<DragAndDrop whenDropped={this.handleDrop}>
 					<DropFilesArea
-						whenFilesChose={()=>{}}
+						whenFilesChose={this.handleDrop}
 						mainTitle="Wgraj pliki z dysku"
 						desc={"Pliki zostaną zapisane do repozytorium: " + this.state.folderToUpload} />
 				</DragAndDrop>
@@ -345,7 +418,7 @@ const mapDispatchToProps = dispatch => {
 	return {
 		onOpenModalHandler: () => dispatch(repoActions.openModalProject()),
 		onCloseModalHandler: () => dispatch(repoActions.closeModalProject()),
-
+		onUploadFiles: (entryList, folderKey, userId, projectId, token) => dispatch(repoActions.uploadFiles(entryList,folderKey,userId, projectId, token)),
 		onHandleCreateFolder: (key, projectId, userId, token) => dispatch(repoActions.handleCreateFolder(key, projectId, userId, token)),
 		onHandleCreateFiles: (files, prefix) => dispatch(repoActions.handleCreateFiles(files, prefix)),
 		onHandleRenameFolder: (oldKey, newKey, projectId, userId, token) => dispatch(repoActions.handleRenameFolder(oldKey, newKey, projectId, userId, token)),

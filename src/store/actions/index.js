@@ -7,7 +7,8 @@ export {
     handleDeleteFile,
     getProjectFilesForUser,
     handleDownloadFile,
-    handleUpdateTxtFile
+    handleUpdateTxtFile,
+    uploadFiles
 } from './repo';
 
 export {
