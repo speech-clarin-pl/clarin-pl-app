@@ -8,6 +8,7 @@ const initialState = {
     files: [],
     downloadedFile: '',
     editTxtFileOK: false,
+    uploadFilesDone: false,
     // files: [
     //     {
     //       key: 'cat in a hat.mp3',
@@ -245,23 +246,34 @@ const repoEditFileFailed = (state,action) => {
 
 //###################### upload plikow do repo ################
 //##############################################################
-const repoUploadFilesSuccess = (state,action) => {
+const repoUploadFilesInit = (state,action) => {
     
-
     return updateObject(state,
         {
-            files: state.files,
+            uploadFilesDone: false,
+        });
+}
+
+const repoUploadFilesSuccess = (state,action) => {
+    
+    return updateObject(state,
+        {
+            uploadFilesDone: true,
         });
 }
 
 const repoUploadFilesFailed = (state,action) => {
-    return state;
+    return updateObject(state,
+        {
+            uploadFilesDone: false,
+        });
 }
 
 const repoReducer = (state = initialState, action) => {
     switch(action.type){
         //case actionTypes.REPO_UPLOAD_FILE: return repoUploadFile(state,action);
-
+        
+        case actionTypes.REPO_UPLOAD_FILES_INIT: return repoUploadFilesInit(state,action);
         case actionTypes.REPO_UPLOAD_FILES_SUCCESS: return repoUploadFilesSuccess(state,action); 
         case actionTypes.REPO_UPLOAD_FILES_FAILED: return repoUploadFilesFailed(state,action); 
 

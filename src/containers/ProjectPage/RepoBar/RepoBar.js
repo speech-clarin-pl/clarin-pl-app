@@ -14,6 +14,7 @@ import DragAndDrop from '../../../components/UI/DragAndDrop/DragAndDrop';
 import DropFilesArea from '../../../components/UI/DropFilesArea/DropFilesArea';
 import uuid from 'uuid';
 import { extensionMapping } from '../../../utils/fileTypes';
+import {Alert, Progress} from 'reactstrap';
   
 class repoBar extends Component {
 
@@ -25,6 +26,12 @@ class repoBar extends Component {
 		folderToUpload: '',
 		filesToUpload: [],
 		refusedFiles: [],
+		uploadedPercent: 0,
+	}
+
+	
+	onStartUpload = () => {
+		this.props.onUploadFiles(this.state.filesToUpload, this.state.folderToUpload, this.props.currentProjectOwner, this.props.currentProjectID, this.props.token);
 	}
 
 	handleDrop = (files) => {
@@ -90,9 +97,14 @@ class repoBar extends Component {
 		});
 		
 		console.log(fileList);
-		console.log(refusedFileList);
-		
-		this.props.onUploadFiles(extFiles, this.state.folderToUpload, this.props.userId, this.props.projectId, this.props.token);
+
+		this.setState({
+			filesToUpload: fileList,
+			refusedFiles: refusedFileList,
+		})
+
+		//console.log(refusedFileList);
+		//this.props.onUploadFiles(extFiles, this.state.folderToUpload, this.props.userId, this.props.projectId, this.props.token);
 
     }
 
@@ -103,6 +115,10 @@ class repoBar extends Component {
 		//console.log(currentProjectID)
 		//console.log(currentProjectOwner)
 		this.props.onGetProjectFilesForUser(currentProjectOwner, currentProjectID, this.props.token);
+	}
+
+	refreshRepo() {
+		
 	}
 
 	handleCreateFolder = (key) => {
@@ -272,6 +288,29 @@ class repoBar extends Component {
 
 		let modalContent = null;
 		let modalTitle = null;
+		let filesToUploadList = null;
+		let filesToRefuseList = null;
+
+		if(this.state.filesToUpload.length > 0){
+			filesToUploadList = this.state.filesToUpload.map((file,i) => {
+				return (
+					<Alert color="success" className="alercik" key={i + '_' + file.name}>
+						{file.name}
+				  	</Alert>
+					
+				)
+			});
+		}
+
+		if(this.state.refusedFiles.length > 0){
+			filesToRefuseList = this.state.refusedFiles.map((file,i) => {
+				return (
+					<Alert color="danger" className="alercik" key={i + '_' + file.name}>
+						{file.name}
+				  	</Alert>
+				)
+			});
+		}
 		
 		if(this.state.actionType === "Preview"){
 			modalContent = (
@@ -283,14 +322,44 @@ class repoBar extends Component {
 			modalTitle = "Podgląd pliku: " + getFileKeyFromURL(this.state.fileToPreview);
 		} else if(this.state.actionType === "Upload"){
 			modalContent = (
-				<DragAndDrop whenDropped={this.handleDrop}>
-					<DropFilesArea
-						whenFilesChose={this.handleDrop}
-						mainTitle="Wgraj pliki z dysku"
-						desc={"Pliki zostaną zapisane do repozytorium: " + this.state.folderToUpload} />
-				</DragAndDrop>
-			);
+				<div>
+					<DragAndDrop whenDropped={this.handleDrop}>
+						<DropFilesArea
+							whenFilesChose={this.handleDrop}
+							mainTitle="Wgraj pliki z dysku"
+							desc={"Pliki zostaną zapisane do repozytorium: " + this.state.folderToUpload} />
+					</DragAndDrop>
+
+					<button type="button" class="btn btn-success btn-block" onClick={this.onStartUpload}>Upload</button>
+
+					<Progress max="100" color="success" value={this.state.uploadedPercent} >{Math.round(this.state.uploadedPercent,2) }%</Progress>
+				
+					<div>
+						{filesToUploadList != null? 
+							<div> 
+								<p>Poniższe pliki zostaną wgrane na serwer</p>
+								{filesToUploadList}
+							</div>
+							: null
+						}
+
+						{filesToRefuseList != null? 
+							<div> 
+								<p>Poniższe pliki nie mogą zostać wgrane na serwer</p>
+								{filesToRefuseList}
+							</div>
+							: null
+						} 
+						
+					</div>
+				</div>
+				
+			)
 			modalTitle = "Upload plików";
+		}
+
+		if(this.props.uploadFilesDone){
+			this.closeModalHandler();
 		}
 		
             
@@ -396,6 +465,9 @@ const mapStateToProps = (state) => {
 		currentProjectID: state.projectR.currentProjectID,
 		currentProjectName: state.projectR.currentProjectName,
 		currentProjectOwner: state.projectR.currentProjectOwner,
+
+		uploadFilesDone: state.repoR.uploadFilesDone,
+
 		files: state.repoR.files,
 		token: state.homeR.token,
 
@@ -418,7 +490,7 @@ const mapDispatchToProps = dispatch => {
 	return {
 		onOpenModalHandler: () => dispatch(repoActions.openModalProject()),
 		onCloseModalHandler: () => dispatch(repoActions.closeModalProject()),
-		onUploadFiles: (entryList, folderKey, userId, projectId, token) => dispatch(repoActions.uploadFiles(entryList,folderKey,userId, projectId, token)),
+		onUploadFiles: (fileList, folderKey, userId, projectId, token) => dispatch(repoActions.uploadFiles(fileList,folderKey,userId, projectId, token)),
 		onHandleCreateFolder: (key, projectId, userId, token) => dispatch(repoActions.handleCreateFolder(key, projectId, userId, token)),
 		onHandleCreateFiles: (files, prefix) => dispatch(repoActions.handleCreateFiles(files, prefix)),
 		onHandleRenameFolder: (oldKey, newKey, projectId, userId, token) => dispatch(repoActions.handleRenameFolder(oldKey, newKey, projectId, userId, token)),

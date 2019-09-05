@@ -8,41 +8,82 @@ import { saveAs } from 'file-saver';
 //############# upload plików do repo ############################
 //################################################################
 
-export const uploadFilesFailed = () =>{
+export const uploadFilesInit = () =>{
+    return {
+        type: actionTypes.REPO_UPLOAD_FILES_INIT,
+    }
+}
+
+export const uploadFilesFailed = (message) =>{
     return {
         type: actionTypes.REPO_UPLOAD_FILES_FAILED,
+        message: message
     }
 }
 
-export const uploadFilesSuccess = (files) =>{
+export const uploadFilesSuccess = (message) =>{
     return {
         type: actionTypes.REPO_UPLOAD_FILES_SUCCESS,
-        files: files,
+        message: message,
     }
 }
 
-export const uploadFiles = (entryList,folderKey,userId, projectId, token) => {
+export const uploadFiles = (fileList,folderKey,userId, projectId, token) => {
     return dispatch => {
+
+        dispatch(uploadFilesInit());
+        
+        const data = new FormData()
+
+        for(var x = 0; x < fileList.length; x++){
+            data.append('audioFiles', fileList[x]);
+        }
+
+        console.log(userId)
+        console.log(projectId)
+
+        data.append('folderKey', folderKey);
+        data.append('userId', userId);
+        data.append('projectId', projectId);
+
+
+
+        axios.post('/repoFiles/uploadFiles', data, 
+        {
+            headers: {
+                Authorization: 'Bearer ' + token,
+                'content-type': 'multipart/form-data',
+            },
+        })
+        .then(response => {
+            console.log(response)
+            dispatch(uploadFilesSuccess(response.message));
+        })
+        .catch(error => {
+            console.log(error)
+            dispatch(uploadFilesFailed(error.message));
+        });
+
         //tutaj powinniśmy zwrócić z serwera listę plikow z serwera któ©e zostały dodane
-        let files = [
-                {
-                key: '/lalala/test.wav',
-                modified: 1567318077468,
-                size: 250496,
-                url: 'http://localhost:1234/5d1db8a1ceb24447d9cdda0c/5d6b603c5be78a2d10b5f2a7/demo_files/test.wav',
-                relativeKey: '/lalala/test.wav'
-              },
-              {
-                key: '/koty/',
-                modified: 1567318077404,
-                size: 4096,
-                url: 'http://localhost:1234/5d1db8a1ceb24447d9cdda0c/5d6b603c5be78a2d10b5f2a7/my_files/',
-                relativeKey: '/koty/'
-              }
+        // let files = [
+        //         {
+        //         key: '/lalala/test.wav',
+        //         modified: 1567318077468,
+        //         size: 250496,
+        //         url: 'http://localhost:1234/5d1db8a1ceb24447d9cdda0c/5d6b603c5be78a2d10b5f2a7/demo_files/test.wav',
+        //         relativeKey: '/lalala/test.wav'
+        //       },
+        //       {
+        //         key: '/koty/',
+        //         modified: 1567318077404,
+        //         size: 4096,
+        //         url: 'http://localhost:1234/5d1db8a1ceb24447d9cdda0c/5d6b603c5be78a2d10b5f2a7/my_files/',
+        //         relativeKey: '/koty/'
+        //       }
 
-            ];
+        //     ];
 
-        dispatch(uploadFilesSuccess(files));
+        // dispatch(uploadFilesSuccess(files));
     }
 }
 

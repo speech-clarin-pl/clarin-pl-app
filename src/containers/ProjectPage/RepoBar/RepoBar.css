@@ -361,3 +361,8 @@ padding: 0;
   content: attr(data-count);
   display: block;
 }
+
+.alercik {
+  float: left;
+  margin: 5px;
+}

@@ -104,7 +104,6 @@ export const initBatchRecognition = (audioFilesArray, audioFilesIds) => {
             }
         }
 
-
         axios.post('/recognition/multipleFiles', data, config)
             .then(response => {
 
