@@ -8,7 +8,9 @@ export {
     getProjectFilesForUser,
     handleDownloadFile,
     handleUpdateTxtFile,
-    uploadFiles
+    uploadFiles,
+    uploadFilesFinish,
+    uploadFilesModalOpen,
 } from './repo';
 
 export {

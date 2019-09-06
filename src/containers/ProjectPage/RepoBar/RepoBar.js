@@ -26,12 +26,14 @@ class repoBar extends Component {
 		folderToUpload: '',
 		filesToUpload: [],
 		refusedFiles: [],
-		uploadedPercent: 0,
+
+	
 	}
 
 	
 	onStartUpload = () => {
 		this.props.onUploadFiles(this.state.filesToUpload, this.state.folderToUpload, this.props.currentProjectOwner, this.props.currentProjectID, this.props.token);
+		
 	}
 
 	handleDrop = (files) => {
@@ -109,16 +111,16 @@ class repoBar extends Component {
     }
 
 	componentDidMount() {
+		this.refreshRepo();
+	}
+
+	refreshRepo() {
 		//wysylam zadanie aby pobrac aktualne pliki w katalogu uzytkownika
 		const currentProjectID = this.props.currentProjectID;
 		const currentProjectOwner = this.props.currentProjectOwner; //Owner id
 		//console.log(currentProjectID)
 		//console.log(currentProjectOwner)
 		this.props.onGetProjectFilesForUser(currentProjectOwner, currentProjectID, this.props.token);
-	}
-
-	refreshRepo() {
-		
 	}
 
 	handleCreateFolder = (key) => {
@@ -145,13 +147,14 @@ class repoBar extends Component {
 	}
 
 	handleUploadFiles = (folderKey) => {
+
 		this.props.onOpenModalHandler();
 		this.setState({
 			actionType: "Upload",
 			folderToUpload: folderKey,
 		});
 		
-		//this.props.onHandleUploadFiles(folderKey, this.props.currentProjectID, this.props.currentProjectOwner, this.props.token);
+		this.props.onUploadFilesModalOpen();
 	}
 
 	handleSelect = (key) => {
@@ -257,8 +260,19 @@ class repoBar extends Component {
 	}
 
 	closeModalHandler = () => {
-        
-		this.props.onCloseModalHandler();
+		
+		//pozwalaj na zamkniecie okna modalnego tylko gdy upload 
+		//ukonczy sie
+
+		if(this.props.uploadFilesDone==true){
+			this.props.onCloseModalHandler();
+			this.props.onUploadFilesFinish();
+			this.refreshRepo();
+			this.setState({
+				filesToUpload: [],
+				refusedFiles: [],
+			})
+		}
     }
 
 
@@ -290,6 +304,7 @@ class repoBar extends Component {
 		let modalTitle = null;
 		let filesToUploadList = null;
 		let filesToRefuseList = null;
+		let czyPokazacUploatBtn = false;
 
 		if(this.state.filesToUpload.length > 0){
 			filesToUploadList = this.state.filesToUpload.map((file,i) => {
@@ -300,6 +315,11 @@ class repoBar extends Component {
 					
 				)
 			});
+
+			czyPokazacUploatBtn = true;
+
+		} else {
+			czyPokazacUploatBtn = false
 		}
 
 		if(this.state.refusedFiles.length > 0){
@@ -310,6 +330,26 @@ class repoBar extends Component {
 				  	</Alert>
 				)
 			});
+		}
+
+		let controlsBtns = null;
+
+		if(this.props.uploadFilesDone){
+			controlsBtns = (
+				<div>
+					<button type="button" class="btn btn-success btn-block" onClick={this.closeModalHandler}>Sukces! Zamknij okno</button>
+					<Progress max="100" color="success" value={this.props.uploadPercent} >{Math.round(this.props.uploadPercent,2) }%</Progress>
+				</div>
+			);
+		} else {
+			if(czyPokazacUploatBtn){
+				controlsBtns = (
+					<div>
+						<button type="button" class="btn btn-primary btn-block" disabled={this.props.uploadBtnDisabled} onClick={this.onStartUpload}>Upload</button>
+						<Progress max="100" color="primary" value={this.props.uploadPercent} >{Math.round(this.props.uploadPercent,2) }%</Progress>
+					</div>
+				);
+			}
 		}
 		
 		if(this.state.actionType === "Preview"){
@@ -330,9 +370,9 @@ class repoBar extends Component {
 							desc={"Pliki zostaną zapisane do repozytorium: " + this.state.folderToUpload} />
 					</DragAndDrop>
 
-					<button type="button" class="btn btn-success btn-block" onClick={this.onStartUpload}>Upload</button>
-
-					<Progress max="100" color="success" value={this.state.uploadedPercent} >{Math.round(this.state.uploadedPercent,2) }%</Progress>
+					
+					{controlsBtns}
+					
 				
 					<div>
 						{filesToUploadList != null? 
@@ -358,13 +398,7 @@ class repoBar extends Component {
 			modalTitle = "Upload plików";
 		}
 
-		if(this.props.uploadFilesDone){
-			this.closeModalHandler();
-		}
-		
-            
-		
-		
+
 		return (
 			<Aux>
 
@@ -466,6 +500,8 @@ const mapStateToProps = (state) => {
 		currentProjectName: state.projectR.currentProjectName,
 		currentProjectOwner: state.projectR.currentProjectOwner,
 
+		uploadPercent: state.repoR.uploadProgress,
+		uploadBtnDisabled: state.repoR.uploadBtnDisabled,
 		uploadFilesDone: state.repoR.uploadFilesDone,
 
 		files: state.repoR.files,
@@ -490,6 +526,8 @@ const mapDispatchToProps = dispatch => {
 	return {
 		onOpenModalHandler: () => dispatch(repoActions.openModalProject()),
 		onCloseModalHandler: () => dispatch(repoActions.closeModalProject()),
+		onUploadFilesFinish: () => dispatch(repoActions.uploadFilesFinish()),
+		onUploadFilesModalOpen: () => dispatch(repoActions.uploadFilesModalOpen()),
 		onUploadFiles: (fileList, folderKey, userId, projectId, token) => dispatch(repoActions.uploadFiles(fileList,folderKey,userId, projectId, token)),
 		onHandleCreateFolder: (key, projectId, userId, token) => dispatch(repoActions.handleCreateFolder(key, projectId, userId, token)),
 		onHandleCreateFiles: (files, prefix) => dispatch(repoActions.handleCreateFiles(files, prefix)),

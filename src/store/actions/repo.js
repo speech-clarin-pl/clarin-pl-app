@@ -8,6 +8,12 @@ import { saveAs } from 'file-saver';
 //############# upload plików do repo ############################
 //################################################################
 
+export const uploadFilesFinish = () =>{
+    return {
+        type: actionTypes.REPO_UPLOAD_FILES_FINISH,
+    }
+}
+
 export const uploadFilesInit = () =>{
     return {
         type: actionTypes.REPO_UPLOAD_FILES_INIT,
@@ -28,10 +34,22 @@ export const uploadFilesSuccess = (message) =>{
     }
 }
 
+export const changeUploadProgress = (percent) => {
+    return {
+        type: actionTypes.REPO_UPLOAD_FILES_PROGRESS,
+        percent: percent,
+    }
+}
+
+export const uploadFilesModalOpen = () => {
+    return {
+        type: actionTypes.REPO_UPLOAD_FILES_MODAL_OPEN,
+    }
+}
+
 export const uploadFiles = (fileList,folderKey,userId, projectId, token) => {
     return dispatch => {
 
-        dispatch(uploadFilesInit());
         
         const data = new FormData()
 
@@ -46,7 +64,8 @@ export const uploadFiles = (fileList,folderKey,userId, projectId, token) => {
         data.append('userId', userId);
         data.append('projectId', projectId);
 
-
+        dispatch(uploadFilesInit());
+        
 
         axios.post('/repoFiles/uploadFiles', data, 
         {
@@ -54,6 +73,16 @@ export const uploadFiles = (fileList,folderKey,userId, projectId, token) => {
                 Authorization: 'Bearer ' + token,
                 'content-type': 'multipart/form-data',
             },
+
+            onUploadProgress: ProgressEvent => {
+                let percent = ProgressEvent.loaded / ProgressEvent.total*100;
+
+                dispatch(changeUploadProgress(percent));
+
+                if(percent==100){
+                    dispatch(uploadFilesFinish());
+                }
+            }
         })
         .then(response => {
             console.log(response)

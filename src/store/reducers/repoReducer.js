@@ -9,6 +9,9 @@ const initialState = {
     downloadedFile: '',
     editTxtFileOK: false,
     uploadFilesDone: false,
+    uploadProgress: 0, //percentage of uploading all files
+    uploadBtnDisabled : false,
+
     // files: [
     //     {
     //       key: 'cat in a hat.mp3',
@@ -246,11 +249,22 @@ const repoEditFileFailed = (state,action) => {
 
 //###################### upload plikow do repo ################
 //##############################################################
+const repoUploadFilesFinish = (state,action) => {
+    
+    return updateObject(state,
+        {
+            uploadFilesDone: false,
+            //uploadProgress: 0,
+        });
+}
+
 const repoUploadFilesInit = (state,action) => {
     
     return updateObject(state,
         {
             uploadFilesDone: false,
+            uploadBtnDisabled: true,
+            //uploadProgress: 0,
         });
 }
 
@@ -259,6 +273,8 @@ const repoUploadFilesSuccess = (state,action) => {
     return updateObject(state,
         {
             uploadFilesDone: true,
+            uploadBtnDisabled: false,
+            //uploadProgress: 0,
         });
 }
 
@@ -266,6 +282,22 @@ const repoUploadFilesFailed = (state,action) => {
     return updateObject(state,
         {
             uploadFilesDone: false,
+            uploadBtnDisabled: false,
+           // uploadProgress: 0,
+        });
+}
+
+const repoUploadProgress = (state,action) => {
+    return updateObject(state,
+        {
+            uploadProgress: action.percent,
+        });
+}
+
+const repoUploadFilesModalOpen = (state,action) => {
+    return updateObject(state,
+        {
+            uploadProgress: 0,
         });
 }
 
@@ -273,9 +305,12 @@ const repoReducer = (state = initialState, action) => {
     switch(action.type){
         //case actionTypes.REPO_UPLOAD_FILE: return repoUploadFile(state,action);
         
+        case actionTypes.REPO_UPLOAD_FILES_PROGRESS: return repoUploadProgress(state,action);
+        case actionTypes.REPO_UPLOAD_FILES_FINISH: return repoUploadFilesFinish(state,action);
         case actionTypes.REPO_UPLOAD_FILES_INIT: return repoUploadFilesInit(state,action);
         case actionTypes.REPO_UPLOAD_FILES_SUCCESS: return repoUploadFilesSuccess(state,action); 
         case actionTypes.REPO_UPLOAD_FILES_FAILED: return repoUploadFilesFailed(state,action); 
+        case actionTypes.REPO_UPLOAD_FILES_MODAL_OPEN: return repoUploadFilesModalOpen(state,action);
 
         case actionTypes.REPO_EDIT_TXT_SUCCESS: return repoEditFileSuccess(state,action);
         case actionTypes.REPO_EDIT_TXT_FAILED: return repoEditFileFailed(state,action);
