@@ -18,11 +18,13 @@ const initialState = {
     //       modified: +Moment().subtract(1, 'hours'),
     //       size: 1.5 * 1024 * 1024,
     //       url: ????
+    //       key: ???
     //     },
     //     {
     //       key: 'photos/animals/kitten_ball.png',
     //       modified: +Moment().subtract(3, 'days'),
     //       size: 545 * 1024,
+    //       key: ???
     //     },
     //   ],
 }

@@ -157,7 +157,7 @@ class RecognitionItem extends Component {
 
 
       startFileRecognition = (fileId) => {
-          console.log(fileId)
+        console.log(fileId)
         let allFiles =  this.props.allFiles;
         //znajduje plik przekazany jako parametr we wszystkich plikach przekazanych z reducera
         const foundEntry = allFiles.find(obj => obj.id == this.props.fileID);
@@ -168,7 +168,16 @@ class RecognitionItem extends Component {
         const audioFrom = foundEntry.from;
 
         this.props.updateFileState(fileId, 'progress', 100);
-        this.props.onFileRecognition(foundEntry.file, foundEntry.id, this.props.userId, this.props.projectId, audioFrom );
+
+        //musze okreslic przed wyslaniem czy jest to BLOB czy JSON
+        let fileToSend = null;
+        if(audioFrom=="repo"){
+            fileToSend = JSON.stringify(foundEntry.file);
+        } else {
+            fileToSend = foundEntry.file;
+        }
+
+        this.props.onFileRecognition(fileToSend, foundEntry.id, this.props.userId, this.props.projectId, audioFrom );
       }
 
       previewItem = (fileID) => {

@@ -47,10 +47,12 @@ class RecognitionTool extends Component {
             }
 
             //checking if files come from repo
-        } else if (files instanceof Object && (files["fileURL"] != undefined)) {
+        } else if (files instanceof Object && (files["fileId"] != undefined)) {
             console.log("rozpoznalem OBJECT")
+            
             //then the file is comming from the repo...
             let f = files; //narazie mozna przeciagnac tylko jeden plik
+           
             let fileExtention = getExt(f.fileURL)[0];
 
             //rozpoznaje tylko pliki audio
@@ -99,6 +101,7 @@ class RecognitionTool extends Component {
                 newFile.file = {
                     "name": getFilenameFromURL(file.fileURL),
                     "size": file.fileSize,
+                    "fileId": file.fileId,
                 };
                 newFile.from = "repo";
                 newFile.loadedperc = 100;
@@ -164,12 +167,9 @@ class RecognitionTool extends Component {
         }
         */
 
-
         let filelist = (
             <h4 style={{ marginTop: '10px' }}>Wgraj pliki do rozpoznawania</h4>
         )
-
-
 
         if (this.props.filesToUpload.length > 0) {
 
@@ -178,9 +178,6 @@ class RecognitionTool extends Component {
                     fileID={file.id} />
             )
         }
-
-
-        // console.log(this.state.filesToUpload)
 
 
         return (

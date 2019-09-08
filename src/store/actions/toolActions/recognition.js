@@ -52,14 +52,32 @@ export const initFileRecognition = (file, entryId, userId, projectId, audioFrom)
         data.append('audioFilesIds', entryId);
         data.append('projectId', projectId);
         data.append('userId', userId);
-        data.append('audioFrom', audioFrom)
+        data.append('audioFrom', audioFrom);
 
-        const config = {
-            headers: {
-                'content-type': 'multipart/form-data'
+        let config = null;
+        if(audioFrom=="repo"){
+            config = {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                },
+            }
+        } else {
+            config = {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                },
+                onUploadProgress: ProgressEvent => {
+                    let percent = ProgressEvent.loaded / ProgressEvent.total*100;
+    
+                    //dispatch(changeUploadProgress(percent));
+    
+                    if(percent==100){
+                        //dispatch(uploadFilesFinish());
+                    }
+                }
             }
         }
-
+        
 
         axios.post('/recognition/singleFile', data, config)
             .then(response => {
