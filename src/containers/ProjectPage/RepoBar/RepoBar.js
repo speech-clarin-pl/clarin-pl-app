@@ -26,8 +26,6 @@ class repoBar extends Component {
 		folderToUpload: '',
 		filesToUpload: [],
 		refusedFiles: [],
-
-	
 	}
 
 	
@@ -264,8 +262,10 @@ class repoBar extends Component {
 		//pozwalaj na zamkniecie okna modalnego tylko gdy upload 
 		//ukonczy sie
 
+		this.props.onCloseModalHandler();
+
 		if(this.props.uploadFilesDone==true){
-			this.props.onCloseModalHandler();
+			
 			this.props.onUploadFilesFinish();
 			this.refreshRepo();
 			this.setState({
@@ -459,13 +459,13 @@ class repoBar extends Component {
 							onUploadFiles={this.handleUploadFiles}
 
 							// Always called when a file or folder is selected
-							onSelect={this.handleSelect}
+							//onSelect={this.handleSelect}
 							// Called after onSelect, only on file selection
 							onSelectFile={this.handleSelectFile}
 							// Called after onSelect, only on folder selection
 							onSelectFolder={this.handleSelectFolder}
-							onPreviewOpen={this.handlePreviewOpen}
-							onPreviewClose={this.handlePreviewClose}
+							//onPreviewOpen={this.handlePreviewOpen}
+							//onPreviewClose={this.handlePreviewClose}
 							onFolderOpen={this.handleFolderOpen}
 							onFolderClose={this.handleFolderClose}
 

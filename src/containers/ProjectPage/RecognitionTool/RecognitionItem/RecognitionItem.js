@@ -201,6 +201,7 @@ class RecognitionItem extends Component {
         let ikonki = null;
 
         let allFiles =  this.props.allFiles;
+        
         const foundEntry = allFiles.find(obj => obj.id == this.props.fileID);
 
         // formatowanie wielkosci pliku

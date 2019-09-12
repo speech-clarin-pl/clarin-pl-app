@@ -63,9 +63,11 @@
         <nav id="navbar-example" class="navbar navbar-light bg-light">
                 <nav class="nav nav-pills flex-column">
                   <a class="nav-link" href="#wprowadzenie">Wprowadzenie</a>
+                  <a class="nav-link" href="#korpusy">Korpusy</a>
                   <nav class="nav nav-pills flex-column">
-                    <a class="nav-link ml-3 my-1" href="#zespol">Nasz zespół</a>
-                    <a class="nav-link ml-3 my-1" href="#naszkorpus">Korpus danych studyjnych</a>
+                    <a class="nav-link ml-3 my-1" href="#korpusStudyjny">Korpus danych studyjnych</a>
+                    <a class="nav-link ml-3 my-1" href="#korpusPKF">Korpus PKF</a>
+                    <a class="nav-link ml-3 my-1" href="#korpusSejm">Korpus Sejm</a>
                   </nav>
                   <a class="nav-link" href="#narzedziamowy">Narzędzia mowy</a>
                   <nav class="nav nav-pills flex-column">
@@ -117,9 +119,6 @@ Staramy się udostępniać nasze usługi za pośrednictwem stron internetowych. 
     </li>
 </ul>
 
-
-
-<h5 id="zespol">Nasz zespół</h5>
 <p>Nasz zespół składa się z 5 członków:</p>
 <ul>
     <li>
@@ -144,7 +143,11 @@ Staramy się udostępniać nasze usługi za pośrednictwem stron internetowych. 
     </li>
 </ul>
 
-<h5 id="naszkorpus">Korpus danych studyjnych</h5>
+<h4 id="korpusy">Korpusy</h4>
+
+Nasz zespół zajmuje się tworzeniem oraz przetwarzaniem korpusów nagrań mowy. Korpusy służą do wytrenowania określonych modeli oraz wydobywania informacji. 
+
+<h5 id="korpusStudyjny">Korpus danych studyjnych</h5>
 
 <p>
  Jesteśmy autorem korpusu nagrań studyjnych który udostępniamy <a href="https://mowa.clarin-pl.eu/korpusy" target="">pod tym linkiem.</a>. Korpus ten posłużył do wytrenowania systemu rozpoznawania mowy dla języka polskiego (bazującego na sytemie Kaldi)
@@ -157,6 +160,32 @@ Wiele narzędzi wspomnianych wcześniej wymaga dużego zbioru danych trenującyc
 <p>
 Korpus został nagrany w laboratorium dźwiękowym na terenie PJATK z wykorzystaniem mikrofonów studyjnych. Korpus nagrywało 317 mówców w 554 sesjach, gdzie każda sesja składała się z 20 czytanych zdań oraz 10 fonetycznie bogatych słów pojedyńczych. W sumie zostało nagranych 56 godzin mowy składającej się z 356676 słów ze słownika o wielkości 46361. Obecnie korpus jest dostępny do <a href="https://ips-lmu.github.io/EMU-webApp/?autoConnect=true&serverUrl=wss:%2F%2Fmowa.clarin-pl.eu:17891%2Fclarin" target="_blank">łatwego przeglądania on-line za pośrednictwem systemu EMU-SDMS (EMU Speech Database Management System). </a>Środowisko EMU pozwala łatwe przeglądanie danych oraz wykonywanie obliczeń statystycznych dzięki integracji z środowiskiem R.
 </p>
+
+<h5 id="korpusStudyjny">Korpus PKF</h5>
+
+<p>
+ Korpus Polskich Kronik Filmowych uwzględnia nagrania w formie audio oraz wideo z lat 1945-1962. Korpus charakteryzuje się archaicznym językiem oraz relatywnie niską jakością nagrań co spowodowało iż był wymagającym problemem dla systemu rozpoznawania mowy.
+ Korpus zawiera 10 minutowe fragmenty wiadomości, podobne do kronik filmowych wyświetlanych w kinie na całym świecie w tym samym okresie. Kronika została stworzona przez Wytwórnie Filmów Dokumentalnych i Fabularnych WFDiF w Warszawie. Obecnie prawa do nagrań należą do Filmoteki Narodowej FINA. 
+</p>
+
+<p>
+W komunistycznej Polsce kroniki filmowe były często używane jako narzędzie propagandowe. Zawierają komentarze, opinie dziennikarzy, obecne wydarzenia sportowe, ekonomiczne oraz kulturowe z kraju oraz ze świata. Przeważnie jedna kronika zawierała pięć części, każda opisująca inny temat ale wszystkie były czytane przez jednego mówcę. Jedynie okazjonalnie wtrącane były wywiady oraz przemowy innych ludzi. W niektórych przypadkach, takich jak międzynarodowy dzień pracy, cała kronika była podyktowana tylko tym wydarzeniom. Oprócz kin, kroniki były również prezentowane w 1960 roku przez Polską telewizję.
+</p>
+
+<p>
+PKF są wyjątkowo użytecznym źródłem dla środowiska naukowego z powodu ich bogatej zawartości kulturalnej oraz historycznej. Dodatkowo dane mogą być annotowane wieloma meta-informacjami jak czas czy miejsce opisywanych wydarzeń co stanowi wyjątkowo wartościowe źródło do różnych badań społeczno językowych. Było to jednym z powodów dla których zdecydowano się włączyć kroniki do systemu <a href="http://chronopress.clarin-pl.eu" target="_blank">ChronoPress</a>. Główną zaletą tego systemu jest dodanie informacji czasowych do korpusu. Podczas gdy standardowy korpus może zawierać materiały z różnych źródeł oraz z różnych okresów czasowych, użycie takiego korpusu może prowadzić do niepoprawnych wniosków. Korpus uporządkowany chronologicznie mówi nam nie tylko jaki jest kontekst wypowiadanych słów ale także kiedy były one używane. Pozwala nam to nie tylko uniknąć wyżej wspomnianego problemu ale także dostarcza wyjątkowego narzędzia do badania rozwoju języka w czasie. [Obviously, this comes at the additional cost that such properly annotated data is much harder to come by than in case of the standard frameworks. While discussing the matter with the authors of ChronoPress, it was our intent to help with this particular issue, at least partially. The authors of this manuscript are not taking part in the development of the ChronoPress platform. Interested parties are kindly requested to send any inquiries with regards to the ChonoPress platform to its authors1]
+</p>
+<p>
+Jednym głównym minusem całego projektu była niemożliwość włączenia materiału audio (ze względu na ograniczenia licencyjne). Jedynie transkrypcje mogą zostać opublikowane jako te uzyskane z ramach projektu CLARIN. Jest to duże ograniczenie ponieważ wierzymy że materiał audio mógłby dostarczyć wyjątkowo bogatego źródła do badań fonologii języka Polskiego w tym okresie historycznym.
+</p>
+<p>
+Głównym celem było zatem dostarczenie kolekcji tranksrypcji możliwych do włączenia w system ChronoPress. Przy okazji korpus posłużył do stworzenia narzędzia automatycznej transkrypcji które może zostać wykorzystane do transkrypcji podobnych nagrań. Aby ułatwić zadanie, zdecydowano iż brane pod uwagę będą jedynie dane z okresu 1945-1962 (aby korelowały z innymi zasobami dostępnymi w ChronoPress) oraz jedynie głos narratora był trany pod uwagę. Jednym z głównych wyzwań w osiągnięciu tego celu był archaiczny język oraz niskiej jakości oraz niestabilny sygnał audio. Dodatkowo, prawie wszystkie filmy cechowała muzyka w tle która w momencie trwania mowy była wyciszana ale podgłaszana gdy było jej brak. Innym problemem było występowanie wielu języków oraz mówców w niektórych filmach. Pomimo tego korpus posiada wiele zalet. Wiele filmów było czytanych przez tą samą grupę dobrze znanych mówców. Dodatkowo domena jest stosunkowo wąska oraz dobrze zdefiniowana. Używając kolekcji przetranskrybowanych kronik, oszacowaliśmy wielkość słownika który wynosił mniej niż 50k wyrazów. W tym celu przetranskrybowane zostały tyko części zawierające komentatora (które stanowiły większość nagrań). Inne części audio (musyka, pozostali mówcy) zostali ignorowani.
+</p>
+<p>
+Wynikowe transkrypcje zostały włączone do <a href="https://clarin-pl.eu/dspace/handle/11321/426" target="_blank">repozytorium projektu CLARIN-PL</a>. Wytrenowany model zwraz z systemem do transkrypcji oraz segmentacji jest przechowywany w formie obrazu <a href="https://hub.docker.com/u/danijel3/" target="_blank">Docker</a>, ze szczegółami dostępnymi w <a href="https://github.com/speech-clarin-pl/SpeechToolsWorkers/tree/master/speech_tools" target="_blank">publicznym repozytorium.</a>
+</p>
+
+
 
 <h4 id="narzedziamowy">Narzędzia mowy</h4>
 

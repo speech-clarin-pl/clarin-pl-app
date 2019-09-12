@@ -47,7 +47,7 @@ const closeModal = (state,action) => {
 
 
 const dropFiles = (state, action) => {
-    let fileList = [...state.filesToUpload, ...action.files];
+    let fileList = [ ...state.filesToUpload,...action.files];
     //console.log("DONEEEEE");
     //console.log(fileList);
     return updateObject(state, {filesToUpload: fileList}) ;      
@@ -95,8 +95,14 @@ const updateFileState = (state,action) => {
 const removeRecognitionItem = (state, action)=>{
     const itemId = action.fileId;
 
+    //const tempftu = Array.from(state.filesToUpload);
+
     const newFilesToUpload = state.filesToUpload.filter((item, index) => {
-        return item.id !== itemId
+        if(item.id !== itemId){
+            //item.file = null;
+            //item.id = null;
+            return true;
+        }
     })
     
     return updateObject(state, { filesToUpload: newFilesToUpload}) ; 
