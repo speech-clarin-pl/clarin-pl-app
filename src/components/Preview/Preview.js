@@ -5,6 +5,7 @@ import { extensionMapping } from '../../utils/fileTypes';
 import AudioPlayer from '../../components/AudioPlayer/AudioPlayer'
 import TextEdit from '../../components/TextEdit/TextEdit'
 import {getFileKeyFromURL} from '../../utils/utils';
+import MultimediaPreview from '../../containers/ProjectPage/MultimediaPreview/MultimediaPreview';
 
 class Preview extends Component {
 
@@ -26,7 +27,9 @@ class Preview extends Component {
             
 
             podgladPliku = (
-                <AudioPlayer audioURL={fileToPreview} />
+                <MultimediaPreview fileToPreview={fileToPreview}/>
+               
+                    // <AudioPlayer audioURL={fileToPreview} />
              )
 
         

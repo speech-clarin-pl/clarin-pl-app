@@ -337,7 +337,7 @@ class repoBar extends Component {
 		if(this.props.uploadFilesDone){
 			controlsBtns = (
 				<div>
-					<button type="button" class="btn btn-success btn-block" onClick={this.closeModalHandler}>Sukces! Zamknij okno</button>
+					<button type="button" className="btn btn-success btn-block" onClick={this.closeModalHandler}>Sukces! Zamknij okno</button>
 					<Progress max="100" color="success" value={this.props.uploadPercent} >{Math.round(this.props.uploadPercent,2) }%</Progress>
 				</div>
 			);
@@ -345,7 +345,7 @@ class repoBar extends Component {
 			if(czyPokazacUploatBtn){
 				controlsBtns = (
 					<div>
-						<button type="button" class="btn btn-primary btn-block" disabled={this.props.uploadBtnDisabled} onClick={this.onStartUpload}>Upload</button>
+						<button type="button" className="btn btn-primary btn-block" disabled={this.props.uploadBtnDisabled} onClick={this.onStartUpload}>Upload</button>
 						<Progress max="100" color="primary" value={this.props.uploadPercent} >{Math.round(this.props.uploadPercent,2) }%</Progress>
 					</div>
 				);
@@ -367,6 +367,8 @@ class repoBar extends Component {
 						<DropFilesArea
 							whenFilesChose={this.handleDrop}
 							mainTitle="Wgraj pliki z dysku"
+							multipleFiles = {true}
+							allowUploadLocalFiles = {true}
 							desc={"Pliki zostaną zapisane do repozytorium: " + this.state.folderToUpload} />
 					</DragAndDrop>
 
@@ -395,7 +397,7 @@ class repoBar extends Component {
 				</div>
 				
 			)
-			modalTitle = "Upload plików";
+			modalTitle = "Upload plików do Repozytorium";
 		}
 
 
@@ -444,7 +446,7 @@ class repoBar extends Component {
 								Delete: <i className="fas fa-trash"></i>,
 								Loading: <i className="fas fa-spinner"></i>,
 								Download: <i className="fas fa-download"></i>,
-								Upload: <i class="fas fa-cloud-upload-alt"></i>
+								Upload: <i className="fas fa-cloud-upload-alt"></i>
 							}}
 
 							onCreateFolder={this.handleCreateFolder}

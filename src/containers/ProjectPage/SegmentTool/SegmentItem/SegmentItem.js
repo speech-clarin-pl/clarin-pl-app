@@ -17,18 +17,35 @@ class SegmentItem extends Component {
     startSegmentation = (entryId) => {
         console.log(entryId);
         const currentEntry = this.props.segmentEntry.find(entry => entry.id == entryId);
-        const audioFile = currentEntry.audioEntry.file;
-        const txtFile = currentEntry.txtEntry.file;
+        let audioFile = currentEntry.audioEntry.file;
+        let txtFile = currentEntry.txtEntry.file;
+
+        console.log(currentEntry)
+
+        //data from repo or local
+        const audioFrom = currentEntry.audioEntry.from;
+        const txtFrom = currentEntry.txtEntry.from;
 
         this.props.onInitSegmentProcess(entryId);
+
+        //musze okreslic przed wyslaniem czy jest to BLOB czy JSON
+        if(audioFrom=="repo"){
+            audioFile = JSON.stringify(audioFile);
+            txtFile = JSON.stringify(txtFile);
+        } 
+
+       
         
+
         this.props.onStartSegmentItem(
             entryId, 
             this.props.userId, 
             this.props.projectId, 
             audioFile, 
             txtFile, 
-            this.props.token
+            this.props.token,
+            audioFrom,
+            txtFrom,
             );
     }
 
@@ -155,7 +172,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
        onRemoveSegmentItem: (segmentId) => dispatch(segmentActions.removeSegmentItem(segmentId)),
-       onStartSegmentItem: (segmentId, userId, projectId, audioFile, txtFile, token) => dispatch(segmentActions.startSegmentItem(segmentId, userId, projectId, audioFile, txtFile, token)),
+       onStartSegmentItem: (segmentId, userId, projectId, audioFile, txtFile, token, dataFrom,dataTxtFrom) => dispatch(segmentActions.startSegmentItem(segmentId, userId, projectId, audioFile, txtFile, token, dataFrom,dataTxtFrom)),
        onInitSegmentProcess: (entryId) => dispatch(segmentActions.initSegmentProcessing(entryId)),
        onRefreshRepo: (userId, projectId, token) => dispatch(segmentActions.getProjectFilesForUser(userId, projectId, token))
        

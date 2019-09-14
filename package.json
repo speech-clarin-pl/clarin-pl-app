@@ -25,13 +25,15 @@
     "redux-thunk": "^2.3.0",
     "sortablejs": "^1.6.1",
     "uuid": "^3.3.2",
+    "videojs-wavesurfer": "^2.9.0",
     "wavesurfer.js": "^2.2.1"
   },
+
   "scripts": {
-    "start": "react-app-rewired start --scripts-version react-scripts",
-    "build": "react-app-rewired build --scripts-version react-scripts",
-    "test": "react-app-rewired test --env=jsdom --scripts-version react-scripts",
-    "eject": "react-scripts eject"
+   "start": "react-app-rewired start --scripts-version react-scripts",
+   "build": "react-app-rewired build --scripts-version react-scripts",
+   "test": "react-app-rewired test --env=jsdom --scripts-version react-scripts",
+   "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"

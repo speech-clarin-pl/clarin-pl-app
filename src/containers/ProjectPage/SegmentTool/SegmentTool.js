@@ -13,126 +13,230 @@ import uuid from 'uuid';
 import * as segmentActions from '../../../store/actions/index';
 import SortableAudioList from './SortableAudioList/SortableAudioList';
 import SortableTxtList from './SortableTxtList/SortableTxtList';
-import {getExt} from '../../../utils/utils';
 import Modal from '../../../components/UI/Modal/Modal';
+import { extensionMapping } from '../../../utils/fileTypes';
+import { getExt, getFilenameFromURL } from '../../../utils/utils';
 
 class SegmentTool extends Component {
+
+	state = {
+        modal: false,
+    }
 
 	handleDropAudio = (audiofiles) => {
 
 		let extAudioFiles = [];
-
 		let fileList = [];
-        let refusedAudioFileList = [];
+		let refusedAudioFileList = [];
+		
+		//checking if the file/s is from local env
+        if (audiofiles instanceof FileList) {
 
-        for(var i=0;i<audiofiles.length;i++){
-            let file = audiofiles[i];
-            let fileExtention = getExt(file.name)[0];
+			console.log("rozpoznalem FILELIST")
+
+			for(var i=0;i<audiofiles.length;i++){
+				let file = audiofiles[i];
+                let fileExtention = getExt(file.name)[0];
+
+                //rozpoznaje tylko pliki audio
+                if (extensionMapping.hasOwnProperty(fileExtention) &&
+                    (extensionMapping[fileExtention] == "Audio")) {
+                    fileList.push(file);
+                } else {
+                    refusedAudioFileList.push(file);
+				}
+			} 
+
+		 //checking if files come from repo
+		} else if (audiofiles instanceof Object && (audiofiles["fileId"] != undefined)) {
+			console.log("rozpoznalem OBJECT")
+            
+            //then the file is comming from the repo...
+            let f = audiofiles; //narazie mozna przeciagnac tylko jeden plik
+           
+            let fileExtention = getExt(f.fileURL)[0];
+
             //rozpoznaje tylko pliki audio
-            if(fileExtention === "wav" ||
-               fileExtention === "WAV" ||
-               fileExtention === "mp3" ||
-               fileExtention === "au"){
-                fileList.push(file);
+            if (extensionMapping.hasOwnProperty(fileExtention) &&
+                (extensionMapping[fileExtention] == "Audio")) {
+                fileList.push(f);
             } else {
-				refusedAudioFileList.push(file);
-            }  
-        } 
+                refusedAudioFileList.push(f);
+            }
 
-        if(refusedAudioFileList.length > 0){
+		//checking if files come from browse btn
+		} else if ( audiofiles.currentTarget != null && audiofiles.currentTarget instanceof Element){
+			console.log("rozpoznalem Element")
+            
+            const inputControl = audiofiles.currentTarget;
+            
+            for (var i = 0; i < inputControl.files.length; i++) {
+                let file = inputControl.files[i];
+                let fileExtention = getExt(file.name)[0];
+    
+                 //rozpoznaje tylko pliki audio
+                 if (extensionMapping.hasOwnProperty(fileExtention) &&
+                        (extensionMapping[fileExtention] == "Audio")) {
+                        fileList.push(inputControl.files[i]);
+                    } else {
+                        refusedAudioFileList.push(inputControl.files[i]);
+                    }
+            }
+		}
+
+
+		// if(refusedAudioFileList.length > 0){
+		// 	this.props.onSetRefusionAudioFiles(refusedAudioFileList);
+		// 	this.props.onOpenModalHandler();
+		// 	//console.log(refusedAudioFileList)
+		// }
+
+		if (refusedAudioFileList.length > 0) {
             this.props.onSetRefusionAudioFiles(refusedAudioFileList);
-			this.props.onOpenModalHandler();
-			//console.log(refusedAudioFileList)
+            this.setState({
+                modal: true,
+            });
         }
 
 		Array.from(fileList).forEach(file => {
+
 			let newFile = Object.assign({}, file);
-			newFile.file = file;
-			newFile.status = 'toload';
-			newFile.loadedperc = 0;
-			newFile.id = uuid.v4();
-			extAudioFiles.push(newFile);
-		});
-
-		//console.log("extAudioFiles")
-		//console.log(extAudioFiles)
-
-		this.props.onAudioDrop(extAudioFiles);
-	}
-
-
-	whenAudioFilesChose = (e) => {
-		const inputControl = e.currentTarget;
-		let extAudioFiles = [];
-
-		let fileList = [];
-        let refusedAudioFileList = [];
-
-        for(var i=0;i<inputControl.files.length;i++){
-            let file = inputControl.files[i];
-            let fileExtention = getExt(file.name)[0];
-            //rozpoznaje tylko pliki audio
-            if(fileExtention === "wav" ||
-               fileExtention === "WAV" ||
-               fileExtention === "mp3" ||
-               fileExtention === "au"){
-                fileList.push(file);
+			
+            //musze sprawdzic czy plik pochodzi z repo czy z local
+			// bo jest inna struktura danych
+			
+            //z repo
+            if(file["fileURL"] != undefined){
+                newFile.file = {
+                    "name": getFilenameFromURL(file.fileURL),
+                    "size": file.fileSize,
+                    "fileId": file.fileId,
+                };
+                newFile.from = "repo";
+                newFile.loadedperc = 100;
+                newFile.url = file.fileURL;
+                newFile.status = "loaded";
+            //z local
             } else {
-				refusedAudioFileList.push(file);
-            }  
-        } 
+                newFile.file = file;
+                newFile.status = 'toload';
+                newFile.loadedperc = 0;
+                newFile.from = 'local';
+            }
 
-        if(refusedAudioFileList.length > 0){
-            this.props.onSetRefusionAudioFiles(refusedAudioFileList);
-			this.props.onOpenModalHandler();
-			//console.log(refusedAudioFileList)
-        }
-
-
-		Array.from(fileList).forEach(file => {
-			let newFile = Object.assign({}, file);
-			newFile.file = file;
-			newFile.status = 'toload';
-			newFile.loadedperc = 0;
-			newFile.id = uuid.v4();
-			extAudioFiles.push(newFile);
-		});
+            newFile.id = uuid.v4();
+            extAudioFiles.push(newFile);
+        });
 
 		this.props.onAudioDrop(extAudioFiles);
+       
 	}
+
 
 	handleDropTxt = (txtfiles) => {
 		let extTxtFiles = [];
-
 		let fileList = [];
-        let refusedTxtFileList = [];
+		let refusedTxtFileList = [];
+		
+		//checking if the file/s is from local env
+        if (txtfiles instanceof FileList) {
 
-        for(var i=0;i<txtfiles.length;i++){
-            let file = txtfiles[i];
-            let fileExtention = getExt(file.name)[0];
+			for(var i=0;i<txtfiles.length;i++){
+			
+				let file = txtfiles[i];
+				let fileExtention = getExt(file.name)[0];
+
+				//rozpoznaje tylko pliki txt
+				if (extensionMapping.hasOwnProperty(fileExtention) &&
+					(extensionMapping[fileExtention] == "Text")) {
+					fileList.push(file);
+				} else {
+					refusedTxtFileList.push(file);
+				}
+			
+			} 
+
+		 //checking if files come from repo
+		} else if (txtfiles instanceof Object && (txtfiles["fileId"] != undefined)) {
+
+			//then the file is comming from the repo...
+            let f = txtfiles; //narazie mozna przeciagnac tylko jeden plik
+           
+            let fileExtention = getExt(f.fileURL)[0];
+
             //rozpoznaje tylko pliki audio
-            if(fileExtention === "txt"){
-                fileList.push(file);
+            if (extensionMapping.hasOwnProperty(fileExtention) &&
+                (extensionMapping[fileExtention] == "Text")) {
+                fileList.push(f);
             } else {
-				refusedTxtFileList.push(file);
-            }  
-        } 
+                refusedTxtFileList.push(f);
+            }
 
-        if(refusedTxtFileList.length > 0){
+		//checking if files come from browse btn
+		} else if (txtfiles.currentTarget != null && txtfiles.currentTarget instanceof Element){
+			
+			const inputControl = txtfiles.currentTarget;
+            
+            for (var i = 0; i < inputControl.files.length; i++) {
+                let file = inputControl.files[i];
+                let fileExtention = getExt(file.name)[0];
+    
+                 //rozpoznaje tylko pliki audio
+                 if (extensionMapping.hasOwnProperty(fileExtention) &&
+                        (extensionMapping[fileExtention] == "Text")) {
+                        fileList.push(inputControl.files[i]);
+                    } else {
+                        refusedTxtFileList.push(inputControl.files[i]);
+                    }
+            }
+		}
+
+        
+
+        // if(refusedTxtFileList.length > 0){
+        //     this.props.onSetRefusionTxtFiles(refusedTxtFileList);
+		// 	this.props.onOpenModalHandler();
+		// 	//console.log(refusedAudioFileList)
+		// }
+
+		if (refusedTxtFileList.length > 0) {
             this.props.onSetRefusionTxtFiles(refusedTxtFileList);
-			this.props.onOpenModalHandler();
-			//console.log(refusedAudioFileList)
+            this.setState({
+                modal: true,
+            });
         }
-
+		
 
 		Array.from(fileList).forEach(file => {
+
 			let newFile = Object.assign({}, file);
-			newFile.file = file;
-			newFile.status = 'toload';
-			newFile.loadedperc = 0;
-			newFile.id = uuid.v4();
-			extTxtFiles.push(newFile);
-		});
+			
+            //musze sprawdzic czy plik pochodzi z repo czy z local
+			// bo jest inna struktura danych
+			
+            //z repo
+            if(file["fileURL"] != undefined){
+                newFile.file = {
+                    "name": getFilenameFromURL(file.fileURL),
+                    "size": file.fileSize,
+                    "fileId": file.fileId,
+                };
+                newFile.from = "repo";
+                newFile.loadedperc = 100;
+                newFile.url = file.fileURL;
+                newFile.status = "loaded";
+            //z local
+            } else {
+                newFile.file = file;
+                newFile.status = 'toload';
+                newFile.loadedperc = 0;
+                newFile.from = 'local';
+            }
+
+            newFile.id = uuid.v4();
+            extTxtFiles.push(newFile);
+        });
+
 
 		//console.log("extTxtFiles")
 		//console.log(extTxtFiles)
@@ -140,6 +244,8 @@ class SegmentTool extends Component {
 		this.props.onTxtDrop(extTxtFiles);
 	}
 
+	
+	/*
 	whenTxtFilesChose = (e) => {
 		const inputControl = e.currentTarget;
 
@@ -180,6 +286,8 @@ class SegmentTool extends Component {
 		this.props.onTxtDrop(extTxtFiles);
 	}
 
+	*/
+
 
 	//otwiera okno modalne
     openModalHandler = () => {
@@ -188,12 +296,11 @@ class SegmentTool extends Component {
 
     //zamyka okno modalne
     closeModalHandler = () => {
-        this.props.onCloseModalHandler();
+		//this.props.onCloseModalHandler();
+		this.setState({
+            modal: false,
+        })
     }
-
-
-
-
 
 
 	render() {
@@ -261,14 +368,11 @@ class SegmentTool extends Component {
 				}
 
 				<Modal
-                    show={this.props.modalDisplay}
+                    show={this.state.modal}
                     modalClosed={this.closeModalHandler}
                     >
 
-
                         {modalContent}
-                    
-         
                     
                     <button type="button" 
                         className="btn btn-outline-secondary"
@@ -304,9 +408,11 @@ class SegmentTool extends Component {
 
 									<DragAndDrop whenDropped={this.handleDropAudio}>
 										<DropFilesArea
-											whenFilesChose={this.whenAudioFilesChose}
-											mainTitle="Wgraj pliki z audio dysku"
-											desc="Pliki zostaną zapisane jedynie tymczasowo na potrzeby przetwarzania. Po tym czasie są one usuwane bezpowrotnie usuwane z serwera"
+											whenFilesChose={this.handleDropAudio}
+											mainTitle="Przeciągnij pliki audio z Repozytorium"
+											multipleFiles = {true}
+											allowUploadLocalFiles = {false}
+											desc=""
 										/>
 									</DragAndDrop>
 
@@ -315,9 +421,11 @@ class SegmentTool extends Component {
 								<div className="col-md">
 									<DragAndDrop whenDropped={this.handleDropTxt}>
 										<DropFilesArea
-											whenFilesChose={this.whenTxtFilesChose}
-											mainTitle="Wgraj pliki txt dysku"
-											desc="Pliki zostaną zapisane jedynie tymczasowo na potrzeby przetwarzania. Po tym czasie są one usuwane bezpowrotnie usuwane z serwera" />
+											whenFilesChose={this.handleDropTxt}
+											mainTitle="Przeciągnij pliki tekstowe z Repozytorium"
+											multipleFiles = {true}
+											allowUploadLocalFiles = {false}
+											desc="" />
 									</DragAndDrop>
 								</div>
 							</div>

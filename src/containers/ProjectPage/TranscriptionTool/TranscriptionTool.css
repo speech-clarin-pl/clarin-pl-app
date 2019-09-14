@@ -1,0 +1,26 @@
+.Content {
+    position: absolute;
+    bottom: 0px;
+    top: 90px;
+    overflow: auto;
+    left:0px;
+    right: 0px;
+}
+
+#div1 {
+    width: 350px;
+    height: 70px;
+    padding: 10px;
+    border: 1px solid black;
+  }
+
+.TranscriptTool {
+    padding-top: 1em;
+}
+
+
+
+.TranscriptTool .TranskriptInput {
+    min-height: 250px;
+    width: 100%;
+}

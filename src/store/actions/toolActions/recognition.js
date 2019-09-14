@@ -69,6 +69,8 @@ export const initFileRecognition = (file, entryId, userId, projectId, audioFrom)
                 onUploadProgress: ProgressEvent => {
                     let percent = ProgressEvent.loaded / ProgressEvent.total*100;
     
+                    console.log('wysłano: ' + percent + '%');
+                    
                     //dispatch(changeUploadProgress(percent));
     
                     if(percent==100){

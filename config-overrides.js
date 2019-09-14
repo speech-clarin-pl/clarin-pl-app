@@ -1,5 +1,6 @@
 var path = require('path');
 var fs = require('fs');
+const webpack = require("webpack");
 
 const {
     override,
@@ -30,11 +31,23 @@ module.exports = function override(config, env) {
         config.plugins = [];
     }
 
-    config.plugins.push(
-        (process.env.NODE_ENV === 'production') ?
-            new CopyWebpackPlugin([{from: 'src/utils/wavesurfer.js'}]) :
-            new CopyWebpackPlugin([{from: 'src/utils/wavesurfer.js', to: 'dist'}])
-    );
+    const videojsPlugin = new webpack.ProvidePlugin({
+        videojs: "video.js/dist/video.cjs.js"
+      });
+
+    const videojsAlias = {
+        videojs: "video.js",
+        WaveSurfer: "wavesurfer.js"
+    };
+
+    config.resolve.alias = { ...config.resolve.alias, ...videojsAlias };
+    config.plugins.push(videojsPlugin);
+
+   // config.plugins.push(
+   //     (process.env.NODE_ENV === 'production') ?
+   //         new CopyWebpackPlugin([{from: 'src/utils/wavesurfer.js'}]) :
+   //         new CopyWebpackPlugin([{from: 'src/utils/wavesurfer.js', to: 'dist'}])
+   // );
 
     // config.plugins.push(
     //     new webpack.ProvidePlugin({

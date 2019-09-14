@@ -237,8 +237,10 @@ class RecognitionTool extends Component {
                                     <DragAndDrop whenDropped={this.handleDrop}>
                                         <DropFilesArea
                                             whenFilesChose={this.handleDrop}
-                                            mainTitle="Wgraj pliki z dysku"
-                                            desc="Pliki zostaną zapisane jedynie tymczasowo na potrzeby przetwarzania. Po tym czasie są one usuwane bezpowrotnie usuwane z serwera" />
+                                            mainTitle="Przeciągnij pliki z Repozytorium"
+                                            multipleFiles = {true}
+                                            allowUploadLocalFiles = {false}
+                                            desc="Zawsze możesz zarządzać swoimi plikami" />
                                     </DragAndDrop>
 
                                 </div>

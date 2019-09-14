@@ -86,7 +86,7 @@ export const finishFileSegmentationFailed = (error, entryId) =>{
     }
 }
 
-export const startSegmentItem = (entryId, userId, projectId, audioFile, txtFile, token) => {
+export const startSegmentItem = (entryId, userId, projectId, audioFile, txtFile, token, audioFrom, txtFrom) => {
     //(segmentId, userId, projectId, audioFile, txtFile, token)
     return dispatch => {
 
@@ -95,7 +95,9 @@ export const startSegmentItem = (entryId, userId, projectId, audioFile, txtFile,
         data.append('userId',userId);
         data.append('projectId',projectId);
         data.append('audioFiles',audioFile);
-        data.append('audioFiles',txtFile);
+        data.append('txtFiles',txtFile);
+        data.append('audioFrom',audioFrom); //from repo or local
+        data.append('txtFrom',txtFrom); //from repo or local
         //data.append('txtFile',txtFile);
         //data.append('token', entryId);
 
@@ -105,11 +107,23 @@ export const startSegmentItem = (entryId, userId, projectId, audioFile, txtFile,
         console.log(projectId)
         console.log(audioFile)
         console.log(txtFile)
+        console.log(audioFrom)
+        console.log(txtFrom)
        
         
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
+            },
+            onUploadProgress: ProgressEvent => {
+                let percent = ProgressEvent.loaded / ProgressEvent.total*100;
+
+                console.log('wysłano: ' + percent + '%');
+                //dispatch(changeUploadProgress(percent));
+
+                if(percent==100){
+                    //dispatch(uploadFilesFinish());
+                }
             }
         }
 

@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import Dashboard from './Dashboard/Dashboard';
 import RecognitionTool from './RecognitionTool/RecognitionTool';
 import SegmentTool from './SegmentTool/SegmentTool';
-import TranscriptTool from './PreviewTool/TranscriptTool';
+import TranscriptionTool from './TranscriptionTool/TranscriptionTool';
 
 import RepoBar from './RepoBar/RepoBar';
 import ErrorPage from '../../components/ErrorPage/ErrorPage';
@@ -113,13 +113,23 @@ class ProjectPage extends Component {
                   <Tab  title="Dashboard" whereToLink={'/dashboard'}/>
                   <Tab  title="Rozpoznawanie" whereToLink={'/recognition'}/>
                   <Tab  title="Sementacja" whereToLink={'/segment'}/>
-                  <Tab  title="Podgląd plików" whereToLink={'/preview'}/>                  
+                  {
+                    /*
+                    <Tab  title="Transkrypcje" whereToLink={'/transcrypt'}/>   
+                    */
+                  }
+                                 
               </ul>
             
               <Switch>
                 <Route path={this.props.match.url + '/recognition'} component={RecognitionTool} />
                 <Route path={this.props.match.url + '/segment'} component={SegmentTool} />
-                <Route path={this.props.match.url + '/preview'} component={TranscriptTool} />
+                {
+                  /*
+                  <Route path={this.props.match.url + '/transcrypt'} component={TranscriptionTool} />
+                  */
+                }
+                
                 <Route path={this.props.match.url + '/dashboard'} render={(props)=> {
                   return <Dashboard/>
                 }} />

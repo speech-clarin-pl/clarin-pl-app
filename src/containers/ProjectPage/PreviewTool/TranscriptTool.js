@@ -9,10 +9,35 @@ import LeftSiteBar from '../LeftSiteBar/LeftSiteBar';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as previewActions from '../../../store/actions/index';
+
+import MultimediaPreview from '../MultimediaPreview/MultimediaPreview';
+
 //import Wavesurfer from 'react-wavesurfer';
 
 //sorry for the name of this class - to be changed...
 
+const videoJsOptions = {
+    controls: true,
+    aspectRatio: "32:9",
+    fluid: true,
+    responsive: true,
+    liveui: true,
+    playbackRates: [0.5, 1, 1.5, 2],
+    plugins: {
+        wavesurfer: {
+            src: 'http://localhost:1234/5d0e20536c8ef65ef77e7e65/5d79cb8341533e47920f3336/demo_files/test.wav',
+            msDisplayMax: 10,
+            debug: true,
+            waveColor: '#6f8796',
+            progressColor: '#394b55',
+            cursorColor: '#394b55',
+            hideScrollbar: true,
+            audioRate: 1,
+            partialRender: true,
+            responsive: true,
+        }
+    }
+};
 
 
 class TranscriptTool extends Component {
@@ -21,53 +46,53 @@ class TranscriptTool extends Component {
     constructor(props){
         super(props);
      
-        let wavesurfer = null;
+        //let wavesurfer = null;
    
-        this.handleTogglePlay = this.handleTogglePlay.bind(this);
-        this.handlePosChange = this.handlePosChange.bind(this);
+       // this.handleTogglePlay = this.handleTogglePlay.bind(this);
+        //this.handlePosChange = this.handlePosChange.bind(this);
         //this.loadAudioFileForPreview = this.loadAudioFileForPreview.bind(this);
       }
 
-      handleTogglePlay = () => {
-        //this.wavesurfer.load('http://localhost:1234/repo/5d0e20536c8ef65ef77e7e65/5d0e206f6c8ef65ef77e7e66/test.wav');
-        if(this.props.playing){
-            this.wavesurfer.pause();
-        } else {
-            this.wavesurfer.play();
-        }
+    //   handleTogglePlay = () => {
+    //     //this.wavesurfer.load('http://localhost:1234/repo/5d0e20536c8ef65ef77e7e65/5d0e206f6c8ef65ef77e7e66/test.wav');
+    //     if(this.props.playing){
+    //         this.wavesurfer.pause();
+    //     } else {
+    //         this.wavesurfer.play();
+    //     }
 
-        this.props.onTooglePlaying();
-      }
+    //     this.props.onTooglePlaying();
+    //   }
 
-      handlePosChange = (e) => {
-        this.setState({
-          pos: e.originalArgs[0]
-        });
-      }
+    //   handlePosChange = (e) => {
+    //     this.setState({
+    //       pos: e.originalArgs[0]
+    //     });
+    //   }
 
 
     componentDidMount = () => {
 
-        this.wavesurfer = WaveSurfer.create({
-            container: '#waveform',
-            waveColor: '#6f8796',
-            progressColor: '#3498db',
-            responsive: true,
-            //backend: 'MediaElement',
-            plugins: []
-        });
+        // this.wavesurfer = WaveSurfer.create({
+        //     container: '#waveform',
+        //     waveColor: '#6f8796',
+        //     progressColor: '#3498db',
+        //     responsive: true,
+        //     //backend: 'MediaElement',
+        //     plugins: []
+        // });
 
-        this.wavesurfer.on('loading', function (e) {
-           // console.log(e);
-        }.bind(this));
+        // this.wavesurfer.on('loading', function (e) {
+        //    // console.log(e);
+        // }.bind(this));
 
 
-        // Time stretcher
-        this.wavesurfer.on('ready', function () {
-           this.updateAudioArea(); //audioDisplayed: ustawia na true
-         }.bind(this));
+        // // Time stretcher
+        // this.wavesurfer.on('ready', function () {
+        //    this.updateAudioArea(); //audioDisplayed: ustawia na true
+        //  }.bind(this));
 
-         this.props.onWeveSurferInitialized(true); //waveSurferInitialized: ustawia na true
+        //  this.props.onWeveSurferInitialized(true); //waveSurferInitialized: ustawia na true
 
          
         
@@ -75,9 +100,9 @@ class TranscriptTool extends Component {
 
     componentWillUnmount = () => {
         //this.props.onWeveSurferInitialized(false);
-        this.wavesurfer.stop();
-        this.props.onWeveSurferInitialized(false); 
-        this.props.onAudioDisplayed(false);
+        // this.wavesurfer.stop();
+        // this.props.onWeveSurferInitialized(false); 
+        // this.props.onAudioDisplayed(false);
         //this.wavesurfer = null;
     }
 
@@ -94,31 +119,31 @@ class TranscriptTool extends Component {
         this.props.onUpdateTxtArea(e.currentTarget.value, null);
     }
 
-    onLoadAudioToWaveSurfer = (audioFileUrl) => {
-            console.log(audioFileUrl)
-            this.wavesurfer.load(audioFileUrl);
-    }
+    // onLoadAudioToWaveSurfer = (audioFileUrl) => {
+    //         console.log(audioFileUrl)
+    //         this.wavesurfer.load(audioFileUrl);
+    // }
    
 
     render() {
 
         //obsluga podgladu pliku txt
-        if (this.props.txtfileName !== '') {
-            //aby nie ladowac jak jest juz zaladowane....
-            if (this.props.txtDisplayed === false) {
-                this.props.onUpdateTxtArea(this.props.txtContent, this.props.txtfileName)
-            }
-        }
+        // if (this.props.txtfileName !== '') {
+        //     //aby nie ladowac jak jest juz zaladowane....
+        //     if (this.props.txtDisplayed === false) {
+        //         this.props.onUpdateTxtArea(this.props.txtContent, this.props.txtfileName)
+        //     }
+        // }
 
        
         //obsluga podgladu pliku audio
-        if (this.props.audiofileName !== '') {
-            if (this.props.waveSurferInitialized==true) {
-                if(this.props.audioDisplayed === false){
-                        this.onLoadAudioToWaveSurfer(this.props.audioFileUrl);
-                }
-            }
-        }
+        // if (this.props.audiofileName !== '') {
+        //     if (this.props.waveSurferInitialized==true) {
+        //         if(this.props.audioDisplayed === false){
+        //                 this.onLoadAudioToWaveSurfer(this.props.audioFileUrl);
+        //         }
+        //     }
+        // }
 
         // //to oznacza ze zakladka jest otworzona gdy 
         // //uzytkownik kliknal w plik w repo
@@ -192,14 +217,19 @@ class TranscriptTool extends Component {
                         <div className="tool-body">
 
                             {headerAudioField}
-                            <div id="debuginfo"></div>
-                            <div id="waveform"></div>
 
-                            {this.props.audioDisplayed? controlBtns: null}
+                            <MultimediaPreview fileToPreview={'http://localhost:1234/5d0e20536c8ef65ef77e7e65/5d79cb8341533e47920f3336/demo_files/test.wav'}/>
+
+
+                            
                             
 
                             {
 /*
+                                <div id="debuginfo"></div>
+                            <div id="waveform"></div>
+
+                            {this.props.audioDisplayed? controlBtns: null}
                                 <div class="btn-group" role="group">
                                     <button type="button" className="btn btn-secondary" id="play"><i className="fas fa-play"></i></button>
                                     <button type="button" className="btn btn-secondary" id="stop"><i className="fas fa-stop"></i></button>
