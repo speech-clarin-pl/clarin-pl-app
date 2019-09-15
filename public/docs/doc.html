@@ -27,20 +27,22 @@
             top: 0px;
             text-align: left;
             overflow: auto;
-            margin-top: 55px;
+            margin-top: 0px;
         }
 
         #doccontent {
             float: right;
             margin-left: 300px;
-            margin-top:55px;
+            margin-top:10px;
             padding: 2em;
         }
+        /*
         #gornabelka{
             position: fixed;
             width: 100%;
             z-index: 999;
         }
+        */
 
         .nav-pills .nav-link {
             text-decoration: none;
@@ -56,9 +58,11 @@
   </head>
   <body style="position: relative" data-spy="scroll" data-target="#navbar-example">
 
+    <!--
         <nav id="gornabelka" class="navbar navbar-dark bg-dark">
                 <a class="navbar-brand" href="#">Dokumentacja CLARIN-PL</a>
         </nav>
+    -->
 
         <nav id="navbar-example" class="navbar navbar-light bg-light">
                 <nav class="nav nav-pills flex-column">
@@ -79,11 +83,7 @@
                     <a class="nav-link ml-3 my-1" href="#asr">Automatyczne rozpoznawanie mowy</a>
                   </nav>
 
-                  <a class="nav-link" href="#item-3">Item 3</a>
-                  <nav class="nav nav-pills flex-column">
-                    <a class="nav-link ml-3 my-1" href="#item-3-1">Item 3-1</a>
-                    <a class="nav-link ml-3 my-1" href="#item-3-2">Item 3-2</a>
-                  </nav>
+                
                 </nav>
               </nav>
               
@@ -161,7 +161,7 @@ Wiele narzędzi wspomnianych wcześniej wymaga dużego zbioru danych trenującyc
 Korpus został nagrany w laboratorium dźwiękowym na terenie PJATK z wykorzystaniem mikrofonów studyjnych. Korpus nagrywało 317 mówców w 554 sesjach, gdzie każda sesja składała się z 20 czytanych zdań oraz 10 fonetycznie bogatych słów pojedyńczych. W sumie zostało nagranych 56 godzin mowy składającej się z 356676 słów ze słownika o wielkości 46361. Obecnie korpus jest dostępny do <a href="https://ips-lmu.github.io/EMU-webApp/?autoConnect=true&serverUrl=wss:%2F%2Fmowa.clarin-pl.eu:17891%2Fclarin" target="_blank">łatwego przeglądania on-line za pośrednictwem systemu EMU-SDMS (EMU Speech Database Management System). </a>Środowisko EMU pozwala łatwe przeglądanie danych oraz wykonywanie obliczeń statystycznych dzięki integracji z środowiskiem R.
 </p>
 
-<h5 id="korpusStudyjny">Korpus PKF</h5>
+<h5 id="korpusPKF">Korpus PKF</h5>
 
 <p>
  Korpus Polskich Kronik Filmowych uwzględnia nagrania w formie audio oraz wideo z lat 1945-1962. Korpus charakteryzuje się archaicznym językiem oraz relatywnie niską jakością nagrań co spowodowało iż był wymagającym problemem dla systemu rozpoznawania mowy.
@@ -185,14 +185,62 @@ Głównym celem było zatem dostarczenie kolekcji tranksrypcji możliwych do wł
 Wynikowe transkrypcje zostały włączone do <a href="https://clarin-pl.eu/dspace/handle/11321/426" target="_blank">repozytorium projektu CLARIN-PL</a>. Wytrenowany model zwraz z systemem do transkrypcji oraz segmentacji jest przechowywany w formie obrazu <a href="https://hub.docker.com/u/danijel3/" target="_blank">Docker</a>, ze szczegółami dostępnymi w <a href="https://github.com/speech-clarin-pl/SpeechToolsWorkers/tree/master/speech_tools" target="_blank">publicznym repozytorium.</a>
 </p>
 
+<h5 id="korpusSejm">Korpus Sejm</h5>
+
+<p>
+Transkrypcja przemów Parlamentarnych to popularna domena w automatycznym rozpoznawaniu mowy. Rządy wielu krajów wymagają transkrypcji oficjalnych spotkań parlamentarzystów oraz ich opublicznienia. Większość tej pracy jest ciągle wykonaywana manualnie.
+
+Obecnie obrady Senatu są dostępne online w postaci audio, video oraz tekstowej. 
+
+Patrząc na przykłady innych, akustycznie podobnych domen do nagrań Parlamentarnych, najbliższe byłyby nagrania ze spotkań gdzie częste przerywanie przez innych oraz mówienie przez kilka osób jest dość częstym zjawiskiem. Z drugiej strony, język oraz używane słowa są kompletnie różne. Bliższym w tym aspekcie byłyby nagrania wykładów. Lecz odbywałyby się w znacząco różnych warunkach akustycznych z prawie nie przerywą przemową jednego mówcy. 
+
+Widać tutaj iż transkrypcja nagrań sejmowych jest unikatowym zadaniem.
+
+Podzbiór nagrań audio z Senatu, wraz z ich odpowiadającym transkrypcjom, został wybrany do wytrenowania modelu akustycznego oraz językowego. 
+
+Wiele nagrań zostało opublikowanych na stronie <a href="http://senat.gov.pl" target="blank">Senatu</a>, <a href="http://sejm.gov.pl" target="blank">Parlamentu</a> oraz na stronie kanału <a href="http://www.tvpparlament.pl/" target="blank">TVP Parlament.</a>
+</p>
+
+<p>
+Przygotowanie korpusu było czasochłonnym zadaniem, ponieważ oficjalne transkrypcje nie zawierały dokładnych transkrypcji nagrań audio. Były pisane w sposób bardziej odpowiadający poprawności gramatycznej bez zmiany semantyki wypowiedzi. Transkrypcje tego typu zostały przygotowane przez osoby zatrudnione specjalnie do tego celu, aby poprawić czytelność pliku PDF, lecz tego typu forma była mniej użyteczna do wytrenowania modelu akustycznego. Dlatego też dane musiałybyć prze-transkrybowane przez grupę zatrudnionych na kontrakcie osób. Usuwali oni również fragmenty audio zawierające duże fragmenty szumu tła, podwójną oraz niezrozumiałą mowę aby ułatwić proces transkrypcji. Duża część danych została również annotowana informacjami o mówcy (nazwa, płeć) aby ułatwić normalizację oraz adaptację modelu akustycznego.
+
+Większość danych zostało pozyskanych dzięki porozumieniu między Polskim Senatem oraz PJATK. Wiele nagrań jest często kiepskiej jakości, realizowanych przy użyciu biurkowych mikrofonów. Wprowadza to wiele zniekształceń, pogłosu oraz szumu tła. Dodatkowo do przetrzymywania nagrań używany jest stratny format plików.
+
+W sumie, zostało przygotowanych około 95 godzin nagrań zarówno z Sejmu jak i z Senatu, z 488 różnymi mówcami (w większości mężczyzn). Ze wszystkich zostało wybranych 10 mówców losowo jako zbiór testowy (około 2 godziny nagrań).
+
+Pozyskanie wystarczającej ilości danych tekstowych okazał się być nieco bardziej skomplikowany. Elektroniczne korpusy tekstowe są trudne do uzyskania dla języka Polskiego z powodu małej ilości prób cyfryzacji prac pisanych oraz restrektycjnych praw autorskich. Dodatkowo, nawet jeżeli istnieją tekstowe korpusy, posiadają ograniczony dostęp, zmuszając naukowców do odtwarzania ich własnych zbiorów każdym razem.
+
+Początkowo, wystarczająco duży korpus transkrypcji został pozyskany dzięki pomocy biura Senatu, obejmującego ponad 5 milionów słów. Korpus ten został później rozszerzony transkrypcjami z sesji Sejmowych oraz publicznie dostępnej części National Corpus of Polish (NKJP). Dane te wymagały segmentacji oraz normalizacji aby rozszerzyć wszystkie liczby oraz skróty do ich mówionych form w odniesieniu do zasad gramatyki. Tego typu normalizacja jest z reguły przeprowadzana manualnie jednak przy takim rozmiarze danych niezbędnym było stworzenie automatycznego narzędzia uzgadniającego formę danego wyrazu. Zostało to rozwiązane przy użyciu autorskiego oprogramowania wytrenowanego na ręcznie przypisanych zasadach gramatycznych przypisanych do rozszerzeń numerycznych. Testy pokazały 10% współczynnik pomyłek.
+
+Podsumowując, większość eksperymentów zostało przeprowadzonych na korpusie zawierającym około 145 milionów wyrazów. Korpus został zamieniony na małe litery a wszystkie liczby i skróty rozszerzone do ich pełnych, wypowiadanych gramatycznie form.
+
+</p>
+
+<p>
+    Celem było wsparcie już istniejącego systemu preznetującego podpisy filmowe na stronie Polskiego senatu. Strona ta wykorzystuje nagrania wideo oraz transkrypcje jako osobne dokumenty [Podać link i przykład z użyciem].
+    Nowo stworzony system może być użyteczny jako w pełni funkcjonalne narzędzie do automatycznego wyświetlania transkrypcji, do czasu gdy manualne transkrypcje nie staną się dostępna (zwykle 1-2 dni później).
+
+    Ponadto może być użyty jako narzędzie segmentacji do przypisywania kodów czasowych do już istniejących manualnych transkrypcji.
+
+    Największy problem z segmentacją jest taki że manualne transkrypcje nie dokładnie reprezentują co jest aktualnie wypowiadane w nagraniu. Manualne transkrypcje są poprawiane w celu ich łatwiejszego czytania w pliku PDF ale omijają wiele niuansów mowy jako powtórki wyrazów, wtrącenia itp. Dlatego też, została użyta alternatywna technika segmentacji. Po pierwsze audio jest rozpoznane używając modelu języka (wytrenowanego na słowniku który występuje w nagraniu audio) a w drugim kroku używane jest dopasowanie text-to-text aby określić które części audio zostały poprawnie dopasowane do tekstu. Następnie, ta sama metoda jest używana rekursywnie na wszystkich niepoprawnie dopasowanych fragmentacji dopóki nie osiągają perfekcyjnego dopasowania. Ta metoda zawsze kończy się "wymuszonym" dopasowanie, jednakże nie zawsze jest to nasz cel. Jeżeli transkrypcje które próbujemy dopasować zawierają błędy, możemy chcieć zdecydować aby przerwać "wymuszone" dopasowanie wcześniej i zaakceptować wyjście automatycznego rozpoznawania mowy.
+
+    Istnieje wiele technicznych przeszkód w generowaniu podpisów. Rozwiązują to specjalistyczne oprogramowanie, stworzone specjalnie na potrzeby telewizyjne bądź kinowe. Programy te zawierają wiele heurystyk aby określić optymalne dopasowanie informacji na ekranie w celu łatwego ich śledzenia przez użytkownika. System podpisów w projekcie wykorzystującym korpus Sejmowy używa jedynie podstaowych technik (jak np. minimalny czas pomiędzy dwoma następującymi po sobie zmianami itp). Bardziej zaawansowane heurysyki byłyby trudne do zaimplementowania ponieważ wyjściem systemu rozpoznawania mowy jest ciąg wyrazów którym brakuje granic zdań oraz punktuacji. Problem ten jest jednak zaplanowany do rozwiązania w przyszłości.
+
+    Finalny system posiada także możliwość eksportowania wyników do formatu WebVTT. Jest to standard w3C do opisywania podpisów używanych na stronach internetowych.
+</p>
+
 
 
 <h4 id="narzedziamowy">Narzędzia mowy</h4>
 
 <h5 id="g2p">Konwersja zapisu ortograficznego na fonetyczny </h5>
 <p>Narzędie to pozwala na konwersję każdego tekstu napisanego ortograficznie na jego formę fonetyczną (mówioną). Jest to jeden z podstawowych kroków w każdych procesie przetwarzania danych mowy. Narzędzie akceptuje każdą formę tekstu, jednakże nie wykonuje normalizacji tekstu. Oznacza to iż nie zamienia liczb, dat oraz skrótów w sposób automatyczny. 
-System jest stworzony przy użyciu systemu opartego o reguły. Dlatego też  zawiera listę wyjątków dla nazw zwłasnych, zagranicznych i słów nietypowych. 
+System jest stworzony przy użyciu systemu opartego o reguły (972 podstawowe reguły oraz 4802 zastępowań wyrazów z powodu wyjątków). Dlatego też  zawiera listę wyjątków dla nazw zwłasnych, zagranicznych i słów nietypowych. 
 Narzędzie może generować zarówno listy wyrazów z różnymi wymowami jak również kanoniczną transkrypcję tekstu.
+
+Narzędzie wykorzystuje wariant alfabetu fonetycznego SAMPA, zmodyfikowanego tak aby zawierał tylko litery alfabetu (bez symboli jak apostrof czy tylkda które zostały zastąpione lietrami i oraz n).
+
+Ważne aby wspomnieć o wielu możliwych wypowiedziach tego samego słowa, w zależności od zmienności mówcy oraz efekty koartykulacji wynikającego z kontektu. Np. [???]
 </p>
 
 <p>
@@ -213,8 +261,13 @@ W ramach rozszerzeń planuje się implementację lepszego modelu akustycznego. A
 Rozszerzenie interfejsu byłoby również bardzo korzystne. Umożliwiałoby manualną poprawę dopasowania oraz poprawy niektórych informacji (np. transkrypcji ortograficznej bądź fonetycznej). Tego typu usprawnienia zmieniłyby obecny w pełni automatyczne narzędzie na semi-automatyczne.
 </p>
 
-<h5 id="det">Detekcja mowy</h5>
-<p>Deatakcja mowy (Voice activity detection: VAD) jest często używane na etapie pre-processingu do wielu narzędzi przetwarzania mowy. Jego celem jest odizolowanie części zawierających mowę od części zawierających inny typ zdarzeń (cisza, szum, muzyka itp.). Narzędzie to jest kompletnie niezależne od języka oraz domeny wypowiedzi. Nie mnie jednak może generować błędy przy bardzo zaszumionych danych. Niewielki eksperyment potwierdził wysoki poziom czułości (Recall ~ 99%) oraz średnią precyzję (Precision ~ 58%). Było to jednak zamierzonym celem aby nie utracić żadnych części zawierających mowę, akecptując czasami fragmenty które jej nie zawierają. Jest to spowodowane tym iż pozostałe narzędzia akceptują niewielką ilość zaszumionych danych, ale działają błędnie gdy jakakolwiek część mowy jest pominięta.</p>
+<h5 id="det">Detekcja mowy VAD</h5>
+<p>Deatakcja mowy (Voice activity detection: VAD) jest często używane na etapie pre-processingu do wielu narzędzi przetwarzania mowy. Ponieważ dane audio są zwykle nie mongeniczne oraz zawierają zmiksowane fragmenty mowy, muzyki, tła oraz ciszę. Rozróżnienie pomiędzy tymi różnymi typami audio jest niezwykle istotne w skuteczności systemu do transkrypcji.
+    
+    
+Jego celem jest odizolowanie części zawierających mowę od części zawierających inny typ zdarzeń (cisza, szum, muzyka itp.). 
+    
+Narzędzie to jest kompletnie niezależne od języka oraz domeny wypowiedzi. Nie mnie jednak może generować błędy przy bardzo zaszumionych danych. Niewielki eksperyment potwierdził wysoki poziom czułości (Recall ~ 99%) oraz średnią precyzję (Precision ~ 58%). Było to jednak zamierzonym celem aby nie utracić żadnych części zawierających mowę, akecptując czasami fragmenty które jej nie zawierają. Jest to spowodowane tym iż pozostałe narzędzia akceptują niewielką ilość zaszumionych danych, ale działają błędnie gdy jakakolwiek część mowy jest pominięta.</p>
 
 <h5 id="vad">Diaryzacja mówców</h5>
 <p>Narzędzie to jest używane do segmentacji dużych plików audio na części wypowiadane przez poszczególne osoby. Istnieje kilka typów strategii segmentacji mówców. Pierwsza to rozpoznawanie momentu zmiany mówcy na innego, druga to dodanie informacji który fragment należy do tego samego mówcy oraz trzecia strategia polega na identyfikacji rozpoznanych fragmentów tak aby wiedzieć kto dokładnie mówi w rozpoznanym segmentcie. Nasze narzędzie wspiera jednak drugą strategię w której rozpoznajemy zmiany mówców, wiemy ilu ich jest oraz w jakich momentach nagrania występując. Narzędzie jednak traktuje mówców w sposób anonimowy. Narzędzie to jest użyteczne do adaptacji różnych narzędzi oraz modeli do indywidualnych mówców ale również do innych typów anali które wymagają segmentacji mówców.</p>
@@ -225,7 +278,20 @@ Często dokładna transkrypcja materiału audio nie jest konieczna ponieważ jes
 </p>
 
 <h5 id="asr">Automatyczne rozpoznawanie mowy</h5>
-<p>Narzędzie to używa systemu rozpoznawania mowy do wygenerowania najbardziej prawdopodobnyej ortograficznej transliteracji nagrań dźwiękowych mowy Polskiej.</p>         
+<p>Narzędzie to używa systemu rozpoznawania mowy do wygenerowania najbardziej prawdopodobnyej ortograficznej transliteracji nagrań dźwiękowych mowy Polskiej. Prawidłowo zaimplementowany system zawiera kilka komponentów:</p>
+<ul>
+    <li>Moduł transkrypcji fonetycznej, znany jako tzw. konwerter zapisu ortograficznego na fonetyczny (graphene-to-phoneme G2P) </li>
+    <li>Detektor występowania mowy (voice activity detector VAD) </li>
+    <li>Model akustyczny </li>
+    <li>Model języka </li>
+    <li>dekoder </li>
+</ul>   
+
+Na początku sygnał audio jest poddawany ekstrakcji cech w postaci ramek czasowych. Użyty został standardowy zestaw 39 cech (głównie MFCC) z 100 ramkami na sekundę 25ms nakładaniem się.
+
+Następnie ramki są filtrowane używając modułu VAD oraz dostarczone do modelu akustycznego. Informacje zebrane z modelu akustycznego oraz z modelu języka są przetwarzane przez dekoder do generowania ciągu słów. Słowa te są określone przez słownik który jest mapowany do wyjścia fonetycznego modelu akustycznego używając modułu G2P.  
+
+Konwersja G2P jest istotnym pomostem pomiędzy dźwiękiem mowy oraz jak jej używamy podczas czytania i pisania słów na papierze. Procedura ta jest ważna zarówno w fazie trenowania (do konwersji trenujących transkrypcji na deskrypcje rozpoznające dźwięki mowy) oraz podczas normalnego użycia (do konwersji rozpoznanych dźwięków na text do czytania).
                 
  </div>
 
