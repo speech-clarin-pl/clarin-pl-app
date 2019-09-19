@@ -16,10 +16,10 @@ const decointro = (props) => {
                     <div className="row">
                         <div className="col">
                             <a href="#mowa" className={btnclasses.join(' ')}>
-                                    Narzędzia do rozpoznawania mowy
+                                    Przetwarzanie sygnałów mowy
                             </a>
                             <a href="#pliki" className={btnclasses.join(' ')}>
-                                    Przetwarzanie dużej ilości plików
+                                    Tworzenie korpusów audio
                             </a>
                         </div>
                         <div className="col">

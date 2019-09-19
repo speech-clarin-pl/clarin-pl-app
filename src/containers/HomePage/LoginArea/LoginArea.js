@@ -366,10 +366,12 @@ class LoginArea extends Component {
                             
 
                             {
-                                !this.props.isAuth? 
+                            !this.props.isAuth? 
+
 
                             
                             <form onSubmit={this.loginHandler}> 
+                              
                                 <h3>Zaloguj się</h3>
                                 
                                 {
@@ -441,10 +443,20 @@ class LoginArea extends Component {
             <Aux>
                 <div className={myclasses.join(' ')}>
                     <div className="container">
+
+                        <div className="row">
+                            
+                            {this.props.isAuth? null : 
+                                <div className="alert alert-info" role="alert">
+                                Aby skorzystać z serwisu należy się zarejestrować. Zapamiętaj koniecznie hasło! Mechanizm przypominania hasła jest w fazie implementacji. W razie problemów skontakuj się z nami pod adresem podanym w stopce.
+                              </div>}
+                                                
+                        </div>
                         
                         <div className="row">
                             
-                            {this.props.isAuth? loginArea : [registerArea, loginArea]}
+                            {this.props.isAuth? loginArea : 
+                                [registerArea, loginArea]}
                                                 
                         </div>
                     </div>

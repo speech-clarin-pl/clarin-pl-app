@@ -392,12 +392,12 @@ class SegmentTool extends Component {
 					<div className={["container-fluid", "SegmentTool"].join(' ')}>
 						<div className="tool-desc">
 
-							<p>Narzędzie to jest dostosowane do przetwarzania stosunkowo krótkich nagrań (poniżej minuty). Dłuższe nagrania mogą spowodować powstanie błędu.</p>
-							<p>Pliki audio przekazywane do tej usługi muszą być w odpowiednim formacie (WAV, 16kHz, mono, 16-bit). Jeśli plik nie jest w odpowiednim formacie, można skorzystać z usługi normalizacji audio do odpowiedniego przekonwertowania pliku znajdujące się na  <a href="http://mowa.clarin-pl.eu/tools/ui/audio/normalize" target="blank">TEJ stronie</a>. 
-                        </p>
-                        <p>Narzędzie umożliwia wgranie wielu plików jednocześnie i uruchomienie usługi na wszystkich jednocześnie. W trakcie wykonywania usługi nie należy odświeżać strony.</p>
-						<p><b>W przypadku wgrania większej ilości plików, pliki audio należy dopasować z plikami tekstowymi</b></p>
-					
+							<h2>Segmentacja plików audio</h2>
+							<div className="alert alert-info" role="alert">
+								<p>W przypadku wgrania większej ilości plików, pliki audio należy dopasować z plikami tekstowymi</p>
+								<p>Narzędzie umożliwia wgranie wielu plików jednocześnie i uruchomienie usługi na wszystkich jednocześnie. W trakcie wykonywania usługi nie należy odświeżać strony.</p>
+							</div>
+
 					
 						</div>
 

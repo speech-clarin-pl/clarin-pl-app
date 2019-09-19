@@ -29,9 +29,12 @@ const jumbotron = (props) => {
                     </p>
                     <hr className="my-4" />
                     <p>
-                        Znajdziesz tutaj narzędzia do m.in. do rozpoznawania mowy, segmentacji oraz transkrypcji.
-                        <br></br>Korzystanie z serwisu wymaga zalozenia konta
+                        Automatyczne rozpoznawanie mowy z plików dźwiękowych, segmentacja, tworzenie korpusów audio.
                     </p>
+
+                    <div className="alert alert-info" role="alert">
+                        Portal w wersji beta. Jest ciągle rozwijany i udoskonalany!
+                    </div>
                   
               
                           

@@ -25,7 +25,7 @@ class Dashboard extends Component {
     
                 <LeftSiteBar 
                     czyTopPart="true"
-                    desc="W tym miejscu znajdują się statystyki aktualnie wykonywanych usług oraz przestrzeni zajmowanej przez wgrane pliki do projektu" />
+                    desc="W tym miejscu znajdują się statystyki aktualnie wykonywanych usług oraz przestrzeni zajmowanej przez wgrane pliki do repozytorium." />
     
                 <SettingBar />
     
@@ -34,9 +34,11 @@ class Dashboard extends Component {
     
                     <div className={["container-fluid", "Dashboard"].join(' ')}>
                     <div className="tool-desc">
-                        <p>
-                            Obecnie dwie usługi posiadają interfejs graficzny: rozpoznawanie mowy oraz segmentacja. Pozostałe usługi dostępne są w poprzedniej wersji strony dostępnej <a href="http://mowa.clarin-pl.eu/tools/" target="blank">pod tym linkiem</a>.
-                        </p>
+
+                        <div class="alert alert-info" role="alert">
+                            Obecnie funkcjonują dwie usługi: rozpoznawanie mowy oraz segmentacja. Eksportowanie do środowiska EMU-SDMS jest w fazie rozwoju. Wszystkie usługi dostępne są jednak w obecnie funkcjonującej ("starszej") stronie  <a href="http://mowa.clarin-pl.eu/tools/" target="blank">http://mowa.clarin-pl.eu</a>.
+                        </div>
+                        
                     </div>
     
                     <div className="tool-body">
@@ -49,7 +51,13 @@ class Dashboard extends Component {
                                     <div className="card-body text-dark">
                                     <h5 className="news-title">Wersja beta nowego serwisu </h5>
                                     <div className="news-date">02.07.2019</div>
-                                    <p className="news-body">Miło nam przywitać Cię w panelu nowego serwisu który właśnie wystartował. Wszelkie uwagi na temat jego funkcjonowania beda mile widziane. Kontakt do developerow: Danijel Korzinek: danijel@pjwstk.edu.pl, Mariusz KLec: mklec@pjwstk.edu.pl</p>
+                                    <p className="news-body">
+                                        Miło nam przywitać Cię w panelu nowego serwisu. <b>Wszelkie uwagi na temat jego funkcjonowania </b> są mile widziane. Skontaktuj się z nami jeżeli masz jakiekolwiek pytania:
+                                    </p>
+                                    <p>
+                                    Danijel Korzinek: danijel@pjwstk.edu.pl <br></br>
+                                    Mariusz KLec: mklec@pjwstk.edu.pl
+                                    </p>
                                     </div>
                                 </div>
                             </div>
@@ -104,7 +112,11 @@ class Dashboard extends Component {
                                     <div className={["card-header", "cardHeader"].join(' ')}>Użycie repozytorium</div>
                                     <div className="card-body text-dark">
                                         <p> Liczba plikow w repozytorium: ({liczbaPlikowRepo})</p>
-                                        <p> Zajmowana pamiec: ({bytesToSize(miejscePlikowRepo)})</p>
+                                        {
+                                        
+                                        //<p> Zajmowana pamiec: ({bytesToSize(miejscePlikowRepo)})</p>
+
+                                        }
                                      
                                     </div>
                                 </div>

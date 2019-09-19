@@ -224,9 +224,12 @@ class RecognitionTool extends Component {
 
                     <div className={["container-fluid", "RecognitionTool"].join(' ')}>
                         <div className="tool-desc">
-                            <p>Zamiana nagrania mowy na zapis ortograficzny. Pliki audio przekazywane do tej usługi muszą być w odpowiednim formacie (WAV, 16kHz, mono, 16-bit). Jeśli plik nie jest w odpowiednim formacie, można skorzystać z usługi normalizacji audio do odpowiedniego przekonwertowania pliku znajdujące się na  <a href="http://mowa.clarin-pl.eu/tools/ui/audio/normalize" target="blank">TEJ stronie</a>.
-                        </p>
-                            <p>Narzędzie umożliwia wgranie wielu plików jednocześnie i uruchomienie usługi na wszystkich jednocześnie. W trakcie wykonywania usługi nie należy odświeżać strony.</p>
+                            <h2>Zamiana nagrania mowy na zapis ortograficzny</h2>
+                        <div className="alert alert-info" role="alert">
+                        
+                            <p>Narzędzie umożliwia wgranie wielu plików jednocześnie i uruchomienie usługi jednocześnie na wielu plikach. W trakcie wykonywania usługi nie należy odświeżać strony. Pliki powinny zostać najpierw wgrane do repozytorium</p>
+                        </div>
+                            
 
                         </div>
 
