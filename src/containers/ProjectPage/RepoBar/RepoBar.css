@@ -213,7 +213,7 @@ div.rendered-react-keyed-file-browser div.action-bar {
     width: 300px;
     bottom: 0px;
     top: 38px;
-    z-index: 9000;
+    z-index: 99999;
 }
 
 .RepoBar .scrollStrip {
@@ -233,6 +233,14 @@ div.rendered-react-keyed-file-browser div.action-bar {
     left: 0px;
     right: 0px;
     top: 55px;
+}
+
+.mainRepoContent .files {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    top: 80px;
     overflow: auto;
 }
 
@@ -366,3 +374,4 @@ padding: 0;
   float: left;
   margin: 5px;
 }
+

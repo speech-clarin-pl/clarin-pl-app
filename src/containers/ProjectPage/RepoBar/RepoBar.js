@@ -432,7 +432,7 @@ class repoBar extends Component {
 					</div>
 
 
-					<div className="mainRepoContent" data-scrollbar>
+					<div className="mainRepoContent">
 
 						<FileBrowser
 							files={this.props.files}

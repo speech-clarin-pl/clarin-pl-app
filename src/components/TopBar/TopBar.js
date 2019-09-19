@@ -88,6 +88,8 @@ const topBar = (props) => {
                     }
 
                     <li className="nav-item">
+                        {
+                            /*
                         <Link to="/help" className={["nav-link", "navLink"].join(' ')}
 
                             id="navbarDropdownMenuLinkpomoc"
@@ -100,6 +102,18 @@ const topBar = (props) => {
                             Pomoc
 
                         </Link>
+                            */
+                        }
+                        
+
+                        <a href={process.env.PUBLIC_URL + '/docs/doc.html'} 
+                        target="_blank" 
+                        id="navbarDropdownMenuLinkpomoc" 
+                        className={["nav-link", "navLink"].join(' ')}>
+                            <i className="fas fa-question-circle"></i>Pomoc
+                        </a>
+
+              
                     </li>
 
 
