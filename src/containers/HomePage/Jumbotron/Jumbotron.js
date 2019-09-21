@@ -33,7 +33,7 @@ const jumbotron = (props) => {
                     </p>
 
                     <div className="alert alert-info" role="alert">
-                        Portal w wersji beta. Jest ciągle rozwijany i udoskonalany!
+                        Portal w wersji alpha - Jest ciągle rozwijany i udoskonalany!
                     </div>
                   
               
