@@ -53,8 +53,10 @@ export const registerUser = (userName, userEmail, userPass) => {
     
 }
 
+
+//####################################################
 //######################### logowanie ################
-//########################################
+//####################################################
 
 
 export const loginUserAction = (isAuth, token, authLoading, userId,userName,resStatus) => {
@@ -110,40 +112,47 @@ export const loginUser = (userEmail, userPass) => {
         axios.post('/auth/login',{
             email: userEmail,
             password: userPass
+        }).then(response => {
+          
+            if(response.status === 422){
+                throw new Error('Validation failed.');
+            }
+
+            if(response.status === 404){
+              
+                throw new Error('Page not found')
+            }
+
+            if(response.status !== 200 & response.status !== 201){
+                throw new Error('Could not authenticate')
+            }
+
+            
+
+            console.log(response);
+            //ustawic state na auth false i authloading na false
+            //przekierowanie
+            
+            localStorage.setItem('token',response.data.token);
+            localStorage.setItem('userId', response.data.userId);
+            localStorage.setItem('userName', response.data.userName);
+
+            dispatch(loginUserAction(true, response.data.token,false,response.data.userId,response.data.userName, response.status));
+            //gasnie za 10h
+            const remainingMilliseconds = 60 * 60 * 10000;
+            const expiryDate = new Date(
+                new Date().getTime() + remainingMilliseconds
+            );
+            localStorage.setItem('expiryDate', expiryDate.toISOString());
+            dispatch(setAutoLogout(remainingMilliseconds));
+            //this.props.history.replace('/projectsList');
+
         })
-            .then(response => {
-                if(response.status === 422){
-                    throw new Error('Validation failed.');
-                }
-
-                if(response.status !== 200 & response.status !== 201){
-                    console.log('Error');
-                    throw new Error('Could not authenticate')
-                }
-
-                console.log(response);
-                //ustawic state na auth false i authloading na false
-                //przekierowanie
-                
-                localStorage.setItem('token',response.data.token);
-                localStorage.setItem('userId', response.data.userId);
-                localStorage.setItem('userName', response.data.userName);
-
-                dispatch(loginUserAction(true, response.data.token,false,response.data.userId,response.data.userName, response.status));
-                //gasnie za 10h
-                const remainingMilliseconds = 60 * 60 * 10000;
-                const expiryDate = new Date(
-                    new Date().getTime() + remainingMilliseconds
-                );
-                localStorage.setItem('expiryDate', expiryDate.toISOString());
-                dispatch(setAutoLogout(remainingMilliseconds));
-                //this.props.history.replace('/projectsList');
-
-            })
-            .catch(error => {
-                console.log(error)
-                dispatch(loginUserActionFailed(error));
-            });
+        .catch(error => {
+            console.log('error occurs')
+            console.log(error)
+            dispatch(loginUserActionFailed(error));
+        });
     }
    
 }

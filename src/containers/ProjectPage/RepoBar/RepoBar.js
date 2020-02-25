@@ -420,7 +420,7 @@ class repoBar extends Component {
 								<i className="fas fa-arrows-alt-h"></i>
 							</div>
 							Repozytorium
-					</div>
+						</div>
 						{
 							/*
 						<div className="repoNav" >

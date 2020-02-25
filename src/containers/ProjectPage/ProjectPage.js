@@ -10,6 +10,7 @@ import SegmentTool from './SegmentTool/SegmentTool';
 import TranscriptionTool from './TranscriptionTool/TranscriptionTool';
 
 import RepoBar from './RepoBar/RepoBar';
+import RepoPanel from './RepoPanel/RepoPanel';
 import ErrorPage from '../../components/ErrorPage/ErrorPage';
 
 import TopBar from '../../components/TopBar/TopBar';
@@ -139,7 +140,11 @@ class ProjectPage extends Component {
               
             </div>
 
-            <RepoBar />
+           {/*
+           <RepoBar />
+           */} 
+           
+           <RepoPanel />
           
         </Aux>
       

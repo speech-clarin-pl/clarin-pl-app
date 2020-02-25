@@ -8,6 +8,7 @@ const input = (props) => {
 
     const inputClasses = ['Input', 'form-control'];
 
+
     if(props.invalid && props.touched){
         inputClasses.push('is-invalid');
         validationError = <p>Wprowadź poprawdną wartość!</p>;

@@ -31,7 +31,8 @@ const topBar = (props) => {
                 }
                 <Link to="/" className="navbar-brand" onClick={props.clickLogo}>
                     <div className="logoPlace">
-                        <img src={czyInit ? logoShort : logoBig} alt="clarin-logo" className="logo" />
+                        <img src={czyInit ? logoShort : logoShort} alt="clarin-logo" className="logo" />
+                
                     </div>
                 </Link>
 

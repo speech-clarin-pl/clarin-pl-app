@@ -2,7 +2,7 @@
     position: absolute;
     width: 210px;
     bottom: 0px;
-    left: -210px;
+    right: -210px;
     top: -2px;
     font-size: 0.9em;
 
@@ -20,6 +20,7 @@
     color: #d4d8da;
     position: relative !important;
     text-align: center;
+    margin-top:0px;
 }
 
 .LeftSiteBar .resetTopPart {

@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.27",
+    "@fortawesome/free-solid-svg-icons": "^5.12.1",
+    "@fortawesome/react-fontawesome": "^0.1.8",
+    "@material-ui/core": "^4.9.3",
     "@opuscapita/react-filemanager": "^1.1.0-beta.6",
     "@opuscapita/react-filemanager-connector-node-v1": "^1.1.0-beta.6",
     "axios": "^0.19.0",
@@ -28,12 +32,11 @@
     "videojs-wavesurfer": "^2.9.0",
     "wavesurfer.js": "^2.2.1"
   },
-
   "scripts": {
-   "start": "react-app-rewired start --scripts-version react-scripts",
-   "build": "react-app-rewired build --scripts-version react-scripts",
-   "test": "react-app-rewired test --env=jsdom --scripts-version react-scripts",
-   "eject": "react-scripts eject"
+    "start": "react-app-rewired start --scripts-version react-scripts",
+    "build": "react-app-rewired build --scripts-version react-scripts",
+    "test": "react-app-rewired test --env=jsdom --scripts-version react-scripts",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"

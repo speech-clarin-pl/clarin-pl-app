@@ -1,0 +1,20 @@
+
+.RepoSession {
+    padding: 4px;
+    padding-left: 15px;
+    border-bottom: 1px solid #c7d5da;
+}
+
+.RepoSession .containerList {
+  padding: 3px;
+  padding-left:6px;
+}
+
+.RepoSession .sessionFolder {
+  text-align: left;
+  cursor: pointer;
+}
+
+.RepoSession .sessionFolder .sessionName {
+    padding-left: 6px;
+}

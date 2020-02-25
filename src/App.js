@@ -69,13 +69,6 @@ class App extends Component {
 
   render() {
 
-
-
-
-    if (this.props.chosenProjectID !== null) {
-
-    }
-
     return (
       <div className="App">
         <IntlProvider locale={this.state.currln} defaultLocale="pl" messages={messages[this.state.currln]}>

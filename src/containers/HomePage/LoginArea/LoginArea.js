@@ -161,7 +161,7 @@ class LoginArea extends Component {
                 }
                 updatedRegisterName.value = event.target.value;
                 updatedRegisterName.valid = this.checkValidity(updatedRegisterName.value, updatedRegisterName.validation);
-                updatedRegisterName.touched = true;
+                updatedRegisterName.touched = 1;
                 //assembling back after update
                 updatedRegisterForm.registerName = updatedRegisterName;
 
@@ -173,7 +173,7 @@ class LoginArea extends Component {
                 }
                 updatedRegisterEmail.value = event.target.value;
                 updatedRegisterEmail.valid = this.checkValidity(updatedRegisterEmail.value, updatedRegisterEmail.validation);
-                updatedRegisterEmail.touched = true;
+                updatedRegisterEmail.touched = 1;
                 //assembling back after update
                 updatedRegisterForm.registeremail = updatedRegisterEmail;
 
@@ -185,7 +185,7 @@ class LoginArea extends Component {
                 }
                 updatedregisterPass.value = event.target.value;
                 updatedregisterPass.valid = this.checkValidity(updatedregisterPass.value, updatedregisterPass.validation);
-                updatedregisterPass.touched = true;
+                updatedregisterPass.touched = 1;
                 updatedRegisterForm.registerpass = updatedregisterPass;
                 break;
         }
@@ -216,7 +216,7 @@ class LoginArea extends Component {
                 }
                 updatedLoginEmail.value = event.target.value;
                 updatedLoginEmail.valid = this.checkValidity(updatedLoginEmail.value, updatedLoginEmail.validation);
-                updatedLoginEmail.touched = true;
+                updatedLoginEmail.touched = 1;
                 //assembling back after update
                 updatedLoginForm.loginemail = updatedLoginEmail;
                 break;
@@ -227,7 +227,7 @@ class LoginArea extends Component {
                 }
                 updatedLoginPass.value = event.target.value;
                 updatedLoginPass.valid = this.checkValidity(updatedLoginPass.value, updatedLoginPass.validation);
-                updatedLoginPass.touched = true;
+                updatedLoginPass.touched = 1;
                 //assembling back after update
                 updatedLoginForm.loginpass = updatedLoginPass;
                 break;
@@ -293,23 +293,39 @@ class LoginArea extends Component {
 
         let errorLoginInfo = null;
         if(this.props.resLoginStatus === 201 || this.props.resLoginStatus === 200){
+
+            
+
             errorLoginInfo = (
                 <div className="alert alert-success" role="alert">
                      {this.props.loginMessage}
                 </div>
             )
         } else if(this.props.resLoginStatus !== 0){
-            errorLoginInfo = (
-                <div className="alert alert-warning" role="alert">
-                     {this.props.loginMessage}
-                </div>
-            )
+
+            let message = this.props.loginMessage;
+
+            if(typeof message === 'undefined' || message === null){
+                errorLoginInfo = (
+                    <div className="alert alert-danger" role="alert">
+                         Wystąpił problem z serwerem
+                    </div>
+                )
+            } else {
+                errorLoginInfo = (
+                    <div className="alert alert-warning" role="alert">
+                         {message}
+                    </div>
+                )
+            }
+
+            
         }
 
         
 
         const registerArea = (
-            <div className="col">
+            <div className="col" key="a1">
                             
                             <h3>Zarejestruj się</h3>
                            
@@ -358,17 +374,15 @@ class LoginArea extends Component {
                                 </button>
                             </form>
                                
-                        </div>
+             </div>
         );
 
         const loginArea = (
-            <div className="col">
+            <div className="col" key="a2">
                             
 
                             {
-                            !this.props.isAuth? 
-
-
+                            !this.props.isAuth?
                             
                             <form onSubmit={this.loginHandler}> 
                               

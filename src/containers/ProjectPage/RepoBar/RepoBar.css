@@ -209,7 +209,7 @@ div.rendered-react-keyed-file-browser div.action-bar {
 */
 .RepoBar {
     position: absolute;
-    right: 0px;
+    left: 0px;
     width: 300px;
     bottom: 0px;
     top: 38px;
@@ -252,9 +252,10 @@ div.rendered-react-keyed-file-browser div.action-bar {
 .repoTab {
     background-color: #546c78;
     height: 50px;
-    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
     line-height: 45px;
     position: relative;
+    top:2px;
 }
 
 .topPart {
