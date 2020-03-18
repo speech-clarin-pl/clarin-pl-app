@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import './Dropzone.css'
+import { faUpload } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class Dropzone extends Component {
 
@@ -79,11 +81,11 @@ class Dropzone extends Component {
             onClick={this.openFileDialog}
             style={{ cursor: this.props.disabled ? "default" : "pointer" }} >
 
-        <img
-          alt="upload"
-          className="Icon"
-          src="baseline-cloud_upload-24px.svg"
-        />
+        <div>
+             <FontAwesomeIcon icon={faUpload} className="icon"/> <span className="iconText">Wgraj pliki</span>
+        </div>
+          
+
          <input
           ref={this.fileInputRef}
           className="FileInput"
@@ -91,7 +93,9 @@ class Dropzone extends Component {
           multiple
           onChange={this.onFilesAdded}
         />
-        <span>Upload Files</span>
+
+        
+      
       </div>
     );
   }

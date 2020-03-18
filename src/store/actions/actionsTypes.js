@@ -1,6 +1,4 @@
 
-
-
 // home page actions
 export const LOG_IN = 'LOG_IN';
 export const LOG_OUT = 'LOG_OUT';
@@ -60,7 +58,14 @@ export const REFUSE_SEGMENT_AUDIO_FILES = 'REFUSE_SEGMENT_AUDIO_FILES';
 export const REFUSE_SEGMENT_TXT_FILES = 'REFUSE_SEGMENT_TXT_FILES';
 
 
+
+
 // repo
+export const REPO_SELECT_CONTAINER = 'REPO_SELECT_CONTAINER';
+export const REPO_SELECT_SESSION = 'REPO_SELECT_SESSION';
+
+
+// pod spodem to kopie
 export const REPO_UPLOAD_FILES_MODAL_OPEN = 'REPO_UPLOAD_FILES_MODAL_OPEN';
 export const REPO_UPLOAD_FILES_PROGRESS = 'REPO_UPLOAD_FILES_PROGRESS';
 export const REPO_UPLOAD_FILES_FINISH = 'REPO_UPLOAD_FILES_FINISH';

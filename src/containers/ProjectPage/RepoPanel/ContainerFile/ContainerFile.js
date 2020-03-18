@@ -11,20 +11,27 @@ import { faClock } from '@fortawesome/free-solid-svg-icons';
 
 class ContainerFile extends Component {
 
+    selectContainer = () => {
+        this.props.selectContainer(this.props.containerId)
+    }
+
     render() {
         return(
-            <div className="ContainerFile">
+            <div className={this.props.ifSelected? "ContainerFile selected" : "ContainerFile"} onClick={this.selectContainer}>
                 <div className="row">
                     <div className="col">
-                        <FontAwesomeIcon icon={faFileAudio} className="repoIconMain" /> 
-                        nazwa pliku.mp3
+                        <div className="containerName">
+                            <FontAwesomeIcon icon={faFileAudio} className="repoIconMain" /> 
+                            {this.props.containerName}
+                        </div>
+                        
                     </div>
                     <div className="col">
-                        <FontAwesomeIcon icon={faPlay} className={["repoIcon",this.props.ifAudio? "on": ""].join(" ")} /> 
-                        <FontAwesomeIcon icon={faSurprise} className={["repoIcon",this.props.ifVAD? "on": ""].join(" ")}/> 
-                        <FontAwesomeIcon icon={faComment} className={["repoIcon",this.props.ifDIA? "on": ""].join(" ")} /> 
-                        <FontAwesomeIcon icon={faFileAlt} className={["repoIcon",this.props.ifRECO? "on": ""].join(" ")} /> 
-                        <FontAwesomeIcon icon={faClock} className={["repoIcon",this.props.ifALIGN? "on": ""].join(" ")} /> 
+                        <FontAwesomeIcon icon={faPlay} className={["repoIcon",this.props.ifAudio? "on": ""].join(" ")} onClick={this.runPlay}/> 
+                        <FontAwesomeIcon icon={faSurprise} className={["repoIcon",this.props.ifVAD? "on": ""].join(" ")} onClick={this.runVAD}/> 
+                        <FontAwesomeIcon icon={faComment} className={["repoIcon",this.props.ifDIA? "on": ""].join(" ")} onClick={this.runDIA}/> 
+                        <FontAwesomeIcon icon={faFileAlt} className={["repoIcon",this.props.ifRECO? "on": ""].join(" ")} onClick={this.runRECO}/> 
+                        <FontAwesomeIcon icon={faClock} className={["repoIcon",this.props.ifALIGN? "on": ""].join(" ")} onClick={this.runALIGN}/> 
                     </div>
                 </div>
             </div>

@@ -11,6 +11,9 @@ export {
     uploadFiles,
     uploadFilesFinish,
     uploadFilesModalOpen,
+
+    selectSession,
+    selectContainer
 } from './repo';
 
 export {

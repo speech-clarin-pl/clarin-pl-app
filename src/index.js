@@ -11,7 +11,12 @@ import projectsListReducer from './store/reducers/projectsListReducer';
 import recognitionReducer from './store/reducers/toolsReducers/recognitionReducer';
 import segmentationReducer from './store/reducers/toolsReducers/segmentationReducer';
 import previewReducer from './store/reducers/toolsReducers/previewReducer';
-import repoReducer from './store/reducers/repoReducer';
+
+// to jest stara wersja repo
+//import repoReducer from './store/reducers/repoReducer';
+
+import repoReducer from './store/reducers/repoPanelReducer';
+
 import thunk from 'redux-thunk';
 import axios from 'axios';
 import projectReducer from './store/reducers/projectReducer';

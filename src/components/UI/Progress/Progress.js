@@ -7,15 +7,26 @@ class Progress extends Component {
     this.state = {}
   }
   render() {
+
+    let classNameForSuccess = "Progress";
+
+    if(this.props.progress === 100){
+      classNameForSuccess = "Progress success";
+    } else {
+      classNameForSuccess = "Progress";
+    }
+
     return (
       <div className="ProgressProgressBar">
         <div
-          className="Progress"
+          className={classNameForSuccess}
           style={{ width: this.props.progress + '%' }}
         />
       </div>
     )
   }
 }
+
+
 
 export default Progress

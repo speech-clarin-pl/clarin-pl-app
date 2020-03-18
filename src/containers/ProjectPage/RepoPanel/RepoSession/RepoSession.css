@@ -1,20 +1,46 @@
 
 .RepoSession {
-    padding: 4px;
-    padding-left: 15px;
+    padding: 0px;
+    padding-left: 0px;
     border-bottom: 1px solid #c7d5da;
 }
 
 .RepoSession .containerList {
-  padding: 3px;
-  padding-left:6px;
+  
 }
 
 .RepoSession .sessionFolder {
   text-align: left;
   cursor: pointer;
+  padding: 3px;
+  padding-left:6px;
+}
+
+.RepoSession .sessionFolder .repoIcon {
+
+  margin-left: 5px;
+
+}
+
+
+.RepoSession .sessionFolder:hover:not(.selected) {
+  background: #ccd9de;
 }
 
 .RepoSession .sessionFolder .sessionName {
     padding-left: 6px;
+}
+
+
+.sessionFolder.selected {
+  background: #b6d2ba;
+}
+
+.RepoSession .uploadCard {
+  padding: 12px;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  box-sizing: border-box;
 }

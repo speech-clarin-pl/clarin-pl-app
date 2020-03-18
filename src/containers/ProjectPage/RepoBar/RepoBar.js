@@ -511,7 +511,6 @@ const mapStateToProps = (state) => {
 
 		modal: state.projectR.modal,
 
-
         txtDisplayed: state.previewR.txtDisplayed,
         txtfileName: state.previewR.txtfileName,
         txtFileUrl: state.previewR.txtFileUrl,

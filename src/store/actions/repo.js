@@ -4,6 +4,34 @@ import { saveAs } from 'file-saver';
 //import { saveSync } from 'save-file';
 //import streamSaver from 'StreamSaver';
 
+
+
+export const selectSession = (sessionId) =>{
+    return {
+        type: actionTypes.REPO_SELECT_SESSION,
+        sessionId: sessionId,
+    }
+}
+
+export const selectContainer = (containerId) => {
+    return {
+        type: actionTypes.REPO_SELECT_CONTAINER,
+        containerId: containerId,
+    }
+}
+
+//#####################################################################################
+//#####################################################################################
+//#####################################################################################
+//#####################################################################################
+//#####################################################################################
+//####################### to pod spodem to kopia ze starej biblioteki ###############
+//#####################################################################################
+
+
+
+
+
 //#################################################################
 //############# upload plików do repo ############################
 //################################################################
@@ -57,8 +85,8 @@ export const uploadFiles = (fileList,folderKey,userId, projectId, token) => {
             data.append('audioFiles', fileList[x]);
         }
 
-        console.log(userId)
-        console.log(projectId)
+       // console.log(userId)
+       // console.log(projectId)
 
         data.append('folderKey', folderKey);
         data.append('userId', userId);
@@ -79,7 +107,7 @@ export const uploadFiles = (fileList,folderKey,userId, projectId, token) => {
 
                 dispatch(changeUploadProgress(percent));
 
-                if(percent==100){
+                if(percent===100){
                     dispatch(uploadFilesFinish());
                 }
             }
@@ -162,10 +190,11 @@ export const handleUpdateTxtFile = (userId, projectId, token, key, newContent) =
 //############## get user project files ######################
 //####################################################
 
-export const getProjectFilesForUserAction = (userId, files) => {
+export const getProjectFilesForUserAction = (userId, sessions, containers) => {
     return {
         type: actionTypes.REPO_GET_USER_PROJECT_FILES,
-        files: files,
+        sessions: sessions,
+        containers: containers,
     }
 }
 
@@ -178,14 +207,8 @@ export const getProjectFilesForUserActionFailed = (error) => {
 
 // pobieram liste plikow w katalogu uzytkownika dla danego projektu
 export const getProjectFilesForUser = (userId, projectId, token) => {
-    //console.log(userId)
-    //console.log(projectId)
     return dispatch => {
-        console.log('getProjectFilesForUser');
-        // {
-        //     userId: userId,
-        //     projectId: projectId,
-        // },
+       
         axios.get(('/repoFiles/' + userId), {
             headers: {
                 Authorization: 'Bearer ' + token
@@ -195,9 +218,7 @@ export const getProjectFilesForUser = (userId, projectId, token) => {
             }
         })
             .then(response => {
-
-                console.log(response)
-                dispatch(getProjectFilesForUserAction(userId, response.data.files));
+                dispatch(getProjectFilesForUserAction(userId, response.data.sessions, response.data.containers));
             })
             .catch(error => {
                 dispatch(getProjectFilesForUserActionFailed(error));

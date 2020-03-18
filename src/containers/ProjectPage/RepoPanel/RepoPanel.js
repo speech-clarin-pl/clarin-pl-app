@@ -28,72 +28,60 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 
 
-
-  
 class repoPanel extends Component {
 
 
-    state = {
-        sessions: [
-            {
-                sessionName: 'Jakaś sesja 1',
-                containers: [
-                    {
-                        containerName: 'nazwa pliku1.mp3',
-                        size: 1.5 * 1024 * 1024,
-                        id:  'id'+Math.random(),
-                        ifAudio: true,
-                        ifVAD: true,
-                        ifDIA: true,
-                        ifREC: true,
-                        ifSEG: true,
-                    },
-                    {
-                        containerName: 'nazwa pliku2.mp3',
-                        size: 1.5 * 1024 * 1024,
-                        id:  'id'+Math.random(),
-                        ifAudio: true,
-                        ifVAD: true,
-                        ifDIA: false,
-                        ifREC: false,
-                        ifSEG: false,
-                    }
-                ],
-            },
-            {
-                sessionName: 'Jakaś sesja 2',
-                containers: [],
-            },
-            {
-                sessionName: 'Jakaś sesja 3',
-                containers: [
-                    {
-                        containerName: 'nazwa pliku3.mp3',
-                        size: 1.5 * 1024 * 1024,
-                        id:  'id'+Math.random(),
-                        ifAudio: true,
-                        ifVAD: true,
-                        ifDIA: false,
-                        ifREC: false,
-                        ifSEG: false,
-                    }
-                ],
-            }
-        ],
+    selectSessionHandler = (sessionId) => {
+        this.props.onSelectSession(sessionId);
     }
 
+    selectContainerHandler = (containerId) => {
+        this.props.onSelectContainer(containerId);
+    }
 
+    componentDidMount() {
+		this.refreshRepo();
+    }
+    
+
+	refreshRepo() {
+		//wysylam zadanie aby pobrac aktualne pliki w katalogu uzytkownika
+		const currentProjectID = this.props.currentProjectID;
+		const currentProjectOwner = this.props.currentProjectOwner; //Owner id
+
+		this.props.onGetProjectFilesForUser(currentProjectOwner, currentProjectID, this.props.token);
+	}
 
 
 	render() {
 
         let listaSesji = null;
 
-        listaSesji = this.state.sessions.map(session => {
+        listaSesji = Object.keys(this.props.repoData.sessions.byId).map(sessionId => {
+            
+        let sId = this.props.repoData.sessions.byId[sessionId].id;
+        let sessionName = this.props.repoData.sessions.byId[sessionId].sessionName;
+        let ifSelected = this.props.repoData.sessions.byId[sessionId].ifSelected;
+        let containersIds = this.props.repoData.sessions.byId[sessionId].containers;
 
-            let konteneryDlaSesji = session.containers;
-            return  <RepoSession containers={konteneryDlaSesji} />
-        });
+        let containersArray = containersIds.map(containerId => {
+            return this.props.repoData.containers.byId[containerId];
+        })
+
+
+            return  <RepoSession 
+                            containers={containersArray} 
+                            sessionName={sessionName}
+                            sessionId = {sId}
+                            key = {sId}
+                            ifSelected = {ifSelected}
+                            selectTheSession = {this.selectSessionHandler}
+                            selectTheContainer = {this.selectContainerHandler} />
+                 
+
+        })
+
+ 
 
 		return (
 			<Aux>
@@ -161,13 +149,21 @@ class repoPanel extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		//currentProjectID: state.projectR.currentProjectID,
+        //repoSessions: state.repoR,
+        repoData: state.repoR,
+        currentProjectID: state.projectR.currentProjectID,
+		currentProjectName: state.projectR.currentProjectName,
+        currentProjectOwner: state.projectR.currentProjectOwner,
+        token: state.homeR.token,
 	}
 }
 
 const mapDispatchToProps = dispatch => {
 	return {
-	//	onUploadFiles: (fileList, folderKey, userId, projectId, token) => dispatch(repoActions.uploadFiles(fileList,folderKey,userId, projectId, token)),
+    //	onUploadFiles: (fileList, folderKey, userId, projectId, token) => dispatch(repoActions.uploadFiles(fileList,folderKey,userId, projectId, token)),
+    onSelectSession: (sessionId) => dispatch(repoActions.selectSession(sessionId)),
+    onSelectContainer: (containerId) => dispatch(repoActions.selectContainer(containerId)),
+    onGetProjectFilesForUser: (userId, projectId, token) => dispatch(repoActions.getProjectFilesForUser(userId, projectId, token)),
 	}
 }
 

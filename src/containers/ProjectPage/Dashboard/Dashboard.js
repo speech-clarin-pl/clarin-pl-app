@@ -14,11 +14,12 @@ class Dashboard extends Component {
 
     render(){
 
-        let liczbaPlikowRepo = this.props.repoFiles.length;
+        //let liczbaPlikowRepo = this.props.repoFiles.length;
+        let liczbaPlikowRepo = 0;
         let miejscePlikowRepo = 0;
-        this.props.repoFiles.map(file => {
-            return miejscePlikowRepo = miejscePlikowRepo + file.size;
-        });
+       // this.props.repoFiles.map(file => {
+       //     return miejscePlikowRepo = miejscePlikowRepo + file.size;
+       // });
 
         return(
             <Aux>
@@ -35,7 +36,7 @@ class Dashboard extends Component {
                     <div className={["container-fluid", "Dashboard"].join(' ')}>
                     <div className="tool-desc">
 
-                        <div class="alert alert-info" role="alert">
+                        <div className="alert alert-info" role="alert">
                             Obecnie funkcjonują dwie usługi: rozpoznawanie mowy oraz segmentacja. Eksportowanie do środowiska EMU-SDMS jest w fazie rozwoju. Wszystkie usługi dostępne są jednak w obecnie funkcjonującej ("starszej") stronie  <a href="http://mowa.clarin-pl.eu/tools/" target="blank">http://mowa.clarin-pl.eu</a>.
                         </div>
                         
