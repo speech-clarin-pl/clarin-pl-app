@@ -13,11 +13,7 @@ class SingleInputForm extends Component {
 
         const errorMessage = this.props.errorMessage || false;
 
-        
-
         return (
-
-            
 
             <form onSubmit={this.props.onSubmitHandler}>
                 <h5 style={{textAlign:'left'}}>{this.props.title}</h5>

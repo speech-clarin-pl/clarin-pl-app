@@ -4,6 +4,80 @@ import { updateObject, convertArrayToObject, getIdsArray } from '../utility';
 import produce from "immer"
 
 
+// const initialState = {
+
+//     errorMessage: "",
+//     iferror: false,
+
+
+//     currentlySelestSessions: [],
+//     currentlySelectedContainers: [],
+
+//     sessions : {
+//         byId : {
+//             "idSesji1" : {
+//                 id : "idSesji1",
+//                 sessionName : "sesja 1",
+//                 ifSelected : false,
+//                 containers : ["idContainer1", "idContainer2"]
+//             },
+//             "idSesji2" : {
+//                 id : "idSesji2",
+//                 sessionName : "sesja 2",
+//                 ifSelected : false,
+//                 containers : ["idContainer3"]
+//             },
+//             "idSesji3" : {
+//                 id : "idSesji3",
+//                 sessionName : "sesja 3",
+//                 ifSelected : false,
+//                 containers : []
+//             },
+//         },
+//         allIds : ["idSesji1", "idSesji2","idSesji3"]
+//     },
+//     containers : {
+//         byId : {
+//             "idContainer1" : {
+//                 id : "idContainer1",
+//                 containerName: 'jakis plik 1',
+//                 size: 1.5 * 1024 * 1024,
+//                 ifSelected: false,
+//                 session: "idSesji1",
+//                 ifAudio: true,
+//                 ifVAD: true,
+//                 ifDIA: true,
+//                 ifREC: true,
+//                 ifSEG: true,
+//             },
+//             "idContainer2" : {
+//                 id : "idContainer2",
+//                 containerName: 'jakis plik 2',
+//                 size: 1.5 * 1024 * 1024,
+//                 ifSelected: false,
+//                 session: "idSesji1",
+//                 ifAudio: true,
+//                 ifVAD: true,
+//                 ifDIA: true,
+//                 ifREC: true,
+//                 ifSEG: true,
+//             },
+//             "idContainer3" : {
+//                 id : "idContainer3",
+//                 containerName: 'jakis plik 3',
+//                 size: 1.5 * 1024 * 1024,
+//                 ifSelected: false,
+//                 session: "idSesji2",
+//                 ifAudio: true,
+//                 ifVAD: true,
+//                 ifDIA: true,
+//                 ifREC: true,
+//                 ifSEG: true,
+//             },
+//         },
+//         allIds : ["idContainer1", "idContainer2", "idContainer3"]
+//     },
+// }
 
 
 const initialState = {
@@ -11,75 +85,57 @@ const initialState = {
     errorMessage: "",
     iferror: false,
 
-
     currentlySelestSessions: [],
     currentlySelectedContainers: [],
 
     sessions : {
-        byId : {
-            "idSesji1" : {
-                id : "idSesji1",
-                sessionName : "sesja 1",
-                ifSelected : false,
-                containers : ["idContainer1", "idContainer2"]
-            },
-            "idSesji2" : {
-                id : "idSesji2",
-                sessionName : "sesja 2",
-                ifSelected : false,
-                containers : ["idContainer3"]
-            },
-            "idSesji3" : {
-                id : "idSesji3",
-                sessionName : "sesja 3",
+        byId : {},
+        allIds : []
+    },
+    containers : {
+        byId : {},
+        allIds : []
+    },
+}
+
+// #############################################
+// ############### tworze nową sesje ###########
+//##############################################
+
+const repoCreateSession = (state, action) => {
+    const sessionName = action.sessionName;
+    const sessionId = action.sessionId;
+
+   const nextState = produce(state, draftState => {
+
+        draftState.sessions.byId = {
+            ...draftState.sessions.byId,
+            [sessionId]: {
+                id : sessionId,
+                sessionName : sessionName,
                 ifSelected : false,
                 containers : []
             },
-        },
-        allIds : ["idSesji1", "idSesji2","idSesji3"]
-    },
-    containers : {
-        byId : {
-            "idContainer1" : {
-                id : "idContainer1",
-                containerName: 'jakis plik 1',
-                size: 1.5 * 1024 * 1024,
-                ifSelected: false,
-                session: "idSesji1",
-                ifAudio: true,
-                ifVAD: true,
-                ifDIA: true,
-                ifREC: true,
-                ifSEG: true,
-            },
-            "idContainer2" : {
-                id : "idContainer2",
-                containerName: 'jakis plik 2',
-                size: 1.5 * 1024 * 1024,
-                ifSelected: false,
-                session: "idSesji1",
-                ifAudio: true,
-                ifVAD: true,
-                ifDIA: true,
-                ifREC: true,
-                ifSEG: true,
-            },
-            "idContainer3" : {
-                id : "idContainer3",
-                containerName: 'jakis plik 3',
-                size: 1.5 * 1024 * 1024,
-                ifSelected: false,
-                session: "idSesji2",
-                ifAudio: true,
-                ifVAD: true,
-                ifDIA: true,
-                ifREC: true,
-                ifSEG: true,
-            },
-        },
-        allIds : ["idContainer1", "idContainer2", "idContainer3"]
-    },
+        };
+       draftState.sessions.allIds.push(sessionId);
+
+   })
+
+   return nextState;
 }
+
+const repoCreateSessionFailes = (state, action) => {
+    const errorMessage = action.errorMessage;
+
+    const nextState = produce(state, draftState => {
+        draftState.ifError = true;
+        draftState.errorMessage = errorMessage;
+    })
+
+    return nextState;
+}
+
+//######################################################
 
 const repoGetUserProjectFiles = (state, action) => {
 
@@ -88,7 +144,7 @@ const repoGetUserProjectFiles = (state, action) => {
 
     const nextState = produce(state, draftState => {
 
-            draftState.sessions.byId = convertArrayToObject(sessions,'_id');
+            draftState.sessions.byId = convertArrayToObject(sessions,'id');
             draftState.sessions.allIds = getIdsArray(sessions);
 
             draftState.containers.byId = convertArrayToObject(containers,'_id');
@@ -160,7 +216,7 @@ const repoSelectSession = (state, action) => {
 
         
         //odznaczam poprzendio zaznaczony o ile nie był pusty
-        if(previouslySelectedSess){
+        if(allSessions[previouslySelectedSess] != null ){
            allSessions[previouslySelectedSess].ifSelected = false;
         }
 
@@ -456,6 +512,9 @@ const repoPanelReducer = (state = initialState, action) => {
 
         case actionTypes.REPO_GET_USER_PROJECT_FILES: return repoGetUserProjectFiles(state,action);
         case actionTypes.REPO_GET_USER_PROJECT_FILES_FAILED: return repoGetUserProjectFilesFailed(state,action);
+
+        case actionTypes.REPO_CREATE_NEW_SESSION: return repoCreateSession(state,action);
+        case actionTypes.REPO_CREATE_NEW_SESSION_FAILED: return repoCreateSessionFailes(state,action);
 
         //case actionTypes.REPO_UPLOAD_FILE: return repoUploadFile(state,action);
         

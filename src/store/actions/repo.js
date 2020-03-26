@@ -4,7 +4,93 @@ import { saveAs } from 'file-saver';
 //import { saveSync } from 'save-file';
 //import streamSaver from 'StreamSaver';
 
+// ############################################################
+// ################ pobieranie sesji projektu #################
+// ############################################################
 
+export const getRepoAssetsSuccess = (userId, sessions, containers) => {
+    return {
+        type: actionTypes.REPO_GET_USER_PROJECT_FILES,
+        sessions: sessions,
+        containers: containers,
+    }
+}
+
+export const getRepoAssetsFailed = (error) => {
+    return {
+        type: actionTypes.REPO_GET_USER_PROJECT_FILES_FAILED,
+        error: error,
+    }
+}
+
+// pobieram liste plikow w katalogu uzytkownika dla danego projektu
+export const getRepoAssets = (userId, projectId, token) => {
+    return dispatch => {
+        axios.get(('/repoFiles/' + projectId+"/"+userId), {
+            headers: {
+                Authorization: 'Bearer ' + token
+            },
+        })
+        .then(response => {
+            dispatch(getRepoAssetsSuccess(userId, response.data.sessions, response.data.containers));
+        })
+        .catch(error => {
+            dispatch(getRepoAssetsFailed(error));
+        });
+    }
+}
+
+
+// ############################################################
+// ####################### tworzenie nowej sesji ##############
+// ############################################################
+
+export const createNewSession = (sessionName, projectId, userId, token) => {
+    return dispatch => {
+
+        axios.put('/repoFiles/createNewSession',
+            {
+                sessionName: sessionName,
+                projectId: projectId,
+                userId: userId,
+            }, 
+            {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                
+                },
+            }
+        )
+        .then(sessionData => {
+           let createdSessionName = sessionData.data.sessionName;
+           let createdSessionId = sessionData.data.id;
+           dispatch(createNewSessionDone(createdSessionName,createdSessionId));
+        })
+        .catch(error => {
+            dispatch(createNewSessionFailed(error));
+        });
+    }
+}
+
+export const createNewSessionDone = (sessionName, sessionId) => {
+    return {
+        type: actionTypes.REPO_CREATE_NEW_SESSION,
+        sessionName: sessionName,
+        sessionId: sessionId,
+    }
+}
+
+export const createNewSessionFailed = (error) => {
+    return {
+        type: actionTypes.REPO_CREATE_NEW_SESSION_FAILED,
+        errorMessage: error,
+    }
+}
+
+
+// ########################################################
+// ################## zazbaczanie w repo #####################
+// ##########################################################
 
 export const selectSession = (sessionId) =>{
     return {
@@ -209,13 +295,10 @@ export const getProjectFilesForUserActionFailed = (error) => {
 export const getProjectFilesForUser = (userId, projectId, token) => {
     return dispatch => {
        
-        axios.get(('/repoFiles/' + userId), {
+        axios.get(('/repoFiles/' + projectId + "/" + userId), {
             headers: {
                 Authorization: 'Bearer ' + token
             },
-            params: {
-                projectId: projectId
-            }
         })
             .then(response => {
                 dispatch(getProjectFilesForUserAction(userId, response.data.sessions, response.data.containers));

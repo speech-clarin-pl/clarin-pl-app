@@ -15,6 +15,7 @@ import { extensionMapping } from '../../../utils/fileTypes';
 import {Alert, Progress} from 'reactstrap';
 import UploadAudio from '../../../components/UploadAudio/UploadAudio';
 import RepoSession from './RepoSession/RepoSession';
+import SingleInputForm from '../../../components/UI/SingleInputForm/SingleInputForm';
 
 
 import ContainerFile from './ContainerFile/ContainerFile';
@@ -29,6 +30,12 @@ import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 
 
 class repoPanel extends Component {
+
+    state = {
+        clickCreateSession: false,
+        clickRemoveItem: false,
+        newSessionName: "",
+    }
 
 
     selectSessionHandler = (sessionId) => {
@@ -50,41 +57,102 @@ class repoPanel extends Component {
 		const currentProjectOwner = this.props.currentProjectOwner; //Owner id
 
 		this.props.onGetProjectFilesForUser(currentProjectOwner, currentProjectID, this.props.token);
-	}
+    }
+    
+    addSession = () => {
+        this.setState({clickCreateSession: true});
+        this.props.onOpenModalHandler();
+    }
+
+    closeModalHandler = () => {
+		this.props.onCloseModalHandler();
+    }
+
+    //zajmuje się obsługą updatu inputa dla nazwy nowego projektu
+    newSessionChangeHandler = (event) => {
+        event.preventDefault();
+        this.setState({
+          newSessionName: event.target.value,
+        })
+    }
+
+    // wysyła tworzenie nowego projektu
+    onSubmitNewSessionHandler = (event) => {
+        event.preventDefault();
+        this.props.createNewSession(this.state.newSessionName, 
+            this.props.currentProjectID, 
+            this.props.currentProjectOwner,
+            this.props.token
+            );
+        this.props.onCloseModalHandler();
+    }
+
 
 
 	render() {
 
-        let listaSesji = null;
+        //############## zawartość okna modalnego
 
+        let modalTitle = "";
+        let modalContent = null;
+        let lebelButton = "";
+
+
+        if(this.state.clickCreateSession){
+            modalTitle = "Tworzenie nowej sesji";
+
+            lebelButton = "Stwórz sesje";
+
+            modalContent = (
+                <SingleInputForm 
+                    placeholder={"Podaj nazwe sesji"}
+                    onChangeHandler={this.newSessionChangeHandler}
+                    value={this.state.newSessionName}
+                    buttonLabel={lebelButton}
+                    onSubmitHandler={this.onSubmitNewSessionHandler}/>
+            );
+        }
+
+     
+
+        //########### rendering listy sesji i contenerow
+        let listaSesji = null;
         listaSesji = Object.keys(this.props.repoData.sessions.byId).map(sessionId => {
             
-        let sId = this.props.repoData.sessions.byId[sessionId].id;
-        let sessionName = this.props.repoData.sessions.byId[sessionId].sessionName;
-        let ifSelected = this.props.repoData.sessions.byId[sessionId].ifSelected;
-        let containersIds = this.props.repoData.sessions.byId[sessionId].containers;
+            let sId = this.props.repoData.sessions.byId[sessionId].id;
+            let sessionName = this.props.repoData.sessions.byId[sessionId].sessionName;
+            let ifSelected = this.props.repoData.sessions.byId[sessionId].ifSelected;
+            let containersIds = this.props.repoData.sessions.byId[sessionId].containers;
 
-        let containersArray = containersIds.map(containerId => {
-            return this.props.repoData.containers.byId[containerId];
+            let containersArray = containersIds.map(containerId => {
+                return this.props.repoData.containers.byId[containerId];
+            })
+
+
+                return  <RepoSession 
+                                containers={containersArray} 
+                                sessionName={sessionName}
+                                sessionId = {sId}
+                                key = {sId}
+                                ifSelected = {ifSelected}
+                                selectTheSession = {this.selectSessionHandler}
+                                selectTheContainer = {this.selectContainerHandler} />
         })
 
 
-            return  <RepoSession 
-                            containers={containersArray} 
-                            sessionName={sessionName}
-                            sessionId = {sId}
-                            key = {sId}
-                            ifSelected = {ifSelected}
-                            selectTheSession = {this.selectSessionHandler}
-                            selectTheContainer = {this.selectContainerHandler} />
-                 
-
-        })
 
  
 
 		return (
 			<Aux>
+
+                <Modal 
+                    show={this.props.modal}
+					modalClosed={this.closeModalHandler}
+                    modalTitle={modalTitle}
+                >
+                    {modalContent}
+                </Modal> 
 
 				<div className="RepoPanel" id="RepoPanel">
 					<div className="topPart">
@@ -107,8 +175,8 @@ class repoPanel extends Component {
 
                             <Tooltip title="Dodaj sesję">
                                 <a href="#" role="button">
-                                    <FontAwesomeIcon icon={faFolderPlus} /> 
-                                </a>
+                                        <FontAwesomeIcon icon={faFolderPlus} onClick={this.addSession} /> 
+                                </a> 
                             </Tooltip>
                             
                             <Tooltip title="Usuń zaznaczony obiekt">
@@ -117,11 +185,7 @@ class repoPanel extends Component {
                                 </a>
                             </Tooltip>
 
-                            <Tooltip title="Wgraj pliki">
-                                <a href="#" role="button">
-                                    <FontAwesomeIcon icon={faCloudUploadAlt} /> 
-                                </a>
-                            </Tooltip>
+                            
                             
                         </div>
 
@@ -155,6 +219,7 @@ const mapStateToProps = (state) => {
 		currentProjectName: state.projectR.currentProjectName,
         currentProjectOwner: state.projectR.currentProjectOwner,
         token: state.homeR.token,
+        modal: state.projectR.modal,
 	}
 }
 
@@ -164,6 +229,11 @@ const mapDispatchToProps = dispatch => {
     onSelectSession: (sessionId) => dispatch(repoActions.selectSession(sessionId)),
     onSelectContainer: (containerId) => dispatch(repoActions.selectContainer(containerId)),
     onGetProjectFilesForUser: (userId, projectId, token) => dispatch(repoActions.getProjectFilesForUser(userId, projectId, token)),
+
+    onOpenModalHandler: () => dispatch(repoActions.openModalProject()),
+    onCloseModalHandler: () => dispatch(repoActions.closeModalProject()),
+    
+    createNewSession: (sessionName, projectId, userId, token) => dispatch(repoActions.createNewSession(sessionName, projectId, userId, token)),
 	}
 }
 

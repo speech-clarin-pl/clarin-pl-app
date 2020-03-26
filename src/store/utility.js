@@ -33,6 +33,6 @@ export const convertArrayToObject = (array, key) => {
 //wyciaga id z tablicy obiektow
 export const getIdsArray = (array) => {
     return array.map(item =>{
-        return item._id;
+        return item.id;
     });
 };

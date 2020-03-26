@@ -35,25 +35,31 @@ class UploadAudio extends Component {
 
     
  
-    uploadFiles(sessionId) {
+    uploadFiles(sid) {
 
       this.setState({ uploadProgress: {}, uploading: true });
+
+      const projectId = this.props.currentProjectID;
+      const userId = this.props.currentProjectOwner;
+      const sessionId = this.props.currentlySelestSessions[0];
 
       this.state.files.forEach(file => {
 
         const dataToSend = new FormData();
 
+        dataToSend.append('userId', userId);
+        dataToSend.append('projectId', projectId);
+        dataToSend.append('sessionId', sessionId);
+
         dataToSend.append('audioFile', file);
 
-        dataToSend.append('userId', this.props.currentProjectOwner);
-        dataToSend.append('projectId', this.props.currentProjectID);
-        dataToSend.append('sessionId', 'do zrobienia...');
+
         
         axios.post('/repoFiles/uploadFile', dataToSend,{
 
           headers: {
               Authorization: 'Bearer ' + this.props.token,
-              'Content-Type': 'multipart/form-data',
+              'Content-Type': `multipart/form-data; boundary=${dataToSend._boundary}`,
           },
 
           onUploadProgress: ProgressEvent => {
@@ -246,6 +252,7 @@ class UploadAudio extends Component {
       currentProjectID: state.projectR.currentProjectID,
       currentProjectName: state.projectR.currentProjectName,
       currentProjectOwner: state.projectR.currentProjectOwner,
+      currentlySelestSessions: state.repoR.currentlySelestSessions,
       token: state.homeR.token,
 
       // uploadPercent: state.repoR.uploadProgress,
