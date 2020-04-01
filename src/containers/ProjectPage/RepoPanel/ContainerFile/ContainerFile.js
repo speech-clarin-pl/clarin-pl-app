@@ -16,13 +16,22 @@ class ContainerFile extends Component {
     }
 
     render() {
+
+        //wyświetlam tylko pierwsze 11 znaków nazwy pliku....
+        let contName = this.props.containerName;
+        if(contName.length > 11){
+            contName = contName.substring(1,11) + "...";
+        }
+
         return(
             <div className={this.props.ifSelected? "ContainerFile selected" : "ContainerFile"} onClick={this.selectContainer}>
                 <div className="row">
                     <div className="col">
                         <div className="containerName">
                             <FontAwesomeIcon icon={faFileAudio} className="repoIconMain" /> 
-                            {this.props.containerName}
+                            {
+                                contName
+                            }
                         </div>
                         
                     </div>

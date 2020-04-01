@@ -136,6 +136,8 @@ const repoCreateSessionFailes = (state, action) => {
 }
 
 //######################################################
+//########## pobieram liste sesji i kontenerow uzytkownika ################
+//######################################################
 
 const repoGetUserProjectFiles = (state, action) => {
 

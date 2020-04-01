@@ -7,6 +7,8 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import { CHANGE_AUDIO_DISPLAYED } from '../../store/actions/actionsTypes';
+import ContainerFile from '../../containers/ProjectPage/RepoPanel/ContainerFile/ContainerFile';
 
 class UploadAudio extends Component {
 
@@ -22,7 +24,7 @@ class UploadAudio extends Component {
       super(props)
       this.onFilesAdded = this.onFilesAdded.bind(this);
       this.uploadFiles = this.uploadFiles.bind(this);
-      //this.sendRequest = this.sendRequest.bind(this);
+      this.sendRequest = this.sendRequest.bind(this);
       this.renderActions = this.renderActions.bind(this);
     }
 
@@ -33,45 +35,82 @@ class UploadAudio extends Component {
         }));
     }
 
+
+    sendRequest(file) {
+
+        const projectId = this.props.currentProjectID;
+        const userId = this.props.currentProjectOwner;
+        const sessionId = this.props.currentlySelestSessions[0];
+
+        return new Promise((resolve, reject) => {
+          const dataToSend = new FormData();
+
+          dataToSend.append('userId', userId);
+          dataToSend.append('projectId', projectId);
+          dataToSend.append('sessionId', sessionId);
+          dataToSend.append('audioFile', file);
+  
+          axios.post('/repoFiles/uploadFile', dataToSend,{
+  
+            headers: {
+                Authorization: 'Bearer ' + this.props.token,
+                'Content-Type': `multipart/form-data; boundary=${dataToSend._boundary}`,
+            },
+  
+            onUploadProgress: ProgressEvent => {
+              const copy = { ...this.state.uploadProgress };
+              copy[file.name] = {
+                state: "pending",
+                percentage: (ProgressEvent.loaded / ProgressEvent.total) * 100
+              };
+             this.setState({ uploadProgress: copy });
+            },
+          })
+          .then(response => {
+  
+            let oryginalName = response.data.oryginalName;
+            let sessionId = response.data.sessionId;
+            let containerId = response.data.containerId;
+            let message = response.data.message;
+  
+            const copy = { ...this.state.uploadProgress };
+            copy[oryginalName] = { state: "done", percentage: 100 };
+            this.setState({ uploadProgress: copy });
+  
+            resolve(response);
+          })
+          .catch(error=>{
+
+            reject(error);
+
+          });
+        })
+    }
+
     
  
-    uploadFiles(sid) {
+    async uploadFiles(sid) {
 
       this.setState({ uploadProgress: {}, uploading: true });
 
-      const projectId = this.props.currentProjectID;
-      const userId = this.props.currentProjectOwner;
-      const sessionId = this.props.currentlySelestSessions[0];
+      const promises = [];
+
+     
 
       this.state.files.forEach(file => {
+        promises.push(this.sendRequest(file));
+      });
 
-        const dataToSend = new FormData();
-
-        dataToSend.append('userId', userId);
-        dataToSend.append('projectId', projectId);
-        dataToSend.append('sessionId', sessionId);
-
-        dataToSend.append('audioFile', file);
-
-
+      //czekam aż wszystkie pliki się załadują
+      try {
+        await Promise.all(promises);
+    
+        this.setState({ successfullUploaded: true, uploading: false });
+      } catch (e) {
         
-        axios.post('/repoFiles/uploadFile', dataToSend,{
-
-          headers: {
-              Authorization: 'Bearer ' + this.props.token,
-              'Content-Type': `multipart/form-data; boundary=${dataToSend._boundary}`,
-          },
-
-          onUploadProgress: ProgressEvent => {
-            const copy = { ...this.state.uploadProgress };
-            copy[file.name] = {
-              state: "pending",
-              percentage: (ProgressEvent.loaded / ProgressEvent.total) * 100
-            };
-           this.setState({ uploadProgress: copy });
-          },
-        });
-      })
+        // TO DO: musze dorobić jakiś error handling tutaj - narazie jest tylko to
+        this.setState({ successfullUploaded: true, uploading: false });
+      }
 
     }
 
@@ -110,7 +149,7 @@ class UploadAudio extends Component {
       // }
 
 
-      renderActions() {
+      renderActions() {  
         if(this.state.files.length > 0){
           if (this.state.successfullUploaded) {
             return (
@@ -179,21 +218,16 @@ class UploadAudio extends Component {
 
       renderProgress(file) {
         const uploadProgress = this.state.uploadProgress[file.name];
+                   
         if (this.state.uploading || this.state.successfullUploaded) {
-          return (
-            <div className="ProgressWrapper">
-              <Progress progress={uploadProgress ? uploadProgress.percentage : 0} />
-              {
-                /*
-                <FontAwesomeIcon icon={faCheck} className="CheckIcon" style={{
-                  opacity:
-                    uploadProgress && uploadProgress.state === "done" ? 0.5 : 0
-                }} /> 
-                */
-              }
-              
-            </div>
-          );
+
+          let containerRep = (
+              <div className="ProgressWrapper">
+                  <Progress progress={uploadProgress ? uploadProgress.percentage : 0} />
+              </div>
+            );
+       
+          return containerRep;
         }
       }
 
@@ -214,6 +248,8 @@ class UploadAudio extends Component {
       }
   
     render() {
+
+    
         return (
             <div className="UploadAudio">
               <div className="ContentUploadAudio">
@@ -227,14 +263,37 @@ class UploadAudio extends Component {
 
                 <div className="Files">
                     {this.state.files.map((file, index) => {
-                    return (
-                        <div key={file.name+index} className="FileToUpload">
-                           <FontAwesomeIcon icon={faMinusCircle} className="removeFile" onClick={(e) => this.removeToUpload(index, file.name+index, e)} /> 
-                          
-                            <span className="Filename">{file.name}</span>
-                            {this.renderProgress(file)}
-                        </div>
-                    );
+
+                        const uploadProgress = this.state.uploadProgress[file.name];
+
+                        let containerRep = null; //container representation
+
+                        //decyduje czy wyświetlić plik czy etap jego ładowania
+                        if(uploadProgress && uploadProgress.state === "done"){
+                          containerRep = (
+                            <ContainerFile 
+                                containerName={file.name}
+                                ifSelected = {false}
+                                ifAudio = {true}
+                                ifVAD = {false}
+                                ifDIA = {false}
+                                ifRECO = {false}
+                                ifALIGN = {false}
+                                />
+                          );
+                        } else {
+                          containerRep = (
+                              <div key={file.name+index} className="FileToUpload">
+                                <FontAwesomeIcon icon={faMinusCircle} className="removeFile" onClick={(e) => this.removeToUpload(index, file.name+index, e)} /> 
+                                
+                                  <span className="Filename">{file.name}</span>
+                                  {this.renderProgress(file)}
+                              </div>
+                          );
+                        }
+
+                        return containerRep;
+
                     })}
 
                 </div>

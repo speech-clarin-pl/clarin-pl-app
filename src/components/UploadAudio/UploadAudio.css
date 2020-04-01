@@ -48,7 +48,6 @@
     align-items: flex-start;
     justify-items: flex-start;
     flex: 1;
-    overflow-y: auto;
   }
   
   .UploadAudio .Actions {
