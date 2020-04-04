@@ -11,10 +11,9 @@ export {
     uploadFiles,
     uploadFilesFinish,
     uploadFilesModalOpen,
-    
     createNewSession,
     selectSession,
-    selectContainer
+    selectContainer,
 } from './repo';
 
 export {
@@ -67,7 +66,8 @@ export {
     updateFileState,
     removeRecognitionItem,
     openRecognitionAudioPreview,
-    setRefusedFiles
+    setRefusedFiles,
+    addContainerToReco,
 } from './toolActions/recognition';
 
 export {

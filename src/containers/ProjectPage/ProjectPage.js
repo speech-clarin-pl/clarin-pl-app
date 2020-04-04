@@ -17,8 +17,12 @@ import TopBar from '../../components/TopBar/TopBar';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Tab from '../ProjectPage/TabContainer/Tab/Tab';
 import * as projectActions from '../../store/actions/index';
+import {DndProvider} from 'react-dnd';
+import Backend from 'react-dnd-html5-backend';
 
 //import axios from '../../axios-speechtools';
+
+
 
 class ProjectPage extends Component {
 
@@ -94,6 +98,7 @@ class ProjectPage extends Component {
   render() {
 
     return (
+      <DndProvider backend={Backend}>
         <Aux>
          
             <TopBar 
@@ -147,7 +152,7 @@ class ProjectPage extends Component {
            <RepoPanel />
           
         </Aux>
-      
+      </DndProvider>
     );
   }
 }

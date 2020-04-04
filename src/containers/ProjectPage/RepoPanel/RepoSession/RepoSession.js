@@ -30,8 +30,8 @@ class RepoSession extends Component {
 
     selectTheContainer = (containerId) => {
         this.selectTheSession();
+         console.log(containerId);
         this.props.selectTheContainer(containerId);
-
     }
 
 
@@ -47,16 +47,18 @@ class RepoSession extends Component {
 
         containerList = this.props.containers.map(container => {
             return   <ContainerFile 
-                containerName = {container.containerName}
-                key = {container.id}
-                containerId = {container.id}
-                ifAudio={container.ifAudio}
-                ifDIA = {container.ifDIA}
-                ifVAD = {container.ifVAD}
-                ifREC = {container.ifREC}
-                ifSEG = {container.ifSEG}
-                ifSelected = {container.ifSelected}
-                selectContainer = {this.selectTheContainer}/>
+                            containerName = {container.containerName}
+                            onAddContainerToReco = {this.props.onAddContainerToReco}
+                            key = {container._id}
+                            containerId = {container._id}
+                            projectId = {this.props.projectId}
+                            ifAudio={container.ifAudio}
+                            ifDIA = {container.ifDIA}
+                            ifVAD = {container.ifVAD}
+                            ifREC = {container.ifREC}
+                            ifSEG = {container.ifSEG}
+                            ifSelected = {container.ifSelected}
+                            selectContainer = {this.selectTheContainer}/>
         });
 
 

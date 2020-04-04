@@ -1,6 +1,19 @@
 import * as actionTypes from '../actionsTypes';
 import axios from 'axios';
 
+
+// ###################################################################
+// ######## dodawanie contanera z repo do panelu rozpoznawania ##########
+// ###################################################################
+
+export const addContainerToReco = (containerId) => {
+    return {
+        type: actionTypes.ADD_CONTAINER_TO_RECO,
+        containerId: containerId,
+    }
+}
+
+
 export const dropFiles = (files) => {
     return {
         type: actionTypes.DROP_FILES,

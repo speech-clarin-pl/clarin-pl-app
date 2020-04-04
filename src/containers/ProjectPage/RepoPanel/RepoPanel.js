@@ -88,6 +88,13 @@ class repoPanel extends Component {
     }
 
 
+    // dodaje contener do listy Rozpoznawania
+    addContainerToRecoList = (containerId) => {
+       // console.log(this.props.repoData.containers.byId[containerId])
+        this.props.addContainerToReco(this.props.repoData.containers.byId[containerId])
+    }
+
+
 
 	render() {
 
@@ -133,10 +140,12 @@ class repoPanel extends Component {
                                 containers={containersArray} 
                                 sessionName={sessionName}
                                 sessionId = {sId}
+                                projectId = {this.props.currentProjectID}
                                 key = {sId}
                                 ifSelected = {ifSelected}
                                 selectTheSession = {this.selectSessionHandler}
-                                selectTheContainer = {this.selectContainerHandler} />
+                                selectTheContainer = {this.selectContainerHandler} 
+                                onAddContainerToReco = {(containerId) => this.addContainerToRecoList(containerId)}/>
         })
 
 
@@ -231,7 +240,10 @@ const mapDispatchToProps = dispatch => {
     onGetProjectFilesForUser: (userId, projectId, token) => dispatch(repoActions.getProjectFilesForUser(userId, projectId, token)),
 
     onOpenModalHandler: () => dispatch(repoActions.openModalProject()),
+
     onCloseModalHandler: () => dispatch(repoActions.closeModalProject()),
+
+    addContainerToReco: (containerId) => dispatch(repoActions.addContainerToReco(containerId)),
     
     createNewSession: (sessionName, projectId, userId, token) => dispatch(repoActions.createNewSession(sessionName, projectId, userId, token)),
 	}

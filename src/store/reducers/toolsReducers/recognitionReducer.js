@@ -1,5 +1,6 @@
 import * as actionTypes from '../../actions/actionsTypes';
 import {updateObject} from '../../utility';
+//import { addContainerToReco } from '../../actions';
 //import { removeRecognitionItem } from '../../actions';
 
 
@@ -15,7 +16,17 @@ const initialState = {
     // }]
     modal: false, //controls if modal window is opened
     recoFileForPreview: '', //indicates which file is chosen for preview
+}
 
+const addContainerToReco = (state,action) => {
+   
+    const newElementToAdd = action.containerId;
+    const newElements = [...state.filesToUpload, newElementToAdd];
+   // console.log(newElementToAdd)
+    
+    return updateObject(state, {
+        filesToUpload:newElements, 
+    })
 }
 
 const setRefusedFiles = (state, action) => {
@@ -123,6 +134,7 @@ const openAudioRecPreview = (state, action) => {
 
 const recognitionReducer = (state = initialState, action) => {
     switch(action.type){
+        case actionTypes.ADD_CONTAINER_TO_RECO: return addContainerToReco(state,action);
         case actionTypes.DROP_FILES: return dropFiles(state, action);
         case actionTypes.INIT_BATCH_RECOGNITION: return initBatchRecognition(state,action);
         case actionTypes.INIT_FILE_RECOGNITION: return initFileRecognition(state,action);

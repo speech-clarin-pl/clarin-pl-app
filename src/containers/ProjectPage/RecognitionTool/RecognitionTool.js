@@ -158,14 +158,6 @@ class RecognitionTool extends Component {
 
     render() {
 
-        /*
-        let refusedFileNames = null;
-        if (this.props.refusedFileList.length > 0) {
-            refusedFileNames = this.props.refusedFileList.map(file => {
-                return <div>{file.name}</div>;
-            })
-        }
-        */
 
         let filelist = (
             <h4 style={{ marginTop: '10px' }}>Wgraj pliki do rozpoznawania</h4>
@@ -175,7 +167,7 @@ class RecognitionTool extends Component {
 
             filelist = this.props.filesToUpload.map((file, i) =>
                 <RecognitionItem key={"key" + i}
-                    fileID={file.id} />
+                    file={file} />
             )
         }
 

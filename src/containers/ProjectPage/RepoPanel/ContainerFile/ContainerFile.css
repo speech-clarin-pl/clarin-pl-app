@@ -6,7 +6,7 @@
  }
 
  .ContainerFile.selected{
-  background: #b6d2ba;
+  background: rgba(187,212,191,0.4);
 }
 
  .ContainerFile:hover:not(.selected){
