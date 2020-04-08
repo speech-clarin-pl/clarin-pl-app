@@ -14,6 +14,7 @@ export {
     createNewSession,
     selectSession,
     selectContainer,
+    removeContainerFromRepo,
 } from './repo';
 
 export {
@@ -79,7 +80,8 @@ export {
     startSegmentItem,
     initSegmentProcessing,
     setRefusedSegmentAudioFiles,
-    setRefusedSegmentTxtFiles
+    setRefusedSegmentTxtFiles,
+    addContainerToAlign,
 } from './toolActions/segmentation';
 
 

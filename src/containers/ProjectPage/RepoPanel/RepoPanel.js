@@ -37,6 +37,23 @@ class repoPanel extends Component {
         newSessionName: "",
     }
 
+    removeObjectFromRepo = () => {
+        let selectedSession = this.props.currentlySelectedSessions;
+        let selectedContainers = this.props.currentlySelectedContainers;
+
+        if(selectedSession[0] !== null && selectedSession.length > 0) {
+            alert("Czy chcesz usunąć sesję wraz ze wszystkimi plikami w tej sesji?")
+        } else {
+            //usuwam zaznaczone containery
+            for(let i=0;i<selectedContainers.length;i++){
+                this.props.removeContainerFromRepo(selectedContainers[i],
+                    this.props.currentProjectOwner,
+                    this.props.currentProjectID,
+                    this.props.token);
+            }
+        }
+    }
+
 
     selectSessionHandler = (sessionId) => {
         this.props.onSelectSession(sessionId);
@@ -91,7 +108,12 @@ class repoPanel extends Component {
     // dodaje contener do listy Rozpoznawania
     addContainerToRecoList = (containerId) => {
        // console.log(this.props.repoData.containers.byId[containerId])
-        this.props.addContainerToReco(this.props.repoData.containers.byId[containerId])
+        this.props.addContainerToReco(this.props.repoData.containers.byId[containerId]);
+    }
+
+    // dodaje contaner do listy Align
+    addContainerToAlignList = (containerId) => {
+        this.props.addContainerToAlign(this.props.repoData.containers.byId[containerId]);
     }
 
 
@@ -145,7 +167,8 @@ class repoPanel extends Component {
                                 ifSelected = {ifSelected}
                                 selectTheSession = {this.selectSessionHandler}
                                 selectTheContainer = {this.selectContainerHandler} 
-                                onAddContainerToReco = {(containerId) => this.addContainerToRecoList(containerId)}/>
+                                onAddContainerToReco = {(containerId) => this.addContainerToRecoList(containerId)}
+                                onAddContainerToAlign = {(containerId) => this.addContainerToAlignList(containerId)}/>
         })
 
 
@@ -189,7 +212,7 @@ class repoPanel extends Component {
                             </Tooltip>
                             
                             <Tooltip title="Usuń zaznaczony obiekt">
-                                <a href="#" role="button">
+                                <a href="#" role="button" onClick={this.removeObjectFromRepo}>
                                     <FontAwesomeIcon icon={faTrash} /> 
                                 </a>
                             </Tooltip>
@@ -224,6 +247,8 @@ const mapStateToProps = (state) => {
 	return {
         //repoSessions: state.repoR,
         repoData: state.repoR,
+        currentlySelectedSessions: state.repoR.currentlySelectedSessions,
+        currentlySelectedContainers: state.repoR.currentlySelectedContainers,
         currentProjectID: state.projectR.currentProjectID,
 		currentProjectName: state.projectR.currentProjectName,
         currentProjectOwner: state.projectR.currentProjectOwner,
@@ -239,11 +264,14 @@ const mapDispatchToProps = dispatch => {
     onSelectContainer: (containerId) => dispatch(repoActions.selectContainer(containerId)),
     onGetProjectFilesForUser: (userId, projectId, token) => dispatch(repoActions.getProjectFilesForUser(userId, projectId, token)),
 
+    removeContainerFromRepo: (containerId, userId, projectId, sessionId,token) => dispatch(repoActions.removeContainerFromRepo(containerId, userId, projectId, sessionId,token)),
+
     onOpenModalHandler: () => dispatch(repoActions.openModalProject()),
 
     onCloseModalHandler: () => dispatch(repoActions.closeModalProject()),
 
     addContainerToReco: (containerId) => dispatch(repoActions.addContainerToReco(containerId)),
+    addContainerToAlign: (container) => dispatch(repoActions.addContainerToAlign(container)),
     
     createNewSession: (sessionName, projectId, userId, token) => dispatch(repoActions.createNewSession(sessionName, projectId, userId, token)),
 	}

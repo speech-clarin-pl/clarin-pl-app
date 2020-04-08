@@ -5,7 +5,32 @@ import { saveAs } from 'file-saver';
 //import streamSaver from 'StreamSaver';
 
 
+//############################################################
+// ############## usuwanie containera z repo #################
+// ###########################################################
 
+export const removeContainerFromRepo = (containerId, userId, projectId,token) => {
+    return dispatch => {
+
+        axios.delete(('/repoFiles/' + userId+"/"+projectId+'/'+containerId), 
+        {
+            projectId: projectId,
+            userId: userId,
+            containerId: containerId,
+        }, 
+        {
+            headers: {
+                Authorization: 'Bearer ' + token
+            },
+        })
+        .then(response => {
+            //dispatch(removeContainerFromRepo(userId, response.data.sessions, response.data.containers));
+        })
+        .catch(error => {
+           // dispatch(removeContainerFromRepoFailed(error));
+        }); 
+    }
+}
 
 
 // ############################################################

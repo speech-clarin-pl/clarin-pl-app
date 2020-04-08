@@ -1,7 +1,7 @@
 import * as actionTypes from '../../store/actions/actionsTypes';
 import Moment from 'moment';
 import { updateObject, convertArrayToObject, getIdsArray } from '../utility';
-import produce from "immer"
+import produce from "immer";
 
 
 // const initialState = {
@@ -10,7 +10,7 @@ import produce from "immer"
 //     iferror: false,
 
 
-//     currentlySelestSessions: [],
+//     currentlySelectedSessions: [],
 //     currentlySelectedContainers: [],
 
 //     sessions : {
@@ -77,7 +77,26 @@ import produce from "immer"
 //         },
 //         allIds : ["idContainer1", "idContainer2", "idContainer3"]
 //     },
+//         txtFiles : {
+    //         byId : {
+    //             "txtId1" : {
+    //                 id : "txtId1",
+    //                 txtFileName: 'jakis plik 1',
+    //                 size: 1.5 * 1024 * 1024,
+    //                 containerId: "idSesji1",
+    //             },
+    //             "txtId2" : {
+    //                 id : "txtId2",
+    //                 containerName: 'jakis plik 2',
+    //                 size: 1.5 * 1024 * 1024,
+    //                 containerId: "idSesji1",
+    //             },
+    //         },
+    //         allIds : ["idContainer1", "idContainer2", "idContainer3"]
+    //     },
 // }
+
+
 
 
 const initialState = {
@@ -85,7 +104,7 @@ const initialState = {
     errorMessage: "",
     iferror: false,
 
-    currentlySelestSessions: [],
+    currentlySelectedSessions: [],
     currentlySelectedContainers: [],
 
     sessions : {
@@ -96,6 +115,10 @@ const initialState = {
         byId : {},
         allIds : []
     },
+    txtFiles: {
+        byId: {},
+        allIds: {}
+    }
 }
 
 // #############################################
@@ -165,6 +188,17 @@ const repoGetUserProjectFilesFailed = (state, action) => {
           iferror: true});
 }
 
+const deselectAll = (objects) => {
+    for (var item in objects) {
+        if (objects.hasOwnProperty(item)) {
+            if(item.ifSelected) {
+                item.ifSelected = false;
+            }
+        }
+    }
+    return objects;
+}
+
 
 const repoSelectContainer = (state,action) => {
     
@@ -174,25 +208,40 @@ const repoSelectContainer = (state,action) => {
     const nextState = produce(state, draftState => {
 
         let allContainers = draftState.containers.byId;
+        let allSessions = draftState.sessions.byId;
 
         //zapisuje poprzednio zaznaczony aby odznaczyc
         let previouslySelectedCont = draftState.currentlySelectedContainers[0];
 
-        if(containerId){
-            draftState.currentlySelectedContainers[0] = containerId;
-        
-            //odznaczam poprzendio zaznaczony o ile nie był pusty
-            if(previouslySelectedCont){
-                allContainers[previouslySelectedCont].ifSelected = false;
-            }
-    
-            //zaznaczam docelowy
-           
-            allContainers[containerId].ifSelected = true;
+        //jezeli kliknalem to samo to robie toogle
+        if(containerId == previouslySelectedCont){
+            
+            draftState.currentlySelectedContainers[0] = null;
+            allContainers[previouslySelectedCont].ifSelected = false;
         } else {
-            if(previouslySelectedCont){
-                allContainers[previouslySelectedCont].ifSelected = false;
-                draftState.currentlySelectedContainers[0] = null;
+            if(containerId){
+                draftState.currentlySelectedContainers[0] = containerId;
+                allContainers[containerId].ifSelected = true;
+            
+                //odznaczam poprzendio zaznaczony o ile nie był pusty
+                if(previouslySelectedCont){
+                   allContainers[previouslySelectedCont].ifSelected = false;
+                }
+
+                //odznaczam również sesje o ile byla jakas zaznaczona
+                let ktorasesjazaznaczone = draftState.currentlySelectedSessions[0];
+                if(ktorasesjazaznaczone != null){
+                     allSessions[ktorasesjazaznaczone].ifSelected = false;
+                     draftState.currentlySelectedSessions[0] = null;
+                }
+               
+        
+            } else {
+                if(previouslySelectedCont){
+                    //allContainers[previouslySelectedCont].ifSelected = false;
+                    draftState.currentlySelectedContainers[0] = null;
+                    allContainers[containerId].ifSelected = false;
+                }
             }
         }
     })
@@ -209,23 +258,33 @@ const repoSelectSession = (state, action) => {
     const nextState = produce(state, draftState => {
 
 
+        let allContainers = draftState.containers.byId;
         let allSessions = draftState.sessions.byId;
 
         //zapisuje poprzednio zaznaczony aby odznaczyc
-        let previouslySelectedSess = draftState.currentlySelestSessions[0];
+        let previouslySelectedSess = draftState.currentlySelectedSessions[0];
+        let previouslySelectedCont = draftState.currentlySelectedContainers[0];
 
-        draftState.currentlySelestSessions[0] = sessionId;
+        if(sessionId == previouslySelectedSess){
+            allSessions[sessionId].ifSelected = false;
+            draftState.currentlySelectedSessions[0] = null;
 
-        
-        //odznaczam poprzendio zaznaczony o ile nie był pusty
-        if(allSessions[previouslySelectedSess] != null ){
-           allSessions[previouslySelectedSess].ifSelected = false;
+        } else {
+            draftState.currentlySelectedSessions[0] = sessionId;
+            allSessions[sessionId].ifSelected = true;
+
+            //odznaczam również contenery o ile byly jakies zaznaczone
+            let ktorezaznaczonecontenery = draftState.currentlySelectedContainers[0];
+            if(ktorezaznaczonecontenery != null){
+                allContainers[ktorezaznaczonecontenery].ifSelected = false;
+                 draftState.currentlySelectedContainers[0] = null;
+            }
+
+            //odznaczam poprzendio zaznaczony o ile nie był pusty
+            if(allSessions[previouslySelectedSess] != null ){
+               allSessions[previouslySelectedSess].ifSelected = false;
+            }
         }
-
-        //zaznaczam docelowy
-        allSessions[sessionId].ifSelected = true;
-
-
     })
 
     return nextState;

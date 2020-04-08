@@ -39,7 +39,8 @@ class ContainerFile extends Component {
     }
 
     runALIGN = () => {
-        this.props.history.push('/projects/' + this.props.projectId +'/segment/')
+        this.props.history.push('/projects/' + this.props.projectId +'/segment/');
+        this.props.onAddContainerToAlign(this.props.containerId);
     }
        
 

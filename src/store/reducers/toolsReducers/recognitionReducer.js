@@ -18,15 +18,29 @@ const initialState = {
     recoFileForPreview: '', //indicates which file is chosen for preview
 }
 
+
+// ######### dodaje container do listy rozpoznawania #########
+
 const addContainerToReco = (state,action) => {
    
     const newElementToAdd = action.containerId;
     const newElements = [...state.filesToUpload, newElementToAdd];
-   // console.log(newElementToAdd)
-    
-    return updateObject(state, {
-        filesToUpload:newElements, 
-    })
+   
+    let check = state.filesToUpload.filter(file => {
+        if(file._id == newElementToAdd._id){
+            return true;
+        } else {
+            return false;
+        }
+    });
+
+    if(check.length == 0){
+        return updateObject(state, {
+            filesToUpload:newElements, 
+        });
+    } else {
+        return state
+    }
 }
 
 const setRefusedFiles = (state, action) => {

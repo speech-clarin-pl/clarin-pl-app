@@ -24,13 +24,12 @@ class RepoSession extends Component {
     }
 
     selectTheSession = () => {
-        this.props.selectTheContainer(null);
+      //  this.props.selectTheContainer(null);
         this.props.selectTheSession(this.props.sessionId);
     }
 
     selectTheContainer = (containerId) => {
-        this.selectTheSession();
-         console.log(containerId);
+       // this.selectTheSession();
         this.props.selectTheContainer(containerId);
     }
 
@@ -49,6 +48,7 @@ class RepoSession extends Component {
             return   <ContainerFile 
                             containerName = {container.containerName}
                             onAddContainerToReco = {this.props.onAddContainerToReco}
+                            onAddContainerToAlign = {this.props.onAddContainerToAlign}
                             key = {container._id}
                             containerId = {container._id}
                             projectId = {this.props.projectId}

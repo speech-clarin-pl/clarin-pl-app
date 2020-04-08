@@ -15,11 +15,13 @@ import SortableAudioList from './SortableAudioList/SortableAudioList';
 import SortableTxtList from './SortableTxtList/SortableTxtList';
 import Modal from '../../../components/UI/Modal/Modal';
 import { extensionMapping } from '../../../utils/fileTypes';
+import { faClock } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getExt, getFilenameFromURL } from '../../../utils/utils';
 
 class SegmentTool extends Component {
 
-	state = {
+	/* state = {
         modal: false,
     }
 
@@ -242,7 +244,7 @@ class SegmentTool extends Component {
 		//console.log(extTxtFiles)
 
 		this.props.onTxtDrop(extTxtFiles);
-	}
+	} */
 
 	
 	/*
@@ -289,7 +291,7 @@ class SegmentTool extends Component {
 	*/
 
 
-	//otwiera okno modalne
+/* 	//otwiera okno modalne
     openModalHandler = () => {
         this.props.onOpenModalHandler();
     }
@@ -301,11 +303,11 @@ class SegmentTool extends Component {
             modal: false,
         })
     }
-
+ */
 
 	render() {
 
-		let entrylist = (
+/* 		let entrylist = (
 			<h4 style={{ marginTop: '10px' }}>Wgraj pliki audio oraz txt do segmentacji</h4>
 		)
 
@@ -349,25 +351,25 @@ class SegmentTool extends Component {
 				</div>
 			)
 		}
+ */
 
+		let alignIcon = <FontAwesomeIcon icon={faClock} /> ;
+
+
+		let entrylist = this.props.segmentItems.map(container => {
+			return <SegmentItem 
+				key={container._id} 
+				entryId={container._id} 
+				audioFileName={container.containerName}
+				txtFileId={container.txtFileId}
+				status={container.statusSEG} 
+				/>;
+		})
 
 		return (
 			<Aux>
 
-				{
-
-					/*
-					<LeftSiteBar czyTopPart="true" desc="Tutaj opis do segmentacji" >
-				
-								<ButtonLeftBar napis="Rozpocznij segmentacje" iconType="fa-cogs" whenClicked={null} />
-								<ButtonLeftBar napis="Zapisz wynik na Twoim dysku" disabled={true} iconType="fa-download" whenClicked={null}/>
-								<ButtonLeftBar napis="Zapisz wynik w repozytorium" disabled={true} iconType="fa-cloud-download-alt" whenClicked={null}/>
-				
-							</LeftSiteBar>
-					*/
-				}
-
-				<Modal
+				{/* <Modal
                     show={this.state.modal}
                     modalClosed={this.closeModalHandler}
                     >
@@ -377,13 +379,20 @@ class SegmentTool extends Component {
                     <button type="button" 
                         className="btn btn-outline-secondary"
                         onClick={this.closeModalHandler}>OK</button>
-                </Modal>
+                </Modal> */}
 
 
 				<LeftSiteBar
 					czyTopPart="true"
 					desc="Dopasowanie czasowe tekstu do nagrania. Podział nagrania na segmenty (wyrazy i fonemy).
-					" />
+					" >
+						 <ButtonLeftBar 
+							napis="Uruchom segmentacje"
+							icon={alignIcon}
+							customeStyle={null}
+							disabled={false}
+							whenClicked={null}/>
+				</LeftSiteBar>
 
 				<SettingBar />
 
@@ -406,7 +415,7 @@ class SegmentTool extends Component {
 							<div className="row">
 								<div className="col-md">
 
-									<DragAndDrop whenDropped={this.handleDropAudio}>
+									{/* <DragAndDrop whenDropped={this.handleDropAudio}>
 										<DropFilesArea
 											whenFilesChose={this.handleDropAudio}
 											mainTitle="Przeciągnij pliki audio z Repozytorium"
@@ -414,26 +423,27 @@ class SegmentTool extends Component {
 											allowUploadLocalFiles = {false}
 											desc=""
 										/>
-									</DragAndDrop>
+									</DragAndDrop> */}
 
 
 								</div>
 								<div className="col-md">
-									<DragAndDrop whenDropped={this.handleDropTxt}>
+									{/* <DragAndDrop whenDropped={this.handleDropTxt}>
 										<DropFilesArea
 											whenFilesChose={this.handleDropTxt}
 											mainTitle="Przeciągnij pliki tekstowe z Repozytorium"
 											multipleFiles = {true}
 											allowUploadLocalFiles = {false}
 											desc="" />
-									</DragAndDrop>
+									</DragAndDrop> */}
 								</div>
 							</div>
 
 
 							<div className="file-list">
+								{entrylist}
 
-								<div className={["row", "pairedItem", "header-pair"].join(' ')}>
+							{/* 	<div className={["row", "pairedItem", "header-pair"].join(' ')}>
 
 									<div className="col-sm-auto pair-order">
 
@@ -441,7 +451,6 @@ class SegmentTool extends Component {
 									</div>
 
 									<div className="col-sm audio-info">
-
 										<h4></h4>
 									</div>
 									<div className="col-sm-auto pair-status">
@@ -484,7 +493,10 @@ class SegmentTool extends Component {
 											}} />
 									</div>
 
-								</div>
+								</div> */}
+
+
+
 							</div>
 						</div>
 
@@ -499,6 +511,11 @@ class SegmentTool extends Component {
 
 const mapStateToProps = state => {
 	return {
+
+		segmentItems: state.segR.segmentItems,
+
+		segmentEntry: state.segR.segmentEntry,
+
 		segmentEntry: state.segR.segmentEntry,
 		audioList: state.segR.audioList,
 		txtList: state.segR.txtList,

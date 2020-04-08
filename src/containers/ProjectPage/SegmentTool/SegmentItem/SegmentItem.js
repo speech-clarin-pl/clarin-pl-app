@@ -5,17 +5,27 @@ import SegmentAudioItem from '../SegmentAudioItem/SegmentAudioItem';
 
 import * as segmentActions from '../../../../store/actions/index';
 import {connect} from 'react-redux';
-import {withRouter } from 'react-router-dom'
+import {withRouter } from 'react-router-dom';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faQuestion } from '@fortawesome/free-solid-svg-icons';
+import { faExclamation } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import {isObjectEmpty} from '../../../../utils/utils';
+
+
+
+
 
 class SegmentItem extends Component {
 
-    removeSegmentItem = (entryId) => {
-        console.log(entryId);
+/*      removeSegmentItem = (entryId) => {
         this.props.onRemoveSegmentItem(entryId);
-    }
+    } 
 
-    startSegmentation = (entryId) => {
-        console.log(entryId);
+     startSegmentation = (entryId) => {
         const currentEntry = this.props.segmentEntry.find(entry => entry.id == entryId);
         let audioFile = currentEntry.audioEntry.file;
         let txtFile = currentEntry.txtEntry.file;
@@ -54,15 +64,45 @@ class SegmentItem extends Component {
             this.props.userId, 
             this.props.projectId, 
             this.props.token)
-    }
+    }  */
 
     render() {
 
-        let statusIcon = null;  //status entry
-        let starterIcon = null; //do odpalania segmentacji
+        let statusIcon = this.props.statusSEG;  //status entry
 
+   
+        switch(statusIcon) {
+            case 'ready':
+                statusIcon = (
+                    <FontAwesomeIcon icon={faCheck} />
+                );
+                break;
+            case 'inprogress':
+                statusIcon = (
+                    <FontAwesomeIcon icon={faSpinner} />
+                );
+                break;
+            case 'error':
+                statusIcon = (
+                    <FontAwesomeIcon icon={faExclamation} />
+                );
+                break;
+            default:
+                statusIcon = (
+                    <FontAwesomeIcon icon={faQuestion} />
+                );
+        }
+
+        let txtFileName = 'unknown txt';
+
+        if(isObjectEmpty(this.props.txtFiles)!= true){
+            txtFileName = this.props.txtFiles[this.props.txtFileId].txtFileName;
+        }
         
-        
+
+
+  //      let starterIcon = null; //do odpalania segmentacji
+/* 
         if(this.props.status === 'valid'){
             statusIcon = (
                 <span className="segmenticon ready"><i className="fas fa-check"></i></span>
@@ -108,13 +148,8 @@ class SegmentItem extends Component {
                 <span className="error"><i className="fas fa-exclamation-triangle"></i> Błąd</span>
             );
             starterIcon = null;
-        }
+        } */
 
-        
-
-        
-
-   
         
         return(
             <Aux>
@@ -124,28 +159,42 @@ class SegmentItem extends Component {
     
                     <div className="col-sm audio-info">
     
-                       
-                        
+                            {
+                                this.props.audioFileName
+                            }
                     </div>
                     <div className="col-sm-auto pair-status">
                    
-                            {statusIcon}
+                            
+                            {
+                                statusIcon
+                            }
                      
                     </div>
                     <div className="col-sm txt-info">
-                         
+
+                            {
+                                txtFileName
+                            }
+
                     </div>
     
                     <div className="col-sm-auto pair-icons">
 
-                        { starterIcon}
+                        { 
+                        
+                        'pairs iceon'
+
+                        //starterIcon
+                    
+                    }
                          
 
                             {
                                
-                                    <a onClick={()=>this.removeSegmentItem(this.props.entryId)}>
-                                            <i className="removeItem fas fa-times" ></i>
-                                    </a>
+                                 //   <a onClick={()=>this.removeSegmentItem(this.props.entryId)}>
+                                 //           <i className="removeItem fas fa-times" ></i>
+                                 //   </a>
 
                                
                             }
@@ -162,7 +211,9 @@ class SegmentItem extends Component {
 
 const mapStateToProps = state => {
     return {
-        segmentEntry: state.segR.segmentEntry,
+        //segmentEntry: state.segR.segmentEntry,
+        txtFiles: state.repoR.txtFiles,
+        segmentEntry: state.segR.segmentItems,
         userId: state.projectR.currentProjectOwner,
         projectId: state.projectR.currentProjectID,
         token: state.homeR.token,

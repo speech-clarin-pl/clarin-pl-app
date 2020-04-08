@@ -1,6 +1,13 @@
 import * as actionTypes from '../actionsTypes';
 import axios from 'axios';
 
+export const addContainerToAlign = (container) => {
+    return {
+        type: actionTypes.ADD_CONTAINER_TO_ALIGN,
+        container: container,
+    }
+}
+
 //action creator for dropping audio files
 export const dropAudioFiles = (audioFiles) => {
     return {

@@ -26,3 +26,11 @@ export function getFileKeyFromURL(url){
     let fileKey = url.substring(a[4]+1);
     return fileKey;
 }
+
+export function isObjectEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}

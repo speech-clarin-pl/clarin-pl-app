@@ -14,6 +14,8 @@ import Modal from '../../../components/UI/Modal/Modal';
 import { getExt, getFilenameFromURL } from '../../../utils/utils';
 import uuid from 'uuid';
 import { extensionMapping } from '../../../utils/fileTypes';
+import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class RecognitionTool extends Component {
 
@@ -159,6 +161,11 @@ class RecognitionTool extends Component {
     render() {
 
 
+        let recoIcon = <FontAwesomeIcon icon={faFileAlt} /> ;
+
+        
+
+
         let filelist = (
             <h4 style={{ marginTop: '10px' }}>Wgraj pliki do rozpoznawania</h4>
         )
@@ -209,7 +216,18 @@ class RecognitionTool extends Component {
 
                 <LeftSiteBar
                     czyTopPart="true"
-                    desc="W tym miejscu istnieje możliwość wykonywania automatycznego rozpoznawania mowy z nagrań dźwiękowych" />
+                    desc="W tym miejscu istnieje możliwość wykonywania automatycznego rozpoznawania mowy z nagrań dźwiękowych" >
+
+                    <ButtonLeftBar 
+                        napis="Uruchom rozpoznawanie"
+                        iconType="file"
+                        icon={recoIcon}
+                        customeStyle={null}
+                        disabled={false}
+                        whenClicked={null}/>
+
+                </LeftSiteBar>
+
                 <SettingBar />
 
                 <section className="Content" data-scrollbar>
@@ -218,8 +236,11 @@ class RecognitionTool extends Component {
                         <div className="tool-desc">
                             <h2>Zamiana nagrania mowy na zapis ortograficzny</h2>
                         <div className="alert alert-info" role="alert">
+
+
                         
                             <p>Narzędzie umożliwia wgranie wielu plików jednocześnie i uruchomienie usługi jednocześnie na wielu plikach. W trakcie wykonywania usługi nie należy odświeżać strony. Pliki powinny zostać najpierw wgrane do repozytorium</p>
+                        
                         </div>
                             
 
@@ -229,14 +250,19 @@ class RecognitionTool extends Component {
                             <div className="row">
                                 <div className="col-md">
 
-                                    <DragAndDrop whenDropped={this.handleDrop}>
-                                        <DropFilesArea
-                                            whenFilesChose={this.handleDrop}
-                                            mainTitle="Przeciągnij pliki z Repozytorium"
-                                            multipleFiles = {true}
-                                            allowUploadLocalFiles = {false}
-                                            desc="Zawsze możesz zarządzać swoimi plikami" />
-                                    </DragAndDrop>
+                                {
+                                    /*
+                                        <DragAndDrop whenDropped={this.handleDrop}>
+                                            <DropFilesArea
+                                                whenFilesChose={this.handleDrop}
+                                                mainTitle="Przeciągnij pliki z Repozytorium"
+                                                multipleFiles = {true}
+                                                allowUploadLocalFiles = {false}
+                                                desc="Zawsze możesz zarządzać swoimi plikami" />
+                                        </DragAndDrop>
+                                    */
+                                }
+                                    
 
                                 </div>
                                 {

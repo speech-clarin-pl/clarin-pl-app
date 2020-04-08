@@ -13,7 +13,7 @@
     background-color: #227ab5 !important;
 }
 
-.ButtonLeftBar i {
+.ButtonLeftBar .icon {
     position: absolute;
     top: 20px;
     left: 20px;

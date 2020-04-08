@@ -1,9 +1,14 @@
 import * as actionTypes from '../../actions/actionsTypes';
 import uuid from 'uuid';
 import { updateObject } from '../../utility';
+//import { addContainerToAlign } from '../../actions';
+import produce from "immer"
 
 
 const initialState = {
+
+    segmentItems: [],
+                            // poniżej to kopie raczej nie beda uzywane
     segmentEntry: [],
     audioList: [],
     txtList: [],
@@ -11,6 +16,41 @@ const initialState = {
     refusedAudioFileList: [],  //refused audio files
     refusedTxtFileList: [],  //refused txt files
     ifRefusedAudio: true, //which component refused files - audio or if false will be txt
+}
+
+//#### dodaje contener do panelu align
+const addContainerToAlign  = (state, action) => {
+
+
+    let containerToAdd = action.container;
+
+    const newElementToAdd = containerToAdd;
+    const newElements = [...state.segmentItems, newElementToAdd];
+   
+    let check = state.segmentItems.filter(file => {
+        if(file._id == newElementToAdd._id){
+            return true;
+        } else {
+            return false;
+        }
+    });
+
+    if(check.length == 0){
+
+        const nextState = produce(state, draftState => {
+            draftState.segmentItems = newElements;
+        })
+    
+        return nextState;
+
+        /* return updateObject(state, {
+            segmentItems:newElements, 
+        }); */
+    } else {
+        return state
+    }
+
+
 }
 
 const setRefusedTxtFiles = (state, action) => {
@@ -464,6 +504,7 @@ const segmentationReducer = (state = initialState, action) => {
         case actionTypes.FILE_SEGMENTATION_FAILED: return fileSegmentationFailed(state,action);
         case actionTypes.REFUSE_SEGMENT_AUDIO_FILES: return setRefusedAudioFiles(state, action);
         case actionTypes.REFUSE_SEGMENT_TXT_FILES: return setRefusedTxtFiles(state, action);
+        case actionTypes.ADD_CONTAINER_TO_ALIGN: return addContainerToAlign(state,action);
     }
 
     return state;
