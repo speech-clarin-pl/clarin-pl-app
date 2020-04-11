@@ -9,6 +9,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { CHANGE_AUDIO_DISPLAYED } from '../../store/actions/actionsTypes';
 import ContainerFile from '../../containers/ProjectPage/RepoPanel/ContainerFile/ContainerFile';
+import * as repoActions from '../../store/actions/index';
 
 class UploadAudio extends Component {
 
@@ -40,7 +41,7 @@ class UploadAudio extends Component {
 
         const projectId = this.props.currentProjectID;
         const userId = this.props.currentProjectOwner;
-        const sessionId = this.props.currentlySelestSessions[0];
+        const sessionId = this.props.forSession;
 
         return new Promise((resolve, reject) => {
           const dataToSend = new FormData();
@@ -149,16 +150,21 @@ class UploadAudio extends Component {
       // }
 
 
+      uploadFinishAndUpdateRepo = () => {
+        this.props.onGetProjectFilesForUser(
+          this.props.currentProjectOwner, 
+          this.props.currentProjectID,
+          this.props.token);
+        this.setState({ files: [], successfullUploaded: false });
+      }
+
+
       renderActions() {  
         if(this.state.files.length > 0){
           if (this.state.successfullUploaded) {
             return (
-              <button
-                onClick={() =>
-                  this.setState({ files: [], successfullUploaded: false })
-                }
-              >
-                Wyczyść
+              <button onClick={this.uploadFinishAndUpdateRepo} >
+                Zaktualizuj repozytorium
               </button>
             );
           } else {
@@ -270,17 +276,14 @@ class UploadAudio extends Component {
 
                         //decyduje czy wyświetlić plik czy etap jego ładowania
                         if(uploadProgress && uploadProgress.state === "done"){
+
                           containerRep = (
-                            <ContainerFile 
-                                containerName={file.name}
-                                ifSelected = {false}
-                                ifAudio = {true}
-                                ifVAD = {false}
-                                ifDIA = {false}
-                                ifRECO = {false}
-                                ifALIGN = {false}
-                                />
-                          );
+                            <div key={file.name+index} className="FileToUpload">
+                              
+                                <span className="Filename">{file.name}</span>
+                                {this.renderProgress(file)}
+                            </div>
+                         );
                         } else {
                           containerRep = (
                               <div key={file.name+index} className="FileToUpload">
@@ -337,6 +340,8 @@ class UploadAudio extends Component {
   
   const mapDispatchToProps = dispatch => {
     return {
+        onGetProjectFilesForUser: (userId, projectId, token) => dispatch(repoActions.getProjectFilesForUser(userId, projectId, token)),
+
       // onOpenModalHandler: () => dispatch(repoActions.openModalProject()),
       // onCloseModalHandler: () => dispatch(repoActions.closeModalProject()),
       // onUploadFilesFinish: () => dispatch(repoActions.uploadFilesFinish()),

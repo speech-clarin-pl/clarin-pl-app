@@ -9,25 +9,36 @@ import { saveAs } from 'file-saver';
 // ############## usuwanie containera z repo #################
 // ###########################################################
 
-export const removeContainerFromRepo = (containerId, userId, projectId,token) => {
+export const removeContainerFromRepoSuccess = (message, sessionId, containerId) => {
+    return {
+        type: actionTypes.REPO_DELETE_CONTAINER_SUCCESS,
+        message: message,
+        sessionId: sessionId,
+        containerId: containerId,
+    }
+}
+
+export const removeContainerFromRepoFailed = (error) => {
+    return {
+        type: actionTypes.REPO_DELETE_CONTAINER_FAILED,
+        error: error,
+    }
+}
+
+export const removeContainerFromRepo = (userId, projectId, sessionId, containerId,token) => {
     return dispatch => {
 
-        axios.delete(('/repoFiles/' + userId+"/"+projectId+'/'+containerId), 
-        {
-            projectId: projectId,
-            userId: userId,
-            containerId: containerId,
-        }, 
+        axios.delete(('/repoFiles/' + userId+"/"+projectId+'/'+sessionId+'/'+containerId), 
         {
             headers: {
                 Authorization: 'Bearer ' + token
             },
         })
         .then(response => {
-            //dispatch(removeContainerFromRepo(userId, response.data.sessions, response.data.containers));
+            dispatch(removeContainerFromRepoSuccess(response.data.message, response.data.sessionId, response.data.containerId));
         })
         .catch(error => {
-           // dispatch(removeContainerFromRepoFailed(error));
+            dispatch(removeContainerFromRepoFailed(error));
         }); 
     }
 }

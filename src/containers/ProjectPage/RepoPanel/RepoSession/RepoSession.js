@@ -38,7 +38,7 @@ class RepoSession extends Component {
 
         let uploadCard = (
             <div className="uploadCard">
-                <UploadAudio />
+                <UploadAudio forSession={this.props.sessionId} />
             </div>
         )
 

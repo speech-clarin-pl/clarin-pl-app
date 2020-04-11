@@ -101,7 +101,7 @@ import produce from "immer";
 
 const initialState = {
 
-    errorMessage: "",
+    message: "",
     iferror: false,
 
     currentlySelectedSessions: [],
@@ -119,6 +119,64 @@ const initialState = {
         byId: {},
         allIds: {}
     }
+}
+
+// #############################################
+// #### usuniecie pojedynczego kontenera ###########
+//##############################################
+
+const repoRemoveContainerSuccess = (state, action) => {
+    const message = action.message;
+    const sessionId = action.sessionId;  // sesja z którego jest usuwany
+    const containerId = action.containerId; //kontener do usuniecia
+
+    // musze usunac ten kontener z containers oraz znalezc sesje do ktorej naleza i tez tam
+    // usunac referencje do tego kontenera
+
+    const nextState = produce(state, draftState => {
+
+        //usuwam ten kontener z listy sesji
+        let newlistconts = state.sessions.byId[sessionId].containers.filter((value, index, arr)=>{
+           return value != containerId;
+         })
+
+         draftState.sessions.byId[sessionId].containers = newlistconts;
+
+         //usuwam kontener z listy kontenerow
+        let newContainers = Object.keys(state.containers.byId).reduce((object, key) => {
+            if(key !== containerId) {
+                object[key] = state.containers.byId[key];
+            }
+            return object
+        },{});
+
+         draftState.containers.byId = newContainers;
+
+         //jezeli byly zaznaczone to odznaczam
+         draftState.currentlySelectedSessions[0] = null;
+         draftState.currentlySelectedContainers[0] = null;
+
+   })
+
+   return nextState;
+
+    
+}
+
+
+const repoRemoveContainerFailed = (state, action) => {
+
+    const message = action.error.message;
+  
+    const nextState = produce(state, draftState => {
+
+        draftState.message = message;
+        draftState.iferror = true;
+        
+   })
+
+   return nextState;
+    
 }
 
 // #############################################
@@ -148,11 +206,11 @@ const repoCreateSession = (state, action) => {
 }
 
 const repoCreateSessionFailes = (state, action) => {
-    const errorMessage = action.errorMessage;
+    const message = action.errorMessage;
 
     const nextState = produce(state, draftState => {
         draftState.ifError = true;
-        draftState.errorMessage = errorMessage;
+        draftState.message = message;
     })
 
     return nextState;
@@ -184,7 +242,7 @@ const repoGetUserProjectFiles = (state, action) => {
 const repoGetUserProjectFilesFailed = (state, action) => {
      const error = action.error.toString();
      return updateObject(state,
-         {errorMessage: error,
+         {message: error,
           iferror: true});
 }
 
@@ -576,6 +634,9 @@ const repoPanelReducer = (state = initialState, action) => {
 
         case actionTypes.REPO_CREATE_NEW_SESSION: return repoCreateSession(state,action);
         case actionTypes.REPO_CREATE_NEW_SESSION_FAILED: return repoCreateSessionFailes(state,action);
+
+        case actionTypes.REPO_DELETE_CONTAINER_SUCCESS: return repoRemoveContainerSuccess(state,action);
+        case actionTypes.REPO_DELETE_CONTAINER_FAILED: return repoRemoveContainerFailed(state,action);
 
         //case actionTypes.REPO_UPLOAD_FILE: return repoUploadFile(state,action);
         

@@ -6,13 +6,17 @@
  }
 
  .ContainerFile.selected{
-  background: rgba(187,212,191,0.4);
+  background: #3498db;
+  color: white;
 }
 
  .ContainerFile:hover:not(.selected){
     background: #ccd9de;
  }
 
+ .ContainerFile.selected .repoIcon {
+   color: #bbdff7;
+ }
 
  .ContainerFile .repoIcon {
     margin-right: 8px;
@@ -23,7 +27,6 @@
 
   .ContainerFile .repoIconMain {
     margin-right: 8px;
-    color: rgb(124, 141, 148);
     cursor: pointer;
   }
 

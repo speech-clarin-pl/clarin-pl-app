@@ -1,0 +1,34 @@
+.ToolItem {
+    background: white;
+    margin-bottom: 5px;
+    border: 1px solid #c7d5da;
+    padding: 8px 8px 8px 8px;
+    position: relative;
+}
+
+.ToolItem .file-info {
+    text-align: left;
+    overflow: hidden;
+    font-size: 0.9em;
+}
+
+.ToolItem .filesize {
+    font-size: 10px;
+}
+
+.ToolItem .faIcon {
+    margin-left: 4px;
+    margin-right: 4px;
+    font-size: 0.9em;
+}
+
+.ToolItem .faRemove {
+    position: absolute;
+    font-size: 0.7em;
+    right: 0px;
+    top: 0px;
+}
+
+.ToolItem .actionIcons a {
+    color: inherit;
+}

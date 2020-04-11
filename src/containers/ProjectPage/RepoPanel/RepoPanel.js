@@ -46,11 +46,15 @@ class repoPanel extends Component {
         } else {
             //usuwam zaznaczone containery
             for(let i=0;i<selectedContainers.length;i++){
-                this.props.removeContainerFromRepo(selectedContainers[i],
+                let containerId = selectedContainers[i];
+                this.props.removeContainerFromRepo(
                     this.props.currentProjectOwner,
                     this.props.currentProjectID,
+                    this.props.repoData.containers.byId[containerId].session,
+                    containerId,
                     this.props.token);
             }
+
         }
     }
 

@@ -16,6 +16,8 @@ import uuid from 'uuid';
 import { extensionMapping } from '../../../utils/fileTypes';
 import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ToolItem from '../ToolItem/ToolItem';
+import TextareaAutosize from 'react-textarea-autosize';
 
 class RecognitionTool extends Component {
 
@@ -172,9 +174,20 @@ class RecognitionTool extends Component {
 
         if (this.props.filesToUpload.length > 0) {
 
-            filelist = this.props.filesToUpload.map((file, i) =>
-                <RecognitionItem key={"key" + i}
-                    file={file} />
+            filelist = this.props.filesToUpload.map((file, i) => {
+                console.log(file);
+
+                return (
+                    <ToolItem 
+                        key={"key" + i} 
+                        container={file}
+                    />
+                //<RecognitionItem key={"key" + i}
+                //    file={file} />
+                )
+            }
+                
+                
             )
         }
 
@@ -247,11 +260,10 @@ class RecognitionTool extends Component {
                         </div>
 
                         <div className="tool-body">
-                            <div className="row">
+                        {
+                        /*   
+                          <div className="row">
                                 <div className="col-md">
-
-                                {
-                                    /*
                                         <DragAndDrop whenDropped={this.handleDrop}>
                                             <DropFilesArea
                                                 whenFilesChose={this.handleDrop}
@@ -260,27 +272,31 @@ class RecognitionTool extends Component {
                                                 allowUploadLocalFiles = {false}
                                                 desc="Zawsze możesz zarządzać swoimi plikami" />
                                         </DragAndDrop>
-                                    */
-                                }
-                                    
-
                                 </div>
-                                {
-                                    /*
-                                    <div className="col-md">
+                               
+                                <div className="col-md">
                                     <div className="uploadFromRepo">
                                         <h2>Wgraj pliki z repozytorium</h2>
                                         <p>Przeciągnij pliki z repozytorium. Podczas przetwarzania nie bedziesz mógł wykonywać żadnych dodatkowych operacji na tych plikach</p>
                                         <i className="fas fa-cloud-upload-alt"></i>
                                     </div>
+                                </div>
+                            </div> 
+                            */
+                            }
+
+                            <div className="row">
+                                <div className="col-sm">
+                                    <h3>Lista plików do przetworzenia</h3>
+                                    <div className="file-list">
+                                        {filelist}
                                     </div>
-                                    */
-                                }
+                                </div>
 
-                            </div>
-
-                            <div className="file-list">
-                                {filelist}
+                                <div className="col-sm">
+                                    <h3>Edytor tekstu</h3>
+                                    <TextareaAutosize maxRows={1000} minRows={5} className="textEditor" />
+                                </div>
                             </div>
                         </div>
                     </div>

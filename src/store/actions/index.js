@@ -14,6 +14,8 @@ export {
     createNewSession,
     selectSession,
     selectContainer,
+    removeContainerFromRepoSuccess,
+    removeContainerFromRepoFailed,
     removeContainerFromRepo,
 } from './repo';
 
