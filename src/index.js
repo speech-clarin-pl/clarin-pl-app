@@ -20,6 +20,8 @@ import repoReducer from './store/reducers/repoPanelReducer';
 import thunk from 'redux-thunk';
 import axios from 'axios';
 import projectReducer from './store/reducers/projectReducer';
+import vadReducer from './store/reducers/toolsReducers/vadReducer';
+import diaReducer from './store/reducers/toolsReducers/diaReducer';
 
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -46,6 +48,8 @@ const rootReducer = combineReducers({
     prolistR: projectsListReducer,
     recR: recognitionReducer,
     segR: segmentationReducer,
+    vadR: vadReducer,
+    diaR: diaReducer,
     repoR: repoReducer,
     previewR: previewReducer,
 });

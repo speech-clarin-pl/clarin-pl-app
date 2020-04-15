@@ -60,7 +60,13 @@ export {
     changeAudioDisplayed
 } from './toolActions/preview';
 
+export {
+    addContainerToDIA,
+} from './toolActions/dia';
 
+export {
+    addContainerToVAD,
+} from './toolActions/vad';
 
 export {
     dropFiles,

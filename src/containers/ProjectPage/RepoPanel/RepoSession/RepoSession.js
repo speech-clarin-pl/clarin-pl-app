@@ -49,6 +49,8 @@ class RepoSession extends Component {
                             containerName = {container.containerName}
                             onAddContainerToReco = {this.props.onAddContainerToReco}
                             onAddContainerToAlign = {this.props.onAddContainerToAlign}
+                            onAddContainerToVAD = {this.props.onAddContainerToVAD}
+                            onAddContainerToDIA = {this.props.onAddContainerToDIA}
                             key = {container._id}
                             containerId = {container._id}
                             projectId = {this.props.projectId}

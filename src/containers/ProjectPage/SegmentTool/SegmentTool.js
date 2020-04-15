@@ -18,6 +18,8 @@ import { extensionMapping } from '../../../utils/fileTypes';
 import { faClock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getExt, getFilenameFromURL } from '../../../utils/utils';
+import ToolItem from '../ToolItem/ToolItem';
+import TextareaAutosize from 'react-textarea-autosize';
 
 class SegmentTool extends Component {
 
@@ -307,7 +309,8 @@ class SegmentTool extends Component {
 
 	render() {
 
-/* 		let entrylist = (
+/* 		
+		let entrylist = (
 			<h4 style={{ marginTop: '10px' }}>Wgraj pliki audio oraz txt do segmentacji</h4>
 		)
 
@@ -356,14 +359,23 @@ class SegmentTool extends Component {
 		let alignIcon = <FontAwesomeIcon icon={faClock} /> ;
 
 
-		let entrylist = this.props.segmentItems.map(container => {
-			return <SegmentItem 
-				key={container._id} 
-				entryId={container._id} 
-				audioFileName={container.containerName}
-				txtFileId={container.txtFileId}
-				status={container.statusSEG} 
-				/>;
+		let filelist = this.props.segmentItems.map((container, i)=> {
+
+			return (
+                    <ToolItem 
+                        key={"key" + i} 
+						container={container}
+						type="ALIGN"
+                    />
+			)
+			
+			// (<SegmentItem 
+			// 	key={container._id} 
+			// 	entryId={container._id} 
+			// 	audioFileName={container.containerName}
+			// 	txtFileId={container.txtFileId}
+			// 	status={container.statusSEG} 
+			// 	/>;)
 		})
 
 		return (
@@ -384,8 +396,7 @@ class SegmentTool extends Component {
 
 				<LeftSiteBar
 					czyTopPart="true"
-					desc="Dopasowanie czasowe tekstu do nagrania. Podział nagrania na segmenty (wyrazy i fonemy).
-					" >
+					desc="Dopasowanie czasowe tekstu do nagrania. Podział nagrania na segmenty (wyrazy i fonemy)." >
 						 <ButtonLeftBar 
 							napis="Uruchom segmentacje"
 							icon={alignIcon}
@@ -413,9 +424,25 @@ class SegmentTool extends Component {
 						<div className="tool-body">
 
 							<div className="row">
+                                <div className="col-sm">
+                                    <h3>Lista plików do przetworzenia</h3>
+                                    <div className="file-list">
+                                        {filelist}
+                                    </div>
+                                </div>
+
+                                <div className="col-sm">
+                                    <h3>Edytor tekstu</h3>
+                                    <TextareaAutosize maxRows={1000} minRows={5} className="textEditor" />
+                                </div>
+                            </div>
+
+
+							{/* 
+							<div className="row">
 								<div className="col-md">
 
-									{/* <DragAndDrop whenDropped={this.handleDropAudio}>
+									<DragAndDrop whenDropped={this.handleDropAudio}>
 										<DropFilesArea
 											whenFilesChose={this.handleDropAudio}
 											mainTitle="Przeciągnij pliki audio z Repozytorium"
@@ -423,27 +450,28 @@ class SegmentTool extends Component {
 											allowUploadLocalFiles = {false}
 											desc=""
 										/>
-									</DragAndDrop> */}
+									</DragAndDrop> 
 
 
 								</div>
 								<div className="col-md">
-									{/* <DragAndDrop whenDropped={this.handleDropTxt}>
+									 <DragAndDrop whenDropped={this.handleDropTxt}>
 										<DropFilesArea
 											whenFilesChose={this.handleDropTxt}
 											mainTitle="Przeciągnij pliki tekstowe z Repozytorium"
 											multipleFiles = {true}
 											allowUploadLocalFiles = {false}
 											desc="" />
-									</DragAndDrop> */}
+									</DragAndDrop> 
 								</div>
 							</div>
+							*/}
 
-
+							{/* 
 							<div className="file-list">
 								{entrylist}
 
-							{/* 	<div className={["row", "pairedItem", "header-pair"].join(' ')}>
+								<div className={["row", "pairedItem", "header-pair"].join(' ')}>
 
 									<div className="col-sm-auto pair-order">
 
@@ -493,11 +521,14 @@ class SegmentTool extends Component {
 											}} />
 									</div>
 
-								</div> */}
+								</div> 
 
 
 
 							</div>
+
+							*/}
+
 						</div>
 
 					</div>

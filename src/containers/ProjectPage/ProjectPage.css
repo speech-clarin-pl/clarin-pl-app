@@ -16,7 +16,7 @@
 .ProjectPage .darkbg {
     background-color: #394b55;
     overflow: hidden;
-    width: 560px;
+    width: 100%;
 }
 
 .ProjectPage .Content {

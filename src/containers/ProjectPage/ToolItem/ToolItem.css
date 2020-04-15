@@ -17,9 +17,10 @@
 }
 
 .ToolItem .faIcon {
-    margin-left: 4px;
-    margin-right: 4px;
+    margin-left: 6px;
+    margin-right: 6px;
     font-size: 0.9em;
+    color: #3498db;
 }
 
 .ToolItem .faRemove {
@@ -31,4 +32,12 @@
 
 .ToolItem .actionIcons a {
     color: inherit;
+}
+
+.ToolItem .progress {
+    position: absolute;
+    bottom: -3px;
+    left: 0px;
+    right: 0px;
+    height: 6px;
 }

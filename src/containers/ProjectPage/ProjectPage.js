@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import Dashboard from './Dashboard/Dashboard';
 import RecognitionTool from './RecognitionTool/RecognitionTool';
 import SegmentTool from './SegmentTool/SegmentTool';
+import VADTool from './VADTool/VADTool';
+import DIATool from './DIATool/DIATool';
 import TranscriptionTool from './TranscriptionTool/TranscriptionTool';
 
 import RepoBar from './RepoBar/RepoBar';
@@ -117,19 +119,22 @@ class ProjectPage extends Component {
  
               <ul className={["nav nav-tabs", "darkbg"].join(' ')}>
                   <Tab  title="Dashboard" whereToLink={'/dashboard'}/>
+                  <Tab  title="Detekcja mowy" whereToLink={'/vad'}/>
+                  <Tab  title="Diaryzacja" whereToLink={'/dia'}/>
                   <Tab  title="Rozpoznawanie" whereToLink={'/recognition'}/>
                   <Tab  title="Sementacja" whereToLink={'/segment'}/>
                   {
                     /*
                     <Tab  title="Transkrypcje" whereToLink={'/transcrypt'}/>   
                     */
-                  }
-                                 
+                  }            
               </ul>
             
               <Switch>
                 <Route path={this.props.match.url + '/recognition'} component={RecognitionTool} />
                 <Route path={this.props.match.url + '/segment'} component={SegmentTool} />
+                <Route path={this.props.match.url + '/vad'} component={VADTool} />
+                <Route path={this.props.match.url + '/dia'} component={DIATool} />
                 {
                   /*
                   <Route path={this.props.match.url + '/transcrypt'} component={TranscriptionTool} />
@@ -139,6 +144,7 @@ class ProjectPage extends Component {
                 <Route path={this.props.match.url + '/dashboard'} render={(props)=> {
                   return <Dashboard/>
                 }} />
+
                 <Redirect from={this.props.match.url + '/'} to={this.props.match.url + '/dashboard'} />
                 <Route component={ErrorPage}/> 
               </Switch>

@@ -9,6 +9,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 import {ContextMenu, MenuItem, ContextMenuTrigger} from 'react-contextmenu';
 import { Tooltip } from '@material-ui/core';
@@ -17,12 +20,33 @@ import { Tooltip } from '@material-ui/core';
 class ToolItem extends Component {
 
     state = {
-
+        innerStatus:'', //can be error or progress
     }
     
+    runRecognition = (e) => {
+        e.preventDefault();
+        this.setState({innerStatus: 'progress'});
+    }
     
 
     render(){
+
+        switch(this.props.type){
+            case "DIA":
+                console.log("DIA"); //to do
+                break;
+            case "VAD":
+                console.log("VAD"); //to do
+                break;
+            case "RECO":
+                console.log("RECO"); //to do
+                break;
+            case "ALIGN":
+                console.log("ALIGN"); //to do
+                break;
+            default:
+                console.log("Default"); //to do
+        }
 
         // naprawianie wyświetlania wielkości pliku
         let nBytes = this.props.container.size;
@@ -31,13 +55,66 @@ class ToolItem extends Component {
             filesize = nApprox.toFixed(1) + " " + aMultiples[nMultiple];
         }
 
+        let statusIcon = null;
+        let progressBar = null;
+        let runRecoIcon = null;
+        let txtIcon = null;
+        let playIcon = (
+            <Tooltip title="Play audio">
+                <a href="#" role="button" disabled>
+                    <FontAwesomeIcon icon={faPlay} className="faIcon"/>
+                </a>
+            </Tooltip>
+        );
+        
+
+        if(this.props.container.ifREC == true){
+            txtIcon = (<Tooltip title="Otwórz txt">
+                        <a href="#" role="button" >
+                            <FontAwesomeIcon icon={faEye} className="faIcon" />
+                        </a>
+                    </Tooltip> );
+            runRecoIcon =  <FontAwesomeIcon icon={faFileAlt} className="faIcon" style={{opacity: 0.5}}/>
+            progressBar = null;
+        } else {
+            txtIcon = <FontAwesomeIcon icon={faEye} className="faIcon" style={{opacity: 0.5}} />;
+            runRecoIcon = (
+                <Tooltip title="Uruchom rozpoznawanie">
+                    <a href="#" role="button" onClick={this.runRecognition}>
+                        <FontAwesomeIcon icon={faFileAlt} className="faIcon"/>
+                    </a>
+                </Tooltip>
+            );
+        }
+
+
+        switch (this.state.innerStatus) {
+            case 'error':
+                statusIcon = <FontAwesomeIcon icon={faExclamationCircle} className="faIcon" /> ;
+                break;
+            case 'progress':
+                statusIcon = <FontAwesomeIcon icon={faSpinner} className="faIcon" /> ;
+                progressBar = (
+                    <div className="progress">
+                        <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style={{width:'100%'}}></div>
+                    </div>
+                );
+                runRecoIcon = <FontAwesomeIcon icon={faFileAlt} className="faIcon" style={{opacity: 0.5}}/>
+                playIcon = (
+                     <FontAwesomeIcon icon={faPlay} className="faIcon" style={{opacity: 0.5}}/>
+                );
+                break;
+            default:
+                statusIcon = null;
+        }
+
        
         return(
 
             <Aux>
                 <ContextMenuTrigger id="ToolItemId">
                     <div className="ToolItem ">
-                    <div className={["row", "toolItem"].join(' ')}>
+                        <div className={["row", "toolItem"].join(' ')}>
                             <div className="col-sm-6 file-info align-self-center pr-1">
                                 <span className={"fileName"}>{this.props.container.containerName}</span>
                             </div>
@@ -45,23 +122,15 @@ class ToolItem extends Component {
                                 {filesize}
                             </div>
                             <div className="col-sm-1 status align-self-center pl-1 pr-1">
-                                <FontAwesomeIcon icon={faCheck} className="faIcon" /> 
+                                {statusIcon}
                             </div>
                             <div className="col-sm-3 actionIcons align-self-center pl-1 pr-1">
-
-                                <Tooltip title="Play audio">
-                                    <a href="#" role="button" >
-                                        <FontAwesomeIcon icon={faPlay} className="faIcon"/>
-                                    </a>
-                                </Tooltip>
-
-                                <Tooltip title="Otwórz txt">
-                                    <a href="#" role="button" >
-                                        <FontAwesomeIcon icon={faFileAlt} className="faIcon" />
-                                    </a>
-                                </Tooltip>  
+                                {playIcon}
+                                {txtIcon}
+                                {runRecoIcon} 
                             </div>
                         </div>
+                        {progressBar}
                     </div>
                 </ContextMenuTrigger>
 

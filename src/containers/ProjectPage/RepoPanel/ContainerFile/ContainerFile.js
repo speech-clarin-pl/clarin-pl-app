@@ -14,6 +14,7 @@ import { faSurprise } from '@fortawesome/free-solid-svg-icons';
 import { faComment } from '@fortawesome/free-solid-svg-icons';
 import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import { faClock } from '@fortawesome/free-solid-svg-icons';
+import { Tooltip } from '@material-ui/core';
 
 import {withRouter } from 'react-router-dom';
 
@@ -33,12 +34,27 @@ class ContainerFile extends Component {
        // console.log("ready")
     }
 
-    runRECO = () => {
+    runVAD = (e) => {
+        e.preventDefault();
+        this.props.history.push('/projects/' + this.props.projectId +'/vad/');
+        this.props.onAddContainerToVAD(this.props.containerId);
+    }
+
+
+    runDIA = (e) => {
+        e.preventDefault();
+        this.props.history.push('/projects/' + this.props.projectId +'/dia/');
+        this.props.onAddContainerToDIA(this.props.containerId);
+    }
+
+    runRECO = (e) => {
+        e.preventDefault();
         this.props.history.push('/projects/' + this.props.projectId +'/recognition/');
         this.props.onAddContainerToReco(this.props.containerId);
     }
 
-    runALIGN = () => {
+    runALIGN = (e) => {
+        e.preventDefault();
         this.props.history.push('/projects/' + this.props.projectId +'/segment/');
         this.props.onAddContainerToAlign(this.props.containerId);
     }
@@ -76,11 +92,37 @@ class ContainerFile extends Component {
                                 
                             </div>
                             <div className="col">
-                                <FontAwesomeIcon icon={faPlay} className={["repoIcon",this.props.ifAudio? "on": ""].join(" ")} onClick={this.runPlay}/> 
-                                <FontAwesomeIcon icon={faSurprise} className={["repoIcon",this.props.ifVAD? "on": ""].join(" ")} onClick={this.runVAD}/> 
-                                <FontAwesomeIcon icon={faComment} className={["repoIcon",this.props.ifDIA? "on": ""].join(" ")} onClick={this.runDIA}/> 
-                                <FontAwesomeIcon icon={faFileAlt} className={["repoIcon",this.props.ifRECO? "on": ""].join(" ")} onClick={this.runRECO}/> 
-                                <FontAwesomeIcon icon={faClock} className={["repoIcon",this.props.ifALIGN? "on": ""].join(" ")} onClick={this.runALIGN}/> 
+                                
+                                <Tooltip title="Posłuchaj">
+                                    <a href="#" role="button" onClick={this.runPlay} >
+                                        <FontAwesomeIcon icon={faPlay} className={["repoIcon",this.props.ifAudio? "on": ""].join(" ")} /> 
+                                    </a>
+                                </Tooltip>
+
+                                <Tooltip title="Detekcja mowy (VAD)">
+                                    <a href="#" role="button"  onClick={this.runVAD} >
+                                        <FontAwesomeIcon icon={faSurprise} className={["repoIcon",this.props.ifVAD? "on": ""].join(" ")}/> 
+                                    </a>
+                                </Tooltip>
+
+                                <Tooltip title="Diaryzacja (DIA)">
+                                    <a href="#" role="button" onClick={this.runDIA} >
+                                        <FontAwesomeIcon icon={faComment} className={["repoIcon",this.props.ifDIA? "on": ""].join(" ")}/> 
+                                    </a>
+                                </Tooltip>
+
+                                <Tooltip title="Rozpoznawanie mowy (RECO)">
+                                    <a href="#" role="button" onClick={this.runRECO} >
+                                        <FontAwesomeIcon icon={faComment} className={["repoIcon",this.props.ifDIA? "on": ""].join(" ")}/> 
+                                    </a>
+                                </Tooltip>
+
+                                <Tooltip title="Segmentacja (ALIGN)">
+                                    <a href="#" role="button"  onClick={this.runALIGN}>
+                                        <FontAwesomeIcon icon={faClock} className={["repoIcon",this.props.ifALIGN? "on": ""].join(" ")}/> 
+                                    </a>
+                                </Tooltip>
+                               
                             </div>
                         </div>
                     </div>

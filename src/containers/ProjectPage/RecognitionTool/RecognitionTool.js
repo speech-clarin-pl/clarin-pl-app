@@ -181,6 +181,7 @@ class RecognitionTool extends Component {
                     <ToolItem 
                         key={"key" + i} 
                         container={file}
+                        type="RECO"
                     />
                 //<RecognitionItem key={"key" + i}
                 //    file={file} />
@@ -250,8 +251,6 @@ class RecognitionTool extends Component {
                             <h2>Zamiana nagrania mowy na zapis ortograficzny</h2>
                         <div className="alert alert-info" role="alert">
 
-
-                        
                             <p>Narzędzie umożliwia wgranie wielu plików jednocześnie i uruchomienie usługi jednocześnie na wielu plikach. W trakcie wykonywania usługi nie należy odświeżać strony. Pliki powinny zostać najpierw wgrane do repozytorium</p>
                         
                         </div>

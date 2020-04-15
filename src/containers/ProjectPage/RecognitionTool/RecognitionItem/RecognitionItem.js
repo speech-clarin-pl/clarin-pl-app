@@ -325,9 +325,6 @@ class RecognitionItem extends Component {
             <Aux>
                   <div className={["row", "fileItem", "RecognitionItem"].join(' ')}>
                         <div className="col-sm file-info">
-
-                            
-                            
                             <span className={"fileName"}>{this.props.file.containerName}</span>
                             <span className={"fileSize"}>({filesize})</span>
                         </div>

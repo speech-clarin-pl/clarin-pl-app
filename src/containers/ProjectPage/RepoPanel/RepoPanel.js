@@ -120,6 +120,16 @@ class repoPanel extends Component {
         this.props.addContainerToAlign(this.props.repoData.containers.byId[containerId]);
     }
 
+    // dodaje contaner do listy DIaryzacji
+    addContainerToDIAList = (containerId) => {
+        this.props.addContainerToDIA(this.props.repoData.containers.byId[containerId]);
+    }
+
+    // dodaje contaner do listy voice activity detection
+    addContainerToVADList = (containerId) => {
+        this.props.addContainerToVAD(this.props.repoData.containers.byId[containerId]);
+    }
+
 
 
 	render() {
@@ -171,6 +181,8 @@ class repoPanel extends Component {
                                 ifSelected = {ifSelected}
                                 selectTheSession = {this.selectSessionHandler}
                                 selectTheContainer = {this.selectContainerHandler} 
+                                onAddContainerToDIA = {(containerId) => this.addContainerToDIAList(containerId)}
+                                onAddContainerToVAD = {(containerId) => this.addContainerToVADList(containerId)}
                                 onAddContainerToReco = {(containerId) => this.addContainerToRecoList(containerId)}
                                 onAddContainerToAlign = {(containerId) => this.addContainerToAlignList(containerId)}/>
         })
@@ -274,6 +286,8 @@ const mapDispatchToProps = dispatch => {
 
     onCloseModalHandler: () => dispatch(repoActions.closeModalProject()),
 
+    addContainerToDIA: (containerId) => dispatch(repoActions.addContainerToDIA(containerId)),
+    addContainerToVAD: (containerId) => dispatch(repoActions.addContainerToVAD(containerId)),
     addContainerToReco: (containerId) => dispatch(repoActions.addContainerToReco(containerId)),
     addContainerToAlign: (container) => dispatch(repoActions.addContainerToAlign(container)),
     
