@@ -35,6 +35,7 @@
     "sortablejs": "^1.6.1",
     "uuid": "^3.3.2",
     "videojs-wavesurfer": "^2.9.0",
+    "waveform-data": "^3.3.1",
     "wavesurfer.js": "^2.2.1"
   },
   "scripts": {

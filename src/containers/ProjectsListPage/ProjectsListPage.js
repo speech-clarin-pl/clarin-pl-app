@@ -308,7 +308,7 @@ class ProjectsListPage extends Component {
               editName={(actionType,projectId, projectName)=>this.openModalHandler(localActions.EDIT_NAME_PROJECT,projekt._id, projekt.name)}
    
               //shareProject={() => this.props.onShare(projekt._id)}
-              //deleteProject={() => this.props.onDelete(projekt._id)}
+              deleteProject={() => this.props.onDelete(projekt._id, this.props.userId, this.props.token)}
             />
           });
 

@@ -10,6 +10,17 @@
     width: 100%;
   }
 
+  .UploadAudio .Filename.valid {
+     color: green;
+
+    }
+
+    .UploadAudio .Filename.invalid {
+      color: red;
+      text-decoration: line-through;
+     }
+  
+
   .UploadAudio .FileToUpload {
     text-align: left;
     border: 1px solid  rgb(187, 186, 186);

@@ -1,16 +1,11 @@
 const FILETYPE_EXTENSIONS = {
   Audio: [
     'mp3','MP3',
-    'ogg',
+    'ogg', 'OGG',
     'wav','WAV',
     'aac','AAC',
     'au',
-  ],
-  Text: [
-    'txt','TXT',
-    'ctm','CTM',
-    'json','JSON',
-  ],
+  ]
 }
 
 let extensionMapping = {}

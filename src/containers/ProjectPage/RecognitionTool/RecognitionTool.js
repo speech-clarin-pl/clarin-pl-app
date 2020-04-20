@@ -17,7 +17,8 @@ import { extensionMapping } from '../../../utils/fileTypes';
 import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ToolItem from '../ToolItem/ToolItem';
-import TextareaAutosize from 'react-textarea-autosize';
+
+import AudioEditor from '../../ProjectPage/AudioEditor/AudioEditor';
 
 class RecognitionTool extends Component {
 
@@ -294,7 +295,8 @@ class RecognitionTool extends Component {
 
                                 <div className="col-sm">
                                     <h3>Edytor tekstu</h3>
-                                    <TextareaAutosize maxRows={1000} minRows={5} className="textEditor" />
+                                    <AudioEditor />
+                                    
                                 </div>
                             </div>
                         </div>

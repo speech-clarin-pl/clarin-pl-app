@@ -10,6 +10,8 @@ import { connect } from 'react-redux';
 import { CHANGE_AUDIO_DISPLAYED } from '../../store/actions/actionsTypes';
 import ContainerFile from '../../containers/ProjectPage/RepoPanel/ContainerFile/ContainerFile';
 import * as repoActions from '../../store/actions/index';
+import {getExt} from '../../utils/utils';
+import {extensionMapping} from '../../utils/fileTypes';
 
 class UploadAudio extends Component {
 
@@ -17,7 +19,8 @@ class UploadAudio extends Component {
         files: [],
         uploading: false,
         uploadProgress: {},
-        successfullUploaded: false
+        successfullUploaded: false,
+        uploadValid: {}, //czy poprawne rozszerzenie
       };
 
       
@@ -31,8 +34,27 @@ class UploadAudio extends Component {
 
 
     onFilesAdded(files) {
+
+      let validatedFiles = this.state.uploadValid;
+
+      for (let i=0;i<files.length;i++){
+
+        let file = files[i];
+        let fileExtention = getExt(file.name);
+        fileExtention = fileExtention[0];
+  
+        //sprawdzam czy plik ma akceptowalne rozszerzenie
+        if(extensionMapping.hasOwnProperty(fileExtention)) {
+          validatedFiles[file.name] = true;
+        } else {
+          validatedFiles[file.name] = false;
+        }
+      }
+
+      //uploadValid
         this.setState(prevState => ({
-          files: prevState.files.concat(files)
+          files: prevState.files.concat(files),
+          uploadValid: validatedFiles,
         }));
     }
 
@@ -97,7 +119,6 @@ class UploadAudio extends Component {
       const promises = [];
 
      
-
       this.state.files.forEach(file => {
         promises.push(this.sendRequest(file));
       });
@@ -272,28 +293,34 @@ class UploadAudio extends Component {
 
                         const uploadProgress = this.state.uploadProgress[file.name];
 
+                       
+
                         let containerRep = null; //container representation
+                        let removeIcon = null;
+                        let ifValidClass = null;
+
+                        //jezeli nie jest audio to zaznaczam
+                         if(this.state.uploadValid[file.name]){
+                            ifValidClass = "valid";
+                        } else {
+                            ifValidClass = "invalid";
+                        }
 
                         //decyduje czy wyświetlić plik czy etap jego ładowania
                         if(uploadProgress && uploadProgress.state === "done"){
-
-                          containerRep = (
-                            <div key={file.name+index} className="FileToUpload">
-                              
-                                <span className="Filename">{file.name}</span>
-                                {this.renderProgress(file)}
-                            </div>
-                         );
                         } else {
-                          containerRep = (
-                              <div key={file.name+index} className="FileToUpload">
-                                <FontAwesomeIcon icon={faMinusCircle} className="removeFile" onClick={(e) => this.removeToUpload(index, file.name+index, e)} /> 
-                                
-                                  <span className="Filename">{file.name}</span>
-                                  {this.renderProgress(file)}
-                              </div>
-                          );
+                          removeIcon = <FontAwesomeIcon icon={faMinusCircle} 
+                                          className="removeFile" 
+                                          onClick={(e) => this.removeToUpload(index, file.name+index, e)} /> 
                         }
+
+                        containerRep = (
+                          <div key={file.name+index} className={"FileToUpload"}>
+                              {removeIcon}
+                              <span className={["Filename",ifValidClass].join(" ")}>{file.name}</span>
+                              {this.renderProgress(file)}
+                          </div>
+                       );
 
                         return containerRep;
 
