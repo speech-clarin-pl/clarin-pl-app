@@ -9,12 +9,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
+import { faComment} from '@fortawesome/free-solid-svg-icons';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 import {ContextMenu, MenuItem, ContextMenuTrigger} from 'react-contextmenu';
 import { Tooltip } from '@material-ui/core';
+import { faFileAudio } from '@fortawesome/free-solid-svg-icons';
+import { faSurprise } from '@fortawesome/free-solid-svg-icons';
+import { faClock } from '@fortawesome/free-solid-svg-icons';
 
 
 class ToolItem extends Component {
@@ -22,27 +26,87 @@ class ToolItem extends Component {
     state = {
         innerStatus:'', //can be error or progress
     }
-    
-    runRecognition = (e) => {
+
+    runPreview = (e) => {
+        switch(this.props.type){
+            case "DIA":
+                console.log("run preview DIA");
+                break;
+            case "VAD":
+                console.log("run preview VAD");
+                break;
+            case "RECO":
+                console.log("run preview RECO");
+                break;
+            case "ALIGN":
+                console.log("run preview ALIGN");
+                break;
+            default:
+                console.log("Default"); //to do
+        }
+    }
+
+    runProcess = (e) => {
         e.preventDefault();
+
         this.setState({innerStatus: 'progress'});
+
+        switch(this.props.type){
+            case "DIA":
+                this.runDIA(e);
+                break;
+            case "VAD":
+                this.runVAD(e);
+                break;
+            case "RECO":
+                this.runRECO(e);
+                break;
+            case "ALIGN":
+                this.runALIGN(e);
+                break;
+            default:
+                console.log("Default"); //to do
+        }
+
+        //tylko symulacja do zastapienia
+        let inprogress = setTimeout(()=> {
+            this.setState({innerStatus: 'done'});
+        }, 2000);
+    }
+
+    runALIGN = (e) => {  
+        console.log("runALIGN")
+    }
+
+    runVAD = (e) => {  
+        console.log("runVAD")
+    }
+
+    runDIA = (e) => {  
+        console.log("runDIA")
+    }
+    
+    runRECO = (e) => {  
+        console.log("runRECO")
     }
     
 
     render(){
 
+        let iconType = faFileAlt;
+
         switch(this.props.type){
             case "DIA":
-                console.log("DIA"); //to do
+                iconType = faComment;
                 break;
             case "VAD":
-                console.log("VAD"); //to do
+                iconType = faSurprise;
                 break;
             case "RECO":
-                console.log("RECO"); //to do
+                iconType = faFileAlt;
                 break;
             case "ALIGN":
-                console.log("ALIGN"); //to do
+                iconType = faClock;
                 break;
             default:
                 console.log("Default"); //to do
@@ -55,10 +119,18 @@ class ToolItem extends Component {
             filesize = nApprox.toFixed(1) + " " + aMultiples[nMultiple];
         }
 
+        let previewIconAlpha = 0.5;
+
         let statusIcon = null;
         let progressBar = null;
-        let runRecoIcon = null;
-        let txtIcon = null;
+        let runProcessIcon = (
+            <Tooltip title={"Uruchom " + this.props.type}>
+                <a href="#" role="button" onClick={this.runProcess}>
+                    <FontAwesomeIcon icon={iconType} className="faIcon"/>
+                </a>
+            </Tooltip>
+        );
+        
         let playIcon = (
             <Tooltip title="Play audio">
                 <a href="#" role="button" disabled>
@@ -66,26 +138,7 @@ class ToolItem extends Component {
                 </a>
             </Tooltip>
         );
-        
-
-        if(this.props.container.ifREC == true){
-            txtIcon = (<Tooltip title="Otwórz txt">
-                        <a href="#" role="button" >
-                            <FontAwesomeIcon icon={faEye} className="faIcon" />
-                        </a>
-                    </Tooltip> );
-            runRecoIcon =  <FontAwesomeIcon icon={faFileAlt} className="faIcon" style={{opacity: 0.5}}/>
-            progressBar = null;
-        } else {
-            txtIcon = <FontAwesomeIcon icon={faEye} className="faIcon" style={{opacity: 0.5}} />;
-            runRecoIcon = (
-                <Tooltip title="Uruchom rozpoznawanie">
-                    <a href="#" role="button" onClick={this.runRecognition}>
-                        <FontAwesomeIcon icon={faFileAlt} className="faIcon"/>
-                    </a>
-                </Tooltip>
-            );
-        }
+               
 
 
         switch (this.state.innerStatus) {
@@ -99,14 +152,34 @@ class ToolItem extends Component {
                         <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style={{width:'100%'}}></div>
                     </div>
                 );
-                runRecoIcon = <FontAwesomeIcon icon={faFileAlt} className="faIcon" style={{opacity: 0.5}}/>
+
+                previewIconAlpha = 0.5;
+                runProcessIcon = <FontAwesomeIcon icon={iconType} className="faIcon" style={{opacity: 0.5}}/>
                 playIcon = (
                      <FontAwesomeIcon icon={faPlay} className="faIcon" style={{opacity: 0.5}}/>
                 );
                 break;
+            case 'done':
+
+                previewIconAlpha = 1;
+                statusIcon = <FontAwesomeIcon icon={faCheck} className="faIcon" /> ;
+                progressBar = null;
+                playIcon = (
+                    <FontAwesomeIcon icon={faPlay} className="faIcon" style={{opacity: 0.5}}/>
+                );
+                runProcessIcon = <FontAwesomeIcon icon={iconType} className="faIcon" style={{opacity: 0.5}}/>
             default:
                 statusIcon = null;
         }
+
+
+        let previewIcon = (
+            <Tooltip title={"Podgląd " + this.props.type}>
+                <a href="#" role="button" onClick={previewIconAlpha===1? this.runPreview: null}>
+                    <FontAwesomeIcon icon={faEye} className="faIcon" style={{opacity: previewIconAlpha}} />
+                </a>
+            </Tooltip>
+        )
 
        
         return(
@@ -126,8 +199,8 @@ class ToolItem extends Component {
                             </div>
                             <div className="col-sm-3 actionIcons align-self-center pl-1 pr-1">
                                 {playIcon}
-                                {txtIcon}
-                                {runRecoIcon} 
+                                {previewIcon}
+                                {runProcessIcon} 
                             </div>
                         </div>
                         {progressBar}

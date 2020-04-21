@@ -18,6 +18,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getExt, getFilenameFromURL } from '../../../utils/utils';
 import ToolItem from '../ToolItem/ToolItem';
 import TextareaAutosize from 'react-textarea-autosize';
+import { faSurprise } from '@fortawesome/free-solid-svg-icons';
 
 class VADTool extends Component {
 
@@ -25,7 +26,7 @@ class VADTool extends Component {
 
 	render() {
 
-		let vadIcon = <FontAwesomeIcon icon={faComment} /> ;
+		let vadIcon = <FontAwesomeIcon icon={faSurprise} /> ;
 
 
 		let filelist = this.props.VADItems.map((container, i)=> {

@@ -113,7 +113,7 @@ class ContainerFile extends Component {
 
                                 <Tooltip title="Rozpoznawanie mowy (RECO)">
                                     <a href="#" role="button" onClick={this.runRECO} >
-                                        <FontAwesomeIcon icon={faComment} className={["repoIcon",this.props.ifDIA? "on": ""].join(" ")}/> 
+                                        <FontAwesomeIcon icon={faFileAlt} className={["repoIcon",this.props.ifDIA? "on": ""].join(" ")}/> 
                                     </a>
                                 </Tooltip>
 

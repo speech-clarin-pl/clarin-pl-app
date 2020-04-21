@@ -3,8 +3,7 @@ const FILETYPE_EXTENSIONS = {
     'mp3','MP3',
     'ogg', 'OGG',
     'wav','WAV',
-    'aac','AAC',
-    'au',
+    'flac','FLAC',
   ]
 }
 
