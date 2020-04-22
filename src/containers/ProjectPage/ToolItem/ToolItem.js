@@ -19,6 +19,7 @@ import { Tooltip } from '@material-ui/core';
 import { faFileAudio } from '@fortawesome/free-solid-svg-icons';
 import { faSurprise } from '@fortawesome/free-solid-svg-icons';
 import { faClock } from '@fortawesome/free-solid-svg-icons';
+import * as toolItemActions from '../../../store/actions/index';
 
 
 class ToolItem extends Component {
@@ -28,22 +29,26 @@ class ToolItem extends Component {
     }
 
     runPreview = (e) => {
-        switch(this.props.type){
-            case "DIA":
-                console.log("run preview DIA");
-                break;
-            case "VAD":
-                console.log("run preview VAD");
-                break;
-            case "RECO":
-                console.log("run preview RECO");
-                break;
-            case "ALIGN":
-                console.log("run preview ALIGN");
-                break;
-            default:
-                console.log("Default"); //to do
-        }
+
+        // switch(this.props.type){
+        //     case "DIA":
+        //         console.log("run preview DIA");
+        //         break;
+        //     case "VAD":
+        //         console.log("run preview VAD");
+        //         break;
+        //     case "RECO":
+        //         console.log("run preview RECO");
+        //         break;
+        //     case "ALIGN":
+        //         console.log("run preview ALIGN");
+        //         break;
+        //     default:
+        //         console.log("Default"); //to do
+        // }
+
+       // console.log("test")
+        this.props.openPreview(this.props.container);
     }
 
     runProcess = (e) => {
@@ -68,9 +73,16 @@ class ToolItem extends Component {
                 console.log("Default"); //to do
         }
 
+         //wysyłam do serwera aby uruchomił usługę i po zakończeniu zaktualizował flage
+        this.props.runSpeechService(this.props.container._id, this.props.type, this.props.token);
+
         //tylko symulacja do zastapienia
         let inprogress = setTimeout(()=> {
+
+          
+
             this.setState({innerStatus: 'done'});
+
         }, 2000);
     }
 
@@ -87,6 +99,7 @@ class ToolItem extends Component {
     }
     
     runRECO = (e) => {  
+        
         console.log("runRECO")
     }
     
@@ -237,6 +250,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        runSpeechService: (containerId, toolType, token) => dispatch(toolItemActions.runSpeechService(containerId, toolType, token)),
+     //     openContainerInPreview: (container, openIn) => dispatch(toolItemActions.openContainerInPreview(container, openIn)),
     //    updateFileState: (fileID, status,percLoaded) => dispatch(recognitionActions.updateFileState(fileID, status,percLoaded)),
     //    onGetProjectFilesForUser: (userId, projectId, token) => dispatch(recognitionActions.getProjectFilesForUser(userId,projectId, token)),
     //    onFileRecognition: (file, entryId,userId, projectId, audioFrom) => dispatch(recognitionActions.initFileRecognition(file, entryId, userId, projectId, audioFrom)),

@@ -2,6 +2,7 @@ import * as actionTypes from '../../store/actions/actionsTypes';
 import Moment from 'moment';
 import { updateObject, convertArrayToObject, getIdsArray } from '../utility';
 import produce from "immer";
+//import { updateContainerFlag } from '../actions';
 
 
 // const initialState = {
@@ -120,6 +121,60 @@ const initialState = {
         allIds: {}
     }
 }
+
+
+
+
+
+// #############################################
+// #### update Flagi danego kontenera po pomyślnym wykonaniu danej usługi ###########
+//##############################################
+
+const updateContainerFlag = (state, action) => {
+    const containerId = action.containerId;
+    const toolType = action.toolType; 
+
+    const nextState = produce(state, draftState => {
+
+        switch(toolType){
+            case "DIA":
+                draftState.containers.byId[containerId].ifDIA = true;
+                break;
+            case "VAD":
+                draftState.containers.byId[containerId].ifVAD = true;
+                break;
+            case "RECO":
+                draftState.containers.byId[containerId].ifREC = true;
+                break;
+            case "ALIGN":
+                draftState.containers.byId[containerId].ifSEG = true;
+                break;
+            default:
+                console.log("Default"); //to do
+        }
+   })
+
+   return nextState;
+
+}
+
+
+const updateContainerFlagFailed = (state, action) => {
+    const containerId = action.containerId;
+    const toolType = action.toolType; 
+
+    const nextState = produce(state, draftState => {
+
+        draftState.iferror = true;
+        draftState.message = "Something went wrong with the speech service and can not update the flag for this container - " + toolType;
+
+   })
+
+   return nextState;
+
+}
+
+
 
 // #############################################
 // #### usuniecie pojedynczego kontenera ###########
@@ -625,6 +680,9 @@ const repoUploadFilesModalOpen = (state,action) => {
 
 const repoPanelReducer = (state = initialState, action) => {
     switch(action.type){
+
+        case actionTypes.REPO_RUN_SPEECHSERVICE: return updateContainerFlag(state,action);
+        case actionTypes.REPO_RUN_SPEECHSERVICE_FAILED: return updateContainerFlagFailed(state,action);
 
         case actionTypes.REPO_SELECT_SESSION: return repoSelectSession(state,action);
         case actionTypes.REPO_SELECT_CONTAINER: return repoSelectContainer(state,action);

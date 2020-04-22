@@ -161,13 +161,16 @@ class RecognitionTool extends Component {
         this.closeModalHandler();
     }
 
+    //opens given container in preview window
+    openContainerInPreview = (container) => {
+        //console.log(e)
+        this.props.openContainerInRecoPreview(container);
+    }
+
     render() {
 
 
         let recoIcon = <FontAwesomeIcon icon={faFileAlt} /> ;
-
-        
-
 
         let filelist = (
             <h4 style={{ marginTop: '10px' }}>Wgraj pliki do rozpoznawania</h4>
@@ -176,16 +179,17 @@ class RecognitionTool extends Component {
         if (this.props.filesToUpload.length > 0) {
 
             filelist = this.props.filesToUpload.map((file, i) => {
-                console.log(file);
 
                 return (
                     <ToolItem 
                         key={"key" + i} 
                         container={file}
                         type="RECO"
+                        openPreview = {this.openContainerInPreview}
                     />
                 //<RecognitionItem key={"key" + i}
                 //    file={file} />
+                //
                 )
             }
                 
@@ -295,7 +299,8 @@ class RecognitionTool extends Component {
 
                                 <div className="col-sm">
                                     <h3>Edytor tekstu</h3>
-                                    <AudioEditor />
+                                    <AudioEditor
+                                        containerForPreview={this.props.containerForPreview} />
                                     
                                 </div>
                             </div>
@@ -317,12 +322,15 @@ const mapStateToProps = state => {
     return {
         filesToUpload: state.recR.filesToUpload,
         modalDisplay: state.projectR.modal,
-        refusedFileList: state.recR.refusedFileList
+        refusedFileList: state.recR.refusedFileList,
+        containerForPreview: state.recR.recoContainerForPreview,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
+
+        openContainerInRecoPreview: (container) => dispatch(recognitionActions.openContainerInRecoPreview(container)),
         onDrop: (files) => dispatch(recognitionActions.dropFiles(files)),
         onOpenModalHandler: () => dispatch(recognitionActions.openModalProject()),
         onCloseModalHandler: () => dispatch(recognitionActions.closeModalProject()),

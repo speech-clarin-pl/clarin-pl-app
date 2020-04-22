@@ -5,6 +5,52 @@ import { saveAs } from 'file-saver';
 //import streamSaver from 'StreamSaver';
 
 
+
+//############################################################
+// ############## update Flagi danego kontenera #################
+// ###########################################################
+
+export const runSpeechServiceSuccess = (containerId, toolType) => {
+    return {
+        type: actionTypes.REPO_RUN_SPEECHSERVICE,
+        containerId: containerId,
+        toolType: toolType,
+    }
+}
+
+export const runSpeechServiceFailed = (containerId, toolType) => {
+    return {
+        type: actionTypes.REPO_RUN_SPEECHSERVICE_FAILED,
+        containerId: containerId,
+        toolType: toolType,
+    }
+}
+
+export const runSpeechService = (containerId, toolType, token) => {
+    return dispatch => {
+
+        axios.put(('/repoFiles/runSpeechService/'+containerId), 
+        {
+            containerId: containerId,
+            toolType: toolType,
+        }, 
+        {
+            headers: {
+                Authorization: 'Bearer ' + token
+            },
+        })
+        .then(response => {
+            dispatch(runSpeechServiceSuccess(containerId, toolType));
+        })
+        .catch(error => {
+            dispatch(runSpeechServiceFailed(containerId, toolType));
+        }); 
+    }
+
+    
+}
+
+
 //############################################################
 // ############## usuwanie containera z repo #################
 // ###########################################################

@@ -33,6 +33,11 @@ class RepoSession extends Component {
         this.props.selectTheContainer(containerId);
     }
 
+    shouldComponentUpdate(nextProps, nextState){
+        console.log(nextProps)
+        return true;
+    }
+
 
     render() {
 

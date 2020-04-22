@@ -113,13 +113,13 @@ class ContainerFile extends Component {
 
                                 <Tooltip title="Rozpoznawanie mowy (RECO)">
                                     <a href="#" role="button" onClick={this.runRECO} >
-                                        <FontAwesomeIcon icon={faFileAlt} className={["repoIcon",this.props.ifDIA? "on": ""].join(" ")}/> 
+                                        <FontAwesomeIcon icon={faFileAlt} className={["repoIcon",this.props.ifREC? "on": ""].join(" ")}/> 
                                     </a>
                                 </Tooltip>
 
                                 <Tooltip title="Segmentacja (ALIGN)">
                                     <a href="#" role="button"  onClick={this.runALIGN}>
-                                        <FontAwesomeIcon icon={faClock} className={["repoIcon",this.props.ifALIGN? "on": ""].join(" ")}/> 
+                                        <FontAwesomeIcon icon={faClock} className={["repoIcon",this.props.ifSEG? "on": ""].join(" ")}/> 
                                     </a>
                                 </Tooltip>
                                

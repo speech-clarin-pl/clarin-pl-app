@@ -23,6 +23,7 @@ class AudioEditor extends Component {
 			<Aux>
                 <div className="AudioEditor">
                     Tutaj będzie audio editor
+					{console.log(this.props.containerForPreview)}
                     <TextareaAutosize maxRows={1000} minRows={5} className="textEditor" />
                 </div>
 				

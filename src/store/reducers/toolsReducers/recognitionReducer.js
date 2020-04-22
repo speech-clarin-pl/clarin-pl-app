@@ -16,6 +16,16 @@ const initialState = {
     // }]
     modal: false, //controls if modal window is opened
     recoFileForPreview: '', //indicates which file is chosen for preview
+
+    recoContainerForPreview: '', //container beeing previewd in recognition
+}
+
+
+// dodaje kontener do podgladu w reco
+const addContainerToPreviewReco = (state,action) => {
+    return updateObject(state, {
+        recoContainerForPreview:action.containerForPreview, 
+    });
 }
 
 
@@ -148,6 +158,8 @@ const openAudioRecPreview = (state, action) => {
 
 const recognitionReducer = (state = initialState, action) => {
     switch(action.type){
+
+        case actionTypes.ADD_CONTAINER_TO_PREVIEW_RECO: return addContainerToPreviewReco(state,action);
         case actionTypes.ADD_CONTAINER_TO_RECO: return addContainerToReco(state,action);
         case actionTypes.DROP_FILES: return dropFiles(state, action);
         case actionTypes.INIT_BATCH_RECOGNITION: return initBatchRecognition(state,action);

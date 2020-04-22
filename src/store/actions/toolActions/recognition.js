@@ -3,6 +3,19 @@ import axios from 'axios';
 
 
 // ###################################################################
+// ######## dodawanie contanera z podglądu w reco ##########
+// ###################################################################
+
+export const openContainerInRecoPreview = (container) => {
+    return {
+        type: actionTypes.ADD_CONTAINER_TO_PREVIEW_RECO,
+        containerForPreview: container,
+    }
+}
+
+
+
+// ###################################################################
 // ######## dodawanie contanera z repo do panelu rozpoznawania ##########
 // ###################################################################
 

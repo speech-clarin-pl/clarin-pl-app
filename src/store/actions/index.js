@@ -17,6 +17,7 @@ export {
     removeContainerFromRepoSuccess,
     removeContainerFromRepoFailed,
     removeContainerFromRepo,
+    runSpeechService,
 } from './repo';
 
 export {
@@ -77,6 +78,7 @@ export {
     openRecognitionAudioPreview,
     setRefusedFiles,
     addContainerToReco,
+    openContainerInRecoPreview,
 } from './toolActions/recognition';
 
 export {
