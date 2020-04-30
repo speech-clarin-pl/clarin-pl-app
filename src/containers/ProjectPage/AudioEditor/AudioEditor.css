@@ -3,3 +3,73 @@
     background: none;
     border: 1px solid #c7d5da;
 }
+
+
+
+.AudioEditor #titles, #waveform-container {
+    margin: 24px auto;
+    width: 100%;
+  }
+
+  .AudioEditor #zoomview-container, #overview-container {
+    box-shadow: 3px 3px 20px #919191;
+    margin: 0 0 24px 0;
+    -moz-box-shadow: 3px 3px 20px #919191;
+    -webkit-box-shadow: 3px 3px 20px #919191;
+    line-height: 0;
+  }
+
+  .AudioEditor #zoomview-container {
+    height: 200px;
+  }
+
+  .AudioEditor #overview-container {
+    height: 85px;
+  }
+
+  .AudioEditor #demo-controls {
+    margin: 0 auto 24px auto;
+    width: 1000px;
+    display: flex;
+    align-items: center;
+  }
+
+  .AudioEditor #demo-controls button {
+    background: #fff;
+    border: 1px solid #919191;
+    cursor: pointer;
+  }
+
+  .AudioEditor #audio {
+    flex: 0 0 30%;
+  }
+
+  .AudioEditor #controls {
+    flex: 1;
+    margin-left: 1em;
+  }
+
+  .AudioEditor #seek-time {
+    width: 4em;
+  }
+
+  .AudioEditor .log {
+    margin: 0 auto 24px auto;
+    width: 1000px;
+  }
+
+  .AudioEditor table {
+    width: 100%;
+  }
+
+  .AudioEditor table th {
+    text-align: left;
+  }
+
+  .AudioEditor table th, table td {
+    padding: 0.5em;
+  }
+
+  .AudioEditor .hide {
+    display: none;
+  }

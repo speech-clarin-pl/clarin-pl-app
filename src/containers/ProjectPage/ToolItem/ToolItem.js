@@ -28,26 +28,28 @@ class ToolItem extends Component {
         innerStatus:'', //can be error or progress
     }
 
+    componentDidMount = () => {
+        //jeżeli kontener ma już obliczone usługi to ustawiam status na 'done'
+
+         switch(this.props.type){
+            case "DIA":
+                if(this.props.container.ifDIA) this.setState({innerStatus: 'done'});
+                break;
+            case "VAD":
+                if(this.props.container.ifVAD) this.setState({innerStatus: 'done'});
+                break;
+            case "RECO":
+                if(this.props.container.ifREC) this.setState({innerStatus: 'done'});
+                break;
+            case "ALIGN":
+                if(this.props.container.ifSEG) this.setState({innerStatus: 'done'});
+                break;
+            default:
+                console.log("Default"); //to do
+        }
+    }
+
     runPreview = (e) => {
-
-        // switch(this.props.type){
-        //     case "DIA":
-        //         console.log("run preview DIA");
-        //         break;
-        //     case "VAD":
-        //         console.log("run preview VAD");
-        //         break;
-        //     case "RECO":
-        //         console.log("run preview RECO");
-        //         break;
-        //     case "ALIGN":
-        //         console.log("run preview ALIGN");
-        //         break;
-        //     default:
-        //         console.log("Default"); //to do
-        // }
-
-       // console.log("test")
         this.props.openPreview(this.props.container);
     }
 
@@ -78,9 +80,6 @@ class ToolItem extends Component {
 
         //tylko symulacja do zastapienia
         let inprogress = setTimeout(()=> {
-
-          
-
             this.setState({innerStatus: 'done'});
 
         }, 2000);

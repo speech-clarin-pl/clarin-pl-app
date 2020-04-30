@@ -290,18 +290,17 @@ class RecognitionTool extends Component {
                             }
 
                             <div className="row">
-                                <div className="col-sm">
+                                <div className="col-md-6">
                                     <h3>Lista plików do przetworzenia</h3>
                                     <div className="file-list">
                                         {filelist}
                                     </div>
                                 </div>
 
-                                <div className="col-sm">
-                                    <h3>Edytor tekstu</h3>
+                                <div className="col-md-6">
                                     <AudioEditor
-                                        containerForPreview={this.props.containerForPreview} />
-                                    
+                                        containerForPreview={this.props.containerForPreview}
+                                        toolType="REC" />
                                 </div>
                             </div>
                         </div>

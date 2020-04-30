@@ -21,6 +21,11 @@ export {
 } from './repo';
 
 export {
+    loadBinaryForPreview,
+    loadAudioForPreview,
+} from './toolActions/audioEditor';
+
+export {
     projectChoice,
     duplicateProject,
     shareProject,

@@ -12,6 +12,12 @@ export function getExt(path){
   // return  path.split('.').slice(-1);
 }
 
+export function getFileNameWithNoExt(fileName){
+    let gdziedot = fileName.lastIndexOf('.');
+    let nazwaplikubezext = fileName.substring(0,gdziedot);
+    return nazwaplikubezext;
+}
+
 export function getFilenameFromURL(url){
     let filename = url.substring(url.lastIndexOf('/')+1);
     return filename;

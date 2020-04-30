@@ -2,6 +2,7 @@ import * as actionTypes from '../../store/actions/actionsTypes';
 import Moment from 'moment';
 import { updateObject, convertArrayToObject, getIdsArray } from '../utility';
 import produce from "immer";
+//import { loadContainerForPreview } from '../actions';
 //import { updateContainerFlag } from '../actions';
 
 
@@ -119,11 +120,89 @@ const initialState = {
     txtFiles: {
         byId: {},
         allIds: {}
-    }
+    },
+
+    containerBinaryPreviewREC: null,
+    containerBinaryPreviewVAD: null,
+    containerBinaryPreviewDIA: null,
+    containerBinaryPreviewSEG: null,
+
+    containerAudioFileREC: null,
+    containerAudioFileVAD: null,
+    containerAudioFileDIA: null,
+    containerAudioFileSEG: null,
+
+    
+}
+
+
+// ##################################################
+// ######### it loads binary for preview ##########
+// ###############################################
+
+const loadAudioForPreview = (state, action) => {
+    
+    const containerAudioFile = action.containerAudioFile;
+    const toolType = action.toolType;
+
+    const nextState = produce(state, draftState => {
+        switch(toolType){
+            case "DIA":
+                draftState.containerAudioFileDIA = containerAudioFile;
+                break;
+            case "VAD":
+                draftState.containerAudioFileVAD = containerAudioFile;
+                break;
+            case "REC":
+                draftState.containerAudioFileREC = containerAudioFile;
+                break;
+            case "ALIGN":
+                draftState.containerAudioFileSEG = containerAudioFile;
+                break;
+            default:
+                console.log("Default"); //to do
+        }
+   })
+
+   return nextState;
+    
 }
 
 
 
+
+
+// ##################################################
+// ######### it loads binary for preview ##########
+// ###############################################
+
+const loadBinaryForPreview = (state, action) => {
+    
+    const containerBinaryData = action.containerBinaryData;
+    const toolType = action.toolType;
+
+    const nextState = produce(state, draftState => {
+        switch(toolType){
+            case "DIA":
+                draftState.containerBinaryPreviewDIA = containerBinaryData;
+                break;
+            case "VAD":
+                draftState.containerBinaryPreviewVAD = containerBinaryData;
+                break;
+            case "REC":
+                draftState.containerBinaryPreviewREC = containerBinaryData;
+                break;
+            case "ALIGN":
+                draftState.containerBinaryPreviewSEG = containerBinaryData;
+                break;
+            default:
+                console.log("Default"); //to do
+        }
+   })
+
+   return nextState;
+    
+}
 
 
 // #############################################
@@ -680,6 +759,9 @@ const repoUploadFilesModalOpen = (state,action) => {
 
 const repoPanelReducer = (state = initialState, action) => {
     switch(action.type){
+
+        case actionTypes.LOAD_BINARY_FOR_PREVIEW: return loadBinaryForPreview(state,action);
+        case actionTypes.LOAD_AUDIO_FOR_PREVIEW: return loadAudioForPreview(state,action);
 
         case actionTypes.REPO_RUN_SPEECHSERVICE: return updateContainerFlag(state,action);
         case actionTypes.REPO_RUN_SPEECHSERVICE_FAILED: return updateContainerFlagFailed(state,action);

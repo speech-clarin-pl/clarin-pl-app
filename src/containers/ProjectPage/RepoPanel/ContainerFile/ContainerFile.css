@@ -36,8 +36,19 @@
   }
 
   .ContainerFile .repoIcon.on {
-    color: #28a745;
+    color: #1cce44;
   }
+
+  .ContainerFile.selected .repoIcon {
+    color: #80b9de;
+  }
+
+  .ContainerFile.selected .repoIcon.on {
+    color:#00ff3a;
+  }
+
+ 
+
 
 
   .ContainerFile .containerName {
