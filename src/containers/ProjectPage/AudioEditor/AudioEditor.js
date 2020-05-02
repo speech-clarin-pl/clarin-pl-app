@@ -5,8 +5,12 @@ import { connect } from 'react-redux';
 import uuid from 'uuid';
 import Modal from '../../../components/UI/Modal/Modal';
 import { extensionMapping } from '../../../utils/fileTypes';
-import { faClock } from '@fortawesome/free-solid-svg-icons';
-import { faComment} from '@fortawesome/free-solid-svg-icons';
+import { faMapMarker } from '@fortawesome/free-solid-svg-icons';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { faGripLinesVertical } from '@fortawesome/free-solid-svg-icons';
+import { faSearchMinus } from '@fortawesome/free-solid-svg-icons';
+import { faExpand } from '@fortawesome/free-solid-svg-icons';
+import { faSearchPlus} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {getFileNameWithNoExt, getExt, getFilenameFromURL } from '../../../utils/utils';
 import ToolItem from '../ToolItem/ToolItem';
@@ -30,23 +34,18 @@ class AudioEditor extends Component {
 	}
 
 	 
-	/*
-	constructor(props) {
-		super(props);
-		this.mediaElement = React.createRef();
-
-		this.zoomviewcontainer = React.createRef(); 
-		this.overviewcontainer = React.createRef(); 
-
-	  }
-	  */
+	makeEditorFullWidth = () => {
+		this.props.editorFullWidth();
+	}
 
 
-	createPeaksInstance = (options) => {
+	createPeaksInstance = (options, thisComponent) => {
 		
 		return new Promise(function(resolve, reject) {
+
+	    
 			
-		  Peaks.init(options, function(err, peaksInstanceok) {
+		  Peaks.init(options, function(err, peaksInstance) {
 			if (err) {
 			  console.log("uwaga error")
 			  reject(err);
@@ -54,7 +53,153 @@ class AudioEditor extends Component {
 			else {
 			  console.log('Peaks instance ready');
 
-			  return resolve(peaksInstanceok);
+			  document.querySelector('[data-action="zoom-in"]').addEventListener('click', function() {
+				peaksInstance.zoom.zoomIn();
+			  });
+	
+			  document.querySelector('[data-action="zoom-out"]').addEventListener('click', function() {
+				peaksInstance.zoom.zoomOut();
+			  });
+
+			  var segmentCounter = 1;
+
+				document.querySelector('button[data-action="add-segment"]').addEventListener('click', function() {
+					peaksInstance.segments.add({
+						startTime: peaksInstance.player.getCurrentTime(),
+						endTime: peaksInstance.player.getCurrentTime() + 10,
+						labelText: 'Segment ' + segmentCounter++,
+						editable: true
+					});
+				});
+
+
+				var pointCounter = 1;
+
+				document.querySelector('button[data-action="add-point"]').addEventListener('click', function() {
+					peaksInstance.points.add({
+						time: peaksInstance.player.getCurrentTime(),
+						labelText: 'Point ' + pointCounter++,
+						color: '#006eb0',
+						editable: true
+					});
+				});
+
+				document.querySelector('button[data-action="log-data"]').addEventListener('click', function(event) {
+					//renderSegments(peaksInstance);
+					//renderPoints(peaksInstance);
+				  });
+
+
+				  var amplitudeScales = {
+					"0": 0.0,
+					"1": 0.1,
+					"2": 0.25,
+					"3": 0.5,
+					"4": 0.75,
+					"5": 1.0,
+					"6": 1.5,
+					"7": 2.0,
+					"8": 3.0,
+					"9": 4.0,
+					"10": 5.0
+				  };
+		
+				  document.getElementById('amplitude-scale').addEventListener('input', function(event) {
+					var scale = amplitudeScales[event.target.value];
+		
+					peaksInstance.views.getView('zoomview').setAmplitudeScale(scale);
+					peaksInstance.views.getView('overview').setAmplitudeScale(scale);
+				  });
+
+				  document.querySelector('button[data-action="resize"]').addEventListener('click', function(event) {
+					var zoomviewContainer = document.getElementById('zoomview-container');
+					var overviewContainer = document.getElementById('overview-container');
+
+					thisComponent.makeEditorFullWidth();
+				
+					//var zoomviewStyle = 'width:600px';
+					//var overviewStyle = 'width:600px';
+		
+					//var zoomviewStyle = zoomviewContainer.offsetHeight === 200 ? 'height:300px' : 'height:200px';
+					//var overviewStyle = overviewContainer.offsetHeight === 85  ? 'height:200px' : 'height:85px';
+		
+					//zoomviewContainer.setAttribute('style', zoomviewStyle);
+					//overviewContainer.setAttribute('style', overviewStyle);
+		
+					var zoomview = peaksInstance.views.getView('zoomview');
+					if (zoomview) {
+					  zoomview.fitToContainer();
+					}
+		
+					var overview = peaksInstance.views.getView('overview');
+					if (overview) {
+					  overview.fitToContainer();
+					}
+				  });
+
+				  // Points mouse events
+
+				  peaksInstance.on('points.mouseenter', function(point) {
+					console.log('points.mouseenter:', point);
+				  });
+		
+				  peaksInstance.on('points.mouseleave', function(point) {
+					console.log('points.mouseleave:', point);
+				  });
+		
+				  peaksInstance.on('points.dblclick', function(point) {
+					console.log('points.dblclick:', point);
+				  });
+		
+				  peaksInstance.on('points.dragstart', function(point) {
+					console.log('points.dragstart:', point);
+				  });
+		
+				  peaksInstance.on('points.dragmove', function(point) {
+					console.log('points.dragmove:', point);
+				  });
+		
+				  peaksInstance.on('points.dragend', function(point) {
+					console.log('points.dragend:', point);
+				  });
+		
+				  // Segments mouse events
+		
+				  peaksInstance.on('segments.dragstart', function(segment, startMarker) {
+					console.log('segments.dragstart:', segment, startMarker);
+				  });
+		
+				  peaksInstance.on('segments.dragend', function(segment, startMarker) {
+					console.log('segments.dragend:', segment, startMarker);
+				  });
+		
+				  peaksInstance.on('segments.dragged', function(segment, startMarker) {
+					console.log('segments.dragged:', segment, startMarker);
+				  });
+		
+				  peaksInstance.on('segments.mouseenter', function(segment) {
+					console.log('segments.mouseenter:', segment);
+				  });
+		
+				  peaksInstance.on('segments.mouseleave', function(segment) {
+					console.log('segments.mouseleave:', segment);
+				  });
+		
+				  peaksInstance.on('segments.click', function(segment) {
+					console.log('segments.click:', segment);
+				  });
+		
+				  peaksInstance.on('zoomview.dblclick', function(time) {
+					console.log('zoomview.dblclick:', time);
+				  });
+		
+				  peaksInstance.on('overview.dblclick', function(time) {
+					console.log('overview.dblclick:', time);
+				  });
+				  
+
+
+			  return resolve(peaksInstance);
 			}
 		  });
 		});
@@ -87,6 +232,18 @@ class AudioEditor extends Component {
 	
 	componentDidMount = () => {
 
+	
+	}
+
+	initializePeaksFirstTime = (audioPath, datPath) => {
+
+		//arraybuffer: "http://localhost:1234/repoFiles/5e4b09e086f4ed663259fae9/5e9e175af4192d661ebf49dd/5e9e175af4192d661ebf49de/kleska.dat?api_key="+this.props.token,
+	
+		this.setState({
+			audioPath:audioPath,
+			datPath:datPath
+		});
+
 		let options = {
 			containers: {
 				zoomview: document.getElementById('zoomview-container'),
@@ -94,18 +251,23 @@ class AudioEditor extends Component {
 			},
 			mediaElement: document.querySelector('audio'),
 			dataUri: {
-			  arraybuffer: "http://localhost:1234/repoFiles/5e4b09e086f4ed663259fae9/5e9e175af4192d661ebf49dd/5e9e175af4192d661ebf49de/kleska.dat?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1rbGVjQHBqd3N0ay5lZHUucGwiLCJ1c2VySWQiOiI1ZTRiMDllMDg2ZjRlZDY2MzI1OWZhZTkiLCJpYXQiOjE1ODgxOTQ5NTcsImV4cCI6MTU4ODMwMjk1N30.aTtaogfShae8EnAn-o4gcOZs39l-SFZ9p9IazzAJAEA",
+			  arraybuffer: datPath,
 			},
 			zoomWaveformColor: 'rgba(52, 152, 219, 1)',
 			overviewWaveformColor: 'rgba(52, 152, 219, 0.3)',
+			overviewHighlightColor: 'rgba(52, 152, 219, 0.4)',
+			emitCueEvents: true,
+			zoomLevels: [128, 256, 512, 1024, 2048, 4096],
+			keyboard: true,
+			nudgeIncrement: 0.01,
+			showPlayheadTime: true,
+
 		  };
 
-		  this.createPeaksInstance(options)
+		  this.createPeaksInstance(options,this)
           .then(peaksInstance => {
 			this.setState({peaksInstance: peaksInstance});
 		  }, this.errorHandler);
-		
-		  
 	}
 
 	
@@ -140,11 +302,15 @@ class AudioEditor extends Component {
 				let audioPath = "http://localhost:1234/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+fileName+"?api_key="+token;
 				let datPath = "http://localhost:1234/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+getFileNameWithNoExt(fileName)+".dat?api_key="+token;
 		
-				this.setState({
-					audioPath:audioPath,
-					datPath:datPath
-				});
-
+				if(this.state.audioPath == '' || this.state.datPath == ''){
+					this.initializePeaksFirstTime(audioPath, datPath)
+				} else {
+					this.setState({
+						audioPath:audioPath,
+						datPath:datPath
+					});
+				}
+				
 
 				 this.requestWaveformData(datPath)
 					.then(waveformData => {
@@ -165,40 +331,6 @@ class AudioEditor extends Component {
 
 	render() {
 
-		/*
-		let containerBinary = null;
-		let containerAudio = null;
-		switch(this.props.toolType){
-            case "DIA":
-				if(this.props.containerBinaryPreviewDIA !== null && this.props.audioFileDIA !== null){
-					containerBinary = this.props.containerBinaryPreviewDIA;
-					containerAudio = this.props.audioFileDIA;
-				}
-                break;
-            case "VAD":
-                if(this.props.containerBinaryPreviewVAD!== null && this.props.audioFileVAD !== null){
-					containerBinary = this.props.containerBinaryPreviewVAD;
-					containerAudio = this.props.audioFileVAD;
-				}
-                break;
-            case "REC":
-                if(this.props.containerBinaryPreviewREC!== null && this.props.audioFileRED !== null){
-					containerBinary = this.props.containerBinaryPreviewREC;
-					containerAudio = this.props.audioFileREC;
-				}
-                break;
-            case "SEG":
-				if(this.props.containerBinaryPreviewSEG!== null  && this.props.audioFileSEG !== null){
-					containerBinary = this.props.containerBinaryPreviewSEG;
-					containerAudio = this.props.audioFileSEG;
-				}
-                break;
-            default:
-                console.log("Default"); //to do
-		}
-		*/
-
-
 
 
 		let audioSource = this.state.audioPath;
@@ -209,23 +341,29 @@ class AudioEditor extends Component {
 		} else {
 			edytor = (
 				<>
+					
 					<div id="waveform-container">
 						<div id="overview-container"></div>
 						<div id="zoomview-container"></div>
 					</div>
-		
+
 					<div id="demo-controls">
 							<audio id="audio" controls="controls">
 								<source src={audioSource}/>
 								Your browser does not support the audio element.
 							</audio>
-						<div id="controls">
-							<button data-action="zoom-in">Zoom in</button>
-							<button data-action="zoom-out">Zoom out</button>
-							<label htmlFor="select-audio">Select audio:</label>
-							<select id="select-audio"></select>
-						</div>
+							<div id="controls">
+								<button data-action="zoom-in"><FontAwesomeIcon icon={faSearchPlus} className="faIcon" /></button>
+								<button data-action="zoom-out"><FontAwesomeIcon icon={faSearchMinus} className="faIcon" /></button>
+								<button data-action="add-segment"><FontAwesomeIcon icon={faGripLinesVertical} className="faIcon" /></button>
+								<button data-action="add-point"><FontAwesomeIcon icon={faMapMarker} className="faIcon" /></button>
+								<button data-action="log-data"><FontAwesomeIcon icon={faEye} className="faIcon" /></button>
+								<button data-action="resize"><FontAwesomeIcon icon={faExpand} className="faIcon" /></button>
+								<input type="range" id="amplitude-scale" min="0" max="10" step="1" />
+							</div>
 					</div>
+
+					
 				</>
 			);
 		}

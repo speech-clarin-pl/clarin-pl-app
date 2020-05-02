@@ -24,6 +24,7 @@ class RecognitionTool extends Component {
 
     state = {
         modal: false,
+        editorFullWidth: false,
     }
 
     handleDrop = (files) => {
@@ -167,7 +168,27 @@ class RecognitionTool extends Component {
         this.props.openContainerInRecoPreview(container);
     }
 
+    makeEditorFullWidth = () => {
+        if(this.state.editorFullWidth == false){
+            this.setState({editorFullWidth: true});
+        } else {
+            this.setState({editorFullWidth: false});
+        }
+        
+    }
+
     render() {
+
+        let szer1col = "6 order-1";
+        let szer2col = "6 order-2";
+
+        if(this.state.editorFullWidth == true) {
+            szer1col = "12 order-2";
+            szer2col = "12 order-1";
+        } else {
+            szer1col = "6 order-1";
+            szer2col = "6 order-2";
+        }
 
 
         let recoIcon = <FontAwesomeIcon icon={faFileAlt} /> ;
@@ -290,16 +311,17 @@ class RecognitionTool extends Component {
                             }
 
                             <div className="row">
-                                <div className="col-md-6">
+                                <div className={"col-md-"+szer1col}>
                                     <h3>Lista plików do przetworzenia</h3>
                                     <div className="file-list">
                                         {filelist}
                                     </div>
                                 </div>
 
-                                <div className="col-md-6">
+                                <div className={"col-md-"+szer2col}>
                                     <AudioEditor
                                         containerForPreview={this.props.containerForPreview}
+                                        editorFullWidth = {this.makeEditorFullWidth}
                                         toolType="REC" />
                                 </div>
                             </div>
