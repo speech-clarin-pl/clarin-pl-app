@@ -11,6 +11,7 @@ import { faGripLinesVertical } from '@fortawesome/free-solid-svg-icons';
 import { faSearchMinus } from '@fortawesome/free-solid-svg-icons';
 import { faExpand } from '@fortawesome/free-solid-svg-icons';
 import { faSearchPlus} from '@fortawesome/free-solid-svg-icons';
+import { faAlignJustify} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {getFileNameWithNoExt, getExt, getFilenameFromURL } from '../../../utils/utils';
 import ToolItem from '../ToolItem/ToolItem';
@@ -18,8 +19,225 @@ import WaveformData from 'waveform-data';
 import TextareaAutosize from 'react-textarea-autosize';
 import * as audioEditorActions from '../../../store/actions/index';
 import Peaks from 'peaks.js';
+import Konva from 'konva';
 
 import TOLdemo from '../../../utils/TOL_6min_720p_download.json'
+
+
+class SimplePointMarker {
+	constructor(options) {
+		this._options = options;
+	}
+
+	init(group) {
+		this._group = group;
+
+		// Vertical Line - create with default y and points, the real values
+		// are set in fitToView().
+		this._line = new Konva.Line({
+		  x:           0,
+		  y:           0,
+		  stroke:      this._options.color,
+		  strokeWidth: 1
+		});
+
+		group.add(this._line);
+
+		this.fitToView();
+	  };
+
+	  fitToView() {
+		var height = this._options.layer.getHeight();
+
+		this._line.points([0.5, 0, 0.5, height]);
+	  };
+
+}
+
+class CustomPointMarker {
+
+	constructor(options) {
+		this._options = options;
+	}
+
+	init(group) {
+
+
+		this._group = group;
+
+		this._label = new Konva.Label({
+		  x: 0.5,
+		  y: 0.5
+		});
+
+		this._tag = new Konva.Tag({
+		  fill:             this._options.color,
+		  stroke:           this._options.color,
+		  strokeWidth:      1,
+		  pointerDirection: 'down',
+		  pointerWidth:     10,
+		  pointerHeight:    10,
+		  lineJoin:         'round',
+		  shadowColor:      'black',
+		  shadowBlur:       10,
+		  shadowOffsetX:    3,
+		  shadowOffsetY:    3,
+		  shadowOpacity:    0.3
+		});
+
+		this._label.add(this._tag);
+
+		this._text = new Konva.Text({
+		  text:       this._options.point.labelText,
+		  fontFamily: 'Calibri',
+		  fontSize:   14,
+		  padding:    5,
+		  fill:       'white'
+		});
+
+		this._label.add(this._text);
+
+		// Vertical Line - create with default y and points, the real values
+		// are set in fitToView().
+		this._line = new Konva.Line({
+		  x:           0,
+		  y:           0,
+		  stroke:      this._options.color,
+		  strokeWidth: 1
+		});
+
+		group.add(this._label);
+		group.add(this._line);
+
+		this.fitToView();
+
+		this.bindEventHandlers();
+	  };
+
+	  bindEventHandlers() {
+		var container = document.getElementById('zoomview-container');
+
+		this._group.on('mouseenter', function() {
+		  container.style.cursor = 'move';
+		});
+
+		this._group.on('mouseleave', function() {
+		  container.style.cursor = 'default';
+		});
+	  };
+
+	  fitToView() {
+		var height = this._options.layer.getHeight();
+
+		var labelHeight = this._text.height() + 2 * this._text.padding();
+		var offsetTop = 14;
+		var offsetBottom = 26;
+
+		this._group.y(offsetTop + labelHeight + 0.5);
+
+		this._line.points([0.5, 0, 0.5, height - labelHeight - offsetTop - offsetBottom]);
+	  };
+
+
+}
+
+class CustomSegmentMarker {
+
+	constructor(options) {
+		this._options = options;
+	}
+  
+	init(group) {
+		this._group = group;
+
+		this._label = new Konva.Label({
+		  x: 0.5,
+		  y: 0.5
+		});
+
+		var color = this._options.segment.color;
+
+		this._tag = new Konva.Tag({
+		fill:             color,
+		stroke:           color,
+		strokeWidth:      1,
+		pointerDirection: 'down',
+		pointerWidth:     10,
+		pointerHeight:    10,
+		lineJoin:         'round',
+		shadowColor:      'black',
+		shadowBlur:       10,
+		shadowOffsetX:    3,
+		shadowOffsetY:    3,
+		shadowOpacity:    0.3
+		});
+
+		this._label.add(this._tag);
+
+		var labelText = this._options.segment.labelText +
+                          (this._options.startMarker ? ' start' : ' end');
+
+          this._text = new Konva.Text({
+            text:       labelText,
+            fontFamily: 'Calibri',
+            fontSize:   14,
+            padding:    5,
+            fill:       'white'
+          });
+
+		this._label.add(this._text);
+
+		// Vertical Line - create with default y and points, the real values
+          // are set in fitToView().
+          this._line = new Konva.Line({
+            x:           0,
+            y:           0,
+            stroke:      color,
+            strokeWidth: 1
+          });
+
+		group.add(this._label);
+		group.add(this._line);
+
+		this.fitToView();
+
+		this.bindEventHandlers();
+	}
+  
+	fitToView() {
+		var height = this._options.layer.getHeight();
+
+		var labelHeight = this._text.height() + 2 * this._text.padding();
+		var offsetTop = 14;
+		var offsetBottom = 26;
+
+		this._group.y(offsetTop + labelHeight + 0.5);
+
+		this._line.points([0.5, 0, 0.5, height - labelHeight - offsetTop - offsetBottom]);
+	}
+  
+	timeUpdated() {
+	  // (optional)
+	}
+  
+	destroy() {
+	  // (optional )
+	}
+
+	bindEventHandlers() {
+		var container = document.getElementById('zoomview-container');
+
+		this._group.on('mouseenter', function() {
+		  container.style.cursor = 'move';
+		});
+
+		this._group.on('mouseleave', function() {
+		  container.style.cursor = 'default';
+		});
+	  };
+
+
+  };
 
 class AudioEditor extends Component {
 
@@ -31,21 +249,260 @@ class AudioEditor extends Component {
 			datPath: '',
 			peaksInstance: null,
 		}
+
+		
 	}
 
-	 
 	makeEditorFullWidth = () => {
 		this.props.editorFullWidth();
 	}
 
+	createSegmentMarker = (options) => {
+		if (options.view === 'zoomview') {
+            return new CustomSegmentMarker(options);
+          }
+
+          return null;
+	}
+
+	createSegmentLabel = (options) => {
+		if (options.view === 'overview') {
+		  return null;
+		}
+
+		var label = new Konva.Label({
+		  x: 12,
+		  y: 16
+		});
+
+		label.add(new Konva.Tag({
+		  fill:             'black',
+		  pointerDirection: 'none',
+		  shadowColor:      'black',
+		  shadowBlur:       10,
+		  shadowOffsetX:    3,
+		  shadowOffsetY:    3,
+		  shadowOpacity:    0.3
+		}));
+
+		label.add(new Konva.Text({
+		  text:       options.segment.labelText,
+		  fontSize:   14,
+		  fontFamily: 'Calibri',
+		  fill:       'white',
+		  padding:    8
+		}));
+
+		return label;
+	}
+
+
+	createPointMarker = (options) => {
+		if (options.view === 'zoomview') {
+		  return new CustomPointMarker(options);
+		}
+		else {
+		  return new SimplePointMarker(options);
+		}
+	  }
+
+
+	  renderSegments = (peaks) => {
+		var segmentsContainer = document.getElementById('segments');
+		var segments = peaks.segments.getSegments();
+		var html = '';
+
+		for (var i = 0; i < segments.length; i++) {
+		  var segment = segments[i];
+
+		  var row = '<tr>' +
+			'<td>' + segment.id + '</td>' +
+			'<td><input data-action="update-segment-label" type="text" value="' + segment.labelText + '" data-id="' + segment.id + '"/></td>' +
+			'<td><input data-action="update-segment-start-time" type="number" value="' + segment.startTime + '" data-id="' + segment.id + '"/></td>' +
+			'<td><input data-action="update-segment-end-time" type="number" value="' + segment.endTime + '" data-id="' + segment.id + '"/></td>' +
+			'<td>' + '<a href="#' + segment.id + '" data-action="play-segment" data-id="' + segment.id + '">Play</a>' + '</td>' +
+			'<td>' + '<a href="#' + segment.id + '" data-action="remove-segment" data-id="' + segment.id + '">Remove</a>' + '</td>' +
+			'</tr>';
+
+		  html += row;
+		}
+
+		segmentsContainer.querySelector('tbody').innerHTML = html;
+
+		if (html.length) {
+		  segmentsContainer.classList.remove('hide');
+		}
+
+		document.querySelectorAll('input[data-action="update-segment-start-time"]').forEach(function(inputElement) {
+		  inputElement.addEventListener('input', function(event) {
+			var element = event.target;
+			var id = element.getAttribute('data-id');
+			var segment = peaks.segments.getSegment(id);
+
+			if (segment) {
+			  var startTime = parseFloat(element.value);
+
+			  if (startTime < 0) {
+				startTime = 0;
+				element.value = 0;
+			  }
+
+			  if (startTime >= segment.endTime) {
+				startTime = segment.endTime - 0.1;
+				element.value = startTime;
+			  }
+
+			  segment.update({ startTime: startTime });
+			}
+		  });
+		});
+
+		document.querySelectorAll('input[data-action="update-segment-end-time"]').forEach(function(inputElement) {
+		  inputElement.addEventListener('input', function(event) {
+			var element = event.target;
+			var id = element.getAttribute('data-id');
+			var segment = peaks.segments.getSegment(id);
+
+			if (segment) {
+			  var endTime = parseFloat(element.value);
+
+			  if (endTime < 0) {
+				endTime = 0;
+				element.value = 0;
+			  }
+
+			  if (endTime <= segment.startTime) {
+				endTime = segment.startTime + 0.1;
+				element.value = endTime;
+			  }
+
+			  segment.update({ endTime: endTime });
+			}
+		  });
+		});
+
+		document.querySelectorAll('input[data-action="update-segment-label"]').forEach(function(inputElement) {
+		  inputElement.addEventListener('input', function(event) {
+			var element = event.target;
+			var id = element.getAttribute('data-id');
+			var segment = peaks.segments.getSegment(id);
+			var labelText = element.labelText;
+
+			if (segment) {
+			  segment.update({ labelText: labelText });
+			}
+		  });
+		});
+	  };
+
+
+
+	  renderPoints = (peaks) => {
+
+		var pointsContainer = document.getElementById('points');
+		var points = peaks.points.getPoints();
+		var html = '';
+
+		for (var i = 0; i < points.length; i++) {
+		  var point = points[i];
+
+		  var row = '<tr>' +
+			'<td>' + point.id + '</td>' +
+			'<td><input data-action="update-point-label" type="text" value="' + point.labelText + '" data-id="' + point.id + '"/></td>' +
+			'<td><input data-action="update-point-time" type="number" value="' + point.time + '" data-id="' + point.id + '"/></td>' +
+			'<td>' + '<a href="#' + point.id + '" data-action="remove-point" data-id="' + point.id + '">Remove</a>' + '</td>' +
+			'</tr>';
+
+		  html += row;
+		}
+
+		pointsContainer.querySelector('tbody').innerHTML = html;
+
+		if (html.length) {
+		  pointsContainer.classList.remove('hide');
+		}
+
+		document.querySelectorAll('input[data-action="update-point-time"]').forEach(function(inputElement) {
+		  inputElement.addEventListener('input', function(event) {
+			var element = event.target;
+			var id = element.getAttribute('data-id');
+			var point = peaks.points.getPoint(id);
+
+			if (point) {
+			  var time = parseFloat(element.value);
+
+			  if (time < 0) {
+				time = 0;
+				element.value = 0;
+			  }
+
+			  point.update({ time: time });
+			}
+		  });
+		});
+
+		document.querySelectorAll('input[data-action="update-point-label"]').forEach(function(inputElement) {
+		  inputElement.addEventListener('input', function(event) {
+			var element = event.target;
+			var id = element.getAttribute('data-id');
+			var point = peaks.points.getPoint(id);
+			var labelText = element.labelText;
+
+			if (point) {
+			  point.update({ labelText: labelText });
+			}
+		  });
+		});
+	  };
+
+
+
+	initializePeaksFirstTime = (audioPath, datPath) => {
+
+		//arraybuffer: "http://localhost:1234/repoFiles/5e4b09e086f4ed663259fae9/5e9e175af4192d661ebf49dd/5e9e175af4192d661ebf49de/kleska.dat?api_key="+this.props.token,
+	
+		this.setState({
+			audioPath:audioPath,
+			datPath:datPath
+		});
+
+
+
+		let options = {
+			containers: {
+				zoomview: document.getElementById('zoomview-container'),
+				overview: document.getElementById('overview-container')
+			},
+			mediaElement: document.querySelector('audio'),
+			dataUri: {
+			  arraybuffer: datPath,
+			},
+			zoomWaveformColor: 'rgba(52, 152, 219, 1)',
+			overviewWaveformColor: 'rgba(52, 152, 219, 0.3)',
+			overviewHighlightColor: 'rgba(52, 152, 219, 0.4)',
+			emitCueEvents: true,
+			zoomLevels: [128, 256, 512, 1024, 2048, 4096],
+			keyboard: true,
+			nudgeIncrement: 0.01,
+			showPlayheadTime: true,
+			createPointMarker: this.createPointMarker,
+			createSegmentMarker: this.createSegmentMarker,
+			createSegmentLabel: this.createSegmentLabel,
+
+		  };
+
+		  this.createPeaksInstance(options,this)
+          .then(peaksInstance => {
+			this.setState({peaksInstance: peaksInstance});
+		  }, this.errorHandler);
+	}
 
 	createPeaksInstance = (options, thisComponent) => {
 		
 		return new Promise(function(resolve, reject) {
 
-	    
-			
 		  Peaks.init(options, function(err, peaksInstance) {
+
 			if (err) {
 			  console.log("uwaga error")
 			  reject(err);
@@ -85,8 +542,9 @@ class AudioEditor extends Component {
 				});
 
 				document.querySelector('button[data-action="log-data"]').addEventListener('click', function(event) {
-					//renderSegments(peaksInstance);
-					//renderPoints(peaksInstance);
+					console.log("log data")
+					thisComponent.renderSegments(peaksInstance);
+					thisComponent.renderPoints(peaksInstance);
 				  });
 
 
@@ -229,47 +687,7 @@ class AudioEditor extends Component {
 		  };
 	  }
 
-	
-	componentDidMount = () => {
-
-	
-	}
-
-	initializePeaksFirstTime = (audioPath, datPath) => {
-
-		//arraybuffer: "http://localhost:1234/repoFiles/5e4b09e086f4ed663259fae9/5e9e175af4192d661ebf49dd/5e9e175af4192d661ebf49de/kleska.dat?api_key="+this.props.token,
-	
-		this.setState({
-			audioPath:audioPath,
-			datPath:datPath
-		});
-
-		let options = {
-			containers: {
-				zoomview: document.getElementById('zoomview-container'),
-				overview: document.getElementById('overview-container')
-			},
-			mediaElement: document.querySelector('audio'),
-			dataUri: {
-			  arraybuffer: datPath,
-			},
-			zoomWaveformColor: 'rgba(52, 152, 219, 1)',
-			overviewWaveformColor: 'rgba(52, 152, 219, 0.3)',
-			overviewHighlightColor: 'rgba(52, 152, 219, 0.4)',
-			emitCueEvents: true,
-			zoomLevels: [128, 256, 512, 1024, 2048, 4096],
-			keyboard: true,
-			nudgeIncrement: 0.01,
-			showPlayheadTime: true,
-
-		  };
-
-		  this.createPeaksInstance(options,this)
-          .then(peaksInstance => {
-			this.setState({peaksInstance: peaksInstance});
-		  }, this.errorHandler);
-	}
-
+	  
 	
 	bindEventHandlers = (peaksInstance, source) => {
 
@@ -361,6 +779,40 @@ class AudioEditor extends Component {
 								<button data-action="resize"><FontAwesomeIcon icon={faExpand} className="faIcon" /></button>
 								<input type="range" id="amplitude-scale" min="0" max="10" step="1" />
 							</div>
+					</div>
+
+					<div className="log">
+						<div id="segments" className="hide">
+							<h2>Segments</h2>
+							<table>
+							<thead>
+								<tr>
+								<th>ID</th>
+								<th>Label</th>
+								<th>Start time</th>
+								<th>End time</th>
+								<th></th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+							</table>
+						</div>
+
+						<div id="points" className="hide">
+							<h2>Points</h2>
+							<table>
+							<thead>
+								<tr>
+								<th>ID</th>
+								<th>Label</th>
+								<th>Time</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+							</table>
+						</div>
 					</div>
 
 					
