@@ -6,6 +6,10 @@
 
 }
 
+.TopBar .myLabelClass {
+    color: white;
+}
+
 .TopBar .fas {
     margin-right: 5px;
 }

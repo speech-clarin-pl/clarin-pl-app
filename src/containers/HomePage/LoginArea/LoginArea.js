@@ -13,7 +13,6 @@ class LoginArea extends Component {
 
     state = {
         loginform: {
-            
             loginemail: {
                 elementType: 'input',
                 elementConfig: {
@@ -38,6 +37,22 @@ class LoginArea extends Component {
                 validation: {
                     required: true,
                     minLength: 6
+                },
+                valid: false,
+                touched: false
+            },
+        },
+        forgotPassForm: {
+            forgotPassEmail: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Podaj swój email'
+                },
+                value: '',
+                validation: {
+                    required: true,
+                    minLength: 5
                 },
                 valid: false,
                 touched: false
@@ -88,8 +103,11 @@ class LoginArea extends Component {
             },
         },
         loginFormIsValid:false,
+        forgotPassFormIsValid: false,
         registerFormIsValid: false,
         firstTimeAfterLogin: false,
+
+        showRemindPassView: false,
     }
 
     
@@ -108,6 +126,13 @@ class LoginArea extends Component {
         }
 
         return isValid;
+
+    }
+
+    forgotPassHandler = (event) => {
+        event.preventDefault();
+
+        this.setState({})
 
     }
 
@@ -199,6 +224,38 @@ class LoginArea extends Component {
         this.setState({registerform: updatedRegisterForm, registerFormIsValid: formIsValid});
     }
 
+    //updated at every input in forgotPass form
+    inputForgotPassChangedHandler = (event) => {
+        const updatedForgotForm = {
+            ...this.state.forgotPassForm
+        }
+
+        switch(event.target.name){
+            case 'forgotPassEmail':
+
+               //immutable update
+                const updatedforgotPassEmail = {
+                    ...updatedForgotForm.forgotPassEmail
+                }
+                updatedforgotPassEmail.value = event.target.value;
+                updatedforgotPassEmail.valid = this.checkValidity(updatedforgotPassEmail.value, updatedforgotPassEmail.validation);
+                updatedforgotPassEmail.touched = 1;
+                //assembling back after update
+                updatedForgotForm.forgotPassEmail = updatedforgotPassEmail;
+                break;
+        }
+
+        //sprawdzam czy cały formularz jest poprawny
+        let formIsValid = true;
+        for (let inputField in updatedForgotForm){
+            formIsValid = updatedForgotForm[inputField].valid && formIsValid;
+        }
+
+        this.setState({forgotPassForm: updatedForgotForm, forgotPassFormIsValid: formIsValid});
+
+
+    }
+
 
     //updated at every input in login form
     inputLoginChangedHandler = (event) => {
@@ -259,6 +316,20 @@ class LoginArea extends Component {
         this.props.onLogOut();
         this.props.history.push("/");
       }
+
+      showLoginAreaBack = (e) => {
+        e.preventDefault();
+         
+        this.setState({showRemindPassView: false});
+      }
+
+      forgotPass = (e) => {
+          e.preventDefault();
+         
+          this.setState({showRemindPassView: true});
+      }
+
+      
 
     
     render() {
@@ -377,10 +448,80 @@ class LoginArea extends Component {
              </div>
         );
 
+        const forgotPassArea = (
+            <div className="col" key="a5">
+                            
+                            {
+                            !this.props.isAuth?
+                            
+                            <form onSubmit={this.forgotPassHandler}> 
+                              
+                                <h3>Przypomnienie hasła</h3>
+                                
+                                {
+                                    this.props.loginMessage !== ''?
+                                    errorLoginInfo: null 
+                                }
+
+                                <div className="form-group">
+                                    <Input 
+                                        inputtype="input" 
+                                        type="text"
+                                        label="Adres Email"
+                                        placeholder="Wpisz adres email"
+                                        name="forgotPassEmail"
+                                        touched = {this.state.forgotPassForm.forgotPassEmail.touched}
+                                        invalid={!this.state.forgotPassForm.forgotPassEmail.valid}
+                                        whenchanged={(event) => this.inputForgotPassChangedHandler(event)}/>
+                                    
+                                </div>
+    
+                                <button disabled={!this.state.forgotPassFormIsValid} className="btn btn-primary" >
+
+                                    Wyślij email z linkiem do zresetowania hasła
+                                    
+                                </button>
+
+                                <br></br>
+                                <br></br>
+
+                                <a href="#" onClick={this.showLoginAreaBack}>Zaloguj się</a>
+
+                             
+                            </form>   
+                            
+                            : 
+                            
+                            <div>
+
+                                <h4>Witaj: <span className="loggedAs">{this.props.userName}</span></h4>
+
+                                <Link to="/projectsList">
+                                    <button className="btn btn-primary btn-lg btn-block gotoprojects">
+                                        Przejdź do listy projektów
+                                    </button>
+                                </Link>
+
+                                <div> lub </div>
+
+                                <button 
+                                    className="btn btn-secondary"
+                                    onClick={this.logOutHandler}>
+
+                                    Wyloguj się
+                                
+                                </button>
+
+                            </div>
+
+                            }
+                                
+            </div>
+        );
+
         const loginArea = (
             <div className="col" key="a2">
                             
-
                             {
                             !this.props.isAuth?
                             
@@ -422,6 +563,11 @@ class LoginArea extends Component {
                                         Zaloguj się
                                        
                                     </button>
+
+                                    <br></br>
+                                    <br></br>
+
+                                    <a href="#" onClick={this.forgotPass}>Zapomniałem hasła</a>
                             </form>   
                             
                             : 
@@ -452,6 +598,17 @@ class LoginArea extends Component {
                                 
                         </div>
         );
+
+        let loginAndForgot = null;
+
+        if(this.state.showRemindPassView){
+
+            loginAndForgot = forgotPassArea;
+     
+        } else {
+            loginAndForgot = loginArea;
+        }
+        
      
         return(
             <Aux>
@@ -470,7 +627,7 @@ class LoginArea extends Component {
                         <div className="row">
                             
                             {this.props.isAuth? loginArea : 
-                                [registerArea, loginArea]}
+                                [registerArea, loginAndForgot]}
                                                 
                         </div>
                     </div>

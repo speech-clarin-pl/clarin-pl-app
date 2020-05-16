@@ -24,6 +24,232 @@ import Konva from 'konva';
 import TOLdemo from '../../../utils/TOL_6min_720p_download.json'
 
 
+class SimplePointMarker {
+	constructor(options) {
+		console.log('[SimplePointMarker] constructor')
+		this._options = options;
+	}
+
+	init(group) {
+		this._group = group;
+
+		// Vertical Line - create with default y and points, the real values
+		// are set in fitToView().
+		this._line = new Konva.Line({
+		  x:           0,
+		  y:           0,
+		  stroke:      this._options.color,
+		  strokeWidth: 1
+		});
+
+		group.add(this._line);
+
+		this.fitToView();
+	  };
+
+	  fitToView() {
+		var height = this._options.layer.getHeight();
+
+		this._line.points([0.5, 0, 0.5, height]);
+	  };
+
+}
+
+class CustomPointMarker {
+
+	constructor(options) {
+		console.log('[CustomPointMarker] constructor')
+		this._options = options;
+	}
+
+	init(group) {
+
+
+		this._group = group;
+
+		this._label = new Konva.Label({
+		  x: 0.5,
+		  y: 0.5
+		});
+
+		this._tag = new Konva.Tag({
+		  fill:             this._options.color,
+		  stroke:           this._options.color,
+		  strokeWidth:      1,
+		  pointerDirection: 'down',
+		  pointerWidth:     10,
+		  pointerHeight:    10,
+		  lineJoin:         'round',
+		  shadowColor:      'black',
+		  shadowBlur:       10,
+		  shadowOffsetX:    3,
+		  shadowOffsetY:    3,
+		  shadowOpacity:    0.3
+		});
+
+		this._label.add(this._tag);
+
+		this._text = new Konva.Text({
+		  text:       this._options.point.labelText,
+		  fontFamily: 'Calibri',
+		  fontSize:   14,
+		  padding:    5,
+		  fill:       'white'
+		});
+
+		this._label.add(this._text);
+
+		// Vertical Line - create with default y and points, the real values
+		// are set in fitToView().
+		this._line = new Konva.Line({
+		  x:           0,
+		  y:           0,
+		  stroke:      this._options.color,
+		  strokeWidth: 1
+		});
+
+		group.add(this._label);
+		group.add(this._line);
+
+		this.fitToView();
+
+		this.bindEventHandlers();
+	  };
+
+	  bindEventHandlers() {
+		var container = document.getElementById('zoomview-container');
+
+		this._group.on('mouseenter', function() {
+
+		 // console.log("CustomPointMarker mouseenter")
+
+		  container.style.cursor = 'move';
+		});
+
+		this._group.on('mouseleave', function() {
+
+		  //console.log("CustomPointMarker mouseleave")
+
+		  container.style.cursor = 'default';
+		});
+	  };
+
+	  fitToView() {
+		var height = this._options.layer.getHeight();
+
+		var labelHeight = this._text.height() + 2 * this._text.padding();
+		var offsetTop = 14;
+		var offsetBottom = 26;
+
+		this._group.y(offsetTop + labelHeight + 0.5);
+
+		this._line.points([0.5, 0, 0.5, height - labelHeight - offsetTop - offsetBottom]);
+	  };
+
+
+}
+
+class CustomSegmentMarker {
+
+	constructor(options) {
+		console.log('[CustomSegmentMarker] constructor')
+		this._options = options;
+	}
+  
+	init(group) {
+		this._group = group;
+
+		this._label = new Konva.Label({
+		  x: 0.5,
+		  y: 0.5
+		});
+
+		var color = this._options.segment.color;
+
+		this._tag = new Konva.Tag({
+		fill:             color,
+		stroke:           color,
+		strokeWidth:      1,
+		pointerDirection: 'down',
+		pointerWidth:     10,
+		pointerHeight:    10,
+		lineJoin:         'round',
+		shadowColor:      'black',
+		shadowBlur:       10,
+		shadowOffsetX:    3,
+		shadowOffsetY:    3,
+		shadowOpacity:    0.3
+		});
+
+		this._label.add(this._tag);
+
+		var labelText = this._options.segment.labelText +
+                          (this._options.startMarker ? ' start' : ' end');
+
+          this._text = new Konva.Text({
+            text:       labelText,
+            fontFamily: 'Calibri',
+            fontSize:   14,
+            padding:    5,
+            fill:       'white'
+          });
+
+		this._label.add(this._text);
+
+		// Vertical Line - create with default y and points, the real values
+          // are set in fitToView().
+          this._line = new Konva.Line({
+            x:           0,
+            y:           0,
+            stroke:      color,
+            strokeWidth: 1
+          });
+
+		group.add(this._label);
+		group.add(this._line);
+
+		this.fitToView();
+
+		this.bindEventHandlers();
+		
+	}
+  
+	fitToView() {
+		var height = this._options.layer.getHeight();
+
+		var labelHeight = this._text.height() + 2 * this._text.padding();
+		var offsetTop = 14;
+		var offsetBottom = 26;
+
+		this._group.y(offsetTop + labelHeight + 0.5);
+
+		this._line.points([0.5, 0, 0.5, height - labelHeight - offsetTop - offsetBottom]);
+	}
+  
+	//timeUpdated() {
+	  // (optional)
+	//}
+  
+	//destroy() {
+	//  // (optional )
+	//}
+
+	bindEventHandlers() {
+
+		var container = document.getElementById('zoomview-container');
+
+		this._group.on('mouseenter', function() {
+            container.style.cursor = 'move';
+          });
+
+          this._group.on('mouseleave', function() {
+            container.style.cursor = 'default';
+          });
+
+	  };
+
+  };
+
 class AudioEditor extends Component {
 
 	constructor(props){
@@ -41,6 +267,55 @@ class AudioEditor extends Component {
 	makeEditorFullWidth = () => {
 		this.props.editorFullWidth();
 	}
+
+	createSegmentMarker = (options) => {
+		if (options.view === 'zoomview') {
+            return new CustomSegmentMarker(options);
+          }
+
+          return null;
+	}
+
+	createSegmentLabel = (options) => {
+		if (options.view === 'overview') {
+		  return null;
+		}
+
+		var label = new Konva.Label({
+		  x: 12,
+		  y: 16
+		});
+
+		label.add(new Konva.Tag({
+		  fill:             'black',
+		  pointerDirection: 'none',
+		  shadowColor:      'black',
+		  shadowBlur:       10,
+		  shadowOffsetX:    3,
+		  shadowOffsetY:    3,
+		  shadowOpacity:    0.3
+		}));
+
+		label.add(new Konva.Text({
+		  text:       options.segment.labelText,
+		  fontSize:   14,
+		  fontFamily: 'Calibri',
+		  fill:       'white',
+		  padding:    8
+		}));
+
+		return label;
+	}
+
+
+	createPointMarker = (options) => {
+		if (options.view === 'zoomview') {
+		  return new CustomPointMarker(options);
+		}
+		else {
+		  return new SimplePointMarker(options);
+		}
+	  }
 
 
 	  renderSegments = (peaks) => {
@@ -220,8 +495,12 @@ class AudioEditor extends Component {
 			emitCueEvents: true,
 			zoomLevels: [128, 256, 512, 1024, 2048, 4096],
 			nudgeIncrement: 0.01,
+
 			keyboard: true,
 			showPlayheadTime: false,
+			createPointMarker: this.createPointMarker,
+			createSegmentMarker: this.createSegmentMarker,
+			createSegmentLabel: this.createSegmentLabel,
 
 		  };
 
@@ -257,7 +536,7 @@ class AudioEditor extends Component {
 				document.querySelector('button[data-action="add-segment"]').addEventListener('click', function() {
 					peaksInstance.segments.add({
 						startTime: peaksInstance.player.getCurrentTime(),
-						endTime: peaksInstance.player.getCurrentTime() + 3,
+						endTime: peaksInstance.player.getCurrentTime() + 10,
 						labelText: 'Segment ' + segmentCounter++,
 						editable: true
 					});

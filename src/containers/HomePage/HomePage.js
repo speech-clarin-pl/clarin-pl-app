@@ -7,7 +7,6 @@ import AppFooter from '../../components/AppFooter/AppFooter';
 import TopBar from '../../components/TopBar/TopBar';
 import Aux from '../../hoc/Auxiliary';
 
-
 const homePage = (props) => {
     
     return(
@@ -21,6 +20,8 @@ const homePage = (props) => {
                 currLn = {props.currLn}
                  />
             <Jumbotron />
+
+          
            
            {
                 <LoginArea />

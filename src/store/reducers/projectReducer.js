@@ -5,8 +5,29 @@ const initialState = {
     currentProjectID: '',
     currentProjectName: '',
     currentProjectOwner: '',
-    modal: false,  // keeps if moda should be opened
+    modal: false,  // keeps if moda should be opened,
+    errorMessage: '',
+    error: false,
 }
+
+const editNameFailed = (state, action) => {
+    const error = action.error;
+ 
+    
+    return updateObject(state, {errorMessage: error, error: true});
+ }
+ 
+ const editName = (state, action) => {
+ 
+     const projectId = action.projectId;
+     const newProjectName = action.newProjectName;
+     const message = action.message;
+ 
+     return updateObject(state, {
+         currentProjectName: newProjectName,
+         errorMessage: '', 
+         error: false});
+ }
 
 const initProject = (state, action) => {
     return updateObject(state,
@@ -39,6 +60,9 @@ const projectReducer = (state = initialState, action) => {
         case actionTypes.INIT_PROJECT: return initProject(state, action);
         case actionTypes.OPEN_MODAL_PROJECT: return openModalProject(state, action);
         case actionTypes.CLOSE_MODAL_PROJECT: return closeModalProject(state, action);
+        case actionTypes.EDIT_NAME: return editName(state, action);
+        case actionTypes.EDIT_NAME_FAILED: return editNameFailed(state, action);
+        
     }
 
     return state;

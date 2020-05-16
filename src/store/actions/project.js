@@ -1,6 +1,8 @@
 import * as actionTypes from './actionsTypes';
 import axios from 'axios';
 
+
+
 //initialization the init properties of the project
 export const initProject = (projectId, projectTitle, projectOwner) => {
     return {
