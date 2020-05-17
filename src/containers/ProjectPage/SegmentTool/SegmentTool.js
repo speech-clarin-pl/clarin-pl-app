@@ -21,8 +21,16 @@ import { getExt, getFilenameFromURL } from '../../../utils/utils';
 import ToolItem from '../ToolItem/ToolItem';
 import TextareaAutosize from 'react-textarea-autosize';
 
+import AudioEditor from '../../ProjectPage/AudioEditor/AudioEditor';
+
 class SegmentTool extends Component {
 
+
+	state = {
+        modal: false,
+        editorFullWidth: false,
+	}
+	
 	/* state = {
         modal: false,
     }
@@ -307,7 +315,32 @@ class SegmentTool extends Component {
     }
  */
 
+	//opens given container in preview window
+	openContainerInPreview = (container) => {
+		//console.log(e)
+		this.props.openContainerInAlignPreview(container);
+	}
+
+	makeEditorFullWidth = () => {
+        if(this.state.editorFullWidth == false){
+            this.setState({editorFullWidth: true});
+        } else {
+            this.setState({editorFullWidth: false});
+        }
+    }
+
 	render() {
+
+		let szer1col = "6 order-1";
+        let szer2col = "6 order-2";
+
+        if(this.state.editorFullWidth == true) {
+            szer1col = "12 order-2";
+            szer2col = "12 order-1";
+        } else {
+            szer1col = "6 order-1";
+            szer2col = "6 order-2";
+        }
 
 /* 		
 		let entrylist = (
@@ -366,7 +399,10 @@ class SegmentTool extends Component {
                         key={"key" + i} 
 						container={container}
 						type="ALIGN"
+						openPreview = {this.openContainerInPreview}
                     />
+
+					
 			)
 			
 			// (<SegmentItem 
@@ -424,16 +460,18 @@ class SegmentTool extends Component {
 						<div className="tool-body">
 
 							<div className="row">
-                                <div className="col-sm">
+                                <div className={"col-md-"+szer1col}>
                                     <h3>Lista plików do przetworzenia</h3>
                                     <div className="file-list">
                                         {filelist}
                                     </div>
                                 </div>
 
-                                <div className="col-sm">
-                                    <h3>Edytor tekstu</h3>
-                                    <TextareaAutosize maxRows={1000} minRows={5} className="textEditor" />
+                                <div className={"col-md-"+szer2col}>
+									<AudioEditor
+											containerForPreview={this.props.containerForPreview}
+											editorFullWidth = {this.makeEditorFullWidth}
+											toolType="ALIGN" />
                                 </div>
                             </div>
 
@@ -554,19 +592,24 @@ const mapStateToProps = state => {
 		refusedTxtFileList: state.segR.refusedTxtFileList,
 		modalDisplay: state.projectR.modal,
 		ifRefusedAudio: state.segR.ifRefusedAudio,
+
+
+		containerForPreview: state.segR.alignContainerForPreview,
 	}
 }
 
 const mapDispatchToProps = dispatch => {
 	return {
-		onAudioDrop: (audioFiles) => dispatch(segmentActions.dropAudioFiles(audioFiles)),
-		onTxtDrop: (txtFiles) => dispatch(segmentActions.dropTxtFiles(txtFiles)),
-		onChangeAudioListOrder: (idsOrder) => dispatch(segmentActions.changeAudioListOrder(idsOrder)),
-		onChangeTxtListOrder: (idsOrder) => dispatch(segmentActions.changeTxtListOrder(idsOrder)),
-		onSetRefusionAudioFiles: (refusedFiles) => dispatch(segmentActions.setRefusedSegmentAudioFiles(refusedFiles)),
-		onSetRefusionTxtFiles: (refusedFiles) => dispatch(segmentActions.setRefusedSegmentTxtFiles(refusedFiles)),
-		onOpenModalHandler: () => dispatch(segmentActions.openModalProject()),
-        onCloseModalHandler: () => dispatch(segmentActions.closeModalProject()),
+
+		openContainerInAlignPreview: (container) => dispatch(segmentActions.openContainerInAlignPreview(container)),
+		//onAudioDrop: (audioFiles) => dispatch(segmentActions.dropAudioFiles(audioFiles)),
+		//onTxtDrop: (txtFiles) => dispatch(segmentActions.dropTxtFiles(txtFiles)),
+		//onChangeAudioListOrder: (idsOrder) => dispatch(segmentActions.changeAudioListOrder(idsOrder)),
+		//onChangeTxtListOrder: (idsOrder) => dispatch(segmentActions.changeTxtListOrder(idsOrder)),
+		//onSetRefusionAudioFiles: (refusedFiles) => dispatch(segmentActions.setRefusedSegmentAudioFiles(refusedFiles)),
+		//onSetRefusionTxtFiles: (refusedFiles) => dispatch(segmentActions.setRefusedSegmentTxtFiles(refusedFiles)),
+		//onOpenModalHandler: () => dispatch(segmentActions.openModalProject()),
+        //onCloseModalHandler: () => dispatch(segmentActions.closeModalProject()),
 	}
 }
 

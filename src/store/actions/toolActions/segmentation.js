@@ -1,6 +1,18 @@
 import * as actionTypes from '../actionsTypes';
 import axios from 'axios';
 
+// ###################################################################
+// ######## dodawanie contanera z podglądu w dia ##########
+// ###################################################################
+
+export const openContainerInAlignPreview = (container) => {
+    return {
+        type: actionTypes.ADD_CONTAINER_TO_PREVIEW_ALIGN,
+        containerForPreview: container,
+    }
+}
+
+
 export const addContainerToAlign = (container) => {
     return {
         type: actionTypes.ADD_CONTAINER_TO_ALIGN,

@@ -19,12 +19,42 @@ import { getExt, getFilenameFromURL } from '../../../utils/utils';
 import ToolItem from '../ToolItem/ToolItem';
 import TextareaAutosize from 'react-textarea-autosize';
 import { faSurprise } from '@fortawesome/free-solid-svg-icons';
+import * as vadActions from '../../../store/actions/index';
+import AudioEditor from '../../ProjectPage/AudioEditor/AudioEditor';
 
 class VADTool extends Component {
 
+	state = {
+        modal: false,
+        editorFullWidth: false,
+    }
+
+	//opens given container in preview window
+    openContainerInPreview = (container) => {
+        //console.log(e)
+        this.props.openContainerInVADPreview(container);
+	}
 	
+	makeEditorFullWidth = () => {
+        if(this.state.editorFullWidth == false){
+            this.setState({editorFullWidth: true});
+        } else {
+            this.setState({editorFullWidth: false});
+        }
+    }
 
 	render() {
+
+		let szer1col = "6 order-1";
+        let szer2col = "6 order-2";
+
+        if(this.state.editorFullWidth == true) {
+            szer1col = "12 order-2";
+            szer2col = "12 order-1";
+        } else {
+            szer1col = "6 order-1";
+            szer2col = "6 order-2";
+        }
 
 		let vadIcon = <FontAwesomeIcon icon={faSurprise} /> ;
 
@@ -35,7 +65,8 @@ class VADTool extends Component {
                     <ToolItem 
                         key={"key" + i} 
                         container={container}
-                        type="VAD"
+						type="VAD"
+						openPreview = {this.openContainerInPreview}
                     />
 			)
 			
@@ -61,7 +92,7 @@ class VADTool extends Component {
 					czyTopPart="true"
 					desc="Detekcja mowy" >
 						 <ButtonLeftBar 
-							napis="Uruchom detekcje mowy"
+							napis="Uruchom detekcje mowy dla wszystkich"
 							icon={vadIcon}
 							customeStyle={null}
 							disabled={false}
@@ -85,16 +116,18 @@ class VADTool extends Component {
 						<div className="tool-body">
 
 							<div className="row">
-                                <div className="col-sm">
+                                <div className={"col-md-"+szer1col}>
                                     <h3>Lista plików do przetworzenia</h3>
                                     <div className="file-list">
                                         {filelist}
                                     </div>
                                 </div>
 
-                                <div className="col-sm">
-                                    <h3>Edytor tekstu</h3>
-                                    <TextareaAutosize maxRows={1000} minRows={5} className="textEditor" />
+                                <div className={"col-md-"+szer2col}>
+									<AudioEditor
+											containerForPreview={this.props.containerForPreview}
+											editorFullWidth = {this.makeEditorFullWidth}
+											toolType="VAD" />
                                 </div>
                             </div>				
 
@@ -115,12 +148,13 @@ const mapStateToProps = state => {
         VADItems: state.vadR.filesToUpload,
 		modalDisplay: state.projectR.modal,
 		ifRefusedAudio: state.segR.ifRefusedAudio,
+		containerForPreview: state.vadR.vadContainerForPreview,
 	}
 }
 
 const mapDispatchToProps = dispatch => {
 	return {
-
+		openContainerInVADPreview: (container) => dispatch(vadActions.openContainerInVADPreview(container)),
 		//onOpenModalHandler: () => dispatch(segmentActions.openModalProject()),
        // onCloseModalHandler: () => dispatch(segmentActions.closeModalProject()),
 	}

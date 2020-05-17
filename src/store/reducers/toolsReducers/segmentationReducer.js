@@ -16,7 +16,17 @@ const initialState = {
     refusedAudioFileList: [],  //refused audio files
     refusedTxtFileList: [],  //refused txt files
     ifRefusedAudio: true, //which component refused files - audio or if false will be txt
+
+    alignContainerForPreview: '',
 }
+
+
+const addContainerToPreviewAlign = (state,action) => {
+    return updateObject(state, {
+        alignContainerForPreview:action.containerForPreview, 
+    });
+}
+
 
 //#### dodaje contener do panelu align
 const addContainerToAlign  = (state, action) => {
@@ -492,6 +502,10 @@ const fileSegmentationFailed = (state,action) => {
 const segmentationReducer = (state = initialState, action) => {
 
     switch (action.type) {
+
+        
+
+        case actionTypes.ADD_CONTAINER_TO_PREVIEW_ALIGN: return addContainerToPreviewAlign(state,action);
         case actionTypes.DROP_AUDIO_FILES: return dropAudioFiles(state, action);
         case actionTypes.DROP_TXT_FILES: return dropTxtFiles(state, action);
         case actionTypes.CHANGE_AUDIO_LIST_ORDER: return changeAudioListOrder(state, action);

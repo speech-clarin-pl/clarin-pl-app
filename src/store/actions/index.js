@@ -68,10 +68,12 @@ export {
 
 export {
     addContainerToDIA,
+    openContainerInDIAPreview,
 } from './toolActions/dia';
 
 export {
     addContainerToVAD,
+    openContainerInVADPreview,
 } from './toolActions/vad';
 
 export {
@@ -97,6 +99,7 @@ export {
     setRefusedSegmentAudioFiles,
     setRefusedSegmentTxtFiles,
     addContainerToAlign,
+    openContainerInAlignPreview,
 } from './toolActions/segmentation';
 
 

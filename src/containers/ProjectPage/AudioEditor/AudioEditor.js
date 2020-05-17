@@ -34,8 +34,6 @@ class AudioEditor extends Component {
 			datPath: '',
 			peaksInstance: null,
 		}
-
-		
 	}
 
 	makeEditorFullWidth = () => {
@@ -460,48 +458,57 @@ class AudioEditor extends Component {
 		  });
 	}
 
+	componentDidUpdate = () => {
+		this.loadNewAudioToEditor();
+	}
+
+
+	// ładuje nowy plik do edytora
+	loadNewAudioToEditor = () => {
+		if(this.props.containerForPreview !== undefined){
+			//console.log("AAAAAA" +this.props.containerForPreview)
+			//this.loadContainerPreview(this.props.containerForPreview, this.props.toolType);
+			//this.loadAudioData(this.props.containerForPreview, this.props.toolType);
+			//this.props.onLoadAudioForPreview(this.props.containerForPreview, this.props.toolType);
+
+			const userId = this.props.containerForPreview.owner;
+			const projectId = this.props.containerForPreview.project;
+			const sessionId = this.props.containerForPreview.session;
+			const fileName = this.props.containerForPreview.fileName;
+			const token = this.props.token;
+
+			let audioPath = "http://localhost:1234/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+fileName+"?api_key="+token;
+			let datPath = "http://localhost:1234/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+getFileNameWithNoExt(fileName)+".dat?api_key="+token;
+	
+			if(this.state.audioPath == '' || this.state.datPath == ''){
+				this.initializePeaksFirstTime(audioPath, datPath)
+			} else {
+				this.setState({
+					audioPath:audioPath,
+					datPath:datPath
+				});
+			}
+			
+			 this.requestWaveformData(datPath)
+				.then(waveformData => {
+					
+					return this.createSources(waveformData);
+				})
+				.then(sources => {
+					console.log(sources)
+					console.log(this.state.peaksInstance)
+					this.bindEventHandlers(this.state.peaksInstance, sources);
+				}, this.errorHandler);
+		}
+	}
+
 	componentDidUpdate = (prevProps) => {
 
 		//kiedy tylko zmieni się container, wtedy ładuje audio i binary data z serwera i uruchamiam podgląd
 		if(prevProps.containerForPreview !== this.props.containerForPreview){
-			//wtedy załaduje z 
-			if(this.props.containerForPreview !== undefined){
-				//console.log("AAAAAA" +this.props.containerForPreview)
-				//this.loadContainerPreview(this.props.containerForPreview, this.props.toolType);
-				//this.loadAudioData(this.props.containerForPreview, this.props.toolType);
-				//this.props.onLoadAudioForPreview(this.props.containerForPreview, this.props.toolType);
-
-				const userId = this.props.containerForPreview.owner;
-				const projectId = this.props.containerForPreview.project;
-				const sessionId = this.props.containerForPreview.session;
-				const fileName = this.props.containerForPreview.fileName;
-				const token = this.props.token;
-
-				let audioPath = "http://localhost:1234/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+fileName+"?api_key="+token;
-				let datPath = "http://localhost:1234/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+getFileNameWithNoExt(fileName)+".dat?api_key="+token;
-		
-				if(this.state.audioPath == '' || this.state.datPath == ''){
-					this.initializePeaksFirstTime(audioPath, datPath)
-				} else {
-					this.setState({
-						audioPath:audioPath,
-						datPath:datPath
-					});
-				}
-				
-
-				 this.requestWaveformData(datPath)
-					.then(waveformData => {
-						
-						return this.createSources(waveformData);
-					})
-					.then(sources => {
-						console.log(sources)
-						console.log(this.state.peaksInstance)
-						this.bindEventHandlers(this.state.peaksInstance, sources);
-					}, this.errorHandler);
-
-			}
+			
+			this.loadNewAudioToEditor();
+			
 		}
 	}
 
@@ -520,7 +527,7 @@ class AudioEditor extends Component {
 			edytor = (
 				<>
 					
-					<div id="test">DUBUG: TEST</div>
+				
 					<div id="waveform-container">
 						<div id="overview-container"></div>
 						<div id="zoomview-container"></div>

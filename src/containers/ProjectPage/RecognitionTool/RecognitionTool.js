@@ -174,7 +174,6 @@ class RecognitionTool extends Component {
         } else {
             this.setState({editorFullWidth: false});
         }
-        
     }
 
     render() {
@@ -259,7 +258,7 @@ class RecognitionTool extends Component {
                     desc="W tym miejscu istnieje możliwość wykonywania automatycznego rozpoznawania mowy z nagrań dźwiękowych" >
 
                     <ButtonLeftBar 
-                        napis="Uruchom rozpoznawanie"
+                        napis="Uruchom rozpoznawanie dla wszystkich"
                         iconType="file"
                         icon={recoIcon}
                         customeStyle={null}

@@ -13,6 +13,14 @@ const initialState = {
         // loadedperc: 0
         // status: "toload"
     // }]
+    diaContainerForPreview: '',
+}
+
+// dodaje kontener do podgladu w dia
+const addContainerToPreviewDIA = (state,action) => {
+    return updateObject(state, {
+        diaContainerForPreview:action.containerForPreview, 
+    });
 }
 
 // ######### dodaje container do listy DIA #########
@@ -46,6 +54,7 @@ const addContainerToDIA = (state,action) => {
 const diaReducer = (state = initialState, action) => {
     switch(action.type){
         case actionTypes.ADD_CONTAINER_TO_DIA: return addContainerToDIA(state,action);
+        case actionTypes.ADD_CONTAINER_TO_PREVIEW_DIA: return addContainerToPreviewDIA(state,action);
         //case actionTypes.ADD_CONTAINER_TO_RECO: return addContainerToReco(state,action);
         //case actionTypes.DROP_FILES: return dropFiles(state, action);
     }

@@ -13,6 +13,17 @@ const initialState = {
         // loadedperc: 0
         // status: "toload"
     // }]
+
+    vadContainerForPreview: '', //container beeing previewd in recognition
+}
+
+
+
+// dodaje kontener do podgladu w vad
+const addContainerToPreviewVAD = (state,action) => {
+    return updateObject(state, {
+        vadContainerForPreview:action.containerForPreview, 
+    });
 }
 
 // ######### dodaje container do listy VAD #########
@@ -44,6 +55,8 @@ const addContainerToVAD = (state,action) => {
 const vadReducer = (state = initialState, action) => {
     switch(action.type){
         case actionTypes.ADD_CONTAINER_TO_VAD: return addContainerToVAD(state,action);
+        case actionTypes.ADD_CONTAINER_TO_PREVIEW_VAD: return addContainerToPreviewVAD(state,action);
+        
         //case actionTypes.ADD_CONTAINER_TO_RECO: return addContainerToReco(state,action);
         //case actionTypes.DROP_FILES: return dropFiles(state, action);
     }
