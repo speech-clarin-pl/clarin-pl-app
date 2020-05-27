@@ -1,0 +1,18 @@
+.TextEditor .textEditor {
+    width: 100%;
+    background: none;
+    border: 1px solid #c7d5da;
+}
+
+.TextEditor #editor-js {
+    width: 100%;
+    background: none;
+    border: 1px solid #c7d5da;
+    padding-right:10px;
+    padding-left:5px;
+}
+
+.TextEditor #editor-js .ce-paragraph {
+    text-align: left;
+}
+

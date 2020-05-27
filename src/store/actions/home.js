@@ -1,6 +1,56 @@
 import * as actionTypes from './actionsTypes';
 import axios from 'axios';
 
+
+
+
+
+//######################################################
+//##################### przypomnienie hasła #######################
+//#######################################################
+
+export const forgotPassFailed = (error) => {
+
+    let finalMessage = error.message;
+    let status = error.response.status;
+
+
+    return {
+        type: actionTypes.FORGOT_PASS_FAILED,
+        message: finalMessage,
+        resForgotPassStatus: status,
+    }
+}
+
+export const forgotPassAction = (message, resStatus) => {
+    return {
+        type: actionTypes.FORGOT_PASS,
+        message: message,
+        resForgotPassStatus: resStatus,
+    }
+}
+export const forgotPass = (emailaddr) => {
+    return dispatch => {
+        
+        axios.post('/auth/forgotPass',{
+            email: emailaddr,
+        })
+        .then(response => {
+            dispatch(forgotPassAction(response.data.message, response.status));
+        })
+        .catch(error => {
+            //console.log(error)
+            dispatch(forgotPassFailed(error));
+        });
+    }
+
+    
+}
+
+
+
+
+
 //######################################################
 //##################### rejestracja #######################
 //#######################################################

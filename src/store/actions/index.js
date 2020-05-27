@@ -23,6 +23,9 @@ export {
 export {
     loadBinaryForPreview,
     loadAudioForPreview,
+    saveTranscription,
+    transcriptionChanged,
+    loadTranscription,
 } from './toolActions/audioEditor';
 
 export {
@@ -53,7 +56,8 @@ export {
     registerUser,
     loginUser,
     logout,
-    setLoggedIn
+    setLoggedIn,
+    forgotPass,
 } from './home';
 
 export {

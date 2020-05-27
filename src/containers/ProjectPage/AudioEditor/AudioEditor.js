@@ -23,18 +23,22 @@ import Konva from 'konva';
 
 import TOLdemo from '../../../utils/TOL_6min_720p_download.json'
 
+import TextEditor from './TextEditor/TextEditor';
+
 
 class AudioEditor extends Component {
 
-	constructor(props){
-		super(props);
-		this.audioDOM = React.createRef();
-		this.state = {
-			audioPath: '',
-			datPath: '',
-			peaksInstance: null,
-		}
+	state = {
+		audioPath: '',
+		datPath: '',
+		peaksInstance: null,
 	}
+
+	//constructor(props){
+	//	super(props);
+	//	this.audioDOM = React.createRef();
+		
+	//}
 
 	makeEditorFullWidth = () => {
 		this.props.editorFullWidth();
@@ -191,13 +195,14 @@ class AudioEditor extends Component {
 
 
 
-	initializePeaksFirstTime = (audioPath, datPath) => {
+	initializePeaksFirstTime = (audioPathok, datPathok) => {
 
 		//arraybuffer: "http://localhost:1234/repoFiles/5e4b09e086f4ed663259fae9/5e9e175af4192d661ebf49dd/5e9e175af4192d661ebf49de/kleska.dat?api_key="+this.props.token,
 	
+		
 		this.setState({
-			audioPath:audioPath,
-			datPath:datPath
+			audioPath:audioPathok,
+			datPath:datPathok
 		});
 
 
@@ -209,19 +214,21 @@ class AudioEditor extends Component {
 			},
 			mediaElement: document.querySelector('audio'),
 			dataUri: {
-			  arraybuffer: datPath,
+			  arraybuffer: datPathok,
 			},
 
 			zoomWaveformColor: 'rgba(52, 152, 219, 1)',
 			overviewWaveformColor: 'rgba(52, 152, 219, 0.3)',
 			overviewHighlightColor: 'rgba(52, 152, 219, 0.4)',
-			emitCueEvents: true,
-			zoomLevels: [128, 256, 512, 1024, 2048, 4096],
-			nudgeIncrement: 0.01,
 			keyboard: true,
-			showPlayheadTime: false,
+			zoomLevels: [256, 512, 1024, 2048, 4096],
 
 		  };
+
+		  //emitCueEvents: true,
+		
+		//	nudgeIncrement: 0.01,	
+		//	showPlayheadTime: false,
 
 		  this.createPeaksInstance(options,this)
           .then(peaksInstance => {
@@ -232,6 +239,7 @@ class AudioEditor extends Component {
 	createPeaksInstance = (options, thisComponent) => {
 		
 		return new Promise(function(resolve, reject) {
+		
 
 		  Peaks.init(options, function(err, peaksInstance) {
 
@@ -475,10 +483,11 @@ class AudioEditor extends Component {
 			const projectId = this.props.containerForPreview.project;
 			const sessionId = this.props.containerForPreview.session;
 			const fileName = this.props.containerForPreview.fileName;
+			const containerId = this.props.containerForPreview._id;
 			const token = this.props.token;
 
-			let audioPath = "http://localhost:1234/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+fileName+"?api_key="+token;
-			let datPath = "http://localhost:1234/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+getFileNameWithNoExt(fileName)+".dat?api_key="+token;
+			let audioPath = "http://localhost:1234/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/audio?api_key="+token;
+			let datPath = "http://localhost:1234/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/dat?api_key="+token;
 	
 			if(this.state.audioPath == '' || this.state.datPath == ''){
 				this.initializePeaksFirstTime(audioPath, datPath)
@@ -521,7 +530,7 @@ class AudioEditor extends Component {
 		let audioSource = this.state.audioPath;
 		let edytor = null;
 
-		if(this.props.containerForPreview == "do wywalenia :) sprawdzam czy puste"){
+		if(this.props.containerForPreview == ""){
 			edytor = <h3>Wybierz element do edycji</h3>
 		} else {
 			edytor = (
@@ -548,6 +557,11 @@ class AudioEditor extends Component {
 								<input type="range" id="amplitude-scale" min="0" max="10" step="1" />
 							</div>
 					</div>
+
+					<TextEditor 
+						toolType={this.props.toolType} 
+						container={this.props.containerForPreview}/>
+
 
 					<div className="log">
 						<div id="segments" className="hide">
@@ -598,7 +612,6 @@ class AudioEditor extends Component {
 					{edytor}
 
 
-                    <TextareaAutosize maxRows={1000} minRows={5} className="textEditor" />
                 </div>
 				
 
@@ -614,6 +627,7 @@ const mapStateToProps = state => {
 		//	modalDisplay: state.projectR.modal,
 		//	ifRefusedAudio: state.segR.ifRefusedAudio,
 		token: state.homeR.token,
+
 
 		containerBinaryPreviewREC:state.repoR.containerBinaryPreviewREC,
 		containerBinaryPreviewVAD:state.repoR.containerBinaryPreviewVAD,

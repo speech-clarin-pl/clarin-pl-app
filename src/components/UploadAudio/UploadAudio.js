@@ -12,6 +12,8 @@ import ContainerFile from '../../containers/ProjectPage/RepoPanel/ContainerFile/
 import * as repoActions from '../../store/actions/index';
 import {getExt} from '../../utils/utils';
 import {extensionMapping} from '../../utils/fileTypes';
+import uniqueFilename from 'unique-filename';
+
 
 class UploadAudio extends Component {
 
@@ -65,13 +67,19 @@ class UploadAudio extends Component {
         const userId = this.props.currentProjectOwner;
         const sessionId = this.props.forSession;
 
+        //generuje unikatową nazwę
+
+        const uniqueHash = uniqueFilename("");
+
         return new Promise((resolve, reject) => {
           const dataToSend = new FormData();
 
           dataToSend.append('userId', userId);
           dataToSend.append('projectId', projectId);
           dataToSend.append('sessionId', sessionId);
+          dataToSend.append('uniqueHash', uniqueHash);
           dataToSend.append('audioFile', file);
+
   
           axios.post('/repoFiles/uploadFile', dataToSend,{
   

@@ -132,7 +132,9 @@ class LoginArea extends Component {
     forgotPassHandler = (event) => {
         event.preventDefault();
 
-        this.setState({})
+       // this.setState({})
+       let emailaddr = this.state.forgotPassForm.forgotPassEmail.value;
+       this.props.onForgotPass(emailaddr);
 
     }
 
@@ -148,7 +150,6 @@ class LoginArea extends Component {
         //console.log(loginData);
 
         this.props.onLogIn(loginData.loginemail, loginData.loginpass);
-
 
         //console.log(this.props)
         
@@ -338,6 +339,8 @@ class LoginArea extends Component {
        
         let myclasses = ["container-fluid", "LoginArea"];
 
+
+        // ######### formatowanie informacji po zalogowaniu się ########
         let messageForLogin = '';
         if(this.props.isAuth==false){
             messageForLogin = 'Zaloguj się';
@@ -346,6 +349,8 @@ class LoginArea extends Component {
 
         }
 
+
+        // ######### formatowanie informacji error Register ########
         let errorRegisterInfo = null;
         if(this.props.resRegistrationStatus === 201 || this.props.resRegistrationStatus === 200){
             errorRegisterInfo = (
@@ -359,14 +364,12 @@ class LoginArea extends Component {
                          {this.props.registrationMessage}
                     </div>
                 )
-    
         }
 
+
+        // ######### formatowanie informacji error Login ########
         let errorLoginInfo = null;
         if(this.props.resLoginStatus === 201 || this.props.resLoginStatus === 200){
-
-            
-
             errorLoginInfo = (
                 <div className="alert alert-success" role="alert">
                      {this.props.loginMessage}
@@ -389,8 +392,34 @@ class LoginArea extends Component {
                     </div>
                 )
             }
+        }
 
-            
+
+         // ######### formatowanie informacji forgot Pass########
+        let errorForgotPassInfo = null;
+        if(this.props.resForgotPassStatus === 201 || this.props.resForgotPassStatus === 200){
+            errorForgotPassInfo = (
+                <div className="alert alert-success" role="alert">
+                     {this.props.forgotPassMessage}
+                </div>
+            )
+        } else if(this.props.resForgotPassStatus !== 0){
+
+            let message = this.props.forgotPassMessage;
+
+            if(typeof message === 'undefined' || message === null){
+                errorForgotPassInfo = (
+                    <div className="alert alert-danger" role="alert">
+                         Wystąpił problem z serwerem
+                    </div>
+                )
+            } else {
+                errorForgotPassInfo = (
+                    <div className="alert alert-warning" role="alert">
+                         {message}
+                    </div>
+                )
+            }
         }
 
         
@@ -459,8 +488,8 @@ class LoginArea extends Component {
                                 <h3>Przypomnienie hasła</h3>
                                 
                                 {
-                                    this.props.loginMessage !== ''?
-                                    errorLoginInfo: null 
+                                    this.props.forgotPassMessage !== ''?
+                                    errorForgotPassInfo: null 
                                 }
 
                                 <div className="form-group">
@@ -473,7 +502,6 @@ class LoginArea extends Component {
                                         touched = {this.state.forgotPassForm.forgotPassEmail.touched}
                                         invalid={!this.state.forgotPassForm.forgotPassEmail.valid}
                                         whenchanged={(event) => this.inputForgotPassChangedHandler(event)}/>
-                                    
                                 </div>
     
                                 <button disabled={!this.state.forgotPassFormIsValid} className="btn btn-primary" >
@@ -619,7 +647,7 @@ class LoginArea extends Component {
                             
                             {this.props.isAuth? null : 
                                 <div className="alert alert-info" role="alert">
-                                Aby skorzystać z serwisu należy się zarejestrować. Zapamiętaj koniecznie hasło! Mechanizm przypominania hasła jest w fazie implementacji. W razie problemów skontakuj się z nami pod adresem podanym w stopce.
+                                    Aby skorzystać z serwisu należy się zarejestrować. W razie problemów skontakuj się z nami pod adresem podanym w stopce.
                               </div>}
                                                 
                         </div>
@@ -647,12 +675,15 @@ const mapStateToProps = state => {
         loginMessage: state.homeR.loginMessage,
         resRegistrationStatus: state.homeR.resRegistrationStatus,
         resLoginStatus: state.homeR.resLoginStatus,
+        forgotPassEmailSent: state.homeR.forgotPassEmailSent,
+        resForgotPassStatus: state.homeR.resForgotPassStatus,
+        forgotPassMessage: state.homeR.forgotPassMessage,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        //onLogIn: (login, pass) => dispatch({type:actionTypes.LOG_IN, login: login, pass: pass}),
+        onForgotPass: (emailaddr) => dispatch(authActions.forgotPass(emailaddr)),
         onLogIn: (email, pass) => dispatch(authActions.loginUser(email, pass)),
         onRegister: (userName, userEmail, userPass) => dispatch(authActions.registerUser(userName, userEmail, userPass)),
         onLogOut: () => dispatch(authActions.logout())

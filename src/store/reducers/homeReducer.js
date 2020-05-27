@@ -8,8 +8,13 @@ const initialState = {
     userName: '',
     registrationMessage: '',
     loginMessage: '',
+
+    forgotPassMessage: '',
     resRegistrationStatus: 0,
     resLoginStatus: 0,
+    resForgotPassStatus: 0,
+    forgotPassEmailSent: false,
+
     
 
     token: '',
@@ -19,6 +24,30 @@ const initialState = {
 
     autoLogoutAfter: 0 //po ilu milisekundach bedzie wylogowanie
 }
+
+const forgotPassFailed = (state, action) => {
+   let message = action.message;
+   let resForgotPassStatus = action.resForgotPassStatus;
+
+   return updateObject(state,{
+        forgotPassMessage: message,
+        resForgotPassStatus: resForgotPassStatus,
+        forgotPassEmailSent: false,
+    });
+
+}
+
+const forgotPass = (state, action) => {
+   let message = action.message;
+   let resForgotPassStatus = action.resForgotPassStatus;
+
+   return updateObject(state,{
+        forgotPassMessage: message,
+        resForgotPassStatus: resForgotPassStatus,
+        forgotPassEmailSent: true,
+    });
+}
+
 
 const logIn = (state, action) => {
        // console.log(action)
@@ -107,7 +136,12 @@ const homeReducer = (state = initialState, action) => {
         case actionTypes.LOG_IN_FAILED: return logInFailed(state, action);
         case actionTypes.REGISTER: return register(state,action); 
         case actionTypes.REGISTER_FAILED: return registerFailed(state,action);
-        case actionTypes.SET_AUTO_LOGOUT: return autoLogout(state,action);         
+        case actionTypes.SET_AUTO_LOGOUT: return autoLogout(state,action); 
+        
+        case actionTypes.FORGOT_PASS_FAILED: return forgotPassFailed(state,action);
+        case actionTypes.FORGOT_PASS: return forgotPass(state,action);
+        
+        
     }
 
     return state;

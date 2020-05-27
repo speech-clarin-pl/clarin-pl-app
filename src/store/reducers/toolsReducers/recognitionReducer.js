@@ -1,7 +1,6 @@
 import * as actionTypes from '../../actions/actionsTypes';
 import {updateObject} from '../../utility';
-//import { addContainerToReco } from '../../actions';
-//import { removeRecognitionItem } from '../../actions';
+
 
 
 const initialState = {
@@ -18,6 +17,21 @@ const initialState = {
     recoFileForPreview: '', //indicates which file is chosen for preview
 
     recoContainerForPreview: '', //container beeing previewd in recognition
+
+  //  transcriptData: {},
+
+    transcriptionData: {
+        "time" : 1590577980033,
+        "blocks" : [
+            {
+                "type" : "paragraph",
+                "data" : {
+                    "text" : "To pochodzi z lokalnego reducera!"
+                }
+            },
+        ],
+        "version" : "2.17.0"
+    }, //default initial data
 }
 
 
@@ -156,6 +170,12 @@ const openAudioRecPreview = (state, action) => {
 
 }
 
+const loadTranscription = (state, action) => {
+    return updateObject(state,{
+        transcriptionData: action.transcriptData.data,
+    })
+}
+
 const recognitionReducer = (state = initialState, action) => {
     switch(action.type){
 
@@ -169,6 +189,7 @@ const recognitionReducer = (state = initialState, action) => {
         case actionTypes.OPEN_AUDIO_RECOGNITION_PREVIEW: return openAudioRecPreview(state, action);
         case actionTypes.CLEAR_RECO_STORE: return clearRecoStore(state, action);
         case actionTypes.REFUSE_RECO_FILES: return setRefusedFiles(state, action);
+        case actionTypes.LOAD_TRANSCRIPTION: return loadTranscription(state, action);
     }
 
     return state;
