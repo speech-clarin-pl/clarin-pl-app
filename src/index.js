@@ -11,6 +11,7 @@ import projectsListReducer from './store/reducers/projectsListReducer';
 import recognitionReducer from './store/reducers/toolsReducers/recognitionReducer';
 import segmentationReducer from './store/reducers/toolsReducers/segmentationReducer';
 import previewReducer from './store/reducers/toolsReducers/previewReducer';
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 // to jest stara wersja repo
 //import repoReducer from './store/reducers/repoReducer';
@@ -36,8 +37,8 @@ if (process.env.NODE_ENV === 'production') {
     axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 }
 
-console.log(process.env.NODE_ENV)
-console.log(axios.defaults.baseURL)
+//console.log(process.env.NODE_ENV)
+//console.log(axios.defaults.baseURL)
 
 //axios.defaults.headers.common['Authorization'] = 'AUTH TOKEN';
 //axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -55,6 +56,25 @@ const rootReducer = combineReducers({
 });
 
 
+function createNotification (type, value) {
+    switch (type) {
+        case 'info':
+            NotificationManager.info(value,'', 5000);
+            break;
+        case 'success':
+            NotificationManager.success(value, '', 5000);
+            break;
+        case 'warning':
+            NotificationManager.warning(value, '', 5000);
+            break;
+        case 'error':
+            NotificationManager.error(value, '', 5000);
+            break;
+        default: break;
+    }
+};
+
+
 // dla asynchronicznych zadan
 const store = createStore(rootReducer, composeEnhancers(
     applyMiddleware(thunk)
@@ -63,6 +83,7 @@ const store = createStore(rootReducer, composeEnhancers(
 const app = (
   
     <Provider store={store}>
+        <NotificationContainer/>
         <BrowserRouter>
             <App />
         </BrowserRouter>

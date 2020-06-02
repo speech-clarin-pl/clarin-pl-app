@@ -26,7 +26,7 @@ const initialState = {
             {
                 "type" : "paragraph",
                 "data" : {
-                    "text" : "To pochodzi z lokalnego reducera!"
+                    "text" : ""
                 }
             },
         ],

@@ -221,7 +221,7 @@ class AudioEditor extends Component {
 			overviewWaveformColor: 'rgba(52, 152, 219, 0.3)',
 			overviewHighlightColor: 'rgba(52, 152, 219, 0.4)',
 			keyboard: true,
-			zoomLevels: [256, 512, 1024, 2048, 4096],
+			zoomLevels: [128, 256, 512, 1024, 2048, 4096],
 
 		  };
 
