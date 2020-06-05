@@ -454,28 +454,33 @@ const repoSelectSession = (state, action) => {
         let allSessions = draftState.sessions.byId;
 
         //zapisuje poprzednio zaznaczony aby odznaczyc
-        let previouslySelectedSess = draftState.currentlySelectedSessions[0];
-        let previouslySelectedCont = draftState.currentlySelectedContainers[0];
 
-        if(sessionId == previouslySelectedSess){
-            allSessions[sessionId].ifSelected = false;
-            draftState.currentlySelectedSessions[0] = null;
+        if(draftState.currentlySelectedContainers.length > 0){
 
-        } else {
-            draftState.currentlySelectedSessions[0] = sessionId;
-            allSessions[sessionId].ifSelected = true;
+                let previouslySelectedSess = draftState.currentlySelectedSessions[0];
+                let previouslySelectedCont = draftState.currentlySelectedContainers[0];
 
-            //odznaczam również contenery o ile byly jakies zaznaczone
-            let ktorezaznaczonecontenery = draftState.currentlySelectedContainers[0];
-            if(ktorezaznaczonecontenery != null){
-                allContainers[ktorezaznaczonecontenery].ifSelected = false;
-                 draftState.currentlySelectedContainers[0] = null;
-            }
 
-            //odznaczam poprzendio zaznaczony o ile nie był pusty
-            if(allSessions[previouslySelectedSess] != null ){
-               allSessions[previouslySelectedSess].ifSelected = false;
-            }
+                if(sessionId == previouslySelectedSess){
+                    allSessions[sessionId].ifSelected = false;
+                    draftState.currentlySelectedSessions[0] = null;
+
+                } else {
+                    draftState.currentlySelectedSessions[0] = sessionId;
+                    allSessions[sessionId].ifSelected = true;
+
+                    //odznaczam również contenery o ile byly jakies zaznaczone
+                    let ktorezaznaczonecontenery = draftState.currentlySelectedContainers[0];
+                    if(ktorezaznaczonecontenery != null){
+                        allContainers[ktorezaznaczonecontenery].ifSelected = false;
+                        draftState.currentlySelectedContainers[0] = null;
+                    }
+
+                    //odznaczam poprzendio zaznaczony o ile nie był pusty
+                    if(allSessions[previouslySelectedSess] != null ){
+                    allSessions[previouslySelectedSess].ifSelected = false;
+                    }
+                }
         }
     })
 

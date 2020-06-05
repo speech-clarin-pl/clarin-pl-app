@@ -27,107 +27,106 @@ class RecognitionTool extends Component {
         editorFullWidth: false,
     }
 
-    handleDrop = (files) => {
-        //extending the files by additionnal info about the status and load percentage
-       // console.log("HANDLE DROP")
-       // console.log(files)
+    // handleDrop = (files) => {
+    //     //extending the files by additionnal info about the status and load percentage
+    //    // console.log("HANDLE DROP")
+    //    // console.log(files)
 
-        let extFiles = [];
-        let fileList = [];
-        let refusedFileList = [];
+    //     let extFiles = [];
+    //     let fileList = [];
+    //     let refusedFileList = [];
 
-        //checking if the file/s is from local env
-        if (files instanceof FileList) {
-            console.log("rozpoznalem FILELIST")
-            for (var i = 0; i < files.length; i++) {
-                let file = files[i];
-                let fileExtention = getExt(file.name)[0];
+    //     //checking if the file/s is from local env
+    //     if (files instanceof FileList) {
+    //         console.log("rozpoznalem FILELIST")
+    //         for (var i = 0; i < files.length; i++) {
+    //             let file = files[i];
+    //             let fileExtention = getExt(file.name)[0];
 
-                //rozpoznaje tylko pliki audio
-                if (extensionMapping.hasOwnProperty(fileExtention) &&
-                    (extensionMapping[fileExtention] == "Audio")) {
-                    fileList.push(file);
-                } else {
-                    refusedFileList.push(file);
-                }
-            }
+    //             //rozpoznaje tylko pliki audio
+    //             if (extensionMapping.hasOwnProperty(fileExtention) &&
+    //                 (extensionMapping[fileExtention] == "Audio")) {
+    //                 fileList.push(file);
+    //             } else {
+    //                 refusedFileList.push(file);
+    //             }
+    //         }
 
-            //checking if files come from repo
-        } else if (files instanceof Object && (files["fileId"] != undefined)) {
-            console.log("rozpoznalem OBJECT")
+    //         //checking if files come from repo
+    //     } else if (files instanceof Object && (files["fileId"] != undefined)) {
+    //         console.log("rozpoznalem OBJECT")
             
-            //then the file is comming from the repo...
-            let f = files; //narazie mozna przeciagnac tylko jeden plik
+    //         //then the file is comming from the repo...
+    //         let f = files; //narazie mozna przeciagnac tylko jeden plik
            
-            let fileExtention = getExt(f.fileURL)[0];
+    //         let fileExtention = getExt(f.fileURL)[0];
 
-            //rozpoznaje tylko pliki audio
-            if (extensionMapping.hasOwnProperty(fileExtention) &&
-                (extensionMapping[fileExtention] == "Audio")) {
-                fileList.push(f);
-            } else {
-                refusedFileList.push(f);
-            }
+    //         //rozpoznaje tylko pliki audio
+    //         if (extensionMapping.hasOwnProperty(fileExtention) &&
+    //             (extensionMapping[fileExtention] == "Audio")) {
+    //             fileList.push(f);
+    //         } else {
+    //             refusedFileList.push(f);
+    //         }
 
-            //checking if files come from browse btn
-        } else if ( files.currentTarget != null && files.currentTarget instanceof Element){
-            console.log("rozpoznalem Element")
+    //         //checking if files come from browse btn
+    //     } else if ( files.currentTarget != null && files.currentTarget instanceof Element){
+    //         console.log("rozpoznalem Element")
             
-            const inputControl = files.currentTarget;
+    //         const inputControl = files.currentTarget;
             
-            for (var i = 0; i < inputControl.files.length; i++) {
-                let file = inputControl.files[i];
-                let fileExtention = getExt(file.name)[0];
+    //         for (var i = 0; i < inputControl.files.length; i++) {
+    //             let file = inputControl.files[i];
+    //             let fileExtention = getExt(file.name)[0];
     
-                 //rozpoznaje tylko pliki audio
-                 if (extensionMapping.hasOwnProperty(fileExtention) &&
-                        (extensionMapping[fileExtention] == "Audio")) {
-                        fileList.push(inputControl.files[i]);
-                    } else {
-                        refusedFileList.push(inputControl.files[i]);
-                    }
-            }
-        }
+    //              //rozpoznaje tylko pliki audio
+    //              if (extensionMapping.hasOwnProperty(fileExtention) &&
+    //                     (extensionMapping[fileExtention] == "Audio")) {
+    //                     fileList.push(inputControl.files[i]);
+    //                 } else {
+    //                     refusedFileList.push(inputControl.files[i]);
+    //                 }
+    //         }
+    //     }
 
 
-        if (refusedFileList.length > 0) {
-            this.props.onSetRefusionFiles(refusedFileList);
-            this.setState({
-                modal: true,
-            });
-        }
+    //     if (refusedFileList.length > 0) {
+    //         this.props.onSetRefusionFiles(refusedFileList);
+    //         this.setState({
+    //             modal: true,
+    //         });
+    //     }
 
-        Array.from(fileList).forEach(file => {
+    //     Array.from(fileList).forEach(file => {
+    //         let newFile = Object.assign({}, file);
+    //         //musze sprawdzic czy plik pochodzi z repo czy z local
+    //         // bo jest inna struktura danych
+    //         //z repo
+    //         if(file["fileURL"] != undefined){
+    //             newFile.file = {
+    //                 "name": getFilenameFromURL(file.fileURL),
+    //                 "size": file.fileSize,
+    //                 "fileId": file.fileId,
+    //             };
+    //             newFile.from = "repo";
+    //             newFile.loadedperc = 100;
+    //             newFile.url = file.fileURL;
+    //             newFile.status = "loaded";
+    //         //z local
+    //         } else {
+    //             newFile.file = file;
+    //             newFile.status = 'toload';
+    //             newFile.loadedperc = 0;
+    //             newFile.from = 'local';
+    //         }
 
-            let newFile = Object.assign({}, file);
-            //musze sprawdzic czy plik pochodzi z repo czy z local
-            // bo jest inna struktura danych
-            //z repo
-            if(file["fileURL"] != undefined){
-                newFile.file = {
-                    "name": getFilenameFromURL(file.fileURL),
-                    "size": file.fileSize,
-                    "fileId": file.fileId,
-                };
-                newFile.from = "repo";
-                newFile.loadedperc = 100;
-                newFile.url = file.fileURL;
-                newFile.status = "loaded";
-            //z local
-            } else {
-                newFile.file = file;
-                newFile.status = 'toload';
-                newFile.loadedperc = 0;
-                newFile.from = 'local';
-            }
+    //         newFile.id = uuid.v4();
+    //         extFiles.push(newFile);
+    //     });
 
-            newFile.id = uuid.v4();
-            extFiles.push(newFile);
-        });
+    //     this.props.onDrop(extFiles);
 
-        this.props.onDrop(extFiles);
-
-    }
+    // }
 
 
     //otwiera okno modalne
@@ -198,22 +197,20 @@ class RecognitionTool extends Component {
 
         if (this.props.filesToUpload.length > 0) {
 
-            filelist = this.props.filesToUpload.map((file, i) => {
+                filelist = this.props.filesToUpload.map((file, i) => {
 
-                return (
-                    <ToolItem 
-                        key={"key" + i} 
-                        container={file}
-                        type="RECO"
-                        openPreview = {this.openContainerInPreview}
-                    />
-                //<RecognitionItem key={"key" + i}
-                //    file={file} />
-                //
-                )
-            }
-                
-                
+                    return (
+                        <ToolItem 
+                            key={"key" + i} 
+                            container={file}
+                            type="RECO"
+                            openPreview = {this.openContainerInPreview}
+                        />
+                    //<RecognitionItem key={"key" + i}
+                    //    file={file} />
+                    //
+                    )
+                }  
             )
         }
 
@@ -221,21 +218,25 @@ class RecognitionTool extends Component {
         return (
             <Aux>
 
-                <Modal
-                    show={this.state.modal}
-                    modalClosed={this.closeModalHandler}
-                >
+                {/*
 
-                    <div className="alert alert-warning" role="alert">
-                        <p>Niektóre z plików nie są plikami audio dlatego nie zostaną dodane do kolejki.</p>
+                                <Modal
+                                    show={this.state.modal}
+                                    modalClosed={this.closeModalHandler}
+                                >
 
-                    </div>
+                                    <div className="alert alert-warning" role="alert">
+                                        <p>Niektóre z plików nie są plikami audio dlatego nie zostaną dodane do kolejki.</p>
+
+                                    </div>
 
 
-                    <button type="button"
-                        className="btn btn-outline-secondary"
-                        onClick={this.closeModalHandler}>OK</button>
-                </Modal>
+                                    <button type="button"
+                                        className="btn btn-outline-secondary"
+                                        onClick={this.closeModalHandler}>OK</button>
+                                </Modal>
+                */}
+                
 
                 {
                     /*
@@ -276,7 +277,8 @@ class RecognitionTool extends Component {
                             <h2>Zamiana nagrania mowy na zapis ortograficzny</h2>
                         <div className="alert alert-info" role="alert">
 
-                            <p>Narzędzie umożliwia wgranie wielu plików jednocześnie i uruchomienie usługi jednocześnie na wielu plikach. W trakcie wykonywania usługi nie należy odświeżać strony. Pliki powinny zostać najpierw wgrane do repozytorium</p>
+                            <p>Narzędzie umożliwia dodanie z repozytorium wielu plików do kolejki i uruchomienie usługi jednocześnie (przycisk po prawej stronie). 
+                            W trakcie wykonywania usługi nie należy odświeżać strony. </p>
                         
                         </div>
                             
