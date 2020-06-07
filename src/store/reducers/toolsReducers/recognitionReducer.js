@@ -21,16 +21,16 @@ const initialState = {
   //  transcriptData: {},
 
     transcriptionData: {
-        "time" : 1590577980033,
         "blocks" : [
             {
-                "type" : "paragraph",
+                "starttime" : 123456,
+                "stoptime" : 124556,
                 "data" : {
-                    "text" : ""
-                }
+                    "text": "Brak transkrypcji, edytuj tutaj bądź skorzystaj z narzędzia automatycznych",
+                    "type": "speech",
+                 }
             },
         ],
-        "version" : "2.17.0"
     }, //default initial data
 }
 

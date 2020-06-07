@@ -472,6 +472,7 @@ const repoSelectSession = (state, action) => {
                     //odznaczam również contenery o ile byly jakies zaznaczone
                     let ktorezaznaczonecontenery = draftState.currentlySelectedContainers[0];
                     if(ktorezaznaczonecontenery != null){
+                        console.log(ktorezaznaczonecontenery)
                         allContainers[ktorezaznaczonecontenery].ifSelected = false;
                         draftState.currentlySelectedContainers[0] = null;
                     }
