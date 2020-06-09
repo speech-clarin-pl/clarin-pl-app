@@ -92,7 +92,7 @@ const projectReducer = (state = initialState, action) => {
         case actionTypes.EDIT_NAME: return editName(state, action);
         case actionTypes.EDIT_NAME_FAILED: return editNameFailed(state, action);
         case actionTypes.EDIT_NAME_FAILED: return editNameFailed(state, action);
-        case actionTypes.SAVE_TRANSCRIPTION: return saveTranscription(state,action);
+        case actionTypes.SAVE_TRANSCRIPTION_SUCCESS: return saveTranscription(state,action);
         case actionTypes.SAVE_TRANSCRIPTION_FAILED: return saveTranscriptionFailed(state,action);
         case actionTypes.TRANSCRIPTION_CHANGED: return transcriptionChanged(state,action);
         

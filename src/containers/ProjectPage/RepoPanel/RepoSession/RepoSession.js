@@ -51,19 +51,12 @@ class RepoSession extends Component {
 
         containerList = this.props.containers.map(container => {
             return   <ContainerFile 
-                            containerName = {container.containerName}
+                            container = {container}
                             onAddContainerToReco = {this.props.onAddContainerToReco}
                             onAddContainerToAlign = {this.props.onAddContainerToAlign}
                             onAddContainerToVAD = {this.props.onAddContainerToVAD}
                             onAddContainerToDIA = {this.props.onAddContainerToDIA}
                             key = {container._id}
-                            containerId = {container._id}
-                            projectId = {this.props.projectId}
-                            ifAudio={container.ifAudio}
-                            ifDIA = {container.ifDIA}
-                            ifVAD = {container.ifVAD}
-                            ifREC = {container.ifREC}
-                            ifSEG = {container.ifSEG}
                             ifSelected = {container.ifSelected}
                             selectContainer = {this.selectTheContainer}/>
         });

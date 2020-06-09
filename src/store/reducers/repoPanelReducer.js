@@ -132,7 +132,40 @@ const initialState = {
     containerAudioFileDIA: null,
     containerAudioFileSEG: null,
 
+}
+
+// ##################################################
+// ######### changes the status of given container ##########
+// ###############################################
+const changeContainerStatus = (state, action) => {
     
+        const containerId = action.containerId;
+        const toolType = action.toolType; 
+        const newStatus = action.status;
+    
+        const nextState = produce(state, draftState => {
+    
+            switch(toolType){
+                case "DIA":
+                    draftState.containers.byId[containerId].statusDIA = newStatus;
+                    break;
+                case "VAD":
+                    draftState.containers.byId[containerId].statusVAD = newStatus;
+                    break;
+                case "RECO":
+                    draftState.containers.byId[containerId].statusREC = newStatus;
+                    break;
+                case "ALIGN":
+                    draftState.containers.byId[containerId].statusSEG = newStatus;
+                    break;
+                default:
+                    console.log("Default"); //to do
+            }
+    
+       })
+    
+       return nextState;
+
 }
 
 
@@ -209,7 +242,7 @@ const loadBinaryForPreview = (state, action) => {
 // #### update Flagi danego kontenera po pomyślnym wykonaniu danej usługi ###########
 //##############################################
 
-const updateContainerFlag = (state, action) => {
+const speechServiceDone = (state, action) => {
     const containerId = action.containerId;
     const toolType = action.toolType; 
 
@@ -218,15 +251,19 @@ const updateContainerFlag = (state, action) => {
         switch(toolType){
             case "DIA":
                 draftState.containers.byId[containerId].ifDIA = true;
+                draftState.containers.byId[containerId].statusDIA = 'ready';
                 break;
             case "VAD":
                 draftState.containers.byId[containerId].ifVAD = true;
+                draftState.containers.byId[containerId].statusVAD = 'ready';
                 break;
             case "RECO":
                 draftState.containers.byId[containerId].ifREC = true;
+                draftState.containers.byId[containerId].statusREC = 'ready';
                 break;
             case "ALIGN":
                 draftState.containers.byId[containerId].ifSEG = true;
+                draftState.containers.byId[containerId].statusSEG = 'ready';
                 break;
             default:
                 console.log("Default"); //to do
@@ -238,14 +275,33 @@ const updateContainerFlag = (state, action) => {
 }
 
 
-const updateContainerFlagFailed = (state, action) => {
+const speechServiceFailed = (state, action) => {
+
     const containerId = action.containerId;
     const toolType = action.toolType; 
 
     const nextState = produce(state, draftState => {
 
-        draftState.iferror = true;
-        draftState.message = "Something went wrong with the speech service and can not update the flag for this container - " + toolType;
+        switch(toolType){
+            case "DIA":
+                draftState.containers.byId[containerId].ifDIA = false;
+                draftState.containers.byId[containerId].statusDIA = 'error';
+                break;
+            case "VAD":
+                draftState.containers.byId[containerId].ifVAD = false;
+                draftState.containers.byId[containerId].statusVAD = 'error';
+                break;
+            case "RECO":
+                draftState.containers.byId[containerId].ifREC = false;
+                draftState.containers.byId[containerId].statusREC = 'error';
+                break;
+            case "ALIGN":
+                draftState.containers.byId[containerId].ifSEG = false;
+                draftState.containers.byId[containerId].statusSEG = 'error';
+                break;
+            default:
+                console.log("Default"); //to do
+        }
 
    })
 
@@ -763,14 +819,15 @@ const repoUploadFilesModalOpen = (state,action) => {
 
 
 
+
 const repoPanelReducer = (state = initialState, action) => {
     switch(action.type){
 
         case actionTypes.LOAD_BINARY_FOR_PREVIEW: return loadBinaryForPreview(state,action);
         case actionTypes.LOAD_AUDIO_FOR_PREVIEW: return loadAudioForPreview(state,action);
 
-        case actionTypes.REPO_RUN_SPEECHSERVICE: return updateContainerFlag(state,action);
-        case actionTypes.REPO_RUN_SPEECHSERVICE_FAILED: return updateContainerFlagFailed(state,action);
+        case actionTypes.REPO_RUN_SPEECHSERVICE_DONE: return speechServiceDone(state,action);
+        case actionTypes.REPO_RUN_SPEECHSERVICE_FAILED: return speechServiceFailed(state,action);
 
         case actionTypes.REPO_SELECT_SESSION: return repoSelectSession(state,action);
         case actionTypes.REPO_SELECT_CONTAINER: return repoSelectContainer(state,action);
@@ -783,6 +840,8 @@ const repoPanelReducer = (state = initialState, action) => {
 
         case actionTypes.REPO_DELETE_CONTAINER_SUCCESS: return repoRemoveContainerSuccess(state,action);
         case actionTypes.REPO_DELETE_CONTAINER_FAILED: return repoRemoveContainerFailed(state,action);
+
+        case actionTypes.SET_CONTAINER_STATUS: return changeContainerStatus(state,action);
 
         //case actionTypes.REPO_UPLOAD_FILE: return repoUploadFile(state,action);
         

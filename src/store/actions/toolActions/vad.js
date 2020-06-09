@@ -18,9 +18,9 @@ export const openContainerInVADPreview = (container) => {
 // ######## dodawanie contanera z repo do panelu VAD ##########
 // ###################################################################
 
-export const addContainerToVAD = (containerId) => {
+export const addContainerToVAD = (container) => {
     return {
         type: actionTypes.ADD_CONTAINER_TO_VAD,
-        containerId: containerId,
+        container: container,
     }
 }

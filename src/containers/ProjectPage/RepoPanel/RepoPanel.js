@@ -110,24 +110,24 @@ class repoPanel extends Component {
 
 
     // dodaje contener do listy Rozpoznawania
-    addContainerToRecoList = (containerId) => {
+    addContainerToRecoList = (container) => {
        // console.log(this.props.repoData.containers.byId[containerId])
-        this.props.addContainerToReco(this.props.repoData.containers.byId[containerId]);
+        this.props.addContainerToReco(container);
     }
 
     // dodaje contaner do listy Align
-    addContainerToAlignList = (containerId) => {
-        this.props.addContainerToAlign(this.props.repoData.containers.byId[containerId]);
+    addContainerToAlignList = (container) => {
+        this.props.addContainerToAlign(container);
     }
 
     // dodaje contaner do listy DIaryzacji
-    addContainerToDIAList = (containerId) => {
-        this.props.addContainerToDIA(this.props.repoData.containers.byId[containerId]);
+    addContainerToDIAList = (container) => {
+        this.props.addContainerToDIA(container);
     }
 
     // dodaje contaner do listy voice activity detection
-    addContainerToVADList = (containerId) => {
-        this.props.addContainerToVAD(this.props.repoData.containers.byId[containerId]);
+    addContainerToVADList = (container) => {
+        this.props.addContainerToVAD(container);
     }
 
 
@@ -165,8 +165,9 @@ class repoPanel extends Component {
             let sId = this.props.repoData.sessions.byId[sessionId].id;
             let sessionName = this.props.repoData.sessions.byId[sessionId].sessionName;
             let ifSelected = this.props.repoData.sessions.byId[sessionId].ifSelected;
-            let containersIds = this.props.repoData.sessions.byId[sessionId].containers;
+            let containersIds = this.props.repoData.sessions.byId[sessionId].containers; //tylko dla tej sesji
 
+            //przekształcam...
             let containersArray = containersIds.map(containerId => {
                 return this.props.repoData.containers.byId[containerId];
             })
@@ -181,11 +182,16 @@ class repoPanel extends Component {
                                 ifSelected = {ifSelected}
                                 selectTheSession = {this.selectSessionHandler}
                                 selectTheContainer = {this.selectContainerHandler} 
-                                onAddContainerToDIA = {(containerId) => this.addContainerToDIAList(containerId)}
-                                onAddContainerToVAD = {(containerId) => this.addContainerToVADList(containerId)}
-                                onAddContainerToReco = {(containerId) => this.addContainerToRecoList(containerId)}
-                                onAddContainerToAlign = {(containerId) => this.addContainerToAlignList(containerId)}/>
+                                onAddContainerToDIA = {(container) => this.addContainerToDIAList(container)}
+                                onAddContainerToVAD = {(container) => this.addContainerToVADList(container)}
+                                onAddContainerToReco = {(container) => this.addContainerToRecoList(container)}
+                                onAddContainerToAlign = {(container) => this.addContainerToAlignList(container)}/>
         })
+
+        //onAddContainerToDIA = {(containerId) => this.addContainerToDIAList(containerId)}
+        //onAddContainerToVAD = {(containerId) => this.addContainerToVADList(containerId)}
+        //onAddContainerToReco = {(containerId) => this.addContainerToRecoList(containerId)}
+       //onAddContainerToAlign = {(containerId) => this.addContainerToAlignList(containerId)}/>
 
 
 
@@ -286,9 +292,9 @@ const mapDispatchToProps = dispatch => {
 
     onCloseModalHandler: () => dispatch(repoActions.closeModalProject()),
 
-    addContainerToDIA: (containerId) => dispatch(repoActions.addContainerToDIA(containerId)),
-    addContainerToVAD: (containerId) => dispatch(repoActions.addContainerToVAD(containerId)),
-    addContainerToReco: (containerId) => dispatch(repoActions.addContainerToReco(containerId)),
+    addContainerToDIA: (container) => dispatch(repoActions.addContainerToDIA(container)),
+    addContainerToVAD: (container) => dispatch(repoActions.addContainerToVAD(container)),
+    addContainerToReco: (container) => dispatch(repoActions.addContainerToReco(container)),
     addContainerToAlign: (container) => dispatch(repoActions.addContainerToAlign(container)),
     
     createNewSession: (sessionName, projectId, userId, token) => dispatch(repoActions.createNewSession(sessionName, projectId, userId, token)),

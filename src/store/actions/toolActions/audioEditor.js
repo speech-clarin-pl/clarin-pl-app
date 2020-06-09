@@ -56,17 +56,21 @@ return dispatch => {
 // ######## zapisywanie transkrypcji ##########
 // ###################################################################
 
-export const saveTranscriptionSuccess = (message) => {
+export const saveTranscriptionSuccess = (message, containerId, toolType) => {
         return {
-            type: actionTypes.SAVE_TRANSCRIPTION,
+            type: actionTypes.SAVE_TRANSCRIPTION_SUCCESS,
             message: message,
+            containerId: containerId,
+            toolType: toolType,
         }
 }
 
-export const saveTranscriptionFailed = (error) => {
+export const saveTranscriptionFailed = (error, containerId, toolType) => {
         return {
             type: actionTypes.SAVE_TRANSCRIPTION_FAILED,
             error: error,
+            containerId: containerId,
+            toolType: toolType,
         }
 }
 
@@ -85,12 +89,12 @@ export const saveTranscription = (container, toolType, token, transcription) => 
         .then(response => {
             //console.log("from action:")
             console.log(response)
-            dispatch(saveTranscriptionSuccess(response.data.message));
+            dispatch(saveTranscriptionSuccess(response.data.message, container._id, toolType));
           //  dispatch(closeModal());
         })
         .catch(error => {
           //  console.log(error)
-           dispatch(saveTranscriptionFailed(error));
+           dispatch(saveTranscriptionFailed(error, container._id, toolType));
         });
     }
 }

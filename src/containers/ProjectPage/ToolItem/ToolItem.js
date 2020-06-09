@@ -24,29 +24,15 @@ import * as toolItemActions from '../../../store/actions/index';
 
 class ToolItem extends Component {
 
-    state = {
-        innerStatus:'', //can be error or progress
+ 
+
+    componentDidUpdate = (prevProps,prevState) => {
+
     }
 
-    componentDidMount = () => {
-        //jeżeli kontener ma już obliczone usługi to ustawiam status na 'done'
 
-         switch(this.props.type){
-            case "DIA":
-                if(this.props.container.ifDIA) this.setState({innerStatus: 'done'});
-                break;
-            case "VAD":
-                if(this.props.container.ifVAD) this.setState({innerStatus: 'done'});
-                break;
-            case "RECO":
-                if(this.props.container.ifREC) this.setState({innerStatus: 'done'});
-                break;
-            case "ALIGN":
-                if(this.props.container.ifSEG) this.setState({innerStatus: 'done'});
-                break;
-            default:
-                console.log("Default"); //to do
-        }
+    componentDidMount = () => {
+     
     }
 
     runPreview = (e) => {
@@ -56,51 +42,15 @@ class ToolItem extends Component {
     runProcess = (e) => {
         e.preventDefault();
 
-        this.setState({innerStatus: 'progress'});
+        //this.props.setToolItemStatus(this.props.container._id, this.props.type, 'progress');
+        //this.setState({innerStatus: 'progress'});
 
-        switch(this.props.type){
-            case "DIA":
-                this.runDIA(e);
-                break;
-            case "VAD":
-                this.runVAD(e);
-                break;
-            case "RECO":
-                this.runRECO(e);
-                break;
-            case "ALIGN":
-                this.runALIGN(e);
-                break;
-            default:
-                console.log("Default"); //to do
-        }
-
-         //wysyłam do serwera aby uruchomił usługę i po zakończeniu zaktualizował flage
+        this.props.setContainerStatus(this.props.container._id, this.props.type, 'progress')
         this.props.runSpeechService(this.props.container._id, this.props.type, this.props.token);
 
-        //tylko symulacja do zastapienia
-        let inprogress = setTimeout(()=> {
-            this.setState({innerStatus: 'done'});
-
-        }, 2000);
+       
     }
 
-    runALIGN = (e) => {  
-        console.log("runALIGN")
-    }
-
-    runVAD = (e) => {  
-        console.log("runVAD")
-    }
-
-    runDIA = (e) => {  
-        console.log("runDIA")
-    }
-    
-    runRECO = (e) => {  
-        
-        console.log("runRECO")
-    }
     
 
     render(){
@@ -131,7 +81,7 @@ class ToolItem extends Component {
             filesize = nApprox.toFixed(1) + " " + aMultiples[nMultiple];
         }
 
-        let previewIconAlpha = 0.5;
+        let previewIconAlpha = 1;
 
         let statusIcon = null;
         let progressBar = null;
@@ -142,18 +92,13 @@ class ToolItem extends Component {
                 </a>
             </Tooltip>
         );
-        
-        let playIcon = (
-            <Tooltip title="Play audio">
-                <a href="#" role="button" disabled>
-                    <FontAwesomeIcon icon={faPlay} className="faIcon"/>
-                </a>
-            </Tooltip>
-        );
-               
+                       
 
-
-        switch (this.state.innerStatus) {
+        switch (this.props.status) {
+            case 'ready':
+                statusIcon = null;
+                previewIconAlpha = 1;
+                break;
             case 'error':
                 statusIcon = <FontAwesomeIcon icon={faExclamationCircle} className="faIcon" /> ;
                 break;
@@ -165,21 +110,17 @@ class ToolItem extends Component {
                     </div>
                 );
 
-                previewIconAlpha = 0.5;
-                runProcessIcon = <FontAwesomeIcon icon={iconType} className="faIcon" style={{opacity: 0.5}}/>
-                playIcon = (
-                     <FontAwesomeIcon icon={faPlay} className="faIcon" style={{opacity: 0.5}}/>
-                );
+                previewIconAlpha = 1;
+                runProcessIcon = <FontAwesomeIcon icon={iconType} className="faIcon" style={{opacity: 0.5, color: '#3498db'}}/>
+
                 break;
             case 'done':
 
                 previewIconAlpha = 1;
                 statusIcon = <FontAwesomeIcon icon={faCheck} className="faIcon" /> ;
                 progressBar = null;
-                playIcon = (
-                    <FontAwesomeIcon icon={faPlay} className="faIcon" style={{opacity: 0.5}}/>
-                );
-                runProcessIcon = <FontAwesomeIcon icon={iconType} className="faIcon" style={{opacity: 0.5}}/>
+
+                runProcessIcon = <FontAwesomeIcon icon={iconType} className="faIcon" style={{opacity: 0.5, color: '#1cce44'}}/>
             default:
                 statusIcon = null;
         }
@@ -188,7 +129,7 @@ class ToolItem extends Component {
         let previewIcon = (
             <Tooltip title={"Podgląd " + this.props.type}>
                 <a href="#" role="button" onClick={previewIconAlpha===1? this.runPreview: null}>
-                    <FontAwesomeIcon icon={faEye} className="faIcon" style={{opacity: previewIconAlpha}} />
+                    <FontAwesomeIcon icon={faEye} className="faIcon" style={{opacity: previewIconAlpha, color: '#3498db'}} />
                 </a>
             </Tooltip>
         )
@@ -210,7 +151,8 @@ class ToolItem extends Component {
                                 {statusIcon}
                             </div>
                             <div className="col-sm-3 actionIcons align-self-center pl-1 pr-1">
-                                {playIcon}
+                                {//playIcon
+                                }
                                 {previewIcon}
                                 {runProcessIcon} 
                             </div>
@@ -244,14 +186,20 @@ const mapStateToProps = state => {
         userId: state.projectR.currentProjectOwner,
         projectId: state.projectR.currentProjectID,
         token: state.homeR.token,
+
+        containersForRECO: state.recR.filesToUpload,
+        
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         runSpeechService: (containerId, toolType, token) => dispatch(toolItemActions.runSpeechService(containerId, toolType, token)),
+        setContainerStatus:  (containerId, toolType, status) => dispatch(toolItemActions.setContainerStatus(containerId, toolType, status)),
+       // setToolItemStatus: (containerId, toolType, status) => dispatch(toolItemActions.setToolItemStatus(containerId, toolType, status)),
+       // updateFileState: (fileID, status,percLoaded) => dispatch(toolItemActions.updateFileState(fileID, status,percLoaded)),
      //     openContainerInPreview: (container, openIn) => dispatch(toolItemActions.openContainerInPreview(container, openIn)),
-    //    updateFileState: (fileID, status,percLoaded) => dispatch(recognitionActions.updateFileState(fileID, status,percLoaded)),
+     
     //    onGetProjectFilesForUser: (userId, projectId, token) => dispatch(recognitionActions.getProjectFilesForUser(userId,projectId, token)),
     //    onFileRecognition: (file, entryId,userId, projectId, audioFrom) => dispatch(recognitionActions.initFileRecognition(file, entryId, userId, projectId, audioFrom)),
     //    onRemoveItem:(fileId) => dispatch(recognitionActions.removeRecognitionItem(fileId)),

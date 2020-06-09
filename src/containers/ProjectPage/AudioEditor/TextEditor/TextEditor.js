@@ -39,7 +39,6 @@ class TextEditor extends Component {
         this.state = {
             text:  this.props.transcriptionData.blocks[0].data.text,
             editorisready: false,
-            ifTranskriptExists: false,
             transcriptHasChanged: false,
         }
        
@@ -66,10 +65,6 @@ class TextEditor extends Component {
 
     }
 
-    textEditorChange = (evt) => {
-       // console.log("zmienilo sie cos");
-    }
-
     textChanged = (evt) => {
        // console.log(evt.target.value)
       // console.log(this.state.transcriptionData)
@@ -81,16 +76,15 @@ class TextEditor extends Component {
     }
 
     componentDidUpdate = (prevProps, prevState) => {
-       // console.log("zmienil sie container")
+        console.log("zmienil sie container")
+        console.log(this.props.container)
         //jeżeli zmienił się container
-        if(prevProps.container !== this.props.container){
-            this.container = this.props.container;
-            if(this.container.ifREC){
-                this.loadNewTranscription();
-            }
-        }
-        
 
+
+        if(prevProps.container !== this.props.container){
+                this.loadTranscription();
+        }
+    
         // jeżeli zmieniła się transkrypcja
         if(this.props.transcriptionData){
             if(prevProps.transcriptionData !== this.props.transcriptionData){
@@ -102,10 +96,9 @@ class TextEditor extends Component {
                         //})
                         //console.log(this.props.transcriptionData.blocks[0].data.text)
 
-                        if(this.container.ifREC){
+                        if(this.props.container.ifREC){
                             this.setState({
                                 text: this.props.transcriptionData.blocks[0].data.text,
-                                ifTranskriptExists: true,
                                 transcriptHasChanged: false,
                             })
                         }
@@ -116,34 +109,32 @@ class TextEditor extends Component {
       
     }
 
-    loadNewTranscription = () => {
-        this.props.onLoadExistingTranscription(this.props.container, this.props.toolType, this.props.token);
+    loadTranscription = () => {
+        if(this.props.container.ifREC){
+            this.props.onLoadExistingTranscription(this.props.container, this.props.toolType, this.props.token);
+        } else if(this.props.container.ifDIA){
+            //this.props.onLoadExistingTranscription(this.props.container, this.props.toolType, this.props.token);
+        } else  if(this.props.container.ifSEG){
+           // this.props.onLoadExistingTranscription(this.props.container, this.props.toolType, this.props.token);
+        } else  if(this.props.container.ifVAD){
+           // this.props.onLoadExistingTranscription(this.props.container, this.props.toolType, this.props.token);
+        } else {
+            this.setState({
+                text: "Brak transkrypcji, edytuj tutaj bądź skorzystaj z narzędzi automatycznych",
+                transcriptHasChanged: false,
+            })
+        }
+        
     }
-
-    /*
-    setEditorReady = () => {
-        this.setState({
-            editorisready: true,
-        })
-    }
-    */
-
-
        
     componentDidMount() {
 
-        this.container = this.props.container;
         this.setState({
             editorisready: true,
         })
-       
-        // sprawdzam czy istnieje już transkrypcja dla tego kontenera. Jeżeli tak to ładuje ją z serwera. Jeżeli nie to można wykonać automatycznie
-        //jeżeli transkrypcja istnieje to
-        if(this.container.ifREC){
-            this.loadNewTranscription();
-        }
-       
-        
+
+        this.loadTranscription();
+
     }
        
 	render() {
@@ -156,8 +147,27 @@ class TextEditor extends Component {
         let saveTranscriptBtnText = "Zapisz transkrypcję na serwerze";
         let saveTranscriptBtnStyle = {backgroundColor: '#3498db'};
 
+        //jeżeli element nie miał zrobionej jeszcze transkrypcji to
+        if(!this.props.container.ifREC){
+            loadTranscriptBtnDisabled = false;
+            loadTranscriptBtnText = "Automatyczne rozpoznawanie";
+            loadTranscriptBtnStyle = {backgroundColor: '#3498db', textAlign: 'center'};
+
+            saveTranscriptBtnDisabled = false;
+            saveTranscriptBtnText = "Plik niezmieniony";
+            saveTranscriptBtnStyle = {backgroundColor: '#c7d5da', textAlign: 'center'};
+        }
+
+        //jeżeli element nie miał zrobionej transkrypcji ale jest już edytowany przez użytkownika
+        if(!this.props.container.ifREC && this.state.transcriptHasChanged){
+
+            saveTranscriptBtnDisabled = false;
+            saveTranscriptBtnText = "Zapisz zmiany na serwerze";
+            saveTranscriptBtnStyle = {backgroundColor: '#3498db', textAlign: 'center'};
+        }
+
         //jeżeli jest transkrypcja i jest świeżo załadowana z serwera to przycisk jest nieaktywny
-        if(this.state.ifTranskriptExists && !this.state.transcriptHasChanged){
+        if(this.props.container.ifREC && !this.state.transcriptHasChanged){
             loadTranscriptBtnDisabled = true;
             loadTranscriptBtnText = "Transkrypcja załadowana pomyślnie";
             loadTranscriptBtnStyle = {backgroundColor: '#46d363', textAlign: 'center'};
@@ -168,7 +178,7 @@ class TextEditor extends Component {
         }
 
         // jeżeli coś user zmienił i jeszcze nie zapisał
-        if(this.state.ifTranskriptExists && this.state.transcriptHasChanged){
+        if(this.props.container.ifREC && this.state.transcriptHasChanged){
             loadTranscriptBtnDisabled = false;
             loadTranscriptBtnText = "Załaduj poprzednią wersję z serwera";
             loadTranscriptBtnStyle = {backgroundColor: '#efb710', textAlign: 'center'};
@@ -196,7 +206,7 @@ class TextEditor extends Component {
                 <div className="TextEditor">
 
                     {
-                        this.props.transcriptionSaved? <div>Zapisano transcrypcje</div>: null
+                       // this.props.transcriptionSaved? <div>Zapisano transcrypcje</div>: null
 
                         // <TextareaAutosize maxRows={1000} minRows={5} className="textEditor" onChange={this.textChanged} value={this.state.transcription}/>
 
@@ -209,7 +219,7 @@ class TextEditor extends Component {
                         icon={null}
                         customeStyle={loadTranscriptBtnStyle}
                         disabled={loadTranscriptBtnDisabled}
-                        whenClicked={this.loadNewTranscription}/>
+                        whenClicked={this.loadTranscription}/>
 
 
                     <TextareaAutosize 

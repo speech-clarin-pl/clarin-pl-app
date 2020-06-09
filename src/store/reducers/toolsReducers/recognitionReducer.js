@@ -1,6 +1,6 @@
 import * as actionTypes from '../../actions/actionsTypes';
 import {updateObject} from '../../utility';
-
+import produce from "immer";
 
 
 const initialState = {
@@ -15,7 +15,6 @@ const initialState = {
     // }]
     modal: false, //controls if modal window is opened
     recoFileForPreview: '', //indicates which file is chosen for preview
-
     recoContainerForPreview: '', //container beeing previewd in recognition
 
   //  transcriptData: {},
@@ -23,15 +22,18 @@ const initialState = {
     transcriptionData: {
         "blocks" : [
             {
-                "starttime" : 123456,
-                "stoptime" : 124556,
+                "starttime" : 1,
+                "stoptime" : 2,
                 "data" : {
-                    "text": "Brak transkrypcji, edytuj tutaj bądź skorzystaj z narzędzia automatycznych",
+                    "text": "",
                     "type": "speech",
                  }
             },
         ],
-    }, //default initial data
+    }, 
+
+    //error: false,
+    //errorMessage: '',
 }
 
 
@@ -47,9 +49,10 @@ const addContainerToPreviewReco = (state,action) => {
 
 const addContainerToReco = (state,action) => {
    
-    const newElementToAdd = action.containerId;
+    const newElementToAdd = action.container;
     const newElements = [...state.filesToUpload, newElementToAdd];
    
+    /*
     let check = state.filesToUpload.filter(file => {
         if(file._id == newElementToAdd._id){
             return true;
@@ -57,7 +60,13 @@ const addContainerToReco = (state,action) => {
             return false;
         }
     });
+    */
 
+    return updateObject(state, {
+        filesToUpload:newElements, 
+    });
+
+    /*
     if(check.length == 0){
         return updateObject(state, {
             filesToUpload:newElements, 
@@ -65,6 +74,7 @@ const addContainerToReco = (state,action) => {
     } else {
         return state
     }
+    */
 }
 
 const setRefusedFiles = (state, action) => {
@@ -123,22 +133,21 @@ const initBatchRecognition = (state,action) => {
 
 const updateFileState = (state,action) => {
 
-            const fileID = action.fileID;
-            const status = action.status;
-            const percLoaded = action.percLoaded;
+    const containerId = action.containerId;
+    const status = action.status;
+    //const percLoaded = action.percLoaded;
+            
+    const nextState = produce(state, draftState => {
 
-            let currentfileList = [...state.filesToUpload];
+        let foundFileIdx = draftState.filesToUpload.findIndex(container => {
+            return container._id === containerId;
+        })
 
-            for (var i = 0; i < currentfileList.length; i++) {
-                if (currentfileList[i].id === fileID) {
-                    let updatedEntry = Object.assign({},currentfileList.find(obj => obj.id == fileID));
-                    updatedEntry.status = status;
-                    currentfileList[i] = updatedEntry;
-                    break;
-                }
-            }
+        draftState.filesToUpload[containerId].status = status;
+   })
 
-    return updateObject(state, { filesToUpload: currentfileList}) ;  
+   return nextState;
+
 }
 
 const removeRecognitionItem = (state, action)=>{
@@ -176,6 +185,168 @@ const loadTranscription = (state, action) => {
     })
 }
 
+// #############################################
+// #### update Flagi danego kontenera po pomyślnym wykonaniu danej usługi ###########
+//##############################################
+
+const speechServiceSuccess = (state, action) => {
+    const containerId = action.containerId;
+    const toolType = action.toolType; 
+
+   // console.log("TUTAJ TEZ POWINIENEM ")
+    //console.log(action.containerId)
+
+    const nextState = produce(state, draftState => {
+
+        let foundFileIdx = draftState.filesToUpload.findIndex(file => {
+            return file._id === containerId;
+        })
+       
+        switch(toolType){
+            case "DIA":
+                draftState.filesToUpload[foundFileIdx].ifDIA = true;
+                draftState.filesToUpload[foundFileIdx].statusDIA = 'done';
+                break;
+            case "VAD":
+                draftState.filesToUpload[foundFileIdx].ifVAD = true;
+                draftState.filesToUpload[foundFileIdx].statusVAD = 'done';
+                break;
+            case "RECO":
+                 draftState.filesToUpload[foundFileIdx].ifREC = true;
+                 draftState.filesToUpload[foundFileIdx].statusREC = 'done';
+                break;
+            case "ALIGN":
+                draftState.filesToUpload[foundFileIdx].ifSEG = true;
+                draftState.filesToUpload[foundFileIdx].statusSEG = 'done';
+                break;
+            default:
+                console.log("Default"); //to do
+        }
+
+
+   })
+
+   return nextState;
+
+}
+
+
+const speechServiceFailed = (state, action) => {
+    const containerId = action.containerId;
+    const toolType = action.toolType; 
+
+    const nextState = produce(state, draftState => {
+
+        let foundFileIdx = draftState.filesToUpload.findIndex(file => {
+            return file._id === containerId;
+        })
+       
+        switch(toolType){
+            case "DIA":
+                draftState.filesToUpload[foundFileIdx].ifDIA = false;
+                draftState.filesToUpload[foundFileIdx].statusDIA = 'error';
+                break;
+            case "VAD":
+                draftState.filesToUpload[foundFileIdx].ifVAD = false;
+                draftState.filesToUpload[foundFileIdx].statusVAD = 'error';
+                break;
+            case "RECO":
+                 draftState.filesToUpload[foundFileIdx].ifREC = false;
+                 draftState.filesToUpload[foundFileIdx].statusREC = 'error';
+                break;
+            case "ALIGN":
+                draftState.filesToUpload[foundFileIdx].ifSEG = false;
+                draftState.filesToUpload[foundFileIdx].statusSEG = 'error';
+                break;
+            default:
+                console.log("Default"); //to do
+        }
+ 
+
+   })
+
+   return nextState;
+
+}
+
+const saveTranscriptionSuccess = (state, action) => {
+    
+    const containerId = action.containerId;
+    const toolType = action.toolType;
+
+    const nextState = produce(state, draftState => {
+
+        let foundFileIdx = draftState.filesToUpload.findIndex(file => {
+            return file._id === containerId;
+        })
+       
+        switch(toolType){
+            case "DIA":
+                draftState.filesToUpload[foundFileIdx].ifDIA = true;
+                draftState.filesToUpload[foundFileIdx].statusDIA = 'done';
+                break;
+            case "VAD":
+                draftState.filesToUpload[foundFileIdx].ifVAD = true;
+                draftState.filesToUpload[foundFileIdx].statusVAD = 'done';
+                break;
+            case "REC":
+                draftState.filesToUpload[foundFileIdx].ifREC = true;
+                 draftState.filesToUpload[foundFileIdx].statusREC = 'done';
+                break;
+            case "SEG":
+                draftState.filesToUpload[foundFileIdx].ifSEG = true;
+                draftState.filesToUpload[foundFileIdx].statusSEG = 'done';
+                break;
+            default:
+                console.log("Default"); //to do
+        }
+ 
+
+   })
+
+   return nextState;
+  
+
+}
+
+
+
+const changeToolItemStatus = (state, action) => {
+    const containerId = action.containerId;
+    const toolType = action.toolType;
+    const status = action.status;
+
+
+    const nextState = produce(state, draftState => {
+
+        let foundFileIdx = draftState.filesToUpload.findIndex(file => {
+            return file._id === containerId;
+        })
+       
+        switch(toolType){
+            case "DIA":
+                draftState.filesToUpload[foundFileIdx].statusDIA = status;
+                break;
+            case "VAD":
+                draftState.filesToUpload[foundFileIdx].statusVAD = status;
+                break;
+            case "RECO":
+                 draftState.filesToUpload[foundFileIdx].statusREC = status;
+                break;
+            case "ALIGN":
+                draftState.filesToUpload[foundFileIdx].statusSEG = status;
+                break;
+            default:
+                console.log("Default"); //to do
+        }
+ 
+
+   })
+
+   return nextState;
+
+}
+
 const recognitionReducer = (state = initialState, action) => {
     switch(action.type){
 
@@ -190,6 +361,15 @@ const recognitionReducer = (state = initialState, action) => {
         case actionTypes.CLEAR_RECO_STORE: return clearRecoStore(state, action);
         case actionTypes.REFUSE_RECO_FILES: return setRefusedFiles(state, action);
         case actionTypes.LOAD_TRANSCRIPTION: return loadTranscription(state, action);
+
+        case actionTypes.REPO_RUN_SPEECHSERVICE_DONE: return speechServiceSuccess(state,action);
+        case actionTypes.REPO_RUN_SPEECHSERVICE_FAILED: return speechServiceFailed(state,action);
+
+       // case actionTypes.SET_TOOL_ITEM_STATUS: return changeToolItemStatus(state,action);
+
+        case actionTypes.SET_CONTAINER_STATUS: return changeToolItemStatus(state,action);
+
+        case actionTypes.SAVE_TRANSCRIPTION_SUCCESS: return saveTranscriptionSuccess(state,action);
     }
 
     return state;

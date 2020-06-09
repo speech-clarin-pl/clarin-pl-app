@@ -23,7 +23,7 @@ import {withRouter } from 'react-router-dom';
 class ContainerFile extends Component {
 
     selectContainer = () => {
-        this.props.selectContainer(this.props.containerId)
+        this.props.selectContainer(this.props.container._id)
     }
 
     handleClick = (e, data) => {
@@ -36,27 +36,27 @@ class ContainerFile extends Component {
 
     runVAD = (e) => {
         e.preventDefault();
-        this.props.history.push('/projects/' + this.props.projectId +'/vad/');
-        this.props.onAddContainerToVAD(this.props.containerId);
+        this.props.history.push('/projects/' + this.props.container.project +'/vad/');
+        this.props.onAddContainerToVAD(this.props.container);
     }
 
 
     runDIA = (e) => {
         e.preventDefault();
-        this.props.history.push('/projects/' + this.props.projectId +'/dia/');
-        this.props.onAddContainerToDIA(this.props.containerId);
+        this.props.history.push('/projects/' + this.props.container.project +'/dia/');
+        this.props.onAddContainerToDIA(this.props.container);
     }
 
     runRECO = (e) => {
         e.preventDefault();
-        this.props.history.push('/projects/' + this.props.projectId +'/recognition/');
-        this.props.onAddContainerToReco(this.props.containerId);
+        this.props.history.push('/projects/' + this.props.container.project +'/recognition/');
+        this.props.onAddContainerToReco(this.props.container);
     }
 
     runALIGN = (e) => {
         e.preventDefault();
-        this.props.history.push('/projects/' + this.props.projectId +'/segment/');
-        this.props.onAddContainerToAlign(this.props.containerId);
+        this.props.history.push('/projects/' + this.props.container.project +'/segment/');
+        this.props.onAddContainerToAlign(this.props.container);
     }
        
 
@@ -65,7 +65,7 @@ class ContainerFile extends Component {
         
 
         //wyświetlam tylko pierwsze 11 znaków nazwy pliku....
-        let contName = this.props.containerName;
+        let contName = this.props.container.containerName;
         if(contName.length > 11){
             contName = contName.substring(1,11) + "...";
         }
@@ -93,33 +93,38 @@ class ContainerFile extends Component {
                             </div>
                             <div className="col">
                                 
-                                <Tooltip title="Posłuchaj">
+                                {
+                                    /*
+                                    <Tooltip title="Posłuchaj">
                                     <a href="#" role="button" onClick={this.runPlay} >
                                         <FontAwesomeIcon icon={faPlay} className={["repoIcon",this.props.ifAudio? "on": ""].join(" ")} /> 
                                     </a>
                                 </Tooltip>
+                                    */
+                                }
+                               
 
                                 <Tooltip title="Detekcja mowy (VAD)">
                                     <a href="#" role="button"  onClick={this.runVAD} >
-                                        <FontAwesomeIcon icon={faSurprise} className={["repoIcon",this.props.ifVAD? "on": ""].join(" ")}/> 
+                                        <FontAwesomeIcon icon={faSurprise} className={["repoIcon",this.props.container.ifVAD? "on": ""].join(" ")}/> 
                                     </a>
                                 </Tooltip>
 
                                 <Tooltip title="Diaryzacja (DIA)">
                                     <a href="#" role="button" onClick={this.runDIA} >
-                                        <FontAwesomeIcon icon={faComment} className={["repoIcon",this.props.ifDIA? "on": ""].join(" ")}/> 
+                                        <FontAwesomeIcon icon={faComment} className={["repoIcon",this.props.container.ifDIA? "on": ""].join(" ")}/> 
                                     </a>
                                 </Tooltip>
 
                                 <Tooltip title="Rozpoznawanie mowy (RECO)">
                                     <a href="#" role="button" onClick={this.runRECO} >
-                                        <FontAwesomeIcon icon={faFileAlt} className={["repoIcon",this.props.ifREC? "on": ""].join(" ")}/> 
+                                        <FontAwesomeIcon icon={faFileAlt} className={["repoIcon",this.props.container.ifREC? "on": ""].join(" ")}/> 
                                     </a>
                                 </Tooltip>
 
                                 <Tooltip title="Segmentacja (ALIGN)">
                                     <a href="#" role="button"  onClick={this.runALIGN}>
-                                        <FontAwesomeIcon icon={faClock} className={["repoIcon",this.props.ifSEG? "on": ""].join(" ")}/> 
+                                        <FontAwesomeIcon icon={faClock} className={["repoIcon",this.props.container.ifSEG? "on": ""].join(" ")}/> 
                                     </a>
                                 </Tooltip>
                                

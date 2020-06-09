@@ -6,13 +6,13 @@ import { saveAs } from 'file-saver';
 
 
 
-//############################################################
-// ############## update Flagi danego kontenera #################
+// ############################################################
+// ############## Ukończenie wykonywania speech service #################
 // ###########################################################
 
 export const runSpeechServiceSuccess = (containerId, toolType) => {
     return {
-        type: actionTypes.REPO_RUN_SPEECHSERVICE,
+        type: actionTypes.REPO_RUN_SPEECHSERVICE_DONE,
         containerId: containerId,
         toolType: toolType,
     }
@@ -27,6 +27,7 @@ export const runSpeechServiceFailed = (containerId, toolType) => {
 }
 
 export const runSpeechService = (containerId, toolType, token) => {
+    
     return dispatch => {
 
         axios.put(('/repoFiles/runSpeechService/'+containerId), 
@@ -46,9 +47,36 @@ export const runSpeechService = (containerId, toolType, token) => {
             dispatch(runSpeechServiceFailed(containerId, toolType));
         }); 
     }
-
-    
 }
+
+//############################################################
+// ############## zmienia status contanera #################
+// ###########################################################
+
+export const setContainerStatus = (containerId, toolType, status) => {
+    return {
+        type: actionTypes.SET_CONTAINER_STATUS,
+        containerId: containerId,
+        toolType: toolType,
+        status: status,
+    }
+}
+
+
+//############################################################
+// ############## zmienia status wpisu contanera dodanego do reco #################
+// ###########################################################
+
+/*
+export const setToolItemStatus = (containerId, toolType, status) => {
+    return {
+        type: actionTypes.SET_TOOL_ITEM_STATUS,
+        containerId: containerId,
+        toolType: toolType,
+        status: status,
+    }
+}
+*/
 
 
 //############################################################

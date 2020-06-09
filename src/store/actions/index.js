@@ -18,6 +18,8 @@ export {
     removeContainerFromRepoFailed,
     removeContainerFromRepo,
     runSpeechService,
+    setContainerStatus,
+    
 } from './repo';
 
 export {

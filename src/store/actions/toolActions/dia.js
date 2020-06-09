@@ -17,9 +17,9 @@ export const openContainerInDIAPreview = (container) => {
 // ######## dodawanie contanera z repo do panelu DIA ##########
 // ###################################################################
 
-export const addContainerToDIA = (containerId) => {
+export const addContainerToDIA = (container) => {
     return {
         type: actionTypes.ADD_CONTAINER_TO_DIA,
-        containerId: containerId,
+        container: container,
     }
 }

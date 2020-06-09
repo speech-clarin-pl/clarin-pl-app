@@ -22,10 +22,10 @@ export const openContainerInRecoPreview = (container) => {
 // ######## dodawanie contanera z repo do panelu rozpoznawania ##########
 // ###################################################################
 
-export const addContainerToReco = (containerId) => {
+export const addContainerToReco = (container) => {
     return {
         type: actionTypes.ADD_CONTAINER_TO_RECO,
-        containerId: containerId,
+        container: container,
     }
 }
 
@@ -47,10 +47,10 @@ export const removeRecognitionItem = (fileId) => {
 }
 
 //################# updating file state ###########
-export const updateFileState = (fileID, status, percLoaded) => {
+export const updateFileState = (containerId, status, percLoaded) => {
     return {
         type: actionTypes.UPDATE_FILE_STATE,
-        fileID: fileID,
+        containerId: containerId,
         status: status,
         percLoaded: percLoaded,
     }
