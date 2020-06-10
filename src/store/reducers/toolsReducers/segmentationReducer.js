@@ -2,73 +2,35 @@ import * as actionTypes from '../../actions/actionsTypes';
 import uuid from 'uuid';
 import { updateObject } from '../../utility';
 //import { addContainerToAlign } from '../../actions';
-import produce from "immer"
+import produce from "immer";
+import { createNotification, loader } from '../../../index';
 
 
 const initialState = {
 
     segmentItems: [],
                             // poniżej to kopie raczej nie beda uzywane
-    segmentEntry: [],
-    audioList: [],
-    txtList: [],
+   // segmentEntry: [],
+   // audioList: [],
+   // txtList: [],
 
-    refusedAudioFileList: [],  //refused audio files
-    refusedTxtFileList: [],  //refused txt files
-    ifRefusedAudio: true, //which component refused files - audio or if false will be txt
+   // refusedAudioFileList: [],  //refused audio files
+   // refusedTxtFileList: [],  //refused txt files
+   // ifRefusedAudio: true, //which component refused files - audio or if false will be txt
 
     alignContainerForPreview: '',
 }
 
 
-const addContainerToPreviewAlign = (state,action) => {
-    return updateObject(state, {
-        alignContainerForPreview:action.containerForPreview, 
-    });
-}
 
-
-//#### dodaje contener do panelu align
-const addContainerToAlign  = (state, action) => {
-
-
-    let containerToAdd = action.container;
-
-    const newElementToAdd = containerToAdd;
-    const newElements = [...state.segmentItems, newElementToAdd];
-   
-    let check = state.segmentItems.filter(file => {
-        if(file._id == newElementToAdd._id){
-            return true;
-        } else {
-            return false;
-        }
-    });
-
-    if(check.length == 0){
-
-        const nextState = produce(state, draftState => {
-            draftState.segmentItems = newElements;
-        })
-    
-        return nextState;
-
-        /* return updateObject(state, {
-            segmentItems:newElements, 
-        }); */
-    } else {
-        return state
-    }
-
-
-}
-
+/*
 const setRefusedTxtFiles = (state, action) => {
     return updateObject(state, {
         refusedTxtFileList: action.refusedFileList, 
         ifRefusedAudio: false,
     });
 }
+
 
 const setRefusedAudioFiles = (state, action) => {
     return updateObject(state, {
@@ -84,6 +46,7 @@ const clearSegmentStore = (state,action) => {
         txtList: [],
     });
 }
+
 
 const dropAudioFiles = (state, action) => {
 
@@ -401,11 +364,12 @@ const changeTxtListOrder = (state, action) => {
 
 
 
-// const initBatchSegmentation = (state,action) => {
 
-//     // to do
-//     return updateObject(state, {}) ;  
-// }
+ const initBatchSegmentation = (state,action) => {
+
+    // to do
+     return updateObject(state, {}) ;  
+ }
 
 const initFileSegmentation = (state,action) => {
     const entryId = action.entryId;
@@ -463,6 +427,8 @@ const removeSegmentEntry = (state,action) => {
     }) ; 
 }
 
+*/
+
 const fileSegmentationSuccess = (state,action) => {
     const entryId = action.entryId;
     //znajduje to entry i ustawiam mu odpowiedni status processingStatus
@@ -499,13 +465,130 @@ const fileSegmentationFailed = (state,action) => {
     return updateObject(state, {segmentEntry: newSegmentEntry}) ;  
 }
 
+
+// changes the status of container in segmentation list
+const changeToolItemStatus = (state, action) => {
+    const containerId = action.containerId;
+    const toolType = action.toolType;
+    const status = action.status;
+
+     if(toolType == 'SEG') {
+        const nextState = produce(state, draftState => {
+
+            let foundFileIdx = draftState.segmentItems.findIndex(file => {
+                return file._id === containerId;
+            })
+    
+            draftState.segmentItems[foundFileIdx].statusSEG = status;
+       })
+    
+       return nextState;
+
+     } else {
+         return state;
+     }
+}
+
+
+// dodaje kontener do podglądu w edytorze
+const addContainerToPreviewAlign = (state,action) => {
+    return updateObject(state, {
+        alignContainerForPreview:action.containerForPreview, 
+    });
+}
+
+
+//#### dodaje contener do panelu align
+// ADD_CONTAINER_TO_ALIGN
+const addContainerToAlign  = (state, action) => {
+
+    let containerToAdd = action.container;
+
+    const newElementToAdd = containerToAdd;
+
+    let newElements = null;
+
+    //dodaje nowy element tylko jeżeli wcześniej nie istniał w bazie
+    let found = state.segmentItems.filter(file => {
+        return file._id == newElementToAdd._id
+    })
+
+
+    if(found.length < 1){
+       newElements = [newElementToAdd, ...state.segmentItems];
+    } else {
+        newElements = [...state.segmentItems];
+    }
+
+   
+    const nextState = produce(state, draftState => {
+        draftState.segmentItems = newElements;
+    })
+
+    return nextState;
+
+}
+
+// #############################################
+// #### update Flagi danego kontenera po pomyślnym wykonaniu rozpoznawania
+//##############################################
+
+const speechSegmentationSuccess = (state, action) => {
+    const containerId = action.containerId;
+    const toolType = action.toolType; 
+
+    const nextState = produce(state, draftState => {
+
+        let foundFileIdx = draftState.segmentItems.findIndex(file => {
+            return file._id === containerId;
+        })
+
+        draftState.segmentItems[foundFileIdx].ifSEG = true;
+        draftState.segmentItems[foundFileIdx].statusSEG = 'done';
+       
+   })
+
+   return nextState;
+
+}
+
+
+const speechSegmentationFailed = (state, action) => {
+    const containerId = action.containerId;
+    const toolType = action.toolType; 
+
+    let foundFileIdx = state.segmentItems.findIndex(file => {
+        return file._id === containerId;
+    })
+
+    createNotification('error', 'Wystąpił błąd segmentacji pliku ' + state.segmentItems[foundFileIdx].containerName);
+
+    const nextState = produce(state, draftState => {
+        draftState.segmentItems[foundFileIdx].ifSEG = false;
+        draftState.segmentItems[foundFileIdx].statusSEG = 'error';
+       
+   })
+
+   return nextState;
+
+}
+
+
+
 const segmentationReducer = (state = initialState, action) => {
 
     switch (action.type) {
 
-        
+        case actionTypes.SET_CONTAINER_STATUS: return changeToolItemStatus(state,action);
 
         case actionTypes.ADD_CONTAINER_TO_PREVIEW_ALIGN: return addContainerToPreviewAlign(state,action);
+        case actionTypes.ADD_CONTAINER_TO_ALIGN: return addContainerToAlign(state,action);
+
+    
+        case actionTypes.REPO_RUN_SPEECH_SEGMENTATION_DONE: return speechSegmentationSuccess(state,action);
+        case actionTypes.REPO_RUN_SPEECH_SEGMENTATION_FAILED: return speechSegmentationFailed(state,action);
+
+        /*
         case actionTypes.DROP_AUDIO_FILES: return dropAudioFiles(state, action);
         case actionTypes.DROP_TXT_FILES: return dropTxtFiles(state, action);
         case actionTypes.CHANGE_AUDIO_LIST_ORDER: return changeAudioListOrder(state, action);
@@ -518,7 +601,10 @@ const segmentationReducer = (state = initialState, action) => {
         case actionTypes.FILE_SEGMENTATION_FAILED: return fileSegmentationFailed(state,action);
         case actionTypes.REFUSE_SEGMENT_AUDIO_FILES: return setRefusedAudioFiles(state, action);
         case actionTypes.REFUSE_SEGMENT_TXT_FILES: return setRefusedTxtFiles(state, action);
-        case actionTypes.ADD_CONTAINER_TO_ALIGN: return addContainerToAlign(state,action);
+        */
+        
+
+        
     }
 
     return state;

@@ -12,6 +12,9 @@ import recognitionReducer from './store/reducers/toolsReducers/recognitionReduce
 import segmentationReducer from './store/reducers/toolsReducers/segmentationReducer';
 import previewReducer from './store/reducers/toolsReducers/previewReducer';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
+import { ScaleLoader } from "react-spinners";
+import 'react-notifications/lib/notifications.css';
+
 
 // to jest stara wersja repo
 //import repoReducer from './store/reducers/repoReducer';
@@ -42,6 +45,8 @@ if (process.env.NODE_ENV === 'production') {
 
 //axios.defaults.headers.common['Authorization'] = 'AUTH TOKEN';
 //axios.defaults.headers.post['Content-Type'] = 'application/json';
+
+
 
 const rootReducer = combineReducers({
     homeR: homeReducer,
@@ -75,6 +80,22 @@ function createNotification (type, value) {
 };
 
 
+const loader = (value) => {
+    return (
+        <div style={{ position: 'fixed', width: '100%', height: '100%', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 9999, cursor:'pointer' }} >
+            <div style={{ position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}>
+                <ScaleLoader
+                    css={{display:'block', margin:'0 auto'}}
+                    size={150}
+                    color={"rgb(84, 108, 120)"}
+                    loading={value}
+                />
+            </div>
+        </div>
+    );
+}
+
+
 // dla asynchronicznych zadan
 const store = createStore(rootReducer, composeEnhancers(
     applyMiddleware(thunk)
@@ -97,3 +118,6 @@ ReactDOM.render(app, document.getElementById('root'));
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
+
+
+export { createNotification, loader };

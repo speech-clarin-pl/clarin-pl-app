@@ -1,6 +1,7 @@
 import * as actionTypes from '../../actions/actionsTypes';
 import {updateObject} from '../../utility';
 import produce from "immer";
+import { createNotification, loader } from '../../../index';
 
 
 const initialState = {
@@ -50,31 +51,24 @@ const addContainerToPreviewReco = (state,action) => {
 const addContainerToReco = (state,action) => {
    
     const newElementToAdd = action.container;
-    const newElements = [...state.filesToUpload, newElementToAdd];
-   
-    /*
-    let check = state.filesToUpload.filter(file => {
-        if(file._id == newElementToAdd._id){
-            return true;
-        } else {
-            return false;
-        }
-    });
-    */
+    let newElements = null;
+
+    //dodaje nowy element tylko jeżeli wcześniej nie istniał w bazie
+    let found = state.filesToUpload.filter(file => {
+        return file._id == newElementToAdd._id
+    })
+
+
+    if(found.length < 1){
+       newElements = [newElementToAdd, ...state.filesToUpload];
+    } else {
+        newElements = [...state.filesToUpload];
+    }
 
     return updateObject(state, {
         filesToUpload:newElements, 
     });
 
-    /*
-    if(check.length == 0){
-        return updateObject(state, {
-            filesToUpload:newElements, 
-        });
-    } else {
-        return state
-    }
-    */
 }
 
 const setRefusedFiles = (state, action) => {
@@ -186,10 +180,10 @@ const loadTranscription = (state, action) => {
 }
 
 // #############################################
-// #### update Flagi danego kontenera po pomyślnym wykonaniu danej usługi ###########
+// #### update Flagi danego kontenera po pomyślnym wykonaniu rozpoznawania
 //##############################################
 
-const speechServiceSuccess = (state, action) => {
+const speechRecognitionSuccess = (state, action) => {
     const containerId = action.containerId;
     const toolType = action.toolType; 
 
@@ -201,29 +195,10 @@ const speechServiceSuccess = (state, action) => {
         let foundFileIdx = draftState.filesToUpload.findIndex(file => {
             return file._id === containerId;
         })
+
+        draftState.filesToUpload[foundFileIdx].ifREC = true;
+        draftState.filesToUpload[foundFileIdx].statusREC = 'done';
        
-        switch(toolType){
-            case "DIA":
-                draftState.filesToUpload[foundFileIdx].ifDIA = true;
-                draftState.filesToUpload[foundFileIdx].statusDIA = 'done';
-                break;
-            case "VAD":
-                draftState.filesToUpload[foundFileIdx].ifVAD = true;
-                draftState.filesToUpload[foundFileIdx].statusVAD = 'done';
-                break;
-            case "RECO":
-                 draftState.filesToUpload[foundFileIdx].ifREC = true;
-                 draftState.filesToUpload[foundFileIdx].statusREC = 'done';
-                break;
-            case "ALIGN":
-                draftState.filesToUpload[foundFileIdx].ifSEG = true;
-                draftState.filesToUpload[foundFileIdx].statusSEG = 'done';
-                break;
-            default:
-                console.log("Default"); //to do
-        }
-
-
    })
 
    return nextState;
@@ -231,38 +206,21 @@ const speechServiceSuccess = (state, action) => {
 }
 
 
-const speechServiceFailed = (state, action) => {
+const speechRecognitionFailed = (state, action) => {
     const containerId = action.containerId;
     const toolType = action.toolType; 
 
+    let foundFileIdx = state.filesToUpload.findIndex(file => {
+        return file._id === containerId;
+    })
+
+    createNotification('error', 'Wystąpił błąd segmentacji pliku ' + state.filesToUpload[foundFileIdx].containerName);
+
     const nextState = produce(state, draftState => {
-
-        let foundFileIdx = draftState.filesToUpload.findIndex(file => {
-            return file._id === containerId;
-        })
+        draftState.filesToUpload[foundFileIdx].ifREC = false;
+        draftState.filesToUpload[foundFileIdx].statusREC = 'error';
        
-        switch(toolType){
-            case "DIA":
-                draftState.filesToUpload[foundFileIdx].ifDIA = false;
-                draftState.filesToUpload[foundFileIdx].statusDIA = 'error';
-                break;
-            case "VAD":
-                draftState.filesToUpload[foundFileIdx].ifVAD = false;
-                draftState.filesToUpload[foundFileIdx].statusVAD = 'error';
-                break;
-            case "RECO":
-                 draftState.filesToUpload[foundFileIdx].ifREC = false;
-                 draftState.filesToUpload[foundFileIdx].statusREC = 'error';
-                break;
-            case "ALIGN":
-                draftState.filesToUpload[foundFileIdx].ifSEG = false;
-                draftState.filesToUpload[foundFileIdx].statusSEG = 'error';
-                break;
-            default:
-                console.log("Default"); //to do
-        }
  
-
    })
 
    return nextState;
@@ -316,34 +274,21 @@ const changeToolItemStatus = (state, action) => {
     const toolType = action.toolType;
     const status = action.status;
 
+     if(toolType == 'REC') {
+        const nextState = produce(state, draftState => {
 
-    const nextState = produce(state, draftState => {
+            let foundFileIdx = draftState.filesToUpload.findIndex(file => {
+                return file._id === containerId;
+            })
+    
+            draftState.filesToUpload[foundFileIdx].statusREC = status;
+       })
+    
+       return nextState;
 
-        let foundFileIdx = draftState.filesToUpload.findIndex(file => {
-            return file._id === containerId;
-        })
-       
-        switch(toolType){
-            case "DIA":
-                draftState.filesToUpload[foundFileIdx].statusDIA = status;
-                break;
-            case "VAD":
-                draftState.filesToUpload[foundFileIdx].statusVAD = status;
-                break;
-            case "RECO":
-                 draftState.filesToUpload[foundFileIdx].statusREC = status;
-                break;
-            case "ALIGN":
-                draftState.filesToUpload[foundFileIdx].statusSEG = status;
-                break;
-            default:
-                console.log("Default"); //to do
-        }
- 
-
-   })
-
-   return nextState;
+     } else {
+         return state;
+     }
 
 }
 
@@ -362,8 +307,8 @@ const recognitionReducer = (state = initialState, action) => {
         case actionTypes.REFUSE_RECO_FILES: return setRefusedFiles(state, action);
         case actionTypes.LOAD_TRANSCRIPTION: return loadTranscription(state, action);
 
-        case actionTypes.REPO_RUN_SPEECHSERVICE_DONE: return speechServiceSuccess(state,action);
-        case actionTypes.REPO_RUN_SPEECHSERVICE_FAILED: return speechServiceFailed(state,action);
+        case actionTypes.REPO_RUN_SPEECH_RECOGNITION_DONE: return speechRecognitionSuccess(state,action);
+        case actionTypes.REPO_RUN_SPEECH_RECOGNITION_FAILED: return speechRecognitionFailed(state,action);
 
        // case actionTypes.SET_TOOL_ITEM_STATUS: return changeToolItemStatus(state,action);
 

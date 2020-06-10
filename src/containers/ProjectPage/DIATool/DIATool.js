@@ -68,7 +68,8 @@ class DIATool extends Component {
 				<ToolItem 
                         key={"key" + i} 
                         container={container}
-                        type="DIA"
+						type="DIA"
+						status={container.statusDIA}
                         openPreview = {this.openContainerInPreview}
                     />
 			)

@@ -66,6 +66,7 @@ class VADTool extends Component {
                         key={"key" + i} 
                         container={container}
 						type="VAD"
+						status={container.statusVAD}
 						openPreview = {this.openContainerInPreview}
                     />
 			)

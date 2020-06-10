@@ -45,9 +45,24 @@ class ToolItem extends Component {
         //this.props.setToolItemStatus(this.props.container._id, this.props.type, 'progress');
         //this.setState({innerStatus: 'progress'});
 
-        this.props.setContainerStatus(this.props.container._id, this.props.type, 'progress')
-        this.props.runSpeechService(this.props.container._id, this.props.type, this.props.token);
+        this.props.setContainerStatus(this.props.container._id, this.props.type, 'progress');
 
+        switch(this.props.type){
+            case "DIA":
+                console.log('RUN DIA')
+                break;
+            case "VAD":
+                console.log('RUN VAD')
+                break;
+            case "REC":
+                this.props.runSpeechRecognition(this.props.container._id, this.props.type, this.props.token); //rozpoznawanie mowy
+                break;
+            case "SEG":
+                this.props.runSpeechSegmentation(this.props.container._id, this.props.type, this.props.token); //rozpoznawanie mowy
+                break;
+            default:
+                console.log("Default"); //to do
+        }
        
     }
 
@@ -64,10 +79,10 @@ class ToolItem extends Component {
             case "VAD":
                 iconType = faSurprise;
                 break;
-            case "RECO":
+            case "REC":
                 iconType = faFileAlt;
                 break;
-            case "ALIGN":
+            case "SEG":
                 iconType = faClock;
                 break;
             default:
@@ -187,14 +202,17 @@ const mapStateToProps = state => {
         projectId: state.projectR.currentProjectID,
         token: state.homeR.token,
 
-        containersForRECO: state.recR.filesToUpload,
+        //containersForRECO: state.recR.filesToUpload,
+        //containersFor
         
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        runSpeechService: (containerId, toolType, token) => dispatch(toolItemActions.runSpeechService(containerId, toolType, token)),
+        runSpeechRecognition: (containerId, toolType, token) => dispatch(toolItemActions.runSpeechRecognition(containerId, toolType, token)),
+        runSpeechSegmentation: (containerId, toolType, token) => dispatch(toolItemActions.runSpeechSegmentation(containerId, toolType, token)),
+        
         setContainerStatus:  (containerId, toolType, status) => dispatch(toolItemActions.setContainerStatus(containerId, toolType, status)),
        // setToolItemStatus: (containerId, toolType, status) => dispatch(toolItemActions.setToolItemStatus(containerId, toolType, status)),
        // updateFileState: (fileID, status,percLoaded) => dispatch(toolItemActions.updateFileState(fileID, status,percLoaded)),

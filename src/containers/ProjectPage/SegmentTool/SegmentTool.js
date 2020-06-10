@@ -398,7 +398,8 @@ class SegmentTool extends Component {
                     <ToolItem 
                         key={"key" + i} 
 						container={container}
-						type="ALIGN"
+						type="SEG"
+						status={container.statusSEG}
 						openPreview = {this.openContainerInPreview}
                     />
 

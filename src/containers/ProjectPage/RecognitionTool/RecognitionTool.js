@@ -203,7 +203,7 @@ class RecognitionTool extends Component {
                         <ToolItem 
                             key={"key" + i} 
                             container={file}
-                            type="RECO"
+                            type="REC"
                             status={file.statusREC}
                             openPreview = {this.openContainerInPreview}
                         />

@@ -5,32 +5,31 @@ import { saveAs } from 'file-saver';
 //import streamSaver from 'StreamSaver';
 
 
-
 // ############################################################
-// ############## Ukończenie wykonywania speech service #################
+// ############## Speech segmentation #################
 // ###########################################################
 
-export const runSpeechServiceSuccess = (containerId, toolType) => {
+export const runSpeechSegmentationSuccess = (containerId, toolType) => {
     return {
-        type: actionTypes.REPO_RUN_SPEECHSERVICE_DONE,
+        type: actionTypes.REPO_RUN_SPEECH_SEGMENTATION_DONE,
         containerId: containerId,
         toolType: toolType,
     }
 }
 
-export const runSpeechServiceFailed = (containerId, toolType) => {
+export const runSpeechSegmentationFailed = (containerId, toolType) => {
     return {
-        type: actionTypes.REPO_RUN_SPEECHSERVICE_FAILED,
+        type: actionTypes.REPO_RUN_SPEECH_SEGMENTATION_FAILED,
         containerId: containerId,
         toolType: toolType,
     }
 }
 
-export const runSpeechService = (containerId, toolType, token) => {
+export const runSpeechSegmentation = (containerId, toolType, token) => {
     
     return dispatch => {
 
-        axios.put(('/repoFiles/runSpeechService/'+containerId), 
+        axios.put(('/repoFiles/runSpeechSegmentation/'+containerId), 
         {
             containerId: containerId,
             toolType: toolType,
@@ -41,10 +40,54 @@ export const runSpeechService = (containerId, toolType, token) => {
             },
         })
         .then(response => {
-            dispatch(runSpeechServiceSuccess(containerId, toolType));
+            dispatch(runSpeechSegmentationSuccess(containerId, toolType));
         })
         .catch(error => {
-            dispatch(runSpeechServiceFailed(containerId, toolType));
+            dispatch(runSpeechSegmentationFailed(containerId, toolType));
+        }); 
+    }
+}
+
+
+// ############################################################
+// ############## Ukończenie wykonywania speech recognition #################
+// ###########################################################
+
+export const runSpeechRecognitionSuccess = (containerId, toolType) => {
+    return {
+        type: actionTypes.REPO_RUN_SPEECH_RECOGNITION_DONE,
+        containerId: containerId,
+        toolType: toolType,
+    }
+}
+
+export const runSpeechRecognitionFailed = (containerId, toolType) => {
+    return {
+        type: actionTypes.REPO_RUN_SPEECH_RECOGNITION_FAILED,
+        containerId: containerId,
+        toolType: toolType,
+    }
+}
+
+export const runSpeechRecognition = (containerId, toolType, token) => {
+    
+    return dispatch => {
+
+        axios.put(('/repoFiles/runSpeechRecognition/'+containerId), 
+        {
+            containerId: containerId,
+            toolType: toolType,
+        }, 
+        {
+            headers: {
+                Authorization: 'Bearer ' + token
+            },
+        })
+        .then(response => {
+            dispatch(runSpeechRecognitionSuccess(containerId, toolType));
+        })
+        .catch(error => {
+            dispatch(runSpeechRecognitionFailed(containerId, toolType));
         }); 
     }
 }
@@ -54,6 +97,8 @@ export const runSpeechService = (containerId, toolType, token) => {
 // ###########################################################
 
 export const setContainerStatus = (containerId, toolType, status) => {
+
+
     return {
         type: actionTypes.SET_CONTAINER_STATUS,
         containerId: containerId,

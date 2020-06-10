@@ -17,7 +17,8 @@ export {
     removeContainerFromRepoSuccess,
     removeContainerFromRepoFailed,
     removeContainerFromRepo,
-    runSpeechService,
+    runSpeechRecognition,
+    runSpeechSegmentation,
     setContainerStatus,
     
 } from './repo';

@@ -152,10 +152,10 @@ const changeContainerStatus = (state, action) => {
                 case "VAD":
                     draftState.containers.byId[containerId].statusVAD = newStatus;
                     break;
-                case "RECO":
+                case "REC":
                     draftState.containers.byId[containerId].statusREC = newStatus;
                     break;
-                case "ALIGN":
+                case "SEG":
                     draftState.containers.byId[containerId].statusSEG = newStatus;
                     break;
                 default:
@@ -189,7 +189,7 @@ const loadAudioForPreview = (state, action) => {
             case "REC":
                 draftState.containerAudioFileREC = containerAudioFile;
                 break;
-            case "ALIGN":
+            case "SEG":
                 draftState.containerAudioFileSEG = containerAudioFile;
                 break;
             default:
@@ -225,7 +225,7 @@ const loadBinaryForPreview = (state, action) => {
             case "REC":
                 draftState.containerBinaryPreviewREC = containerBinaryData;
                 break;
-            case "ALIGN":
+            case "SEG":
                 draftState.containerBinaryPreviewSEG = containerBinaryData;
                 break;
             default:
@@ -242,32 +242,14 @@ const loadBinaryForPreview = (state, action) => {
 // #### update Flagi danego kontenera po pomyślnym wykonaniu danej usługi ###########
 //##############################################
 
-const speechServiceDone = (state, action) => {
+const speechSegmentationDone = (state, action) => {
     const containerId = action.containerId;
     const toolType = action.toolType; 
 
     const nextState = produce(state, draftState => {
+        draftState.containers.byId[containerId].ifSEG = true;
+        draftState.containers.byId[containerId].statusSEG = 'ready';
 
-        switch(toolType){
-            case "DIA":
-                draftState.containers.byId[containerId].ifDIA = true;
-                draftState.containers.byId[containerId].statusDIA = 'ready';
-                break;
-            case "VAD":
-                draftState.containers.byId[containerId].ifVAD = true;
-                draftState.containers.byId[containerId].statusVAD = 'ready';
-                break;
-            case "RECO":
-                draftState.containers.byId[containerId].ifREC = true;
-                draftState.containers.byId[containerId].statusREC = 'ready';
-                break;
-            case "ALIGN":
-                draftState.containers.byId[containerId].ifSEG = true;
-                draftState.containers.byId[containerId].statusSEG = 'ready';
-                break;
-            default:
-                console.log("Default"); //to do
-        }
    })
 
    return nextState;
@@ -275,33 +257,46 @@ const speechServiceDone = (state, action) => {
 }
 
 
-const speechServiceFailed = (state, action) => {
+const speechSegmentationFailed = (state, action) => {
+
+    const containerId = action.containerId;
+    const toolType = action.toolType; 
+
+    const nextState = produce(state, draftState => {
+        draftState.containers.byId[containerId].ifSEG = false;
+        draftState.containers.byId[containerId].statusSEG = 'error';
+
+   })
+
+   return nextState;
+
+}
+
+const speechRecognitionDone = (state, action) => {
+    const containerId = action.containerId;
+    const toolType = action.toolType; 
+
+    const nextState = produce(state, draftState => {
+
+        draftState.containers.byId[containerId].ifREC = true;
+        draftState.containers.byId[containerId].statusREC = 'ready';
+
+   })
+
+   return nextState;
+
+}
+
+
+const speechRecognitionFailed = (state, action) => {
 
     const containerId = action.containerId;
     const toolType = action.toolType; 
 
     const nextState = produce(state, draftState => {
 
-        switch(toolType){
-            case "DIA":
-                draftState.containers.byId[containerId].ifDIA = false;
-                draftState.containers.byId[containerId].statusDIA = 'error';
-                break;
-            case "VAD":
-                draftState.containers.byId[containerId].ifVAD = false;
-                draftState.containers.byId[containerId].statusVAD = 'error';
-                break;
-            case "RECO":
-                draftState.containers.byId[containerId].ifREC = false;
-                draftState.containers.byId[containerId].statusREC = 'error';
-                break;
-            case "ALIGN":
-                draftState.containers.byId[containerId].ifSEG = false;
-                draftState.containers.byId[containerId].statusSEG = 'error';
-                break;
-            default:
-                console.log("Default"); //to do
-        }
+        draftState.containers.byId[containerId].ifREC = false;
+        draftState.containers.byId[containerId].statusREC = 'error';
 
    })
 
@@ -823,11 +818,18 @@ const repoUploadFilesModalOpen = (state,action) => {
 const repoPanelReducer = (state = initialState, action) => {
     switch(action.type){
 
+        case actionTypes.SET_CONTAINER_STATUS: return changeContainerStatus(state,action);
+
+        case actionTypes.REPO_RUN_SPEECH_RECOGNITION_DONE: return speechRecognitionDone(state,action);
+        case actionTypes.REPO_RUN_SPEECH_RECOGNITION_FAILED: return speechRecognitionFailed(state,action);
+
+        case actionTypes.REPO_RUN_SPEECH_SEGMENTATION_DONE: return speechSegmentationDone(state,action);
+        case actionTypes.REPO_RUN_SPEECH_SEGMENTATION_FAILED: return speechSegmentationFailed(state,action);
+
+
+
         case actionTypes.LOAD_BINARY_FOR_PREVIEW: return loadBinaryForPreview(state,action);
         case actionTypes.LOAD_AUDIO_FOR_PREVIEW: return loadAudioForPreview(state,action);
-
-        case actionTypes.REPO_RUN_SPEECHSERVICE_DONE: return speechServiceDone(state,action);
-        case actionTypes.REPO_RUN_SPEECHSERVICE_FAILED: return speechServiceFailed(state,action);
 
         case actionTypes.REPO_SELECT_SESSION: return repoSelectSession(state,action);
         case actionTypes.REPO_SELECT_CONTAINER: return repoSelectContainer(state,action);
@@ -841,7 +843,9 @@ const repoPanelReducer = (state = initialState, action) => {
         case actionTypes.REPO_DELETE_CONTAINER_SUCCESS: return repoRemoveContainerSuccess(state,action);
         case actionTypes.REPO_DELETE_CONTAINER_FAILED: return repoRemoveContainerFailed(state,action);
 
-        case actionTypes.SET_CONTAINER_STATUS: return changeContainerStatus(state,action);
+      
+
+        
 
         //case actionTypes.REPO_UPLOAD_FILE: return repoUploadFile(state,action);
         

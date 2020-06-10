@@ -174,7 +174,7 @@ class Dashboard extends Component {
 const mapStateToProps = (state) => {
     return {
         filesToUploadRec: state.recR.filesToUpload, //pliki do rozpoznawania
-        segmentEntry: state.segR.segmentEntry, //pliko do segmentacji 
+        segmentEntry: state.segR.segmentItems, //pliko do segmentacji 
         repoFiles: state.repoR.files,
     }
   }

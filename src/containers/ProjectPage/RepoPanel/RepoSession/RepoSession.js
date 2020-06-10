@@ -34,7 +34,7 @@ class RepoSession extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState){
-        console.log(nextProps)
+        //console.log(nextProps)
         return true;
     }
 
