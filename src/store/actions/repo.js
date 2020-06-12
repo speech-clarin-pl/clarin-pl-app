@@ -5,6 +5,94 @@ import { saveAs } from 'file-saver';
 //import streamSaver from 'StreamSaver';
 
 
+
+// ############################################################
+// ############## Speech VAD #################
+// ###########################################################
+
+export const runSpeechVoiceActivityDetectionSuccess = (containerId, toolType) => {
+    return {
+        type: actionTypes.REPO_RUN_SPEECH_VAD_DONE,
+        containerId: containerId,
+        toolType: toolType,
+    }
+}
+
+export const runSpeechVoiceActivityDetectionFailed = (containerId, toolType) => {
+    return {
+        type: actionTypes.REPO_RUN_SPEECH_VAD_FAILED,
+        containerId: containerId,
+        toolType: toolType,
+    }
+}
+
+export const runSpeechVoiceActivityDetection = (containerId, toolType, token) => {
+    
+    return dispatch => {
+
+        axios.put(('/repoFiles/runSpeechVAD/'+containerId), 
+        {
+            containerId: containerId,
+            toolType: toolType,
+        }, 
+        {
+            headers: {
+                Authorization: 'Bearer ' + token
+            },
+        })
+        .then(response => {
+            dispatch(runSpeechVoiceActivityDetectionSuccess(containerId, toolType));
+        })
+        .catch(error => {
+            dispatch(runSpeechVoiceActivityDetectionFailed(containerId, toolType));
+        }); 
+    }
+}
+
+// ############################################################
+// ############## Speech diarization #################
+// ###########################################################
+
+export const runSpeechDiarizationSuccess = (containerId, toolType) => {
+    return {
+        type: actionTypes.REPO_RUN_SPEECH_DIARIZATION_DONE,
+        containerId: containerId,
+        toolType: toolType,
+    }
+}
+
+export const runSpeechDiarizationFailed = (containerId, toolType) => {
+    return {
+        type: actionTypes.REPO_RUN_SPEECH_DIARIZATION_FAILED,
+        containerId: containerId,
+        toolType: toolType,
+    }
+}
+
+export const runSpeechDiarization = (containerId, toolType, token) => {
+    
+    return dispatch => {
+
+        axios.put(('/repoFiles/runSpeechDiarization/'+containerId), 
+        {
+            containerId: containerId,
+            toolType: toolType,
+        }, 
+        {
+            headers: {
+                Authorization: 'Bearer ' + token
+            },
+        })
+        .then(response => {
+            dispatch(runSpeechDiarizationSuccess(containerId, toolType));
+        })
+        .catch(error => {
+            dispatch(runSpeechDiarizationFailed(containerId, toolType));
+        }); 
+    }
+}
+
+
 // ############################################################
 // ############## Speech segmentation #################
 // ###########################################################

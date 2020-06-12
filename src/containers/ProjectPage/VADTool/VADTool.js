@@ -146,7 +146,7 @@ class VADTool extends Component {
 const mapStateToProps = state => {
 	return {
 
-        VADItems: state.vadR.filesToUpload,
+        VADItems: state.vadR.containersForVAD,
 		modalDisplay: state.projectR.modal,
 		ifRefusedAudio: state.segR.ifRefusedAudio,
 		containerForPreview: state.vadR.vadContainerForPreview,

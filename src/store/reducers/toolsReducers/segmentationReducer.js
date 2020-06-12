@@ -8,7 +8,7 @@ import { createNotification, loader } from '../../../index';
 
 const initialState = {
 
-    segmentItems: [],
+    containersForSEG: [],
                             // poniżej to kopie raczej nie beda uzywane
    // segmentEntry: [],
    // audioList: [],
@@ -475,11 +475,11 @@ const changeToolItemStatus = (state, action) => {
      if(toolType == 'SEG') {
         const nextState = produce(state, draftState => {
 
-            let foundFileIdx = draftState.segmentItems.findIndex(file => {
+            let foundFileIdx = draftState.containersForSEG.findIndex(file => {
                 return file._id === containerId;
             })
     
-            draftState.segmentItems[foundFileIdx].statusSEG = status;
+            draftState.containersForSEG[foundFileIdx].statusSEG = status;
        })
     
        return nextState;
@@ -509,20 +509,20 @@ const addContainerToAlign  = (state, action) => {
     let newElements = null;
 
     //dodaje nowy element tylko jeżeli wcześniej nie istniał w bazie
-    let found = state.segmentItems.filter(file => {
+    let found = state.containersForSEG.filter(file => {
         return file._id == newElementToAdd._id
     })
 
 
     if(found.length < 1){
-       newElements = [newElementToAdd, ...state.segmentItems];
+       newElements = [newElementToAdd, ...state.containersForSEG];
     } else {
-        newElements = [...state.segmentItems];
+        newElements = [...state.containersForSEG];
     }
 
    
     const nextState = produce(state, draftState => {
-        draftState.segmentItems = newElements;
+        draftState.containersForSEG = newElements;
     })
 
     return nextState;
@@ -539,12 +539,12 @@ const speechSegmentationSuccess = (state, action) => {
 
     const nextState = produce(state, draftState => {
 
-        let foundFileIdx = draftState.segmentItems.findIndex(file => {
+        let foundFileIdx = draftState.containersForSEG.findIndex(file => {
             return file._id === containerId;
         })
 
-        draftState.segmentItems[foundFileIdx].ifSEG = true;
-        draftState.segmentItems[foundFileIdx].statusSEG = 'done';
+        draftState.containersForSEG[foundFileIdx].ifSEG = true;
+        draftState.containersForSEG[foundFileIdx].statusSEG = 'done';
        
    })
 
@@ -557,15 +557,15 @@ const speechSegmentationFailed = (state, action) => {
     const containerId = action.containerId;
     const toolType = action.toolType; 
 
-    let foundFileIdx = state.segmentItems.findIndex(file => {
+    let foundFileIdx = state.containersForSEG.findIndex(file => {
         return file._id === containerId;
     })
 
-    createNotification('error', 'Wystąpił błąd segmentacji pliku ' + state.segmentItems[foundFileIdx].containerName);
+    createNotification('error', 'Wystąpił błąd segmentacji pliku ' + state.containersForSEG[foundFileIdx].containerName);
 
     const nextState = produce(state, draftState => {
-        draftState.segmentItems[foundFileIdx].ifSEG = false;
-        draftState.segmentItems[foundFileIdx].statusSEG = 'error';
+        draftState.containersForSEG[foundFileIdx].ifSEG = false;
+        draftState.containersForSEG[foundFileIdx].statusSEG = 'error';
        
    })
 

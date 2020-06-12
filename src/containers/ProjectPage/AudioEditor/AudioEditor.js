@@ -536,7 +536,7 @@ class AudioEditor extends Component {
 			edytor = (
 				<>
 					
-				
+					<h3>{this.props.containerForPreview.containerName}</h3>
 					<div id="waveform-container">
 						<div id="overview-container"></div>
 						<div id="zoomview-container"></div>

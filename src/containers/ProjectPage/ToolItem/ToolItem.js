@@ -49,16 +49,16 @@ class ToolItem extends Component {
 
         switch(this.props.type){
             case "DIA":
-                console.log('RUN DIA')
+                this.props.runSpeechDiarization(this.props.container._id, this.props.type, this.props.token); 
                 break;
             case "VAD":
-                console.log('RUN VAD')
+                this.props.runSpeechVoiceActivityDetection(this.props.container._id, this.props.type, this.props.token); 
                 break;
             case "REC":
-                this.props.runSpeechRecognition(this.props.container._id, this.props.type, this.props.token); //rozpoznawanie mowy
+                this.props.runSpeechRecognition(this.props.container._id, this.props.type, this.props.token); 
                 break;
             case "SEG":
-                this.props.runSpeechSegmentation(this.props.container._id, this.props.type, this.props.token); //rozpoznawanie mowy
+                this.props.runSpeechSegmentation(this.props.container._id, this.props.type, this.props.token); 
                 break;
             default:
                 console.log("Default"); //to do
@@ -115,7 +115,7 @@ class ToolItem extends Component {
                 previewIconAlpha = 1;
                 break;
             case 'error':
-                statusIcon = <FontAwesomeIcon icon={faExclamationCircle} className="faIcon" /> ;
+                statusIcon = <FontAwesomeIcon icon={faExclamationCircle} className="faIcon" style={{color: 'red'}} /> ;
                 break;
             case 'progress':
                 statusIcon = <FontAwesomeIcon icon={faSpinner} className="faIcon" /> ;
@@ -125,7 +125,7 @@ class ToolItem extends Component {
                     </div>
                 );
 
-                previewIconAlpha = 1;
+                previewIconAlpha = 0.5;
                 runProcessIcon = <FontAwesomeIcon icon={iconType} className="faIcon" style={{opacity: 0.5, color: '#3498db'}}/>
 
                 break;
@@ -212,6 +212,9 @@ const mapDispatchToProps = dispatch => {
     return {
         runSpeechRecognition: (containerId, toolType, token) => dispatch(toolItemActions.runSpeechRecognition(containerId, toolType, token)),
         runSpeechSegmentation: (containerId, toolType, token) => dispatch(toolItemActions.runSpeechSegmentation(containerId, toolType, token)),
+        runSpeechDiarization: (containerId, toolType, token) => dispatch(toolItemActions.runSpeechDiarization(containerId, toolType, token)),
+        runSpeechVoiceActivityDetection: (containerId, toolType, token) => dispatch(toolItemActions.runSpeechVoiceActivityDetection(containerId, toolType, token)),
+
         
         setContainerStatus:  (containerId, toolType, status) => dispatch(toolItemActions.setContainerStatus(containerId, toolType, status)),
        // setToolItemStatus: (containerId, toolType, status) => dispatch(toolItemActions.setToolItemStatus(containerId, toolType, status)),

@@ -147,11 +147,11 @@ class RecognitionTool extends Component {
 
         //wydobywam sama tablica plikow z entry 
         //bo entry to moja struktura danych
-        const audioFilesArray = this.props.filesToUpload.map(entry => {
+        const audioFilesArray = this.props.containersForREC.map(entry => {
             return entry.file;
         })
 
-        const audioFilesIds = this.props.filesToUpload.map(entry => {
+        const audioFilesIds = this.props.containersForREC.map(entry => {
             return entry.id;
         })
 
@@ -195,9 +195,9 @@ class RecognitionTool extends Component {
             <h4 style={{ marginTop: '10px' }}>Wgraj pliki do rozpoznawania</h4>
         )
 
-        if (this.props.filesToUpload.length > 0) {
+        if (this.props.containersForREC.length > 0) {
 
-                filelist = this.props.filesToUpload.map((file, i) => {
+                filelist = this.props.containersForREC.map((file, i) => {
 
                     return (
                         <ToolItem 
@@ -343,7 +343,7 @@ class RecognitionTool extends Component {
 
 const mapStateToProps = state => {
     return {
-        filesToUpload: state.recR.filesToUpload,
+        containersForREC: state.recR.containersForREC,
         modalDisplay: state.projectR.modal,
         refusedFileList: state.recR.refusedFileList,
         containerForPreview: state.recR.recoContainerForPreview,

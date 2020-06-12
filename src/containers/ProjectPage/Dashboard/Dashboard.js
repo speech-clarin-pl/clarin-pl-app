@@ -70,7 +70,7 @@ class Dashboard extends Component {
                                     <div className="row mb-3">
                                         <div className="col">
                                             <h5 className="news-title">Rozpoznawanie:</h5>
-                                            <p>Całkowita licza plików w kolejce: ({this.props.filesToUploadRec.length})</p>
+                                            <p>Całkowita licza plików w kolejce: ({this.props.containersForREC.length})</p>
                                             
                                             {
                                                 /*
@@ -88,7 +88,7 @@ class Dashboard extends Component {
                                         <div className="col">
                                             <h5 className="news-title">Segmentacja:</h5>
                                             <p>Całkowita licza plików w kolejce: (
-                                                {this.props.segmentEntry.length}))</p>
+                                                {this.props.containersForSEG.length}))</p>
                                             {
                                                 /*
                                                 <p>Procent przetworzonych plików:</p>
@@ -173,8 +173,8 @@ class Dashboard extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        filesToUploadRec: state.recR.filesToUpload, //pliki do rozpoznawania
-        segmentEntry: state.segR.segmentItems, //pliko do segmentacji 
+        containersForREC: state.recR.containersForREC, //pliki do rozpoznawania
+        containersForSEG: state.segR.containersForSEG, //pliko do segmentacji 
         repoFiles: state.repoR.files,
     }
   }

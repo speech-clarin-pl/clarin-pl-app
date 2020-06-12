@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import './ContainerFile.css';
 
 import {DragPreviewImage, useDrag} from 'react-dnd';
@@ -8,6 +8,7 @@ import ItemTypes from '../../ItemDndTypes';
 import {ContextMenu, MenuItem, ContextMenuTrigger} from 'react-contextmenu';
 import dragImage from '../../../ProjectPage/dragImage';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileAudio } from '@fortawesome/free-solid-svg-icons';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faSurprise } from '@fortawesome/free-solid-svg-icons';

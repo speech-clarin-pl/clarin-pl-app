@@ -62,7 +62,7 @@ class DIATool extends Component {
 		let diaIcon = <FontAwesomeIcon icon={faComment} /> ;
 
 
-		let filelist = this.props.DIAItems.map((container, i)=> {
+		let filelist = this.props.containersForDIA.map((container, i)=> {
 
 			return (
 				<ToolItem 
@@ -149,7 +149,7 @@ class DIATool extends Component {
 const mapStateToProps = state => {
 	return {
 
-        DIAItems: state.diaR.filesToUpload,
+        containersForDIA: state.diaR.containersForDIA,
 		modalDisplay: state.projectR.modal,
 		ifRefusedAudio: state.segR.ifRefusedAudio,
 		containerForPreview: state.diaR.diaContainerForPreview,

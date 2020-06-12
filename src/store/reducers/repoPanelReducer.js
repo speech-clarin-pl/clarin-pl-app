@@ -242,6 +242,75 @@ const loadBinaryForPreview = (state, action) => {
 // #### update Flagi danego kontenera po pomyślnym wykonaniu danej usługi ###########
 //##############################################
 
+const speechVADSuccess = (state, action) => {
+    const containerId = action.containerId;
+    const toolType = action.toolType; 
+
+    const nextState = produce(state, draftState => {
+        draftState.containers.byId[containerId].ifVAD = true;
+        draftState.containers.byId[containerId].statusVAD = 'ready';
+
+   })
+
+   return nextState;
+
+}
+
+
+const speechVADFailed = (state, action) => {
+
+    const containerId = action.containerId;
+    const toolType = action.toolType; 
+
+    const nextState = produce(state, draftState => {
+        draftState.containers.byId[containerId].ifVAD = false;
+        draftState.containers.byId[containerId].statusVAD = 'error';
+
+   })
+
+   return nextState;
+
+}
+
+// #############################################
+// #### update Flagi danego kontenera po pomyślnym wykonaniu danej usługi ###########
+//##############################################
+
+const speechDiarizationSuccess = (state, action) => {
+    const containerId = action.containerId;
+    const toolType = action.toolType; 
+
+    const nextState = produce(state, draftState => {
+        draftState.containers.byId[containerId].ifDIA = true;
+        draftState.containers.byId[containerId].statusDIA = 'ready';
+
+   })
+
+   return nextState;
+
+}
+
+
+const speechDiarizationFailed = (state, action) => {
+
+    const containerId = action.containerId;
+    const toolType = action.toolType; 
+
+    const nextState = produce(state, draftState => {
+        draftState.containers.byId[containerId].ifDIA = false;
+        draftState.containers.byId[containerId].statusDIA = 'error';
+
+   })
+
+   return nextState;
+
+}
+
+
+// #############################################
+// #### update Flagi danego kontenera po pomyślnym wykonaniu danej usługi ###########
+//##############################################
+
 const speechSegmentationDone = (state, action) => {
     const containerId = action.containerId;
     const toolType = action.toolType; 
@@ -826,6 +895,14 @@ const repoPanelReducer = (state = initialState, action) => {
         case actionTypes.REPO_RUN_SPEECH_SEGMENTATION_DONE: return speechSegmentationDone(state,action);
         case actionTypes.REPO_RUN_SPEECH_SEGMENTATION_FAILED: return speechSegmentationFailed(state,action);
 
+        case actionTypes.REPO_RUN_SPEECH_DIARIZATION_DONE: return speechDiarizationSuccess(state,action);
+        case actionTypes.REPO_RUN_SPEECH_DIARIZATION_FAILED: return speechDiarizationFailed(state,action);
+
+        case actionTypes.REPO_RUN_SPEECH_VAD_DONE: return speechVADSuccess(state,action);
+        case actionTypes.REPO_RUN_SPEECH_VAD_FAILED: return speechVADFailed(state,action);
+
+
+
 
 
         case actionTypes.LOAD_BINARY_FOR_PREVIEW: return loadBinaryForPreview(state,action);
@@ -843,7 +920,7 @@ const repoPanelReducer = (state = initialState, action) => {
         case actionTypes.REPO_DELETE_CONTAINER_SUCCESS: return repoRemoveContainerSuccess(state,action);
         case actionTypes.REPO_DELETE_CONTAINER_FAILED: return repoRemoveContainerFailed(state,action);
 
-      
+        
 
         
 

@@ -5,7 +5,7 @@ import { createNotification, loader } from '../../../index';
 
 
 const initialState = {
-    filesToUpload: [], 
+    containersForREC: [], 
     refusedFileList: [],  //refused files
     //w formacie np. 
     // [{
@@ -54,19 +54,19 @@ const addContainerToReco = (state,action) => {
     let newElements = null;
 
     //dodaje nowy element tylko jeżeli wcześniej nie istniał w bazie
-    let found = state.filesToUpload.filter(file => {
+    let found = state.containersForREC.filter(file => {
         return file._id == newElementToAdd._id
     })
 
 
     if(found.length < 1){
-       newElements = [newElementToAdd, ...state.filesToUpload];
+       newElements = [newElementToAdd, ...state.containersForREC];
     } else {
-        newElements = [...state.filesToUpload];
+        newElements = [...state.containersForREC];
     }
 
     return updateObject(state, {
-        filesToUpload:newElements, 
+        containersForREC:newElements, 
     });
 
 }
@@ -79,7 +79,7 @@ const setRefusedFiles = (state, action) => {
 
 const clearRecoStore = (state,action) => {
     return updateObject(state, {
-        filesToUpload: [], 
+        containersForREC: [], 
         modal: false, 
         recoFileForPreview: '', 
     });  
@@ -100,10 +100,10 @@ const closeModal = (state,action) => {
 
 
 const dropFiles = (state, action) => {
-    let fileList = [ ...state.filesToUpload,...action.files];
+    let fileList = [ ...state.containersForREC,...action.files];
     //console.log("DONEEEEE");
     //console.log(fileList);
-    return updateObject(state, {filesToUpload: fileList}) ;      
+    return updateObject(state, {containersForREC: fileList}) ;      
 }
 
 const initFileRecognition = (state,action) => {
@@ -118,7 +118,7 @@ const initBatchRecognition = (state,action) => {
     
     console.log("INIT BATCH RECOGNITION")
     //jezali jest jakikolwiek plik do wyslania
-    if(state.filesToUpload.length > 0) {
+    if(state.containersForREC.length > 0) {
         return updateObject(state, {});
     } else {
         return updateObject(state, {}); 
@@ -133,11 +133,11 @@ const updateFileState = (state,action) => {
             
     const nextState = produce(state, draftState => {
 
-        let foundFileIdx = draftState.filesToUpload.findIndex(container => {
+        let foundFileIdx = draftState.containersForREC.findIndex(container => {
             return container._id === containerId;
         })
 
-        draftState.filesToUpload[containerId].status = status;
+        draftState.containersForREC[containerId].status = status;
    })
 
    return nextState;
@@ -147,9 +147,9 @@ const updateFileState = (state,action) => {
 const removeRecognitionItem = (state, action)=>{
     const itemId = action.fileId;
 
-    //const tempftu = Array.from(state.filesToUpload);
+    //const tempftu = Array.from(state.containersForREC);
 
-    const newFilesToUpload = state.filesToUpload.filter((item, index) => {
+    const newcontainersForREC = state.containersForREC.filter((item, index) => {
         if(item.id !== itemId){
             //item.file = null;
             //item.id = null;
@@ -157,16 +157,16 @@ const removeRecognitionItem = (state, action)=>{
         }
     })
     
-    return updateObject(state, { filesToUpload: newFilesToUpload}) ; 
+    return updateObject(state, { containersForREC: newcontainersForREC}) ; 
 
 }
 
 const openAudioRecPreview = (state, action) => {
     const entryId = action.fileID;
 
-    //znajduje pozycje w filesToUpload aby wyciagnac z niej plik audio
+    //znajduje pozycje w containersForREC aby wyciagnac z niej plik audio
 
-    let foundEntry = state.filesToUpload.find(obj => obj.id == entryId);
+    let foundEntry = state.containersForREC.find(obj => obj.id == entryId);
     console.log(foundEntry.file)
 
     return updateObject(state, { recoFileForPreview: foundEntry.file}) ; 
@@ -192,12 +192,12 @@ const speechRecognitionSuccess = (state, action) => {
 
     const nextState = produce(state, draftState => {
 
-        let foundFileIdx = draftState.filesToUpload.findIndex(file => {
+        let foundFileIdx = draftState.containersForREC.findIndex(file => {
             return file._id === containerId;
         })
 
-        draftState.filesToUpload[foundFileIdx].ifREC = true;
-        draftState.filesToUpload[foundFileIdx].statusREC = 'done';
+        draftState.containersForREC[foundFileIdx].ifREC = true;
+        draftState.containersForREC[foundFileIdx].statusREC = 'done';
        
    })
 
@@ -210,15 +210,15 @@ const speechRecognitionFailed = (state, action) => {
     const containerId = action.containerId;
     const toolType = action.toolType; 
 
-    let foundFileIdx = state.filesToUpload.findIndex(file => {
+    let foundFileIdx = state.containersForREC.findIndex(file => {
         return file._id === containerId;
     })
 
-    createNotification('error', 'Wystąpił błąd segmentacji pliku ' + state.filesToUpload[foundFileIdx].containerName);
+    createNotification('error', 'Wystąpił błąd segmentacji pliku ' + state.containersForREC[foundFileIdx].containerName);
 
     const nextState = produce(state, draftState => {
-        draftState.filesToUpload[foundFileIdx].ifREC = false;
-        draftState.filesToUpload[foundFileIdx].statusREC = 'error';
+        draftState.containersForREC[foundFileIdx].ifREC = false;
+        draftState.containersForREC[foundFileIdx].statusREC = 'error';
        
  
    })
@@ -234,26 +234,26 @@ const saveTranscriptionSuccess = (state, action) => {
 
     const nextState = produce(state, draftState => {
 
-        let foundFileIdx = draftState.filesToUpload.findIndex(file => {
+        let foundFileIdx = draftState.containersForREC.findIndex(file => {
             return file._id === containerId;
         })
        
         switch(toolType){
             case "DIA":
-                draftState.filesToUpload[foundFileIdx].ifDIA = true;
-                draftState.filesToUpload[foundFileIdx].statusDIA = 'done';
+                draftState.containersForREC[foundFileIdx].ifDIA = true;
+                draftState.containersForREC[foundFileIdx].statusDIA = 'done';
                 break;
             case "VAD":
-                draftState.filesToUpload[foundFileIdx].ifVAD = true;
-                draftState.filesToUpload[foundFileIdx].statusVAD = 'done';
+                draftState.containersForREC[foundFileIdx].ifVAD = true;
+                draftState.containersForREC[foundFileIdx].statusVAD = 'done';
                 break;
             case "REC":
-                draftState.filesToUpload[foundFileIdx].ifREC = true;
-                 draftState.filesToUpload[foundFileIdx].statusREC = 'done';
+                draftState.containersForREC[foundFileIdx].ifREC = true;
+                 draftState.containersForREC[foundFileIdx].statusREC = 'done';
                 break;
             case "SEG":
-                draftState.filesToUpload[foundFileIdx].ifSEG = true;
-                draftState.filesToUpload[foundFileIdx].statusSEG = 'done';
+                draftState.containersForREC[foundFileIdx].ifSEG = true;
+                draftState.containersForREC[foundFileIdx].statusSEG = 'done';
                 break;
             default:
                 console.log("Default"); //to do
@@ -277,11 +277,11 @@ const changeToolItemStatus = (state, action) => {
      if(toolType == 'REC') {
         const nextState = produce(state, draftState => {
 
-            let foundFileIdx = draftState.filesToUpload.findIndex(file => {
+            let foundFileIdx = draftState.containersForREC.findIndex(file => {
                 return file._id === containerId;
             })
     
-            draftState.filesToUpload[foundFileIdx].statusREC = status;
+            draftState.containersForREC[foundFileIdx].statusREC = status;
        })
     
        return nextState;

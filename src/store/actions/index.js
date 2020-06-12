@@ -19,6 +19,8 @@ export {
     removeContainerFromRepo,
     runSpeechRecognition,
     runSpeechSegmentation,
+    runSpeechDiarization,
+    runSpeechVoiceActivityDetection,
     setContainerStatus,
     
 } from './repo';

@@ -118,11 +118,13 @@ class ProjectPage extends Component {
             <div className="ProjectPage" id="ProjectPage">
  
               <ul className={["nav nav-tabs", "darkbg"].join(' ')}>
-                  <Tab  title="Dashboard" whereToLink={'/dashboard'}/>
-                  <Tab  title="Detekcja mowy" whereToLink={'/vad'}/>
-                  <Tab  title="Diaryzacja" whereToLink={'/dia'}/>
-                  <Tab  title="Rozpoznawanie" whereToLink={'/recognition'}/>
-                  <Tab  title="Sementacja" whereToLink={'/segment'}/>
+
+
+                  <Tab  title="Dashboard" iconType="DASH" whereToLink={'/dashboard'}/>
+                  <Tab  title="Detekcja mowy" iconType="VAD" whereToLink={'/vad'}/>
+                  <Tab  title="Diaryzacja" iconType="DIA" whereToLink={'/dia'}/>
+                  <Tab  title="Rozpoznawanie" iconType="REC" whereToLink={'/recognition'}/>
+                  <Tab  title="Segmentacja" iconType="SEG" whereToLink={'/segment'}/>
                   {
                     /*
                     <Tab  title="Transkrypcje" whereToLink={'/transcrypt'}/>   

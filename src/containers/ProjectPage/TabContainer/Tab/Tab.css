@@ -26,3 +26,8 @@
     color: white;
 }
 
+.Tab .tabIcon {
+    margin-right: 10px;
+    font-size: 0.9em;
+}
+

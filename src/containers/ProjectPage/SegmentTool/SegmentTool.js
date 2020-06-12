@@ -392,7 +392,7 @@ class SegmentTool extends Component {
 		let alignIcon = <FontAwesomeIcon icon={faClock} /> ;
 
 
-		let filelist = this.props.segmentItems.map((container, i)=> {
+		let filelist = this.props.containersForSEG.map((container, i)=> {
 
 			return (
                     <ToolItem 
@@ -582,11 +582,10 @@ class SegmentTool extends Component {
 const mapStateToProps = state => {
 	return {
 
-		segmentItems: state.segR.segmentItems,
+		containersForSEG: state.segR.containersForSEG,
 
-		segmentEntry: state.segR.segmentEntry,
+		//containers: state.segR.segmentEntry,
 
-		segmentEntry: state.segR.segmentEntry,
 		audioList: state.segR.audioList,
 		txtList: state.segR.txtList,
 		refusedAudioFileList: state.segR.refusedAudioFileList,
