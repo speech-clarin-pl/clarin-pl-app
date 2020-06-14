@@ -397,6 +397,7 @@ class LoginArea extends Component {
 
          // ######### formatowanie informacji forgot Pass########
         let errorForgotPassInfo = null;
+        /*
         if(this.props.resForgotPassStatus === 201 || this.props.resForgotPassStatus === 200){
             errorForgotPassInfo = (
                 <div className="alert alert-success" role="alert">
@@ -421,6 +422,7 @@ class LoginArea extends Component {
                 )
             }
         }
+        */
 
         
 

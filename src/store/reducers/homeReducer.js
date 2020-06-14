@@ -1,5 +1,6 @@
 import * as actionTypes from '../actions/actionsTypes';
 import {updateObject} from '../utility';
+import {createNotification} from '../../index';
 
 const initialState = {
     isAuth: false,
@@ -29,6 +30,9 @@ const forgotPassFailed = (state, action) => {
    let message = action.message;
    let resForgotPassStatus = action.resForgotPassStatus;
 
+   
+   createNotification('error',"Serwer error");
+  
    return updateObject(state,{
         forgotPassMessage: message,
         resForgotPassStatus: resForgotPassStatus,
@@ -40,6 +44,12 @@ const forgotPassFailed = (state, action) => {
 const forgotPass = (state, action) => {
    let message = action.message;
    let resForgotPassStatus = action.resForgotPassStatus;
+
+   if(resForgotPassStatus==200){
+        createNotification('success',"Instrukcje do zresetowania hasła zostały wysłane na podany email");
+    } else {
+        createNotification('warning',"Nie znaleziono użytkownika o podanym adresie email");
+    }
 
    return updateObject(state,{
         forgotPassMessage: message,
