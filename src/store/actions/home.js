@@ -35,9 +35,7 @@ export const forgotPass = (emailaddr) => {
     
     return dispatch => {
         dispatch(startLoading());
-        axios.post('/auth/forgotPass',{
-            email: emailaddr,
-        })
+        axios.post('/auth/forgotPass/'+emailaddr)
         .then(response => {
             dispatch(stopLoading());
             dispatch(forgotPassAction(response.data.message, response.status));

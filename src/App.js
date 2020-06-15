@@ -8,6 +8,8 @@ import HelpPage from './components/HelpPage/HelpPage';
 import { IntlProvider, addLocaleData } from 'react-intl';
 import { connect } from 'react-redux';
 import * as homeActions from './store/actions/index';
+import NewPasswordPage from './containers/NewPasswordPage/NewPasswordPage';
+import { withRouter, matchPath } from 'react-router-dom';
 
 import en from 'react-intl/locale-data/en';
 import pl from 'react-intl/locale-data/pl';
@@ -76,6 +78,11 @@ class App extends Component {
 
           <Switch>
 
+          <Route path="/enterNewPass/:userId/:token" render={({match}) => (
+              <NewPasswordPage userId={match.params.userId} token={match.params.token} />
+            )} />
+
+
             <Route path="/projects/:projectID" render={(props) => (
               <ProjectPage {...props}
                 changeLn={this.changeLnHandler}
@@ -93,6 +100,9 @@ class App extends Component {
                 changeLn={this.changeLnHandler}
                 currLn={this.state.currln} />
             )} />
+
+            
+
             <Route path="/" render={(props) => (
               <HomePage {...props}
                 changeLn={this.changeLnHandler}
@@ -119,4 +129,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App));

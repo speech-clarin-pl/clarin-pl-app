@@ -654,10 +654,11 @@ class LoginArea extends Component {
 
                         <div className="row">
                             
-                            {this.props.isAuth? null : 
-                                <div className="alert alert-info" role="alert">
-                                    Aby skorzystać z serwisu należy się zarejestrować. W razie problemów skontakuj się z nami pod adresem podanym w stopce.
-                              </div>}
+                            {this.props.isAuth? null : <p>Aby skorzystać z serwisu należy się zarejestrować i zalogować.</p>
+                              //  <div className="alert alert-info" role="alert">
+                              //      Aby skorzystać z serwisu należy się zarejestrować
+                             // </div>
+                              }
                                                 
                         </div>
                         

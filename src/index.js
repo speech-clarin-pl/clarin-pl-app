@@ -13,8 +13,9 @@ import segmentationReducer from './store/reducers/toolsReducers/segmentationRedu
 import previewReducer from './store/reducers/toolsReducers/previewReducer';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import { RingLoader } from "react-spinners";
-import 'react-notifications/lib/notifications.css';
 import { css } from "@emotion/core";
+import 'react-notifications/lib/notifications.css';
+
 
 
 // to jest stara wersja repo
