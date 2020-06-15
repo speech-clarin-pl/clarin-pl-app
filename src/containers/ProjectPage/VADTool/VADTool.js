@@ -41,7 +41,22 @@ class VADTool extends Component {
         } else {
             this.setState({editorFullWidth: false});
         }
-    }
+	}
+	
+	runVADinBatch = () => {
+
+		for(let i = 0; i < this.props.VADItems.length; i++){
+			let container = this.props.VADItems[i];
+			this.runSpeechVoiceActivityDetection(container, "VAD", this.props.token); 
+		}
+
+		//this.props.runVADInBatch(this.props.VADItems);
+	}
+
+	runSpeechVoiceActivityDetection = (container, toolType, token) => {
+		this.props.setContainerStatus(container._id, toolType, 'progress');
+		this.props.runSpeechVoiceActivityDetection(container, toolType, token); 
+	}
 
 	render() {
 
@@ -68,6 +83,7 @@ class VADTool extends Component {
 						type="VAD"
 						status={container.statusVAD}
 						openPreview = {this.openContainerInPreview}
+						runTool={(container, toolType, token) => this.runSpeechVoiceActivityDetection(container, toolType, token)}
                     />
 			)
 			
@@ -97,7 +113,7 @@ class VADTool extends Component {
 							icon={vadIcon}
 							customeStyle={null}
 							disabled={false}
-							whenClicked={null}/>
+							whenClicked={this.runVADinBatch}/>
 				</LeftSiteBar>
 
 				<SettingBar />
@@ -108,17 +124,22 @@ class VADTool extends Component {
 						<div className="tool-desc">
 
 							<h2>Detekcja mowy</h2>
-							<div className="alert alert-info" role="alert">
-								<p>W przypadku wgrania większej ilości plików, pliki audio należy dopasować z plikami tekstowymi</p>
-								<p>Narzędzie umożliwia wgranie wielu plików jednocześnie i uruchomienie usługi na wszystkich jednocześnie. W trakcie wykonywania usługi nie należy odświeżać strony.</p>
-							</div>
+							<p>Narzędzie zaznacza w sygnale segmenty zawierające mowę.</p>
+							{
+								//<div className="alert alert-info" role="alert">
+								//	<p>Narzędzie zaznacza w sygnale segmenty zawierające mowę.</p>
+								//</div>
+							}
+							
 						</div>
 
 						<div className="tool-body">
 
 							<div className="row">
                                 <div className={"col-md-"+szer1col}>
-                                    <h3>Lista plików do przetworzenia</h3>
+                                   {
+									//<h3>Lista plików do przetworzenia</h3>
+								   } 
                                     <div className="file-list">
                                         {filelist}
                                     </div>
@@ -150,12 +171,18 @@ const mapStateToProps = state => {
 		modalDisplay: state.projectR.modal,
 		ifRefusedAudio: state.segR.ifRefusedAudio,
 		containerForPreview: state.vadR.vadContainerForPreview,
+
+		token: state.homeR.token,
+
 	}
 }
 
 const mapDispatchToProps = dispatch => {
 	return {
 		openContainerInVADPreview: (container) => dispatch(vadActions.openContainerInVADPreview(container)),
+		runVADInBatch: (VADItems) => dispatch(vadActions.runVADInBatch(VADItems)),
+		runSpeechVoiceActivityDetection: (container, toolType, token) => dispatch(vadActions.runSpeechVoiceActivityDetection(container, toolType, token)),
+		setContainerStatus:  (containerId, toolType, status) => dispatch(vadActions.setContainerStatus(containerId, toolType, status)),
 		//onOpenModalHandler: () => dispatch(segmentActions.openModalProject()),
        // onCloseModalHandler: () => dispatch(segmentActions.closeModalProject()),
 	}

@@ -1,6 +1,16 @@
 import * as actionTypes from '../actionsTypes';
 import axios from 'axios';
 
+// ###################################################################
+// ######## urucamianie wszystkich items w batchu ##########
+// ###################################################################
+
+export const runVADInBatch = (VADItems) => {
+    return {
+        type: actionTypes.RUN_VAD_IN_BATCH,
+        items: VADItems,
+    }
+}
 
 // ###################################################################
 // ######## dodawanie contanera z podglądu w vad ##########

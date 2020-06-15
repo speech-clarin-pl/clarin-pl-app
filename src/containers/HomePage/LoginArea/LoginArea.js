@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 import * as actionTypes from '../../../store/actions/actionsTypes';
 import Input from '../../../components/UI/Input/Input';
 import * as authActions from '../../../store/actions/index';
+import {createNotification, loader} from '../../../index';
 
 
 class LoginArea extends Component {
@@ -108,6 +109,7 @@ class LoginArea extends Component {
         firstTimeAfterLogin: false,
 
         showRemindPassView: false,
+
     }
 
     
@@ -147,11 +149,8 @@ class LoginArea extends Component {
             loginData[formLoginElement] = this.state.loginform[formLoginElement].value;
         }
 
-        //console.log(loginData);
-
         this.props.onLogIn(loginData.loginemail, loginData.loginpass);
 
-        //console.log(this.props)
         
     }
 
@@ -334,6 +333,8 @@ class LoginArea extends Component {
 
     
     render() {
+
+        
         
         //console.log(this.state.registerform)
        
@@ -560,8 +561,10 @@ class LoginArea extends Component {
                                 <h3>Zaloguj się</h3>
                                 
                                 {
-                                    this.props.loginMessage !== ''?
-                                    errorLoginInfo: null 
+                                    
+                                    //this.props.loginMessage !== ''? createNotification('warning', this.props.loginMessage) : null
+                                    this.props.loginMessage != ''? errorLoginInfo: null
+                                   // errorLoginInfo: null 
                                 }
                                 <div className="form-group">
                                     <Input 
@@ -642,6 +645,10 @@ class LoginArea extends Component {
      
         return(
             <Aux>
+
+                {
+                    this.props.isLoading ? loader(): null
+                }
                 <div className={myclasses.join(' ')}>
                     <div className="container">
 
@@ -680,6 +687,8 @@ const mapStateToProps = state => {
         forgotPassEmailSent: state.homeR.forgotPassEmailSent,
         resForgotPassStatus: state.homeR.resForgotPassStatus,
         forgotPassMessage: state.homeR.forgotPassMessage,
+
+        isLoading: state.homeR.isLoading,
     }
 }
 

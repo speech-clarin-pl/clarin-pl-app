@@ -16,6 +16,8 @@ import {Alert, Progress} from 'reactstrap';
 import UploadAudio from '../../../components/UploadAudio/UploadAudio';
 import RepoSession from './RepoSession/RepoSession';
 import SingleInputForm from '../../../components/UI/SingleInputForm/SingleInputForm';
+import ButtonLeftBar from '../../../components/UI/ButtonLeftBar/ButtonLeftBar';
+
 
 
 import ContainerFile from './ContainerFile/ContainerFile';
@@ -130,6 +132,10 @@ class repoPanel extends Component {
         this.props.addContainerToVAD(container);
     }
 
+    runEMUExport = () => {
+        alert('EMU EXPORT TO DO')
+    }
+
 
 
 	render() {
@@ -240,6 +246,8 @@ class repoPanel extends Component {
                             </Tooltip>
 
                             
+
+                            
                             
                         </div>
 
@@ -249,6 +257,17 @@ class repoPanel extends Component {
                             {listaSesji}
          
                         </div>
+
+                        <div className="exportToEmu">
+                            <ButtonLeftBar 
+                                    napis="Eksportuj korpus do EMU-SDMS"
+                                    icon={null}
+                                    customeStyle={{height:'50px'}}
+                                    disabled={false}
+                                    whenClicked={this.runEMUExport}/>
+                        </div>
+
+                        
 
                         {
                             //<div className="CardRepo">

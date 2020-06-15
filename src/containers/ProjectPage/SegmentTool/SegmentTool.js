@@ -327,7 +327,19 @@ class SegmentTool extends Component {
         } else {
             this.setState({editorFullWidth: false});
         }
-    }
+	}
+
+	runSEGinBatch = () => {
+		for(let i = 0; i < this.props.containersForSEG.length; i++){
+			let container = this.props.containersForSEG[i];
+			this.runSpeechSegmentation(container, "SEG", this.props.token); 
+		}
+	}
+	
+	runSpeechSegmentation = (container, toolType, token) => {
+		this.props.setContainerStatus(container._id, toolType, 'progress');
+		this.props.runSpeechSegmentation(container, toolType, token); 
+	}
 
 	render() {
 
@@ -401,6 +413,7 @@ class SegmentTool extends Component {
 						type="SEG"
 						status={container.statusSEG}
 						openPreview = {this.openContainerInPreview}
+						runTool={(container, toolType, token) => this.runSpeechSegmentation(container, toolType, token)}
                     />
 
 					
@@ -435,11 +448,11 @@ class SegmentTool extends Component {
 					czyTopPart="true"
 					desc="Dopasowanie czasowe tekstu do nagrania. Podział nagrania na segmenty (wyrazy i fonemy)." >
 						 <ButtonLeftBar 
-							napis="Uruchom segmentacje"
+							napis="Uruchom segmentacje dla wszystkich"
 							icon={alignIcon}
 							customeStyle={null}
 							disabled={false}
-							whenClicked={null}/>
+							whenClicked={this.runSEGinBatch}/>
 				</LeftSiteBar>
 
 				<SettingBar />
@@ -450,10 +463,14 @@ class SegmentTool extends Component {
 						<div className="tool-desc">
 
 							<h2>Segmentacja plików audio</h2>
-							<div className="alert alert-info" role="alert">
-								<p>W przypadku wgrania większej ilości plików, pliki audio należy dopasować z plikami tekstowymi</p>
-								<p>Narzędzie umożliwia wgranie wielu plików jednocześnie i uruchomienie usługi na wszystkich jednocześnie. W trakcie wykonywania usługi nie należy odświeżać strony.</p>
-							</div>
+							<p>Dopasowanie czasowe tekstu do nagrania. Podział nagrania na segmenty (wyrazy i fonemy).</p>
+							{
+								//<div className="alert alert-info" role="alert">
+								//	<p>W przypadku wgrania większej ilości plików, pliki audio należy dopasować z plikami tekstowymi</p>
+								//	<p>Narzędzie umożliwia wgranie wielu plików jednocześnie i uruchomienie usługi na wszystkich jednocześnie. W trakcie wykonywania usługi nie należy odświeżać strony.</p>
+								//</div>
+							}
+							
 
 					
 						</div>
@@ -462,7 +479,9 @@ class SegmentTool extends Component {
 
 							<div className="row">
                                 <div className={"col-md-"+szer1col}>
-                                    <h3>Lista plików do przetworzenia</h3>
+                                    {
+										//<h3>Lista plików do przetworzenia</h3>
+									}
                                     <div className="file-list">
                                         {filelist}
                                     </div>
@@ -595,11 +614,17 @@ const mapStateToProps = state => {
 
 
 		containerForPreview: state.segR.alignContainerForPreview,
+
+		token: state.homeR.token,
 	}
 }
 
 const mapDispatchToProps = dispatch => {
 	return {
+
+		runSpeechSegmentation: (container, toolType, token) => dispatch(segmentActions.runSpeechSegmentation(container, toolType, token)),
+
+		setContainerStatus:  (containerId, toolType, status) => dispatch(segmentActions.setContainerStatus(containerId, toolType, status)),
 
 		openContainerInAlignPreview: (container) => dispatch(segmentActions.openContainerInAlignPreview(container)),
 		//onAudioDrop: (audioFiles) => dispatch(segmentActions.dropAudioFiles(audioFiles)),

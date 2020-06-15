@@ -83,6 +83,7 @@ export {
 export {
     addContainerToVAD,
     openContainerInVADPreview,
+    runVADInBatch,
 } from './toolActions/vad';
 
 export {

@@ -16,6 +16,8 @@ const initialState = {
     resForgotPassStatus: 0,
     forgotPassEmailSent: false,
 
+    isLoading: false, //do pokazywania prelowadera
+
     
 
     token: '',
@@ -134,7 +136,21 @@ const logOut = (state,action) => {
         authLoading: false,
         error: '',
         autoLogoutAfter: 0 //po ilu milisekundach bedzie wylogowanie
+
+
     });
+}
+
+const startLoading = (state,action) => {
+    return updateObject(state,{
+        isLoading: true,
+    })
+}
+
+const stopLoading = (state,action) => {
+    return updateObject(state,{
+        isLoading: false,
+    })
 }
 
 
@@ -150,6 +166,9 @@ const homeReducer = (state = initialState, action) => {
         
         case actionTypes.FORGOT_PASS_FAILED: return forgotPassFailed(state,action);
         case actionTypes.FORGOT_PASS: return forgotPass(state,action);
+
+        case actionTypes.START_LOADING: return startLoading(state,action);
+        case actionTypes.STOP_LOADING: return stopLoading(state,action);
         
         
     }

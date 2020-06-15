@@ -14,17 +14,8 @@ const jumbotron = (props) => {
                 <div className="container">
                     <h1 className="display-4">CLARIN-PL</h1>
                     <p className="lead">
-                        {
-/*
-
- <FormattedMessage
-                                id="Jumbotron.lead"
-                                defaultMessage="Łatwa w użyciu platfroma do analizy sygnału mowy w nagraniach dźwiękowych"
-                                />
-
-                                */
-                        }
-                        Łatwa w użyciu platfroma do analizy sygnału mowy w nagraniach dźwiękowych
+                        
+                        Platforma do tworzenia korpusów i analizy sygnałów mowy.
                        
                     </p>
                     <hr className="my-4" />
@@ -33,11 +24,9 @@ const jumbotron = (props) => {
                     </p>
 
                     <div className="alert alert-info" role="alert">
-                        Portal w wersji alpha - Jest ciągle rozwijany i udoskonalany!
+                        Portal w wersji beta - ciągle rozwijany i udoskonalany!
                     </div>
                   
-              
-                          
                    
                 {
                     // <Link to="/projectsList">

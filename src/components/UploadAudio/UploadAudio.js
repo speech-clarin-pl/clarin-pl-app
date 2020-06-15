@@ -136,13 +136,22 @@ class UploadAudio extends Component {
         await Promise.all(promises);
     
         this.setState({ successfullUploaded: true, uploading: false });
+
+         // this.props.onGetProjectFilesForUser(
+         //  this.props.currentProjectOwner, 
+         //  this.props.currentProjectID,
+         //  this.props.token);
+         // this.setState({ files: [], successfullUploaded: true,  uploading: false });
+
+
       } catch (e) {
         
         // TO DO: musze dorobić jakiś error handling tutaj - narazie jest tylko to
-        this.setState({ successfullUploaded: true, uploading: false });
+        this.setState({ successfullUploaded: false, uploading: false });
       }
 
     }
+
 
 
 
@@ -292,7 +301,7 @@ class UploadAudio extends Component {
                 <div>
                   <Dropzone
                     onFilesAdded={this.onFilesAdded}
-                    disabled={this.state.uploading || this.state.successfullUploaded}
+                    disabled={this.state.uploading}
                   />
                 </div>
 

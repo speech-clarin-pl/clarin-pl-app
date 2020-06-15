@@ -531,7 +531,7 @@ class AudioEditor extends Component {
 		let edytor = null;
 
 		if(this.props.containerForPreview == ""){
-			edytor = <h3>Wybierz element do edycji</h3>
+			edytor = null
 		} else {
 			edytor = (
 				<>

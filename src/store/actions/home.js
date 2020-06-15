@@ -32,18 +32,18 @@ export const forgotPassAction = (message, resStatus) => {
 }
 export const forgotPass = (emailaddr) => {
 
-
+    
     return dispatch => {
-        
+        dispatch(startLoading());
         axios.post('/auth/forgotPass',{
             email: emailaddr,
         })
         .then(response => {
-
+            dispatch(stopLoading());
             dispatch(forgotPassAction(response.data.message, response.status));
         })
         .catch(error => {
-
+            dispatch(stopLoading());
             //console.log(error)
             dispatch(forgotPassFailed(error));
         });
@@ -89,23 +89,42 @@ export const registerUserAction = (message, userId, resStatus) => {
 }
 export const registerUser = (userName, userEmail, userPass) => {
     return dispatch => {
-        
+        dispatch(startLoading());
         axios.put('/auth/registration',{
             name: userName,
             email: userEmail,
             password: userPass,
         })
-            .then(response => {
-                console.log(response)
-                dispatch(registerUserAction(response.data.message, response.data.userId, response.status));
-            })
-            .catch(error => {
-                //console.log(error)
-                dispatch(registerUserActionFailed(error));
-            });
+        .then(response => {
+            dispatch(stopLoading());
+            dispatch(registerUserAction(response.data.message, response.data.userId, response.status));
+        })
+        .catch(error => {
+            dispatch(stopLoading());
+            dispatch(registerUserActionFailed(error));
+        });
     }
 
     
+}
+
+
+//####################################################
+//######################### preloader ################
+//####################################################
+
+export const startLoading = () => {
+    return {
+        type: actionTypes.START_LOADING,
+    }
+}
+
+export const stopLoading = () => {
+    
+    return {
+        type: actionTypes.STOP_LOADING,
+    }
+
 }
 
 
@@ -161,14 +180,22 @@ export const setLoggedIn = (userId, userName, token) => {
     return loginUserAction(true,token,false,userId,userName)
 }
 
+
+
 export const loginUser = (userEmail, userPass) => {
+
+    
     return dispatch => {
+
+        dispatch(startLoading());
         
         axios.post('/auth/login',{
             email: userEmail,
             password: userPass
         }).then(response => {
           
+            dispatch(stopLoading());
+
             if(response.status === 422){
                 throw new Error('Validation failed.');
             }
@@ -182,7 +209,6 @@ export const loginUser = (userEmail, userPass) => {
                 throw new Error('Could not authenticate')
             }
 
-            
 
             console.log(response);
             //ustawic state na auth false i authloading na false
@@ -193,6 +219,9 @@ export const loginUser = (userEmail, userPass) => {
             localStorage.setItem('userName', response.data.userName);
 
             dispatch(loginUserAction(true, response.data.token,false,response.data.userId,response.data.userName, response.status));
+
+          
+
             //gasnie za 10h
             const remainingMilliseconds = 60 * 60 * 10000;
             const expiryDate = new Date(
@@ -206,6 +235,8 @@ export const loginUser = (userEmail, userPass) => {
         .catch(error => {
             console.log('error occurs')
             console.log(error)
+            dispatch(stopLoading());
+
             dispatch(loginUserActionFailed(error));
         });
     }

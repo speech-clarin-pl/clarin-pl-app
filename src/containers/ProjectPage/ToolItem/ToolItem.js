@@ -20,7 +20,13 @@ import { faFileAudio } from '@fortawesome/free-solid-svg-icons';
 import { faSurprise } from '@fortawesome/free-solid-svg-icons';
 import { faClock } from '@fortawesome/free-solid-svg-icons';
 import * as toolItemActions from '../../../store/actions/index';
+import { RingLoader } from "react-spinners";
+import { css } from "@emotion/core";
 
+const override = css`
+  display: block;
+  margin: 0 auto;
+`;
 
 class ToolItem extends Component {
 
@@ -45,14 +51,18 @@ class ToolItem extends Component {
         //this.props.setToolItemStatus(this.props.container._id, this.props.type, 'progress');
         //this.setState({innerStatus: 'progress'});
 
-        this.props.setContainerStatus(this.props.container._id, this.props.type, 'progress');
+        //this.props.setContainerStatus(this.props.container._id, this.props.type, 'progress');
 
+        this.props.runTool(this.props.container, this.props.type, this.props.token)
+
+        /*
         switch(this.props.type){
             case "DIA":
-                this.props.runSpeechDiarization(this.props.container._id, this.props.type, this.props.token); 
+                //this.props.runSpeechDiarization(this.props.container._id, this.props.type, this.props.token); 
                 break;
             case "VAD":
-                this.props.runSpeechVoiceActivityDetection(this.props.container._id, this.props.type, this.props.token); 
+                //this.props.runSpeechVoiceActivityDetection(this.props.container._id, this.props.type, this.props.token); 
+                this.props.runTool(this.props.container, this.props.type, this.props.token)
                 break;
             case "REC":
                 this.props.runSpeechRecognition(this.props.container._id, this.props.type, this.props.token); 
@@ -63,6 +73,9 @@ class ToolItem extends Component {
             default:
                 console.log("Default"); //to do
         }
+        */
+
+
        
     }
 
@@ -118,7 +131,13 @@ class ToolItem extends Component {
                 statusIcon = <FontAwesomeIcon icon={faExclamationCircle} className="faIcon" style={{color: 'red'}} /> ;
                 break;
             case 'progress':
-                statusIcon = <FontAwesomeIcon icon={faSpinner} className="faIcon" /> ;
+                //statusIcon = <FontAwesomeIcon icon={faSpinner} className="faIcon" /> ;
+                statusIcon = <RingLoader
+                    css={override}
+                    size={'25px'}
+                    color={"rgb(52, 152, 219)"}
+                    loading={true}
+                />
                 progressBar = (
                     <div className="progress">
                         <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style={{width:'100%'}}></div>
@@ -210,13 +229,13 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        runSpeechRecognition: (containerId, toolType, token) => dispatch(toolItemActions.runSpeechRecognition(containerId, toolType, token)),
-        runSpeechSegmentation: (containerId, toolType, token) => dispatch(toolItemActions.runSpeechSegmentation(containerId, toolType, token)),
-        runSpeechDiarization: (containerId, toolType, token) => dispatch(toolItemActions.runSpeechDiarization(containerId, toolType, token)),
-        runSpeechVoiceActivityDetection: (containerId, toolType, token) => dispatch(toolItemActions.runSpeechVoiceActivityDetection(containerId, toolType, token)),
+       // runSpeechRecognition: (containerId, toolType, token) => dispatch(toolItemActions.runSpeechRecognition(containerId, toolType, token)),
+       // runSpeechSegmentation: (containerId, toolType, token) => dispatch(toolItemActions.runSpeechSegmentation(containerId, toolType, token)),
+       // runSpeechDiarization: (containerId, toolType, token) => dispatch(toolItemActions.runSpeechDiarization(containerId, toolType, token)),
+        //runSpeechVoiceActivityDetection: (containerId, toolType, token) => dispatch(toolItemActions.runSpeechVoiceActivityDetection(containerId, toolType, token)),
 
         
-        setContainerStatus:  (containerId, toolType, status) => dispatch(toolItemActions.setContainerStatus(containerId, toolType, status)),
+       // setContainerStatus:  (containerId, toolType, status) => dispatch(toolItemActions.setContainerStatus(containerId, toolType, status)),
        // setToolItemStatus: (containerId, toolType, status) => dispatch(toolItemActions.setToolItemStatus(containerId, toolType, status)),
        // updateFileState: (fileID, status,percLoaded) => dispatch(toolItemActions.updateFileState(fileID, status,percLoaded)),
      //     openContainerInPreview: (container, openIn) => dispatch(toolItemActions.openContainerInPreview(container, openIn)),

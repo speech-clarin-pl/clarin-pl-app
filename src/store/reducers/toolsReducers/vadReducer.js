@@ -2,6 +2,7 @@ import * as actionTypes from '../../actions/actionsTypes';
 import {updateObject} from '../../utility';
 import produce from "immer";
 import { createNotification, loader } from '../../../index';
+import { runVADInBatch } from '../../actions';
 
 
 
@@ -129,6 +130,7 @@ const vadReducer = (state = initialState, action) => {
         case actionTypes.REPO_RUN_SPEECH_VAD_FAILED: return speechVADFailed(state,action);
 
         case actionTypes.SET_CONTAINER_STATUS: return changeToolItemStatus(state,action);
+
         
         //case actionTypes.ADD_CONTAINER_TO_RECO: return addContainerToReco(state,action);
         //case actionTypes.DROP_FILES: return dropFiles(state, action);

@@ -26,13 +26,13 @@ export const runSpeechVoiceActivityDetectionFailed = (containerId, toolType) => 
     }
 }
 
-export const runSpeechVoiceActivityDetection = (containerId, toolType, token) => {
+export const runSpeechVoiceActivityDetection = (container, toolType, token) => {
     
     return dispatch => {
 
-        axios.put(('/repoFiles/runSpeechVAD/'+containerId), 
+        axios.put(('/repoFiles/runSpeechVAD/'+container._id), 
         {
-            containerId: containerId,
+            containerId: container._id,
             toolType: toolType,
         }, 
         {
@@ -41,10 +41,10 @@ export const runSpeechVoiceActivityDetection = (containerId, toolType, token) =>
             },
         })
         .then(response => {
-            dispatch(runSpeechVoiceActivityDetectionSuccess(containerId, toolType));
+            dispatch(runSpeechVoiceActivityDetectionSuccess(container._id, toolType));
         })
         .catch(error => {
-            dispatch(runSpeechVoiceActivityDetectionFailed(containerId, toolType));
+            dispatch(runSpeechVoiceActivityDetectionFailed(container._id, toolType));
         }); 
     }
 }
@@ -69,13 +69,13 @@ export const runSpeechDiarizationFailed = (containerId, toolType) => {
     }
 }
 
-export const runSpeechDiarization = (containerId, toolType, token) => {
+export const runSpeechDiarization = (container, toolType, token) => {
     
     return dispatch => {
 
-        axios.put(('/repoFiles/runSpeechDiarization/'+containerId), 
+        axios.put(('/repoFiles/runSpeechDiarization/'+container._id), 
         {
-            containerId: containerId,
+            containerId: container._id,
             toolType: toolType,
         }, 
         {
@@ -84,10 +84,10 @@ export const runSpeechDiarization = (containerId, toolType, token) => {
             },
         })
         .then(response => {
-            dispatch(runSpeechDiarizationSuccess(containerId, toolType));
+            dispatch(runSpeechDiarizationSuccess(container._id, toolType));
         })
         .catch(error => {
-            dispatch(runSpeechDiarizationFailed(containerId, toolType));
+            dispatch(runSpeechDiarizationFailed(container._id, toolType));
         }); 
     }
 }
@@ -113,13 +113,13 @@ export const runSpeechSegmentationFailed = (containerId, toolType) => {
     }
 }
 
-export const runSpeechSegmentation = (containerId, toolType, token) => {
+export const runSpeechSegmentation = (container, toolType, token) => {
     
     return dispatch => {
 
-        axios.put(('/repoFiles/runSpeechSegmentation/'+containerId), 
+        axios.put(('/repoFiles/runSpeechSegmentation/'+container._id), 
         {
-            containerId: containerId,
+            containerId: container._id,
             toolType: toolType,
         }, 
         {
@@ -128,10 +128,10 @@ export const runSpeechSegmentation = (containerId, toolType, token) => {
             },
         })
         .then(response => {
-            dispatch(runSpeechSegmentationSuccess(containerId, toolType));
+            dispatch(runSpeechSegmentationSuccess(container._id, toolType));
         })
         .catch(error => {
-            dispatch(runSpeechSegmentationFailed(containerId, toolType));
+            dispatch(runSpeechSegmentationFailed(container._id, toolType));
         }); 
     }
 }
@@ -157,13 +157,13 @@ export const runSpeechRecognitionFailed = (containerId, toolType) => {
     }
 }
 
-export const runSpeechRecognition = (containerId, toolType, token) => {
+export const runSpeechRecognition = (container, toolType, token) => {
     
     return dispatch => {
 
-        axios.put(('/repoFiles/runSpeechRecognition/'+containerId), 
+        axios.put(('/repoFiles/runSpeechRecognition/'+container._id), 
         {
-            containerId: containerId,
+            containerId: container._id,
             toolType: toolType,
         }, 
         {
@@ -172,10 +172,10 @@ export const runSpeechRecognition = (containerId, toolType, token) => {
             },
         })
         .then(response => {
-            dispatch(runSpeechRecognitionSuccess(containerId, toolType));
+            dispatch(runSpeechRecognitionSuccess(container._id, toolType));
         })
         .catch(error => {
-            dispatch(runSpeechRecognitionFailed(containerId, toolType));
+            dispatch(runSpeechRecognitionFailed(container._id, toolType));
         }); 
     }
 }

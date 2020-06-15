@@ -12,8 +12,9 @@ import recognitionReducer from './store/reducers/toolsReducers/recognitionReduce
 import segmentationReducer from './store/reducers/toolsReducers/segmentationReducer';
 import previewReducer from './store/reducers/toolsReducers/previewReducer';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
-import { ScaleLoader } from "react-spinners";
+import { RingLoader } from "react-spinners";
 import 'react-notifications/lib/notifications.css';
+import { css } from "@emotion/core";
 
 
 // to jest stara wersja repo
@@ -80,15 +81,22 @@ function createNotification (type, value) {
 };
 
 
-const loader = (value) => {
+const override = css`
+  display: block;
+  margin: 0 auto;
+`;
+
+
+const loader = () => {
+  
     return (
-        <div style={{ position: 'fixed', width: '100%', height: '100%', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 9999, cursor:'pointer' }} >
+        <div id="superloader" style={{ position: 'fixed', width: '100%', height: '100%', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(255,255,255,0.5)', zIndex: 99999999, cursor:'pointer' }} >
             <div style={{ position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}>
-                <ScaleLoader
-                    css={{display:'block', margin:'0 auto'}}
+                <RingLoader
+                    css={override}
                     size={150}
                     color={"rgb(84, 108, 120)"}
-                    loading={value}
+                    loading={true}
                 />
             </div>
         </div>

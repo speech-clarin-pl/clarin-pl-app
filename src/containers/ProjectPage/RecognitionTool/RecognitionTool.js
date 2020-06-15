@@ -175,6 +175,19 @@ class RecognitionTool extends Component {
         }
     }
 
+    runRECinBatch = () => {
+
+		for(let i = 0; i < this.props.containersForREC.length; i++){
+			let container = this.props.containersForREC[i];
+			this.runSpeechRecognition(container, "REC", this.props.token); 
+		}
+	}
+
+    runSpeechRecognition = (container, toolType, token) => {
+        this.props.setContainerStatus(container._id, toolType, 'progress');
+		this.props.runSpeechRecognition(container, toolType, token); 
+	}
+
     render() {
 
         let szer1col = "6 order-1";
@@ -191,9 +204,7 @@ class RecognitionTool extends Component {
 
         let recoIcon = <FontAwesomeIcon icon={faFileAlt} /> ;
 
-        let filelist = (
-            <h4 style={{ marginTop: '10px' }}>Wgraj pliki do rozpoznawania</h4>
-        )
+        let filelist = null;
 
         if (this.props.containersForREC.length > 0) {
 
@@ -206,6 +217,7 @@ class RecognitionTool extends Component {
                             type="REC"
                             status={file.statusREC}
                             openPreview = {this.openContainerInPreview}
+                            runTool={(container, toolType, token) => this.runSpeechRecognition(container, toolType, token)}
                         />
                     //<RecognitionItem key={"key" + i}
                     //    file={file} />
@@ -265,7 +277,7 @@ class RecognitionTool extends Component {
                         icon={recoIcon}
                         customeStyle={null}
                         disabled={false}
-                        whenClicked={null}/>
+                        whenClicked={this.runRECinBatch}/>
 
                 </LeftSiteBar>
 
@@ -275,13 +287,16 @@ class RecognitionTool extends Component {
 
                     <div className={["container-fluid", "RecognitionTool"].join(' ')}>
                         <div className="tool-desc">
-                            <h2>Zamiana nagrania mowy na zapis ortograficzny</h2>
-                        <div className="alert alert-info" role="alert">
+                            <h2>Rozpoznawanie mowy</h2>
+                            <p>Zamiana nagrania mowy na zapis ortograficzny.</p>
+                            {
+                               // <div className="alert alert-info" role="alert">
 
-                            <p>Narzędzie umożliwia dodanie z repozytorium wielu plików do kolejki i uruchomienie usługi jednocześnie (przycisk po prawej stronie). 
-                            W trakcie wykonywania usługi nie należy odświeżać strony. </p>
-                        
-                        </div>
+                                //<p>Narzędzie umożliwia dodanie z repozytorium wielu plików do kolejki i uruchomienie usługi jednocześnie (przycisk po prawej stronie). 
+                                //W trakcie wykonywania usługi nie należy odświeżać strony. </p>
+
+                                //</div>
+                            } 
                             
 
                         </div>
@@ -314,7 +329,10 @@ class RecognitionTool extends Component {
 
                             <div className="row">
                                 <div className={"col-md-"+szer1col}>
-                                    <h3>Lista plików do przetworzenia</h3>
+                                    {
+                                        //<h3>Lista plików do przetworzenia</h3>
+                                    }
+                                   
                                     <div className="file-list">
                                         {filelist}
                                     </div>
@@ -347,6 +365,8 @@ const mapStateToProps = state => {
         modalDisplay: state.projectR.modal,
         refusedFileList: state.recR.refusedFileList,
         containerForPreview: state.recR.recoContainerForPreview,
+
+        token: state.homeR.token,
     }
 }
 
@@ -358,7 +378,11 @@ const mapDispatchToProps = dispatch => {
         onOpenModalHandler: () => dispatch(recognitionActions.openModalProject()),
         onCloseModalHandler: () => dispatch(recognitionActions.closeModalProject()),
         onStartBatchRecognition: (audioFilesArray, audioFilesIds) => dispatch(recognitionActions.initBatchRecognition(audioFilesArray, audioFilesIds)),
-        onSetRefusionFiles: (refusedFiles) => dispatch(recognitionActions.setRefusedFiles(refusedFiles))
+        onSetRefusionFiles: (refusedFiles) => dispatch(recognitionActions.setRefusedFiles(refusedFiles)),
+
+        setContainerStatus:  (containerId, toolType, status) => dispatch(recognitionActions.setContainerStatus(containerId, toolType, status)),
+
+        runSpeechRecognition: (container, toolType, token) => dispatch(recognitionActions.runSpeechRecognition(container, toolType, token)),
     }
 }
 

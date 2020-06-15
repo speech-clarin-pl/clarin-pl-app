@@ -10,6 +10,9 @@ export const SET_CURRENT_PROJECT_ID = 'SET_CURRENT_PROJECT_ID';
 export const FORGOT_PASS = 'FORGOT_PASS';
 export const FORGOT_PASS_FAILED = 'FORGOT_PASS_FAILED';
 
+export const START_LOADING = 'START_LOADING';
+export const STOP_LOADING = 'STOP_LOADING';
+
 // project list actions
 export const OPEN_MODAL = 'OPEN_MODAL';
 export const CLOSE_MODAL = 'CLOSE_MODAL';
@@ -56,6 +59,7 @@ export const ADD_CONTAINER_TO_PREVIEW_DIA = 'ADD_CONTAINER_TO_PREVIEW_DIA';
 // vad tab
 export const ADD_CONTAINER_TO_VAD = 'ADD_CONTAINER_TO_VAD';
 export const ADD_CONTAINER_TO_PREVIEW_VAD = 'ADD_CONTAINER_TO_PREVIEW_VAD';
+export const RUN_VAD_IN_BATCH = 'RUN_VAD_IN_BATCH';
 
 // recognition tab
 export const ADD_CONTAINER_TO_PREVIEW_RECO = 'ADD_CONTAINER_TO_PREVIEW_RECO';
