@@ -488,10 +488,15 @@ class SegmentTool extends Component {
                                 </div>
 
                                 <div className={"col-md-"+szer2col}>
-									<AudioEditor
-											containerForPreview={this.props.containerForPreview}
-											editorFullWidth = {this.makeEditorFullWidth}
-											toolType="ALIGN" />
+
+									{
+										this.props.containerForPreview != "" ? <AudioEditor
+										containerForPreview={this.props.containerForPreview}
+										editorFullWidth = {this.makeEditorFullWidth}
+										toolType="SEG" /> : null
+									}
+
+
                                 </div>
                             </div>
 

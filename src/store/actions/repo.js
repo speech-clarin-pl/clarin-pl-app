@@ -10,11 +10,12 @@ import { saveAs } from 'file-saver';
 // ############## Speech VAD #################
 // ###########################################################
 
-export const runSpeechVoiceActivityDetectionSuccess = (containerId, toolType) => {
+export const runSpeechVoiceActivityDetectionSuccess = (containerId, toolType, VADSegments) => {
     return {
         type: actionTypes.REPO_RUN_SPEECH_VAD_DONE,
         containerId: containerId,
         toolType: toolType,
+        VADSegments: VADSegments,
     }
 }
 
@@ -41,7 +42,7 @@ export const runSpeechVoiceActivityDetection = (container, toolType, token) => {
             },
         })
         .then(response => {
-            dispatch(runSpeechVoiceActivityDetectionSuccess(container._id, toolType));
+            dispatch(runSpeechVoiceActivityDetectionSuccess(response.data.containerId, response.data.toolType, response.data.VADSegments));
         })
         .catch(error => {
             dispatch(runSpeechVoiceActivityDetectionFailed(container._id, toolType));

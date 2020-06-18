@@ -56,6 +56,7 @@ const addContainerToVAD = (state,action) => {
 const speechVADSuccess = (state, action) => {
     const containerId = action.containerId;
     const toolType = action.toolType; 
+    const VADSegments = action.VADSegments;
 
 
     const nextState = produce(state, draftState => {
@@ -66,8 +67,10 @@ const speechVADSuccess = (state, action) => {
 
         draftState.containersForVAD[foundFileIdx].ifVAD = true;
         draftState.containersForVAD[foundFileIdx].statusVAD = 'done';
+        draftState.containersForVAD[foundFileIdx].VADUserSegments = VADSegments;
        
    })
+   
 
    return nextState;
 

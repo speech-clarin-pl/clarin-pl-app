@@ -150,10 +150,15 @@ class DIATool extends Component {
                                 </div>
 
                                 <div className={"col-md-"+szer2col}>
-									<AudioEditor
-											containerForPreview={this.props.containerForPreview}
-											editorFullWidth = {this.makeEditorFullWidth}
-											toolType="DIA" />
+
+									{
+										this.props.containerForPreview != "" ? <AudioEditor
+										containerForPreview={this.props.containerForPreview}
+										editorFullWidth = {this.makeEditorFullWidth}
+										toolType="DIA" /> : null
+									}
+
+									
                                 </div>
                             </div>				
 

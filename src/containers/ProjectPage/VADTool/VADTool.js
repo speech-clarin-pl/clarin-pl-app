@@ -146,10 +146,13 @@ class VADTool extends Component {
                                 </div>
 
                                 <div className={"col-md-"+szer2col}>
-									<AudioEditor
-											containerForPreview={this.props.containerForPreview}
-											editorFullWidth = {this.makeEditorFullWidth}
-											toolType="VAD" />
+									{
+										this.props.containerForPreview != "" ? <AudioEditor
+										containerForPreview={this.props.containerForPreview}
+										editorFullWidth = {this.makeEditorFullWidth}
+										toolType="VAD" /> : null
+									}
+									
                                 </div>
                             </div>				
 

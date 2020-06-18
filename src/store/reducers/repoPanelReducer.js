@@ -245,12 +245,13 @@ const loadBinaryForPreview = (state, action) => {
 const speechVADSuccess = (state, action) => {
     const containerId = action.containerId;
     const toolType = action.toolType; 
+    const VADSegments = action.VADSegments;
 
     const nextState = produce(state, draftState => {
         draftState.containers.byId[containerId].ifVAD = true;
         draftState.containers.byId[containerId].statusVAD = 'ready';
-
-   })
+        draftState.containers.byId[containerId].VADUserSegments = VADSegments;
+   })  
 
    return nextState;
 
@@ -900,10 +901,6 @@ const repoPanelReducer = (state = initialState, action) => {
 
         case actionTypes.REPO_RUN_SPEECH_VAD_DONE: return speechVADSuccess(state,action);
         case actionTypes.REPO_RUN_SPEECH_VAD_FAILED: return speechVADFailed(state,action);
-
-
-
-
 
         case actionTypes.LOAD_BINARY_FOR_PREVIEW: return loadBinaryForPreview(state,action);
         case actionTypes.LOAD_AUDIO_FOR_PREVIEW: return loadAudioForPreview(state,action);

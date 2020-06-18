@@ -20,6 +20,9 @@ import TextareaAutosize from 'react-textarea-autosize';
 import * as audioEditorActions from '../../../store/actions/index';
 import Peaks from 'peaks.js';
 import Konva from 'konva';
+import CustomSegmentMarker from './CustomSegmentMarker';
+import CustomPointMarker from './CustomPointMarker';
+import SimplePointMarker from './SimplePointMarker';
 
 import TOLdemo from '../../../utils/TOL_6min_720p_download.json'
 
@@ -34,26 +37,70 @@ class AudioEditor extends Component {
 		peaksInstance: null,
 	}
 
-	//constructor(props){
-	//	super(props);
-	//	this.audioDOM = React.createRef();
-		
-	//}
+
+	 createPointMarker = (options) => {
+		if (options.view === 'zoomview') {
+		  return new CustomPointMarker(options);
+		}
+		else {
+		  return new SimplePointMarker(options);
+		}
+	  }
+
+	createSegmentMarker = (options) => {
+		if (options.view === 'zoomview') {
+			return new CustomSegmentMarker(options);
+		}
+
+		return null;
+	}
+
+	createSegmentLabel = (options) => {
+		if (options.view === 'overview') {
+			return null;
+		}
+
+		var label = new Konva.Label({
+			x: 12,
+			y: 16
+		});
+
+		label.add(new Konva.Tag({
+			fill:             'black',
+			pointerDirection: 'none',
+			shadowColor:      'black',
+			shadowBlur:       10,
+			shadowOffsetX:    3,
+			shadowOffsetY:    3,
+			shadowOpacity:    0.3
+		}));
+
+		label.add(new Konva.Text({
+			text:       options.segment.labelText,
+			fontSize:   14,
+			fontFamily: 'Calibri',
+			fill:       'white',
+			padding:    8
+		}));
+
+		return label;
+	}
+
 
 	makeEditorFullWidth = () => {
 		this.props.editorFullWidth();
 	}
 
 
-	  renderSegments = (peaks) => {
+	renderSegments = (peaks) => {
 		var segmentsContainer = document.getElementById('segments');
 		var segments = peaks.segments.getSegments();
 		var html = '';
 
 		for (var i = 0; i < segments.length; i++) {
-		  var segment = segments[i];
+			var segment = segments[i];
 
-		  var row = '<tr>' +
+			var row = '<tr>' +
 			'<td>' + segment.id + '</td>' +
 			'<td><input data-action="update-segment-label" type="text" value="' + segment.labelText + '" data-id="' + segment.id + '"/></td>' +
 			'<td><input data-action="update-segment-start-time" type="number" value="' + segment.startTime + '" data-id="' + segment.id + '"/></td>' +
@@ -62,76 +109,78 @@ class AudioEditor extends Component {
 			'<td>' + '<a href="#' + segment.id + '" data-action="remove-segment" data-id="' + segment.id + '">Remove</a>' + '</td>' +
 			'</tr>';
 
-		  html += row;
+			html += row;
 		}
 
 		segmentsContainer.querySelector('tbody').innerHTML = html;
 
 		if (html.length) {
-		  segmentsContainer.classList.remove('hide');
+			segmentsContainer.classList.remove('hide');
 		}
 
 		document.querySelectorAll('input[data-action="update-segment-start-time"]').forEach(function(inputElement) {
-		  inputElement.addEventListener('input', function(event) {
+			inputElement.addEventListener('input', function(event) {
 			var element = event.target;
 			var id = element.getAttribute('data-id');
 			var segment = peaks.segments.getSegment(id);
 
 			if (segment) {
-			  var startTime = parseFloat(element.value);
+				var startTime = parseFloat(element.value);
 
-			  if (startTime < 0) {
+				if (startTime < 0) {
 				startTime = 0;
 				element.value = 0;
-			  }
+				}
 
-			  if (startTime >= segment.endTime) {
+				if (startTime >= segment.endTime) {
 				startTime = segment.endTime - 0.1;
 				element.value = startTime;
-			  }
+				}
 
-			  segment.update({ startTime: startTime });
+				segment.update({ startTime: startTime });
 			}
-		  });
+			});
 		});
 
 		document.querySelectorAll('input[data-action="update-segment-end-time"]').forEach(function(inputElement) {
-		  inputElement.addEventListener('input', function(event) {
+			inputElement.addEventListener('input', function(event) {
 			var element = event.target;
 			var id = element.getAttribute('data-id');
 			var segment = peaks.segments.getSegment(id);
 
 			if (segment) {
-			  var endTime = parseFloat(element.value);
+				var endTime = parseFloat(element.value);
 
-			  if (endTime < 0) {
+				if (endTime < 0) {
 				endTime = 0;
 				element.value = 0;
-			  }
+				}
 
-			  if (endTime <= segment.startTime) {
+				if (endTime <= segment.startTime) {
 				endTime = segment.startTime + 0.1;
 				element.value = endTime;
-			  }
+				}
 
-			  segment.update({ endTime: endTime });
+				segment.update({ endTime: endTime });
 			}
-		  });
+			});
 		});
 
 		document.querySelectorAll('input[data-action="update-segment-label"]').forEach(function(inputElement) {
-		  inputElement.addEventListener('input', function(event) {
+			inputElement.addEventListener('input', function(event) {
 			var element = event.target;
 			var id = element.getAttribute('data-id');
 			var segment = peaks.segments.getSegment(id);
 			var labelText = element.labelText;
 
 			if (segment) {
-			  segment.update({ labelText: labelText });
+				segment.update({ labelText: labelText });
 			}
-		  });
+			});
 		});
-	  };
+
+	
+	};
 
 
 
@@ -193,19 +242,85 @@ class AudioEditor extends Component {
 		});
 	  };
 
+	// ładuje nowy plik do edytora
+	loadNewAudioToEditor = () => {
+	if(this.props.containerForPreview !== undefined){
+
+		//console.log("AAAAAA" +this.props.containerForPreview)
+		//this.loadContainerPreview(this.props.containerForPreview, this.props.toolType);
+		//this.loadAudioData(this.props.containerForPreview, this.props.toolType);
+		//this.props.onLoadAudioForPreview(this.props.containerForPreview, this.props.toolType);
+
+		const userId = this.props.containerForPreview.owner;
+		const projectId = this.props.containerForPreview.project;
+		const sessionId = this.props.containerForPreview.session;
+		const fileName = this.props.containerForPreview.fileName;
+		const containerId = this.props.containerForPreview._id;
+		const token = this.props.token;
+
+		//plik audio
+		let audioPath = process.env.REACT_APP_API_URL+ "/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/audio?api_key="+token;
+		
+		//meta data do renderingu waveform
+		let datPath = process.env.REACT_APP_API_URL + "/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/dat?api_key="+token;
+
+		//segments in json
+		let segments = [];
+		switch(this.props.toolType){
+			case 'VAD':
+				segments = this.props.containerForPreview.VADUserSegments;
+				console.log("MAM SEGMENTY")
+				console.log(segments)
+				break;
+			case 'DIA':
+				console.log('segments IA');
+				break;
+			case 'REC':
+				console.log('segments REC');
+				break;
+			case 'SEG':
+				console.log('segments SEG');
+				break;
+			default:
+				console.log("segments default");
+				break;
+		}			
+
+		if(this.state.audioPath == '' || this.state.datPath == ''){
+			this.initializePeaksFirstTime(audioPath, datPath, segments)
+		} else {
+			
+			this.setState({
+				audioPath:audioPath,
+				datPath:datPath
+			});
+		}
+
+		if(this.state.peaksInstance){
+			this.requestWaveformData(datPath)
+			.then(waveformData => {
+				return this.createSources(waveformData, segments);
+			})
+			.then(sources => {
+				console.log(sources)
+				console.log(this.state.peaksInstance)
+				this.bindEventHandlers(this.state.peaksInstance, sources);
+			}, this.errorHandler);
+		}
+		
+		 
+	}
+}
 
 
-	initializePeaksFirstTime = (audioPathok, datPathok) => {
+	initializePeaksFirstTime = (audioPathok, datPathok, segments) => {
 
 		//arraybuffer: "http://localhost:1234/repoFiles/5e4b09e086f4ed663259fae9/5e9e175af4192d661ebf49dd/5e9e175af4192d661ebf49de/kleska.dat?api_key="+this.props.token,
-	
 		
 		this.setState({
 			audioPath:audioPathok,
 			datPath:datPathok
 		});
-
-
 
 		let options = {
 			containers: {
@@ -221,20 +336,56 @@ class AudioEditor extends Component {
 			overviewWaveformColor: 'rgba(52, 152, 219, 0.3)',
 			overviewHighlightColor: 'rgba(52, 152, 219, 0.4)',
 			keyboard: true,
+			nudgeIncrement: 0.1,
 			zoomLevels: [128, 256, 512, 1024, 2048, 4096],
+			showPlayheadTime: true,
+			emitCueEvents: true,
+			showPlayheadTime: false,
+			segments: segments,
+		  //	createSegmentMarker: this.createSegmentMarker,
+          //  createSegmentLabel: this.createSegmentLabel,
+          //  createPointMarker: this.createPointMarker
 
 		  };
 
-		  //emitCueEvents: true,
-		
-		//	nudgeIncrement: 0.01,	
-		//	showPlayheadTime: false,
 
 		  this.createPeaksInstance(options,this)
           .then(peaksInstance => {
 			this.setState({peaksInstance: peaksInstance});
 		  }, this.errorHandler);
 	}
+
+
+
+	createSources = (waveformData, segments) => {
+		return {
+			title: this.props.containerForPreview.containerName,
+			mediaUrl: this.state.audioPath,
+			waveformData: {
+			  arraybuffer: waveformData
+			},
+			segments: segments,
+		  };
+	  }
+
+	  
+	
+	bindEventHandlers = (peaksInstance, source) => {
+
+		peaksInstance.segments.removeAll();
+
+		if(source.segments){
+			peaksInstance.segments.add(source.segments);
+		}
+		
+
+		peaksInstance.setSource(source, function(error) {
+			if (error) {
+			  console.error('setSource error', error);
+			}
+		  });
+	}
+	
 
 	createPeaksInstance = (options, thisComponent) => {
 		
@@ -437,80 +588,27 @@ class AudioEditor extends Component {
 
 	requestWaveformData = (url) => {
 		return fetch(url)
-		  .then(function(response) {
+		  .then((response) => {
 			return response.arrayBuffer();
 		  });
 	  }
 
-
-	  createSources = (waveformData) => {
-		return {
-			title: this.props.containerForPreview.containerName,
-			mediaUrl: this.state.audioPath,
-			waveformData: {
-			  arraybuffer: waveformData
-			}
-		  };
-	  }
-
-	  
-	
-	bindEventHandlers = (peaksInstance, source) => {
-
-		//TO DO: inne połączenia
-
-		peaksInstance.setSource(source, function(error) {
-			if (error) {
-			  console.error('setSource error', error);
-			}
+/*
+	  requestSegmentsData = (url) => {
+		return fetch(url)
+		  .then((jsonSegments) =>{
+			return jsonSegments;
 		  });
-	}
-
-	componentDidUpdate = () => {
-		this.loadNewAudioToEditor();
-	}
+	  }
+*/
 
 
-	// ładuje nowy plik do edytora
-	loadNewAudioToEditor = () => {
-		if(this.props.containerForPreview !== undefined){
-			//console.log("AAAAAA" +this.props.containerForPreview)
-			//this.loadContainerPreview(this.props.containerForPreview, this.props.toolType);
-			//this.loadAudioData(this.props.containerForPreview, this.props.toolType);
-			//this.props.onLoadAudioForPreview(this.props.containerForPreview, this.props.toolType);
 
-			const userId = this.props.containerForPreview.owner;
-			const projectId = this.props.containerForPreview.project;
-			const sessionId = this.props.containerForPreview.session;
-			const fileName = this.props.containerForPreview.fileName;
-			const containerId = this.props.containerForPreview._id;
-			const token = this.props.token;
-
-			let audioPath = "http://localhost:1234/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/audio?api_key="+token;
-			let datPath = "http://localhost:1234/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/dat?api_key="+token;
 	
-			if(this.state.audioPath == '' || this.state.datPath == ''){
-				this.initializePeaksFirstTime(audioPath, datPath)
-			} else {
-				this.setState({
-					audioPath:audioPath,
-					datPath:datPath
-				});
-			}
-			
-			 this.requestWaveformData(datPath)
-				.then(waveformData => {
-					
-					return this.createSources(waveformData);
-				})
-				.then(sources => {
-					console.log(sources)
-					console.log(this.state.peaksInstance)
-					this.bindEventHandlers(this.state.peaksInstance, sources);
-				}, this.errorHandler);
-		}
-	}
 
+
+
+	
 	componentDidUpdate = (prevProps) => {
 
 		//kiedy tylko zmieni się container, wtedy ładuje audio i binary data z serwera i uruchamiam podgląd
@@ -521,11 +619,20 @@ class AudioEditor extends Component {
 		}
 	}
 
-
+	componentDidMount = () => {
+		this.loadNewAudioToEditor();
+	}
+	
 
 	render() {
 
+		let transcriptWindow = null;
 
+		if(this.props.toolType == "REC"){
+			transcriptWindow = <TextEditor 
+			toolType={this.props.toolType} 
+			container={this.props.containerForPreview}/>		
+		}
 
 		let audioSource = this.state.audioPath;
 		let edytor = null;
@@ -558,9 +665,11 @@ class AudioEditor extends Component {
 							</div>
 					</div>
 
-					<TextEditor 
-						toolType={this.props.toolType} 
-						container={this.props.containerForPreview}/>
+					
+
+					{
+						transcriptWindow
+					}
 
 
 					<div className="log">
