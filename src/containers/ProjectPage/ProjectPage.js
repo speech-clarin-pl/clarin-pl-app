@@ -123,7 +123,7 @@ class ProjectPage extends Component {
                   <Tab  title="Dashboard" iconType="DASH" whereToLink={'/dashboard'}/>
                   <Tab  title="Detekcja mowy" iconType="VAD" whereToLink={'/vad'}/>
                   <Tab  title="Diaryzacja" iconType="DIA" whereToLink={'/dia'}/>
-                  <Tab  title="Rozpoznawanie" iconType="REC" whereToLink={'/recognition'}/>
+                  <Tab  title="Transkrypcje" iconType="REC" whereToLink={'/recognition'}/>
                   <Tab  title="Segmentacja" iconType="SEG" whereToLink={'/segment'}/>
                   {
                     /*

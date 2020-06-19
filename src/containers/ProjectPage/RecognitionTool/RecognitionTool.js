@@ -269,7 +269,16 @@ class RecognitionTool extends Component {
 
                 <LeftSiteBar
                     czyTopPart="true"
-                    desc="W tym miejscu istnieje możliwość wykonywania automatycznego rozpoznawania mowy z nagrań dźwiękowych" >
+                    desc={(<div>
+                        <div>Przydatne skróty klawiaturowe podczas tworzenia transkrypcji to: </div>
+                        <div> <b>[Alt+l]</b> - play/pausa </div>
+                        <div> <b>[Alt+k]</b> - powtórz 3 sek.</div>
+                        <div> <b>[Alt+j]</b> - powtórz 5 sek.</div>
+                        <div> <b>[Alt+i]</b> - przyśpiesz.</div>
+                        <div> <b>[Alt+,]</b> - zwolnij.</div>
+                        <div>Możesz transkrybować nie odrywając rąk od pola tekstowego!</div>
+                        </div>)
+                    } >
 
                     <ButtonLeftBar 
                         napis="Uruchom rozpoznawanie dla wszystkich"
@@ -279,6 +288,7 @@ class RecognitionTool extends Component {
                         disabled={false}
                         whenClicked={this.runRECinBatch}/>
 
+
                 </LeftSiteBar>
 
                 <SettingBar />
@@ -287,7 +297,7 @@ class RecognitionTool extends Component {
 
                     <div className={["container-fluid", "RecognitionTool"].join(' ')}>
                         <div className="tool-desc">
-                            <h2>Rozpoznawanie mowy</h2>
+                            <h2>Transkrypcje</h2>
                             <p>Zamiana nagrania mowy na zapis ortograficzny.</p>
                             {
                                // <div className="alert alert-info" role="alert">

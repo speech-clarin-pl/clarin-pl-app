@@ -5,13 +5,18 @@ import { connect } from 'react-redux';
 import uuid from 'uuid';
 import Modal from '../../../components/UI/Modal/Modal';
 import { extensionMapping } from '../../../utils/fileTypes';
-import { faMapMarker } from '@fortawesome/free-solid-svg-icons';
+import { faMapMarker, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { faGripLinesVertical } from '@fortawesome/free-solid-svg-icons';
 import { faSearchMinus } from '@fortawesome/free-solid-svg-icons';
 import { faExpand } from '@fortawesome/free-solid-svg-icons';
 import { faSearchPlus} from '@fortawesome/free-solid-svg-icons';
+import { faHistory} from '@fortawesome/free-solid-svg-icons';
+import { faPause} from '@fortawesome/free-solid-svg-icons';
+import { faLongArrowAltDown} from '@fortawesome/free-solid-svg-icons';
+import { faLongArrowAltUp} from '@fortawesome/free-solid-svg-icons';
 import { faAlignJustify} from '@fortawesome/free-solid-svg-icons';
+import { faClock} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {getFileNameWithNoExt, getExt, getFilenameFromURL } from '../../../utils/utils';
 import ToolItem from '../ToolItem/ToolItem';
@@ -24,9 +29,15 @@ import CustomSegmentMarker from './CustomSegmentMarker';
 import CustomPointMarker from './CustomPointMarker';
 import SimplePointMarker from './SimplePointMarker';
 
-import TOLdemo from '../../../utils/TOL_6min_720p_download.json'
+import TOLdemo from '../../../utils/TOL_6min_720p_download.json';
+import ReactTooltip from "react-tooltip";
+import {ContextMenu, MenuItem, ContextMenuTrigger} from 'react-contextmenu';
+import {withRouter } from 'react-router-dom';
+
 
 import TextEditor from './TextEditor/TextEditor';
+import SegmentEditor from './SegmentsEditor/SegmentsEditor';
+import Hotkeys from 'react-hot-keys';
 
 
 class AudioEditor extends Component {
@@ -35,56 +46,122 @@ class AudioEditor extends Component {
 		audioPath: '',
 		datPath: '',
 		peaksInstance: null,
+		isPlaying: false,
+		odliczanie: null,
+		speedFactor: 1,
+		segmentCounter: 1,
+		pointCounter: 1,
 	}
 
 
-	 createPointMarker = (options) => {
-		if (options.view === 'zoomview') {
-		  return new CustomPointMarker(options);
+	onKeyDown(keyName, e, handle) {
+		//console.log("test:onKeyDown", e, handle)
+
+		switch (handle.key) {
+			case 'alt+l': 
+			  this.togglePlaying();
+			  break;
+			case 'alt+k': 
+			  this.rewind3secBack();
+			  break;
+			case 'alt+j': 
+			  this.rewind5secBack();
+			  break;
+			case 'alt+i': 
+			  this.increasePlaybackSpeed();
+			  break;
+			case 'alt+,': 
+			  this.decreasePlaybackSpeed();
+			  break;
+			default: console.log(e);
 		}
-		else {
-		  return new SimplePointMarker(options);
+	 }
+
+	 increasePlaybackSpeed = () => {
+		let player = document.getElementById("audio");
+		if(this.state.speedFactor < 3){
+			player.playbackRate = this.state.speedFactor + 0.5;
+			this.setState({
+				speedFactor: this.state.speedFactor + 0.5,
+			})
 		}
-	  }
+	 }
 
-	createSegmentMarker = (options) => {
-		if (options.view === 'zoomview') {
-			return new CustomSegmentMarker(options);
+	 decreasePlaybackSpeed = () => {
+		let player = document.getElementById("audio");
+
+		if(this.state.speedFactor > 0){
+			player.playbackRate = this.state.speedFactor - 0.5;
+			this.setState({
+				speedFactor: this.state.speedFactor - 0.5,
+			})
 		}
+		
+	 }
 
-		return null;
-	}
+	 rewind3secBack = () => {
+		this.playBack(3);
+	 }
 
-	createSegmentLabel = (options) => {
-		if (options.view === 'overview') {
-			return null;
+	 rewind5secBack = () => {
+		this.playBack(5);
+	 }
+
+	 playBack = (seconds) => {
+		if(this.state.peaksInstance){
+
+			let currentTime = this.state.peaksInstance.player.getCurrentTime();
+			let timeBack = currentTime - seconds;
+			if(timeBack<0){
+				timeBack = 0;
+			}
+			this.state.peaksInstance.player.seek(timeBack);
+			this.state.peaksInstance.player.play();
+
+			
+			this.setState({
+				isPlaying: true,
+			})
+
+			if(this.state.odliczanie){
+				clearTimeout(this.state.odliczanie);
+				this.setState({
+					odliczanie: null,
+				})
+			}
+			
+			let odliczanieTemp = this.state.odliczanie;
+			odliczanieTemp = setTimeout(()=>{
+				this.state.peaksInstance.player.pause();
+				this.setState({
+					isPlaying: false,
+					odliczanie: null,
+				})
+			},((seconds*1000)+100)/this.state.speedFactor)
+
+			this.setState({
+				odliczanie: odliczanieTemp,
+			})
 		}
+	 }
 
-		var label = new Konva.Label({
-			x: 12,
-			y: 16
-		});
+	 togglePlaying = () => {
 
-		label.add(new Konva.Tag({
-			fill:             'black',
-			pointerDirection: 'none',
-			shadowColor:      'black',
-			shadowBlur:       10,
-			shadowOffsetX:    3,
-			shadowOffsetY:    3,
-			shadowOpacity:    0.3
-		}));
+		if(this.state.peaksInstance){
+			if(this.state.isPlaying){
+				this.state.peaksInstance.player.pause();
+				this.setState({
+					isPlaying: false
+				})
+			} else {
+				this.state.peaksInstance.player.play();
+				this.setState({
+					isPlaying: true
+				})
+			}
+		}
+	 }
 
-		label.add(new Konva.Text({
-			text:       options.segment.labelText,
-			fontSize:   14,
-			fontFamily: 'Calibri',
-			fill:       'white',
-			padding:    8
-		}));
-
-		return label;
-	}
 
 
 	makeEditorFullWidth = () => {
@@ -92,225 +169,97 @@ class AudioEditor extends Component {
 	}
 
 
-	renderSegments = (peaks) => {
-		var segmentsContainer = document.getElementById('segments');
-		var segments = peaks.segments.getSegments();
-		var html = '';
-
-		for (var i = 0; i < segments.length; i++) {
-			var segment = segments[i];
-
-			var row = '<tr>' +
-			'<td>' + segment.id + '</td>' +
-			'<td><input data-action="update-segment-label" type="text" value="' + segment.labelText + '" data-id="' + segment.id + '"/></td>' +
-			'<td><input data-action="update-segment-start-time" type="number" value="' + segment.startTime + '" data-id="' + segment.id + '"/></td>' +
-			'<td><input data-action="update-segment-end-time" type="number" value="' + segment.endTime + '" data-id="' + segment.id + '"/></td>' +
-			'<td>' + '<a href="#' + segment.id + '" data-action="play-segment" data-id="' + segment.id + '">Play</a>' + '</td>' +
-			'<td>' + '<a href="#' + segment.id + '" data-action="remove-segment" data-id="' + segment.id + '">Remove</a>' + '</td>' +
-			'</tr>';
-
-			html += row;
-		}
-
-		segmentsContainer.querySelector('tbody').innerHTML = html;
-
-		if (html.length) {
-			segmentsContainer.classList.remove('hide');
-		}
-
-		document.querySelectorAll('input[data-action="update-segment-start-time"]').forEach(function(inputElement) {
-			inputElement.addEventListener('input', function(event) {
-			var element = event.target;
-			var id = element.getAttribute('data-id');
-			var segment = peaks.segments.getSegment(id);
-
-			if (segment) {
-				var startTime = parseFloat(element.value);
-
-				if (startTime < 0) {
-				startTime = 0;
-				element.value = 0;
-				}
-
-				if (startTime >= segment.endTime) {
-				startTime = segment.endTime - 0.1;
-				element.value = startTime;
-				}
-
-				segment.update({ startTime: startTime });
-			}
-			});
-		});
-
-		document.querySelectorAll('input[data-action="update-segment-end-time"]').forEach(function(inputElement) {
-			inputElement.addEventListener('input', function(event) {
-			var element = event.target;
-			var id = element.getAttribute('data-id');
-			var segment = peaks.segments.getSegment(id);
-
-			if (segment) {
-				var endTime = parseFloat(element.value);
-
-				if (endTime < 0) {
-				endTime = 0;
-				element.value = 0;
-				}
-
-				if (endTime <= segment.startTime) {
-				endTime = segment.startTime + 0.1;
-				element.value = endTime;
-				}
-
-				segment.update({ endTime: endTime });
-			}
-			});
-		});
-
-		document.querySelectorAll('input[data-action="update-segment-label"]').forEach(function(inputElement) {
-			inputElement.addEventListener('input', function(event) {
-			var element = event.target;
-			var id = element.getAttribute('data-id');
-			var segment = peaks.segments.getSegment(id);
-			var labelText = element.labelText;
-
-			if (segment) {
-				segment.update({ labelText: labelText });
-			}
-			});
-		});
-
-	
-	};
-
-
-
-	  renderPoints = (peaks) => {
-
-		var pointsContainer = document.getElementById('points');
-		var points = peaks.points.getPoints();
-		var html = '';
-
-		for (var i = 0; i < points.length; i++) {
-		  var point = points[i];
-
-		  var row = '<tr>' +
-			'<td>' + point.id + '</td>' +
-			'<td><input data-action="update-point-label" type="text" value="' + point.labelText + '" data-id="' + point.id + '"/></td>' +
-			'<td><input data-action="update-point-time" type="number" value="' + point.time + '" data-id="' + point.id + '"/></td>' +
-			'<td>' + '<a href="#' + point.id + '" data-action="remove-point" data-id="' + point.id + '">Remove</a>' + '</td>' +
-			'</tr>';
-
-		  html += row;
-		}
-
-		pointsContainer.querySelector('tbody').innerHTML = html;
-
-		if (html.length) {
-		  pointsContainer.classList.remove('hide');
-		}
-
-		document.querySelectorAll('input[data-action="update-point-time"]').forEach(function(inputElement) {
-		  inputElement.addEventListener('input', function(event) {
-			var element = event.target;
-			var id = element.getAttribute('data-id');
-			var point = peaks.points.getPoint(id);
-
-			if (point) {
-			  var time = parseFloat(element.value);
-
-			  if (time < 0) {
-				time = 0;
-				element.value = 0;
-			  }
-
-			  point.update({ time: time });
-			}
-		  });
-		});
-
-		document.querySelectorAll('input[data-action="update-point-label"]').forEach(function(inputElement) {
-		  inputElement.addEventListener('input', function(event) {
-			var element = event.target;
-			var id = element.getAttribute('data-id');
-			var point = peaks.points.getPoint(id);
-			var labelText = element.labelText;
-
-			if (point) {
-			  point.update({ labelText: labelText });
-			}
-		  });
-		});
-	  };
-
 	// ładuje nowy plik do edytora
 	loadNewAudioToEditor = () => {
-	if(this.props.containerForPreview !== undefined){
+		if(this.props.containerForPreview !== undefined){
 
-		//console.log("AAAAAA" +this.props.containerForPreview)
-		//this.loadContainerPreview(this.props.containerForPreview, this.props.toolType);
-		//this.loadAudioData(this.props.containerForPreview, this.props.toolType);
-		//this.props.onLoadAudioForPreview(this.props.containerForPreview, this.props.toolType);
+			const userId = this.props.containerForPreview.owner;
+			const projectId = this.props.containerForPreview.project;
+			const sessionId = this.props.containerForPreview.session;
+			const fileName = this.props.containerForPreview.fileName;
+			const containerId = this.props.containerForPreview._id;
+			const token = this.props.token;
 
-		const userId = this.props.containerForPreview.owner;
-		const projectId = this.props.containerForPreview.project;
-		const sessionId = this.props.containerForPreview.session;
-		const fileName = this.props.containerForPreview.fileName;
-		const containerId = this.props.containerForPreview._id;
-		const token = this.props.token;
-
-		//plik audio
-		let audioPath = process.env.REACT_APP_API_URL+ "/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/audio?api_key="+token;
-		
-		//meta data do renderingu waveform
-		let datPath = process.env.REACT_APP_API_URL + "/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/dat?api_key="+token;
-
-		//segments in json
-		let segments = [];
-		switch(this.props.toolType){
-			case 'VAD':
-				segments = this.props.containerForPreview.VADUserSegments;
-				console.log("MAM SEGMENTY")
-				console.log(segments)
-				break;
-			case 'DIA':
-				console.log('segments IA');
-				break;
-			case 'REC':
-				console.log('segments REC');
-				break;
-			case 'SEG':
-				console.log('segments SEG');
-				break;
-			default:
-				console.log("segments default");
-				break;
-		}			
-
-		if(this.state.audioPath == '' || this.state.datPath == ''){
-			this.initializePeaksFirstTime(audioPath, datPath, segments)
-		} else {
+			//plik audio
+			let audioPath = process.env.REACT_APP_API_URL+ "/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/audio?api_key="+token;
 			
-			this.setState({
-				audioPath:audioPath,
-				datPath:datPath
-			});
-		}
+			//meta data do renderingu waveform
+			let datPath = process.env.REACT_APP_API_URL + "/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/dat?api_key="+token;
 
-		if(this.state.peaksInstance){
-			this.requestWaveformData(datPath)
-			.then(waveformData => {
-				return this.createSources(waveformData, segments);
-			})
-			.then(sources => {
-				console.log(sources)
-				console.log(this.state.peaksInstance)
-				this.bindEventHandlers(this.state.peaksInstance, sources);
-			}, this.errorHandler);
+			//segments in json
+			let segments = [];
+			switch(this.props.toolType){
+				case 'VAD':
+					if(this.props.containerForPreview.VADUserSegments){
+						segments = this.props.containerForPreview.VADUserSegments;
+					}
+					break;
+				case 'DIA':
+					if(this.props.containerForPreview.DIAUserSegments){
+						segments = this.props.containerForPreview.DIAUserSegments;
+					}
+					break;
+				case 'REC':
+					if(this.props.containerForPreview.RECUserSegments){
+						segments = this.props.containerForPreview.RECUserSegments;
+					}
+					break;
+				case 'SEG':
+					if(this.props.containerForPreview.SEGUserSegments){
+						segments = this.props.containerForPreview.SEGUserSegments;
+					}
+					break;
+				default:
+					console.log("segments default");
+					break;
+			}			
+
+
+			if(this.state.audioPath == '' || this.state.datPath == ''){
+				this.initializePeaksFirstTime(audioPath, datPath, segments)
+			} else {
+				this.setState({
+					audioPath:audioPath,
+					datPath:datPath
+				});
+			}
+
+			
+			if(this.state.peaksInstance){
+				this.requestWaveformData(datPath)
+				.then(waveformData => {
+					return this.createSources(waveformData, segments);
+				})
+				.then(source => {
+
+					this.state.peaksInstance.segments.removeAll();
+					if(source.segments){
+						this.state.peaksInstance.segments.add(source.segments);
+					}
+
+					this.state.peaksInstance.setSource(source, (error) => {
+						if (error) {
+						  console.error('setSource error', error);
+						}
+					  });
+
+				}, this.errorHandler);
+			}
 		}
-		
-		 
 	}
-}
+
+
+	createSources = (waveformData, segments) => {
+		return {
+			title: this.props.containerForPreview.containerName,
+			mediaUrl: this.state.audioPath,
+			waveformData: {
+			  arraybuffer: waveformData
+			},
+			segments: segments,
+		  };
+	  }
+
 
 
 	initializePeaksFirstTime = (audioPathok, datPathok, segments) => {
@@ -355,44 +304,43 @@ class AudioEditor extends Component {
 		  }, this.errorHandler);
 	}
 
+	addSegment = () => {
+		if(this.state.peaksInstance){
+			this.state.peaksInstance.segments.add({
+				startTime: this.state.peaksInstance.player.getCurrentTime(),
+				endTime: this.state.peaksInstance.player.getCurrentTime() + 3,
+				labelText: 'Segment ' + this.state.segmentCounter,
+				editable: true
+			});
 
-
-	createSources = (waveformData, segments) => {
-		return {
-			title: this.props.containerForPreview.containerName,
-			mediaUrl: this.state.audioPath,
-			waveformData: {
-			  arraybuffer: waveformData
-			},
-			segments: segments,
-		  };
-	  }
-
-	  
-	
-	bindEventHandlers = (peaksInstance, source) => {
-
-		peaksInstance.segments.removeAll();
-
-		if(source.segments){
-			peaksInstance.segments.add(source.segments);
+			this.setState({
+				segmentCounter: this.state.segmentCounter+1,
+			})
 		}
-		
-
-		peaksInstance.setSource(source, function(error) {
-			if (error) {
-			  console.error('setSource error', error);
-			}
-		  });
 	}
-	
+
+	addPoint = () => {
+		if(this.state.peaksInstance){
+			this.state.peaksInstance.points.add({
+				time: this.state.peaksInstance.player.getCurrentTime(),
+				labelText: 'Point ' + this.state.pointCounter,
+				color: '#006eb0',
+				editable: true
+			});
+
+			this.setState({
+				pointCounter: this.state.pointCounter+1,
+			})
+		}				
+	}
+
+
+
 
 	createPeaksInstance = (options, thisComponent) => {
 		
 		return new Promise(function(resolve, reject) {
-		
-
-		  Peaks.init(options, function(err, peaksInstance) {
+		  Peaks.init(options, (err, peaksInstance) => {
 
 			if (err) {
 			  console.log("uwaga error")
@@ -409,37 +357,16 @@ class AudioEditor extends Component {
 				peaksInstance.zoom.zoomOut();
 			  });
 
-			  var segmentCounter = 1;
+		
 
-				document.querySelector('button[data-action="add-segment"]').addEventListener('click', function() {
-					peaksInstance.segments.add({
-						startTime: peaksInstance.player.getCurrentTime(),
-						endTime: peaksInstance.player.getCurrentTime() + 3,
-						labelText: 'Segment ' + segmentCounter++,
-						editable: true
-					});
-				});
-
-
-				var pointCounter = 1;
-
-				document.querySelector('button[data-action="add-point"]').addEventListener('click', function() {
-					peaksInstance.points.add({
-						time: peaksInstance.player.getCurrentTime(),
-						labelText: 'Point ' + pointCounter++,
-						color: '#006eb0',
-						editable: true
-					});
-				});
-
-				
-
+				/*
 				document.querySelector('button[data-action="log-data"]').addEventListener('click', function(event) {
 					console.log("log data")
-					thisComponent.renderSegments(peaksInstance);
-					thisComponent.renderPoints(peaksInstance);
+					thisComponent.makeEditorFullWidth();
+					//thisComponent.renderSegments(peaksInstance);
+					//thisComponent.renderPoints(peaksInstance);
 				  });
-
+				  */
 
 
 				  document.querySelector('body').addEventListener('click', function(event) {
@@ -474,12 +401,14 @@ class AudioEditor extends Component {
 					"10": 5.0
 				  };
 		
+				  /*
 				  document.getElementById('amplitude-scale').addEventListener('input', function(event) {
 					var scale = amplitudeScales[event.target.value];
 		
 					peaksInstance.views.getView('zoomview').setAmplitudeScale(scale);
 					peaksInstance.views.getView('overview').setAmplitudeScale(scale);
 				  });
+				  */
 
 				  document.querySelector('button[data-action="resize"]').addEventListener('click', function(event) {
 					var zoomviewContainer = document.getElementById('zoomview-container');
@@ -572,8 +501,6 @@ class AudioEditor extends Component {
 					console.log('overview.dblclick:', time);
 				  });
 				  
-
-
 			  return resolve(peaksInstance);
 			}
 		  });
@@ -593,21 +520,6 @@ class AudioEditor extends Component {
 		  });
 	  }
 
-/*
-	  requestSegmentsData = (url) => {
-		return fetch(url)
-		  .then((jsonSegments) =>{
-			return jsonSegments;
-		  });
-	  }
-*/
-
-
-
-	
-
-
-
 	
 	componentDidUpdate = (prevProps) => {
 
@@ -626,6 +538,14 @@ class AudioEditor extends Component {
 
 	render() {
 
+
+		// widok segment edytora
+		let segmentEditor = null;
+		if(this.state.peaksInstance && (this.props.toolType=='VAD' || this.props.toolType=='DIA')){
+			segmentEditor = <SegmentEditor peaks={this.state.peaksInstance} />
+		}
+		
+		// widok edytora tekstowego
 		let transcriptWindow = null;
 
 		if(this.props.toolType == "REC"){
@@ -634,97 +554,174 @@ class AudioEditor extends Component {
 			container={this.props.containerForPreview}/>		
 		}
 
+
+		//przyciski do dodawania semgentow - nie we wszystkich narzedziach sa widoczne
+		let addSegmentPointBtns=null;
+
+		if(this.state.peaksInstance && (this.props.toolType=='VAD' || this.props.toolType=="DIA")){
+			addSegmentPointBtns = (
+				<>
+				<button data-tip data-for='addSegment' data-action="add-segment" onClick={this.addSegment}><FontAwesomeIcon icon={faGripLinesVertical} className="faIcon" /></button>
+				<ReactTooltip id="addSegment" delayShow={500}>
+					<span>Dodaj segment</span>
+				</ReactTooltip>
+	
+				<button data-tip data-for='addPoint' data-action="add-point" onClick={this.addPoint}><FontAwesomeIcon icon={faMapMarker} className="faIcon" /></button>
+				<ReactTooltip id="addPoint" delayShow={500}>
+					<span>Dodaj punkt</span>
+				</ReactTooltip>
+				</>
+			);
+		}
+
+		
+
+
+		// widok podglądu audio
+		let audioPreview = null;
 		let audioSource = this.state.audioPath;
-		let edytor = null;
+
+		let playPauseicon = null;
+		
+		if(this.state.isPlaying){
+			playPauseicon = <FontAwesomeIcon icon={faPause} className="faIcon" />
+		} else {
+			playPauseicon = <FontAwesomeIcon icon={faPlay} className="faIcon" />
+		}
 
 		if(this.props.containerForPreview == ""){
-			edytor = null
+			audioPreview = null
 		} else {
-			edytor = (
+			audioPreview = (
 				<>
 					
-					<h3>{this.props.containerForPreview.containerName}</h3>
+					<div id="demo-controls">
+							<div className="row">
+								<div className="col-12">
+									<div id="controls">
+
+										
+										<button data-tip data-for='fullscreen' data-action="resize"><FontAwesomeIcon icon={faExpand} className="faIcon" /></button>
+										<ReactTooltip id="fullscreen" delayShow={500}>
+											<span>Full screen</span>
+										</ReactTooltip>
+
+									 
+										<button data-tip data-for='playpause' data-action="play" onClick={this.togglePlaying}>{playPauseicon}</button>
+										<ReactTooltip id="playpause" delayShow={500}>
+											<span>Play/pause (Alt+l)</span>
+										</ReactTooltip>
+
+
+										<button data-tip data-for='rewind3' data-action="back-3" onClick={this.rewind3secBack}><FontAwesomeIcon icon={faHistory} className="faIcon" /> 3 sec.</button>
+										<ReactTooltip id="rewind3" delayShow={500}>
+											<span>Powtórz ostatnie 3 sek. (Alt+k)</span>
+										</ReactTooltip>
+
+										
+										<button data-tip data-for='rewind5' data-action="back-5" onClick={this.rewind5secBack}><FontAwesomeIcon icon={faHistory} className="faIcon" /> 5 sec.</button>
+										<ReactTooltip id="rewind5" delayShow={500}>
+											<span>Powtórz ostatnie 5 sek. (Alt+j)</span>
+										</ReactTooltip>
+										
+										
+										<button data-tip data-for='increaseSpeed' data-action="speed-up" onClick={this.increasePlaybackSpeed}><FontAwesomeIcon icon={faClock} className="faIcon" /> <FontAwesomeIcon icon={faLongArrowAltUp} className="faIcon" /> <span style={{fontSize:'0.7em', width:'25px', display: 'inline-block'}}>x {this.state.speedFactor}</span></button>
+										<ReactTooltip id="increaseSpeed" delayShow={500}>
+											<span>Szybciej (Alt+i)</span>
+										</ReactTooltip>
+										
+									
+										<button data-tip data-for='decreaseSpeed' data-action="slow-down" onClick={this.decreasePlaybackSpeed}><FontAwesomeIcon icon={faClock} className="faIcon" /> <FontAwesomeIcon icon={faLongArrowAltDown} className="faIcon" /><span style={{fontSize:'0.7em', width:'25px', display: 'inline-block'}}> x {this.state.speedFactor}</span></button>
+										<ReactTooltip id="decreaseSpeed" delayShow={500}>
+											<span>Wolniej (Alt+,)</span>
+										</ReactTooltip>
+
+										
+										<button data-tip data-for='zoomin' data-action="zoom-in"><FontAwesomeIcon icon={faSearchPlus} className="faIcon" /> </button>
+										<ReactTooltip id="zoomin" delayShow={500}>
+											<span>Przybliż</span>
+										</ReactTooltip>
+
+									
+										<button data-tip data-for='zoomout' data-action="zoom-out"><FontAwesomeIcon icon={faSearchMinus} className="faIcon" /> </button>
+										<ReactTooltip id="zoomout" delayShow={500}>
+											<span>Oddal</span>
+										</ReactTooltip>
+										
+										{
+											addSegmentPointBtns
+										}
+										
+										
+										
+
+										{
+
+											//<button data-action="log-data"><FontAwesomeIcon icon={faEye} className="faIcon" /></button>
+											//<input type="range" id="amplitude-scale" min="0" max="10" step="1" />
+										}
+										
+									</div>
+
+								</div>
+								<div className="col-12">
+								{
+									//<p><b>{this.props.containerForPreview.containerName}</b></p>
+								}
+								<audio id="audio" controls={false}>
+									<source src={audioSource}/>
+										Your browser does not support the audio element.
+									</audio>
+								</div>
+							</div>
+							
+							
+					</div>
+
 					<div id="waveform-container">
 						<div id="overview-container"></div>
 						<div id="zoomview-container"></div>
 					</div>
 
-					<div id="demo-controls">
-							<audio id="audio" controls="controls">
-								<source src={audioSource}/>
-								Your browser does not support the audio element.
-							</audio>
-							<div id="controls">
-								<button data-action="zoom-in"><FontAwesomeIcon icon={faSearchPlus} className="faIcon" /></button>
-								<button data-action="zoom-out"><FontAwesomeIcon icon={faSearchMinus} className="faIcon" /></button>
-								<button data-action="add-segment"><FontAwesomeIcon icon={faGripLinesVertical} className="faIcon" /></button>
-								<button data-action="add-point"><FontAwesomeIcon icon={faMapMarker} className="faIcon" /></button>
-								<button data-action="log-data"><FontAwesomeIcon icon={faEye} className="faIcon" /></button>
-								<button data-action="resize"><FontAwesomeIcon icon={faExpand} className="faIcon" /></button>
-								<input type="range" id="amplitude-scale" min="0" max="10" step="1" />
-							</div>
-					</div>
-
-					
-
-					{
-						transcriptWindow
-					}
-
-
-					<div className="log">
-						<div id="segments" className="hide">
-							<h2>Segments</h2>
-							<table>
-							<thead>
-								<tr>
-								<th>ID</th>
-								<th>Label</th>
-								<th>Start time</th>
-								<th>End time</th>
-								<th></th>
-								</tr>
-							</thead>
-							<tbody>
-							</tbody>
-							</table>
-						</div>
-
-						<div id="points" className="hide">
-							<h2>Points</h2>
-							<table>
-							<thead>
-								<tr>
-								<th>ID</th>
-								<th>Label</th>
-								<th>Time</th>
-								</tr>
-							</thead>
-							<tbody>
-							</tbody>
-							</table>
-						</div>
-					</div>
-
 					
 				</>
-			);
+			)
 		}
 
 
 
 		return (
-			<Aux>
-                <div className="AudioEditor">
-                  
+			<Hotkeys 
+					keyName=" alt+j, alt+k, alt+l, alt+i, alt+," 
+					onKeyDown={this.onKeyDown.bind(this)}
+					filter={(event) => {
+					//	console.log(event)
+					   return true;
+					 }}
+				>
+					<Aux>
+						<div className="AudioEditor">
+						
+							{
 
-					{edytor}
+								audioPreview
+							
+							}
+
+							{
+								transcriptWindow
+							}
 
 
-                </div>
-				
+							
+							{
+								segmentEditor
+							}
 
-			</Aux>
+
+						</div>
+					</Aux>
+			</Hotkeys>
 		);
 	}
 }
@@ -761,4 +758,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(AudioEditor);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AudioEditor));
