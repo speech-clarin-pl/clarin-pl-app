@@ -18,29 +18,36 @@ class SegmentsEditor extends Component {
     }
 
 
-    componentDidUpdate = (prevProps, prevState) => {
- 
-     
+
+    updateLabel = (id, newLabel) => {
+        this.props.onUpdateSegmentLabel(id, newLabel);
     }
 
+    updateStartTime = (id, newValue) => {
+        this.props.onUpdateSegmentStartTime(id, newValue);
+    }
+
+    updateEndTime = (id, newValue) => {
+        this.props.onUpdateSegmentEndTime(id, newValue);
+    }
+
+    componentDidUpdate = () => {
        
-    componentDidMount() {
-
-
     }
 
-    updateStartTime = (updatedSegment) => {
-        console.log(updatedSegment)
-        let segment = this.props.peaks.segments.getSegment(updatedSegment.id);
-        segment.update({ endTime: segment.endTime });
-    }
 
 
     renderSegments = () => {
-		//var segmentsContainer = document.getElementById('segments');
-		let segments = this.props.peaks.segments.getSegments();
-		let segmentList = segments.map((segment,i) => {
-            return <Segment segment={segment} key={segment.id} onUpdateStartTime={(updatedSegment) => this.updateStartTime(updatedSegment)} />
+		let segmentList = this.props.segments.map((segment,i) => {
+            return <Segment 
+                labelText={segment.labelText} 
+                startTime={segment.startTime}
+                endTime={segment.endTime}
+                segmentId={segment.id}
+                key={segment.id}
+                onUpdateLabel={(id, newLabel)=>this.updateLabel(id, newLabel)}
+                onUpdateStartTime={(id, newValue)=>this.updateStartTime(id, newValue)}
+                onUpdateEndTime={(id, newValue)=>this.updateEndTime(id, newValue)}/>
         });
 
         return segmentList;
@@ -52,16 +59,14 @@ class SegmentsEditor extends Component {
 
         let segments = this.renderSegments();
 
-       
+        
 		return (
 			<Aux>
 
-
-              <h1>AAAAA</h1>
                 <div className="SegmentsEditor">
                     <div className="log">
                         <div id="segments">
-                            <h2>Segmenty</h2>
+                            <h3>Segmenty</h3>
                             <table>
                             <thead>
                                 <tr>

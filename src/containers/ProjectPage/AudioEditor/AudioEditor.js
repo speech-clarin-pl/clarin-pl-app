@@ -469,10 +469,12 @@ class AudioEditor extends Component {
 				  });
 		
 				  peaksInstance.on('segments.dragend', function(segment, startMarker) {
+					thisComponent.updateSegment(segment);
 					console.log('segments.dragend:', segment, startMarker);
 				  });
 		
 				  peaksInstance.on('segments.dragged', function(segment, startMarker) {
+					
 					console.log('segments.dragged:', segment, startMarker);
 				  });
 		
@@ -521,7 +523,7 @@ class AudioEditor extends Component {
 	  }
 
 	
-	componentDidUpdate = (prevProps) => {
+	componentDidUpdate = (prevProps, prevState) => {
 
 		//kiedy tylko zmieni się container, wtedy ładuje audio i binary data z serwera i uruchamiam podgląd
 		if(prevProps.containerForPreview !== this.props.containerForPreview){
@@ -529,20 +531,79 @@ class AudioEditor extends Component {
 			this.loadNewAudioToEditor();
 			
 		}
+
 	}
 
 	componentDidMount = () => {
 		this.loadNewAudioToEditor();
+	}
+
+	updateSegment = (newSegment) => {
+		//robie kopie pieaksInstance aby odswiezyc
+	    let segment = this.state.peaksInstance.segments.getSegment(newSegment.id);
+		segment.update({...newSegment})
+
+		let peaksCopy = Object.assign({},this.state.peaksInstance);
+		this.setState({
+			peaksInstance: peaksCopy,
+		})
+
+	};
+
+	updateSegmentLabel = (id, label) => {
+		let segment = this.state.peaksInstance.segments.getSegment(id);
+		segment.update({labelText: label})
+
+		//robie kopie pieaksInstance aby odswiezyc
+		let peaksCopy = Object.assign({},this.state.peaksInstance);
+		this.setState({
+			peaksInstance: peaksCopy,
+		})
+
+		console.log("update Segment Label " + id + " " + label);
+	}
+
+	updateSegmentStartTime = (id, newValue) => {
+		let segment = this.state.peaksInstance.segments.getSegment(id);
+		segment.update({startTime: newValue})
+
+		//robie kopie pieaksInstance aby odswiezyc
+		let peaksCopy = Object.assign({},this.state.peaksInstance);
+		this.setState({
+			peaksInstance: peaksCopy,
+		})
+
+		console.log("update Segment Start Time  " + id + " " + newValue);
+	}
+
+	updateSegmentEndTime = (id, newValue) => {
+		let segment = this.state.peaksInstance.segments.getSegment(id);
+		segment.update({endTime: newValue})
+
+		//robie kopie pieaksInstance aby odswiezyc
+		let peaksCopy = Object.assign({},this.state.peaksInstance);
+		this.setState({
+			peaksInstance: peaksCopy,
+		})
+
+		console.log("update Segment End Time " + id + " " + newValue);
 	}
 	
 
 	render() {
 
 
+
 		// widok segment edytora
 		let segmentEditor = null;
 		if(this.state.peaksInstance && (this.props.toolType=='VAD' || this.props.toolType=='DIA')){
-			segmentEditor = <SegmentEditor peaks={this.state.peaksInstance} />
+			console.log("RENDER SEGMENT JESZCZE RAZ")
+			console.log(this.state.peaksInstance.segments.getSegments())
+			segmentEditor = <SegmentEditor 
+				segments={this.state.peaksInstance.segments.getSegments()}
+				onUpdateSegmentLabel={(id, label)=>this.updateSegmentLabel(id, label)} 
+				onUpdateSegmentStartTime={(id, newValue)=>this.updateSegmentStartTime(id, newValue)}
+				onUpdateSegmentEndTime={(id, newValue)=>this.updateSegmentEndTime(id, newValue)} />
 		}
 		
 		// widok edytora tekstowego

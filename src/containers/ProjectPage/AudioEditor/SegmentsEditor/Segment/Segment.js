@@ -10,103 +10,97 @@ class Segment extends Component {
     
     constructor(props){
         super(props)
-        
+        /*
         this.state = {
-            segment: this.props.segment,
+                labelText: '',
+                startTime: 0,
+                endTime: 1,
+                segmentId: '',
         }
+        */
        
     }
 
     componentDidMount() {
-
+        /*
+        this.setState({
+            labelText: this.props.labelText,
+            startTime: this.props.startTime,
+            endTime: this.props.endTime,
+            segmentId: this.props.segmentId,
+        })
+        */
     }
 
 
     componentDidUpdate = (prevProps, prevState) => {
-        
+       
     }
 
     updateStartTimeSegment = (e) => {
-        let segment = this.state.segment;
         let element = e.target;
-        let id = element.getAttribute('data-id');
-        if(segment){
+        if(element){
             let startTime = parseFloat(element.value);
 
             if (startTime < 0) {
 				startTime = 0;
-				element.value = 0;
             }
             
-            if (startTime >= segment.endTime) {
-				startTime = segment.endTime - 0.1;
-				element.value = startTime;
+            if (startTime >= this.props.endTime) {
+				startTime = this.props.endTime - 0.1;
             }
+
+            this.props.onUpdateStartTime(this.props.segmentId, parseFloat(startTime) );
+           // this.props.onUpdateStartTime(this.state.segmentId, parseFloat(startTime) );
             
-           // let updatedSegment = Object.assign({},segment);
-           // updatedSegment.update({ startTime: startTime });
-
-           let updatedSegment = {
-                ...segment,
-                startTime: startTime
-            }
-
-            this.setState({
-                segment: updatedSegment,
-            })
+          //  this.setState({
+          //      startTime: parseFloat(startTime),
+          //  })
         }
+
+        
+      
     }
 
 
     updateEndTimeSegment = (e) => {
-        let segment = this.state.segment;
+
         let element = e.target;
-        let id = element.getAttribute('data-id');
-        if(segment){
+        if(element){
             let endTime = parseFloat(element.value);
 
             if (endTime < 0) {
-				endTime = 0;
-				element.value = 0;
+				endTime = 0.1;
 			}
 
-			if (endTime <= segment.startTime) {
-				endTime = segment.startTime + 0.1;
-				element.value = endTime;
-			}
-            
-            //let updatedSegment = Object.assign({},segment);
-            //updatedSegment.update({ endTime: endTime });
-
-            let updatedSegment = {
-                ...segment,
-                endTime: endTime
+			if (endTime <= this.props.startTime) {
+				endTime = this.props.startTime + 0.1;
             }
-            
 
-            this.setState({
-                segment: updatedSegment,
-            })
+            this.props.onUpdateEndTime(this.props.segmentId, parseFloat(endTime) );
+            
+        //    this.props.onUpdateEndTime(this.state.segmentId, parseFloat(endTime) );
+            
+          //  this.setState({
+          //      endTime: parseFloat(endTime),
+          //  })
         }
     }
 
     updateSegmentLabel = (e) => {
-        let segment = this.state.segment;
-        let element = e.target;
-        var id = element.getAttribute('data-id');
-        var labelText = element.labelText;
 
-        if(segment){
-            let updatedSegment = {
-                ...segment,
-                labelText: labelText
-            }
-            
-            //Object.assign({},segment);
-            //updatedSegment.labelText: labelText });
-            this.setState({
-                segment: updatedSegment,
-            })
+        let element = e.target;
+     
+        if(element){
+            var labelText = element.value;
+
+            this.props.onUpdateLabel(this.props.segmentId, labelText );
+          //  this.props.onUpdateLabel(this.state.segmentId, labelText );
+
+          //  this.setState({
+          //      labelText: labelText,
+          //  })
+  
         }
     }
 
@@ -116,16 +110,19 @@ class Segment extends Component {
 	render() {
 
 
+        //console.log(this.props.startTime);
+       
+
 		return (
 			<Aux>
                 <tr className="Segment">
-                    <td>{this.state.segment.id}</td>
-                    <td><input data-action="update-segment-label" onChange={this.updateSegmentLabel} type="text" value={this.state.segment.labelText} data-id={this.state.segment.id}/></td>
-                    <td><input data-action="update-segment-start-time" onChange={this.updateStartTimeSegment} type="number" value={this.state.segment.startTime} data-id={this.state.segment.id}/></td>
-                    <td><input data-action="update-segment-end-time" onChange={this.updateEndTimeSegment} type="number" value={this.state.segment.endTime} data-id={this.state.segment.id}/></td>
-                    <td><a href={'#'+this.state.segment.id} data-action="play-segment" data-id={this.state.segment.id}>Play</a></td>
-                    <td><a href={'#'+this.state.segment.id} data-action="remove-segment" data-id={this.state.segment.id}>Remove</a></td>
-                    <td><a href={'#'+this.state.segment.id} data-action="merge-segment" data-id={this.state.segment.id}>Merge</a></td>
+                    <td>{this.props.segmentId}</td>
+                    <td><input data-action="update-segment-label" onChange={this.updateSegmentLabel} type="text" value={this.props.labelText} data-id={this.props.segmentId}/></td>
+                    <td><input data-action="update-segment-start-time" onChange={this.updateStartTimeSegment} type="number" value={this.props.startTime} data-id={this.props.segmentId}/></td>
+                    <td><input data-action="update-segment-end-time" onChange={this.updateEndTimeSegment} type="number" value={this.props.endTime} data-id={this.props.segmentId}/></td>
+                    <td><a href={'#'+this.props.segmentId} data-action="play-segment" data-id={this.props.segmentId}>Play</a></td>
+                    <td><a href={'#'+this.props.segmentId} data-action="remove-segment" data-id={this.props.segmentId}>Remove</a></td>
+                    <td><a href={'#'+this.props.segmentId} data-action="merge-segment" data-id={this.props.segmentId}>Merge</a></td>
                 </tr>
 			</Aux>
 		);

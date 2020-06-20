@@ -30,7 +30,6 @@ const override = css`
 
 class ToolItem extends Component {
 
- 
 
     componentDidUpdate = (prevProps,prevState) => {
 
@@ -220,6 +219,9 @@ const mapStateToProps = state => {
         userId: state.projectR.currentProjectOwner,
         projectId: state.projectR.currentProjectID,
         token: state.homeR.token,
+
+
+
 
         //containersForRECO: state.recR.filesToUpload,
         //containersFor
