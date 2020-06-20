@@ -539,9 +539,58 @@ class AudioEditor extends Component {
 	}
 
 	updateSegment = (newSegment) => {
+
+		let segmentToUpdate = newSegment;
+		//tutaj sprawdzam czy jakiś segment nie nachodzi już na istniejący.
+		
+		//iteruje po obecnie istniejących segmentach
+		let allsegments = this.state.peaksInstance.segments.getSegments();
+		let poprzedniseg = null;
+		for(let i=0;i<allsegments.length;i++){
+			let currentseg = allsegments[i];
+			// iteruje po kolei i sprawdzam czy startTime obecnego jest mniejszy niż endTime poprzedniego
+			if(i>0){
+				if(currentseg.startTime < poprzedniseg.endTime){
+					//alert("nachodzą się")
+					//tutaj połączyć obecny z poprzednim segmentem
+					let startTimeNowy = poprzedniseg.startTime;
+					let endTimeNowy = currentseg.endTime;
+					let labelNowy = poprzedniseg.labelText + '-' + currentseg.labelText;
+					let idNowy = poprzedniseg.id;
+
+					//usuwam poprzedni o obecny segment
+					this.state.peaksInstance.segments.removeById(poprzedniseg.id);
+					this.state.peaksInstance.segments.removeById(currentseg.id);
+
+					//dodaje jeden dluższy
+					this.state.peaksInstance.segments.add({
+						startTime: startTimeNowy,
+						endTime: endTimeNowy,
+						editable: true,
+						color: '#394b55',
+						labelText: labelNowy,
+						id: idNowy,
+					})
+
+					segmentToUpdate = this.state.peaksInstance.segments.getSegment(idNowy);
+
+					
+					break;
+				}
+			}
+
+			poprzedniseg = currentseg;
+		}
+
+
+		//------------------------
+
 		//robie kopie pieaksInstance aby odswiezyc
-	    let segment = this.state.peaksInstance.segments.getSegment(newSegment.id);
-		segment.update({...newSegment})
+	    let segment = this.state.peaksInstance.segments.getSegment(segmentToUpdate.id);
+		segment.update({
+			...segmentToUpdate,
+			startTime: parseFloat(segmentToUpdate.startTime),
+			endTime: parseFloat(segmentToUpdate.endTime)})
 
 		let peaksCopy = Object.assign({},this.state.peaksInstance);
 		this.setState({
