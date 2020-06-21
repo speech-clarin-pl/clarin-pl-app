@@ -52,6 +52,55 @@ return dispatch => {
 }
 
 
+
+// ###################################################################
+// ######## zapisywanie segmentów ##########
+// ###################################################################
+
+export const saveVADSegmentsSuccess = (message, containerId, toolType) => {
+    return {
+        type: actionTypes.SAVE_VAD_SEGMENTS_SUCCESS,
+        message: message,
+        containerId: containerId,
+        toolType: toolType,
+    }
+}
+
+export const saveVADSegmentsFailed = (error, containerId, toolType) => {
+    return {
+        type: actionTypes.SAVE_VAD_SEGMENTS_FAILED,
+        error: error,
+        containerId: containerId,
+        toolType: toolType,
+    }
+}
+
+export const saveVADSegments = (container, toolType, token, segments) => {
+return dispatch => {
+
+    console.log("zapisuje VAD segmenty")
+    axios.put('/vad/saveSegments', {
+        segments: segments,
+        toolType: toolType,
+        container: container,
+    },{
+        headers: {
+            Authorization: 'Bearer ' + token
+        }
+    })
+    .then(response => {
+        console.log(response)
+        dispatch(saveVADSegmentsSuccess(response.data.message, container._id, toolType));
+      //  dispatch(closeModal());
+    })
+    .catch(error => {
+        console.log(error)
+       dispatch(saveVADSegmentsFailed(error, container._id, toolType));
+    });
+}
+}
+
+
 // ###################################################################
 // ######## zapisywanie transkrypcji ##########
 // ###################################################################

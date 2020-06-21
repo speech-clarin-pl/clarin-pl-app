@@ -31,6 +31,7 @@ export {
     saveTranscription,
     transcriptionChanged,
     loadTranscription,
+    saveVADSegments,
 } from './toolActions/audioEditor';
 
 export {

@@ -4,6 +4,7 @@ import './SegmentsEditor.css';
 import { connect } from 'react-redux';
 
 import Segment from "./Segment/Segment";
+import ButtonLeftBar from '../../../../components/UI/ButtonLeftBar/ButtonLeftBar';
 
 
 class SegmentsEditor extends Component {
@@ -11,9 +12,7 @@ class SegmentsEditor extends Component {
     constructor(props){
         super(props)
         
-        this.state = {
-
-        }
+ 
        
     }
 
@@ -21,19 +20,37 @@ class SegmentsEditor extends Component {
 
     updateLabel = (id, newLabel) => {
         this.props.onUpdateSegmentLabel(id, newLabel);
+
     }
 
     updateStartTime = (id, newValue) => {
         this.props.onUpdateSegmentStartTime(id, newValue);
+
     }
 
     updateEndTime = (id, newValue) => {
         this.props.onUpdateSegmentEndTime(id, newValue);
+
+    }
+
+
+    componentWillMount = () => {
+
     }
 
     componentDidUpdate = () => {
        
     }
+
+    playSegment = (id) => {
+        this.props.onPlaySegment(id);
+    }
+
+    removeSegment = (id) => {
+        this.props.onRemoveSegment(id);
+ 
+    }
+
 
 
 
@@ -41,24 +58,30 @@ class SegmentsEditor extends Component {
 		let segmentList = this.props.segments.map((segment,i) => {
             return <Segment 
                 labelText={segment.labelText} 
-                startTime={segment.startTime}
-                endTime={segment.endTime}
+                startTime={parseFloat(segment.startTime.toFixed(2))}
+                endTime={parseFloat(segment.endTime.toFixed(2))}
                 segmentId={segment.id}
                 key={segment.id}
                 onUpdateLabel={(id, newLabel)=>this.updateLabel(id, newLabel)}
                 onUpdateStartTime={(id, newValue)=>this.updateStartTime(id, newValue)}
-                onUpdateEndTime={(id, newValue)=>this.updateEndTime(id, newValue)}/>
+                onUpdateEndTime={(id, newValue)=>this.updateEndTime(id, newValue)}
+                onPlaySegment={(id)=>this.playSegment(id)}
+                onRemoveSegment={(id)=>this.removeSegment(id)}/>
         });
 
         return segmentList;
     };
     
+    saveSegments = () => {
+        this.props.onSaveSegmentChanges();
+    }
 
        
 	render() {
 
         let segments = this.renderSegments();
 
+        let czyDisabled = !this.props.czyZmieniono; 
         
 		return (
 			<Aux>
@@ -83,6 +106,15 @@ class SegmentsEditor extends Component {
                             </table>
                         </div>
                     </div>
+
+
+                    <ButtonLeftBar 
+                            napis={this.props.czyZmieniono?"Zapisz zmiany segmentów":"Edytuj segmenty"}
+                            iconType="file"
+                            icon={null}
+                            customeStyle={{textAlign:'center', marginBottom: '20px'}}
+                            disabled={czyDisabled}
+                            whenClicked={this.saveSegments}/>
                 </div>
 			</Aux>
 		);
@@ -100,7 +132,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 	return {
 
-       // onSaveTranscription: (container, toolType, token, transcription) => dispatch(audioEditorActions.saveTranscription(container, toolType, token, transcription)),
+       // onSaveSegments: (container, toolType, token, segments) => dispatch(audioEditorActions.saveTranscription(container, toolType, token, transcription)),
 
 	}
 }

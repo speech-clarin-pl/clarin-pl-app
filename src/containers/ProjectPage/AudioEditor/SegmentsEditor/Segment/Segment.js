@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import Aux from '../../../../../hoc/Auxiliary';
 import './Segment.css';
 import { connect } from 'react-redux';
-
-
+import { faTrash, faPlay } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 class Segment extends Component {
@@ -57,9 +57,6 @@ class Segment extends Component {
           //      startTime: parseFloat(startTime),
           //  })
         }
-
-        
-      
     }
 
 
@@ -105,6 +102,13 @@ class Segment extends Component {
     }
 
 
+    playSegment = () => {
+        this.props.onPlaySegment(this.props.segmentId);
+    }
+
+    removeSegment = () => {
+        this.props.onRemoveSegment(this.props.segmentId);
+    }
 
        
 	render() {
@@ -117,13 +121,23 @@ class Segment extends Component {
 			<Aux>
                 <tr className="Segment">
                     <td>{this.props.segmentId}</td>
-                    <td><input data-action="update-segment-label" onChange={this.updateSegmentLabel} type="text" value={this.props.labelText} data-id={this.props.segmentId}/></td>
+                    <td><input className="szerzej" data-action="update-segment-label" onChange={this.updateSegmentLabel} type="text" value={this.props.labelText} data-id={this.props.segmentId}/></td>
                     <td><input data-action="update-segment-start-time" onChange={this.updateStartTimeSegment} type="number" value={this.props.startTime} data-id={this.props.segmentId}/></td>
                     <td><input data-action="update-segment-end-time" onChange={this.updateEndTimeSegment} type="number" value={this.props.endTime} data-id={this.props.segmentId}/></td>
-                    <td><a href={'#'+this.props.segmentId} data-action="play-segment" data-id={this.props.segmentId}>Play</a></td>
-                    <td><a href={'#'+this.props.segmentId} data-action="remove-segment" data-id={this.props.segmentId}>Remove</a></td>
-                    <td><a href={'#'+this.props.segmentId} data-action="merge-segment" data-id={this.props.segmentId}>Merge</a></td>
-                </tr>
+                    
+                    <td><a href={'#'+this.props.segmentId} data-action="remove-segment" data-id={this.props.segmentId}>Usuń</a></td>
+                    
+                    
+                    {
+                      //    <td><a href={'#'+this.props.segmentId} data-action="play-segment" data-id={this.props.segmentId}>Play</a></td>
+                  //      <td><FontAwesomeIcon icon={faTrash} className="faIcon" onClick={this.removeSegment} /></td>
+                  //       <td><FontAwesomeIcon icon={faPlay} className="faIcon" onClick={this.playSegment}/></td>
+                  //  <td><a href={'#'+this.props.segmentId} data-action="play-segment" data-id={this.props.segmentId}><button><FontAwesomeIcon icon={faPlay} className="faIcon" /></button></a></td>
+                  //  <td><a href={'#'+this.props.segmentId} data-action="remove-segment" data-id={this.props.segmentId}><button><FontAwesomeIcon icon={faTrash} className="faIcon" /></button></a></td>
+                    
+                    }
+                    
+                    </tr>
 			</Aux>
 		);
 	}

@@ -51,6 +51,9 @@ class AudioEditor extends Component {
 		speedFactor: 1,
 		segmentCounter: 1,
 		pointCounter: 1,
+		ifSegments: false,
+		segments: [],
+		czyZmienionoSegmenty: false,
 	}
 
 
@@ -169,6 +172,58 @@ class AudioEditor extends Component {
 	}
 
 
+	initializePeaksFirstTime = (audioPathok, datPathok, segments) => {
+
+		//arraybuffer: "http://localhost:1234/repoFiles/5e4b09e086f4ed663259fae9/5e9e175af4192d661ebf49dd/5e9e175af4192d661ebf49de/kleska.dat?api_key="+this.props.token,
+		
+		
+		let options = {
+			containers: {
+				zoomview: document.getElementById('zoomview-container'),
+				overview: document.getElementById('overview-container')
+			},
+			mediaElement: document.querySelector('audio'),
+			dataUri: {
+			  arraybuffer: datPathok,
+			},
+
+			zoomWaveformColor: 'rgba(52, 152, 219, 1)',
+			overviewWaveformColor: 'rgba(52, 152, 219, 0.3)',
+			overviewHighlightColor: 'rgba(52, 152, 219, 0.4)',
+			segmentColor: 'rgba(57, 75, 85, 1)',
+			randomizeSegmentColor: false,
+  			segmentStartMarkerColor: 'rgba(255, 87, 34, 1)',
+  			segmentEndMarkerColor: 'rgba(255, 152, 0, 1)',
+			keyboard: true,
+			nudgeIncrement: 0.1,
+			zoomLevels: [128, 256, 512, 1024, 2048, 4096],
+			showPlayheadTime: true,
+			emitCueEvents: true,
+			showPlayheadTime: false,
+			segments: segments,
+  			
+		  //	createSegmentMarker: this.createSegmentMarker,
+          //  createSegmentLabel: this.createSegmentLabel,
+          //  createPointMarker: this.createPointMarker
+
+		  };
+
+
+		  this.createPeaksInstance(options,this)
+          .then(peaksInstance => {
+			this.setState({
+				peaksInstance: peaksInstance,
+				audioPath:audioPathok,
+				datPath:datPathok,
+				segments: segments,
+				czyZmienionoSegmenty: false,
+			});
+	
+			//this.setState({peaksInstance: peaksInstance, ifSegments: segments.length>0?true: false});
+		  }, this.errorHandler);
+	}
+
+
 	// ładuje nowy plik do edytora
 	loadNewAudioToEditor = () => {
 		if(this.props.containerForPreview !== undefined){
@@ -212,38 +267,54 @@ class AudioEditor extends Component {
 				default:
 					console.log("segments default");
 					break;
-			}			
-
+			}	
+			
+			
 
 			if(this.state.audioPath == '' || this.state.datPath == ''){
 				this.initializePeaksFirstTime(audioPath, datPath, segments)
 			} else {
-				this.setState({
-					audioPath:audioPath,
-					datPath:datPath
-				});
-			}
+				
+		
 
-			
-			if(this.state.peaksInstance){
-				this.requestWaveformData(datPath)
-				.then(waveformData => {
-					return this.createSources(waveformData, segments);
-				})
-				.then(source => {
+				if(this.state.peaksInstance){
+					this.requestWaveformData(datPath)
+					.then(waveformData => {
+						return this.createSources(waveformData, segments);
+					})
+					.then(source => {
 
-					this.state.peaksInstance.segments.removeAll();
-					if(source.segments){
-						this.state.peaksInstance.segments.add(source.segments);
-					}
-
-					this.state.peaksInstance.setSource(source, (error) => {
-						if (error) {
-						  console.error('setSource error', error);
+						this.state.peaksInstance.segments.removeAll();
+						if(source.segments){
+							this.state.peaksInstance.segments.add(source.segments);
 						}
-					  });
 
-				}, this.errorHandler);
+
+						this.state.peaksInstance.setSource(source, function(error){
+							if (error) {
+							console.error('setSource error', error);
+							}
+						});
+
+						this.setState({
+							audioPath:audioPath,
+							datPath:datPath,
+							segments: this.state.peaksInstance.segments.getSegments(),
+							czyZmienionoSegmenty: false,
+						});
+
+
+						//aby odwswiezyc liste segmentow
+						/*
+						let newPeaks = Object.assign({},this.state.peaksInstance);
+						this.setState({
+							peaksInstance: newPeaks,
+						})
+						*/
+
+					}, this.errorHandler);
+				}
+
 			}
 		}
 	}
@@ -262,59 +333,24 @@ class AudioEditor extends Component {
 
 
 
-	initializePeaksFirstTime = (audioPathok, datPathok, segments) => {
 
-		//arraybuffer: "http://localhost:1234/repoFiles/5e4b09e086f4ed663259fae9/5e9e175af4192d661ebf49dd/5e9e175af4192d661ebf49de/kleska.dat?api_key="+this.props.token,
-		
-		this.setState({
-			audioPath:audioPathok,
-			datPath:datPathok
-		});
-
-		let options = {
-			containers: {
-				zoomview: document.getElementById('zoomview-container'),
-				overview: document.getElementById('overview-container')
-			},
-			mediaElement: document.querySelector('audio'),
-			dataUri: {
-			  arraybuffer: datPathok,
-			},
-
-			zoomWaveformColor: 'rgba(52, 152, 219, 1)',
-			overviewWaveformColor: 'rgba(52, 152, 219, 0.3)',
-			overviewHighlightColor: 'rgba(52, 152, 219, 0.4)',
-			keyboard: true,
-			nudgeIncrement: 0.1,
-			zoomLevels: [128, 256, 512, 1024, 2048, 4096],
-			showPlayheadTime: true,
-			emitCueEvents: true,
-			showPlayheadTime: false,
-			segments: segments,
-		  //	createSegmentMarker: this.createSegmentMarker,
-          //  createSegmentLabel: this.createSegmentLabel,
-          //  createPointMarker: this.createPointMarker
-
-		  };
-
-
-		  this.createPeaksInstance(options,this)
-          .then(peaksInstance => {
-			this.setState({peaksInstance: peaksInstance});
-		  }, this.errorHandler);
-	}
 
 	addSegment = () => {
 		if(this.state.peaksInstance){
-			this.state.peaksInstance.segments.add({
+
+			let newSegment = {
 				startTime: this.state.peaksInstance.player.getCurrentTime(),
 				endTime: this.state.peaksInstance.player.getCurrentTime() + 3,
 				labelText: 'Segment ' + this.state.segmentCounter,
 				editable: true
-			});
+			};
+
+			this.state.peaksInstance.segments.add(newSegment);
 
 			this.setState({
 				segmentCounter: this.state.segmentCounter+1,
+				segments: [...this.state.peaksInstance.segments.getSegments()],
+				czyZmienionoSegmenty: true,
 			})
 		}
 	}
@@ -358,7 +394,6 @@ class AudioEditor extends Component {
 			  });
 
 		
-
 				/*
 				document.querySelector('button[data-action="log-data"]').addEventListener('click', function(event) {
 					console.log("log data")
@@ -558,7 +593,7 @@ class AudioEditor extends Component {
 					let labelNowy = poprzedniseg.labelText + '-' + currentseg.labelText;
 					let idNowy = poprzedniseg.id;
 
-					//usuwam poprzedni o obecny segment
+					//usuwam poprzedni i obecny segment
 					this.state.peaksInstance.segments.removeById(poprzedniseg.id);
 					this.state.peaksInstance.segments.removeById(currentseg.id);
 
@@ -582,77 +617,159 @@ class AudioEditor extends Component {
 			poprzedniseg = currentseg;
 		}
 
+		this.setState({
+			segments: [...this.state.peaksInstance.segments.getSegments()],
+			czyZmienionoSegmenty: true,
+		})
+
 
 		//------------------------
 
 		//robie kopie pieaksInstance aby odswiezyc
-	    let segment = this.state.peaksInstance.segments.getSegment(segmentToUpdate.id);
-		segment.update({
-			...segmentToUpdate,
-			startTime: parseFloat(segmentToUpdate.startTime),
-			endTime: parseFloat(segmentToUpdate.endTime)})
+	   // let segment = this.state.peaksInstance.segments.getSegment(segmentToUpdate.id);
+		//segment.update({
+		//	...segmentToUpdate,
+		//	startTime: parseFloat(segmentToUpdate.startTime),
+		//	endTime: parseFloat(segmentToUpdate.endTime)})
 
+		/*
 		let peaksCopy = Object.assign({},this.state.peaksInstance);
 		this.setState({
 			peaksInstance: peaksCopy,
 		})
-
+		*/
+	
+		
 	};
 
 	updateSegmentLabel = (id, label) => {
 		let segment = this.state.peaksInstance.segments.getSegment(id);
 		segment.update({labelText: label})
 
+		this.setState({
+			segments: [...this.state.peaksInstance.segments.getSegments()],
+			czyZmienionoSegmenty: true,
+		})
+
 		//robie kopie pieaksInstance aby odswiezyc
+	
+		/*
 		let peaksCopy = Object.assign({},this.state.peaksInstance);
 		this.setState({
 			peaksInstance: peaksCopy,
 		})
+		*/
+	
+		
 
 		console.log("update Segment Label " + id + " " + label);
 	}
 
 	updateSegmentStartTime = (id, newValue) => {
 		let segment = this.state.peaksInstance.segments.getSegment(id);
-		segment.update({startTime: newValue})
+		segment.update({startTime: parseFloat(newValue)})
+
+		this.setState({
+			segments: [...this.state.peaksInstance.segments.getSegments()],
+			czyZmienionoSegmenty: true,
+		})
+
 
 		//robie kopie pieaksInstance aby odswiezyc
+		/*
 		let peaksCopy = Object.assign({},this.state.peaksInstance);
 		this.setState({
 			peaksInstance: peaksCopy,
 		})
+		*/
 
 		console.log("update Segment Start Time  " + id + " " + newValue);
 	}
 
 	updateSegmentEndTime = (id, newValue) => {
 		let segment = this.state.peaksInstance.segments.getSegment(id);
-		segment.update({endTime: newValue})
+		segment.update({endTime: parseFloat(newValue)})
+
+		this.setState({
+			segments: [...this.state.peaksInstance.segments.getSegments()],
+			czyZmienionoSegmenty: true,
+		})
+
 
 		//robie kopie pieaksInstance aby odswiezyc
+		/*
 		let peaksCopy = Object.assign({},this.state.peaksInstance);
 		this.setState({
 			peaksInstance: peaksCopy,
 		})
+		*/
 
 		console.log("update Segment End Time " + id + " " + newValue);
+	}
+
+	/*
+	playSegment = (id) => {
+		console.log("play segment")
+		let segment = this.state.peaksInstance.segments.getSegment(id);
+		this.state.peaksInstance.player.playSegment(segment);
+	}
+
+	removeSegment = (id) => {
+		console.log("remove segment")
+		let segment = this.state.peaksInstance.segments.getSegment(id);
+		this.state.peaksInstance.segments.removeById(segment);
+
+		this.setState({
+			segments: [...this.state.peaksInstance.segments.getSegments()],
+		})
+	}
+	*/
+
+	saveSegmentChanges = () => {
+
+		//konwertuje segmenty z peaks js na bardziej uzyteczne
+
+		let simplerSegments = this.state.peaksInstance.segments.getSegments().map((segment,i)=>{
+			return {
+				startTime: parseFloat(segment.startTime).toFixed(2),
+				endTime: parseFloat(segment.endTime).toFixed(2),
+				labelText: segment.labelText,
+				editable: true,
+				color: '#394b55',
+			}
+		})
+
+		if(this.props.toolType == "VAD"){
+			this.props.onSaveVADSegments(this.props.containerForPreview, this.props.toolType, this.props.token, simplerSegments);
+		}
 	}
 	
 
 	render() {
 
-
-
 		// widok segment edytora
 		let segmentEditor = null;
 		if(this.state.peaksInstance && (this.props.toolType=='VAD' || this.props.toolType=='DIA')){
-			console.log("RENDER SEGMENT JESZCZE RAZ")
-			console.log(this.state.peaksInstance.segments.getSegments())
-			segmentEditor = <SegmentEditor 
+			if(this.state.segments.length > 0){
+				console.log("UPDATE")
+				segmentEditor = <SegmentEditor 
+				czyZmieniono={this.state.czyZmienionoSegmenty}
 				segments={this.state.peaksInstance.segments.getSegments()}
 				onUpdateSegmentLabel={(id, label)=>this.updateSegmentLabel(id, label)} 
 				onUpdateSegmentStartTime={(id, newValue)=>this.updateSegmentStartTime(id, newValue)}
-				onUpdateSegmentEndTime={(id, newValue)=>this.updateSegmentEndTime(id, newValue)} />
+				onUpdateSegmentEndTime={(id, newValue)=>this.updateSegmentEndTime(id, newValue)}
+				onSaveSegmentChanges={this.saveSegmentChanges}
+				/>
+				//onPlaySegment={(id)=>this.playSegment(id)}
+				//onRemoveSegment={(id)=>this.removeSegment(id)}
+
+				//segmentEditor = <SegmentEditor 
+				//segments={this.state.peaksInstance.segments.getSegments()}
+				//onUpdateSegmentLabel={(id, label)=>this.updateSegmentLabel(id, label)} 
+				//onUpdateSegmentStartTime={(id, newValue)=>this.updateSegmentStartTime(id, newValue)}
+				//onUpdateSegmentEndTime={(id, newValue)=>this.updateSegmentEndTime(id, newValue)} />
+			}
+			
 		}
 		
 		// widok edytora tekstowego
@@ -772,12 +889,13 @@ class AudioEditor extends Component {
 										}
 										
 									</div>
+									
+									<p><b>{this.props.containerForPreview.containerName}</b></p>
+								
 
 								</div>
 								<div className="col-12">
-								{
-									//<p><b>{this.props.containerForPreview.containerName}</b></p>
-								}
+								
 								<audio id="audio" controls={false}>
 									<source src={audioSource}/>
 										Your browser does not support the audio element.
@@ -860,6 +978,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
 	return {
+
+		onSaveVADSegments: (container, toolType, token, segments) => dispatch(audioEditorActions.saveVADSegments(container, toolType, token, segments)),
+
 		 // onLoadAudioForPreview: (container, toolType, token) => dispatch(audioEditorActions.loadAudioForPreview(container, toolType, token)),
          // onLoadBinaryForPreview: (container, toolType, token) => dispatch(audioEditorActions.loadBinaryForPreview(container, toolType, token)),
 		//onOpenModalHandler: () => dispatch(segmentActions.openModalProject()),
