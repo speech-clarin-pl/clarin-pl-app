@@ -39,22 +39,34 @@ import TextEditor from './TextEditor/TextEditor';
 import SegmentEditor from './SegmentsEditor/SegmentsEditor';
 import Hotkeys from 'react-hot-keys';
 
+import {createNotification, loader} from '../../../index';
+
 
 class AudioEditor extends Component {
 
-	state = {
-		audioPath: '',
-		datPath: '',
-		peaksInstance: null,
-		isPlaying: false,
-		odliczanie: null,
-		speedFactor: 1,
-		segmentCounter: 1,
-		pointCounter: 1,
-		ifSegments: false,
-		segments: [],
-		czyZmienionoSegmenty: false,
-	}
+	constructor(props) {
+
+		super(props);
+
+		this.state = {
+			audioPath: '',
+			datPath: '',
+			segments: [],
+			isPlaying: false,
+			speedFactor: 1,
+			odliczanie: null,
+			isLoading: false,
+			czyZmienionoSegmenty: false,
+			currentSegments: [], //w przyjaznej formie
+		}
+
+		this.audioPlayer = React.createRef();
+
+		this.peaks = null;
+
+	  }
+
+	
 
 
 	onKeyDown(keyName, e, handle) {
@@ -102,6 +114,20 @@ class AudioEditor extends Component {
 		
 	 }
 
+	 togglePlaying = () => {
+			if(this.state.isPlaying){
+				this.peaks.player.pause();
+				this.setState({
+					isPlaying: false
+				})
+			} else {
+				this.peaks.player.play();
+				this.setState({
+					isPlaying: true
+				})
+			}
+	 }
+
 	 rewind3secBack = () => {
 		this.playBack(3);
 	 }
@@ -110,16 +136,16 @@ class AudioEditor extends Component {
 		this.playBack(5);
 	 }
 
-	 playBack = (seconds) => {
-		if(this.state.peaksInstance){
 
-			let currentTime = this.state.peaksInstance.player.getCurrentTime();
+	 playBack = (seconds) => {
+
+			let currentTime = this.peaks.player.getCurrentTime();
 			let timeBack = currentTime - seconds;
 			if(timeBack<0){
 				timeBack = 0;
 			}
-			this.state.peaksInstance.player.seek(timeBack);
-			this.state.peaksInstance.player.play();
+			this.peaks.player.seek(timeBack);
+			this.peaks.player.play();
 
 			
 			this.setState({
@@ -135,7 +161,7 @@ class AudioEditor extends Component {
 			
 			let odliczanieTemp = this.state.odliczanie;
 			odliczanieTemp = setTimeout(()=>{
-				this.state.peaksInstance.player.pause();
+				this.peaks.player.pause();
 				this.setState({
 					isPlaying: false,
 					odliczanie: null,
@@ -145,37 +171,96 @@ class AudioEditor extends Component {
 			this.setState({
 				odliczanie: odliczanieTemp,
 			})
-		}
 	 }
 
-	 togglePlaying = () => {
 
-		if(this.state.peaksInstance){
-			if(this.state.isPlaying){
-				this.state.peaksInstance.player.pause();
-				this.setState({
-					isPlaying: false
-				})
-			} else {
-				this.state.peaksInstance.player.play();
-				this.setState({
-					isPlaying: true
-				})
+
+
+
+
+
+	createPeaksInstance = (options) => {
+		
+		
+		return new Promise((resolve, reject) => {
+		  Peaks.init(options, (err, peaksInstance) => {
+
+			if (err) {
+			  console.log("uwaga error")
+			  reject(err);
 			}
-		}
-	 }
+			else {
+			  console.log('Peaks instance ready');
+
+				  
+			  return resolve(peaksInstance);
+			}
+		  });
+		});
+	  }
 
 
+	  bindEventHandlers = (peaksInstance, options) => {
+		document.querySelector('[data-action="zoom-in"]').addEventListener('click', () =>{
+			peaksInstance.zoom.zoomIn();
+		});
 
-	makeEditorFullWidth = () => {
-		this.props.editorFullWidth();
+		document.querySelector('[data-action="zoom-out"]').addEventListener('click', () =>{
+			peaksInstance.zoom.zoomOut();
+		});
+
+		document.querySelector('[data-action="resize"]').addEventListener('click', () =>{
+			
+	
+			this.props.editorFullWidth();
+
+			console.log(this.props.ifFullScreen)
+		
+			let zoomview = peaksInstance.views.getView('zoomview');
+			if (zoomview) {
+				zoomview.fitToContainer();
+			}
+
+			let overview = peaksInstance.views.getView('overview');
+			if (overview) {
+				overview.fitToContainer();
+			}
+
+			
+		 });
+
+		 document.querySelector('[data-action="play"]').addEventListener('click', () =>{
+			this.togglePlaying();
+		 });
+
+		 peaksInstance.on('segments.dragend', (segment, startMarker) => {
+			this.updateSegment(segment);
+			console.log('segments.dragend:', segment, startMarker);
+		  });
+
+	  }
+
+
+	convertPeaksSegments = () => {
+		let segmenty = this.peaks.segments.getSegments().map(segment=>{
+			return {
+				startTime: segment.startTime,
+				endTime: segment.endTime,
+				color: segment.color,
+				labelText: segment.labelText,
+				id: segment.id,
+				editable: segment.editable,
+			}
+		})
+
+		return segmenty;
 	}
 
 
-	initializePeaksFirstTime = (audioPathok, datPathok, segments) => {
+	startPeaksLeaving = (audioPathok, datPathok, segments) => {
+
 
 		//arraybuffer: "http://localhost:1234/repoFiles/5e4b09e086f4ed663259fae9/5e9e175af4192d661ebf49dd/5e9e175af4192d661ebf49de/kleska.dat?api_key="+this.props.token,
-		
 		
 		let options = {
 			containers: {
@@ -186,6 +271,8 @@ class AudioEditor extends Component {
 			dataUri: {
 			  arraybuffer: datPathok,
 			},
+
+			mediaUrl: audioPathok,
 
 			zoomWaveformColor: 'rgba(52, 152, 219, 1)',
 			overviewWaveformColor: 'rgba(52, 152, 219, 0.3)',
@@ -201,349 +288,94 @@ class AudioEditor extends Component {
 			emitCueEvents: true,
 			showPlayheadTime: false,
 			segments: segments,
-  			
-		  //	createSegmentMarker: this.createSegmentMarker,
-          //  createSegmentLabel: this.createSegmentLabel,
-          //  createPointMarker: this.createPointMarker
-
 		  };
 
 
-		  this.createPeaksInstance(options,this)
+		  this.createPeaksInstance(options)
           .then(peaksInstance => {
-			this.setState({
-				peaksInstance: peaksInstance,
-				audioPath:audioPathok,
-				datPath:datPathok,
-				segments: segments,
-				czyZmienionoSegmenty: false,
+
+			//ładuje tutaj audio
+			peaksInstance.setSource(options, error => {
+				if (error) {
+				console.error('setSource error', error);
+				}
+
+
+				this.peaks = peaksInstance;
+
+				let segmenty = this.convertPeaksSegments();
+
+				this.setState({
+					currentSegments: segmenty,
+				})
+
+				//console.log(this.state.currentSegments)
+				
+
+				this.bindEventHandlers(this.peaks, options);
 			});
-	
-			//this.setState({peaksInstance: peaksInstance, ifSegments: segments.length>0?true: false});
+		
+
 		  }, this.errorHandler);
 	}
 
 
-	// ładuje nowy plik do edytora
-	loadNewAudioToEditor = () => {
-		if(this.props.containerForPreview !== undefined){
 
-			const userId = this.props.containerForPreview.owner;
-			const projectId = this.props.containerForPreview.project;
-			const sessionId = this.props.containerForPreview.session;
-			const fileName = this.props.containerForPreview.fileName;
-			const containerId = this.props.containerForPreview._id;
-			const token = this.props.token;
+	//wydobywa ścieżkę do metadanych, pliku audio i segmentów
+	getDataFromContainer = (container) => {
+		const userId = container.owner;
+		const projectId = container.project;
+		const sessionId = container.session;
+		const fileName = container.fileName;
+		const containerId = container._id;
+		const token = this.props.token;
 
-			//plik audio
-			let audioPath = process.env.REACT_APP_API_URL+ "/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/audio?api_key="+token;
-			
-			//meta data do renderingu waveform
-			let datPath = process.env.REACT_APP_API_URL + "/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/dat?api_key="+token;
+		//pobieram segmenty
+		let segments = [];
+		switch(this.props.toolType){
+			case("VAD"):
+				segments = container.VADUserSegments;
+				break;
+			case("DIA"):
+				segments = container.DIAUserSegments;
+				break;
+			case("REC"):
+				segments = container.RECUserSegments;
+				break;
+			case("SEG"):
+				segments = container.RECUserSegments;
+				break;
+		}
 
-			//segments in json
-			let segments = [];
-			switch(this.props.toolType){
-				case 'VAD':
-					if(this.props.containerForPreview.VADUserSegments){
-						segments = this.props.containerForPreview.VADUserSegments;
-					}
-					break;
-				case 'DIA':
-					if(this.props.containerForPreview.DIAUserSegments){
-						segments = this.props.containerForPreview.DIAUserSegments;
-					}
-					break;
-				case 'REC':
-					if(this.props.containerForPreview.RECUserSegments){
-						segments = this.props.containerForPreview.RECUserSegments;
-					}
-					break;
-				case 'SEG':
-					if(this.props.containerForPreview.SEGUserSegments){
-						segments = this.props.containerForPreview.SEGUserSegments;
-					}
-					break;
-				default:
-					console.log("segments default");
-					break;
-			}	
-			
-			
-
-			if(this.state.audioPath == '' || this.state.datPath == ''){
-				this.initializePeaksFirstTime(audioPath, datPath, segments)
-			} else {
-				
+		if(segments==undefined) segments = [];
 		
 
-				if(this.state.peaksInstance){
-					this.requestWaveformData(datPath)
-					.then(waveformData => {
-						return this.createSources(waveformData, segments);
-					})
-					.then(source => {
+		//plik audio
+		let audioPath = process.env.REACT_APP_API_URL+ "/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/audio?api_key="+token;
+		
+		//meta data do renderingu waveform
+		let datPath = process.env.REACT_APP_API_URL + "/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/dat?api_key="+token;
 
-						this.state.peaksInstance.segments.removeAll();
-						if(source.segments){
-							this.state.peaksInstance.segments.add(source.segments);
-						}
-
-
-						this.state.peaksInstance.setSource(source, function(error){
-							if (error) {
-							console.error('setSource error', error);
-							}
-						});
-
-						this.setState({
-							audioPath:audioPath,
-							datPath:datPath,
-							segments: this.state.peaksInstance.segments.getSegments(),
-							czyZmienionoSegmenty: false,
-						});
-
-
-						//aby odwswiezyc liste segmentow
-						/*
-						let newPeaks = Object.assign({},this.state.peaksInstance);
-						this.setState({
-							peaksInstance: newPeaks,
-						})
-						*/
-
-					}, this.errorHandler);
-				}
-
-			}
-		}
-	}
-
-
-	createSources = (waveformData, segments) => {
 		return {
-			title: this.props.containerForPreview.containerName,
-			mediaUrl: this.state.audioPath,
-			waveformData: {
-			  arraybuffer: waveformData
-			},
+			audioPath: audioPath,
+			datPath: datPath,
 			segments: segments,
-		  };
-	  }
-
-
-
-
-
-	addSegment = () => {
-		if(this.state.peaksInstance){
-
-			let newSegment = {
-				startTime: this.state.peaksInstance.player.getCurrentTime(),
-				endTime: this.state.peaksInstance.player.getCurrentTime() + 3,
-				labelText: 'Segment ' + this.state.segmentCounter,
-				editable: true
-			};
-
-			this.state.peaksInstance.segments.add(newSegment);
-
-			this.setState({
-				segmentCounter: this.state.segmentCounter+1,
-				segments: [...this.state.peaksInstance.segments.getSegments()],
-				czyZmienionoSegmenty: true,
-			})
 		}
 	}
 
-	addPoint = () => {
-		if(this.state.peaksInstance){
-			this.state.peaksInstance.points.add({
-				time: this.state.peaksInstance.player.getCurrentTime(),
-				labelText: 'Point ' + this.state.pointCounter,
-				color: '#006eb0',
-				editable: true
-			});
 
-			this.setState({
-				pointCounter: this.state.pointCounter+1,
-			})
-		}				
+
+	// ładuje nowy plik do edytora
+	loadNewAudioToEditor = (container) => {
+
+		if(container !== undefined){
+
+			let data = this.getDataFromContainer(container);
+			this.startPeaksLeaving(data.audioPath, data.datPath, data.segments)
+
+		}
 	}
 
-
-
-
-	createPeaksInstance = (options, thisComponent) => {
-		
-		return new Promise(function(resolve, reject) {
-		  Peaks.init(options, (err, peaksInstance) => {
-
-			if (err) {
-			  console.log("uwaga error")
-			  reject(err);
-			}
-			else {
-			  console.log('Peaks instance ready');
-
-			  document.querySelector('[data-action="zoom-in"]').addEventListener('click', function() {
-				peaksInstance.zoom.zoomIn();
-			  });
-	
-			  document.querySelector('[data-action="zoom-out"]').addEventListener('click', function() {
-				peaksInstance.zoom.zoomOut();
-			  });
-
-		
-				/*
-				document.querySelector('button[data-action="log-data"]').addEventListener('click', function(event) {
-					console.log("log data")
-					thisComponent.makeEditorFullWidth();
-					//thisComponent.renderSegments(peaksInstance);
-					//thisComponent.renderPoints(peaksInstance);
-				  });
-				  */
-
-
-				  document.querySelector('body').addEventListener('click', function(event) {
-					var element = event.target;
-					var action  = element.getAttribute('data-action');
-					var id      = element.getAttribute('data-id');
-		
-					if (action === 'play-segment') {
-					  var segment = peaksInstance.segments.getSegment(id);
-					  peaksInstance.player.playSegment(segment);
-					}
-					else if (action === 'remove-point') {
-					  peaksInstance.points.removeById(id);
-					}
-					else if (action === 'remove-segment') {
-					  peaksInstance.segments.removeById(id);
-					}
-				  });
-
-
-				  var amplitudeScales = {
-					"0": 0.0,
-					"1": 0.1,
-					"2": 0.25,
-					"3": 0.5,
-					"4": 0.75,
-					"5": 1.0,
-					"6": 1.5,
-					"7": 2.0,
-					"8": 3.0,
-					"9": 4.0,
-					"10": 5.0
-				  };
-		
-				  /*
-				  document.getElementById('amplitude-scale').addEventListener('input', function(event) {
-					var scale = amplitudeScales[event.target.value];
-		
-					peaksInstance.views.getView('zoomview').setAmplitudeScale(scale);
-					peaksInstance.views.getView('overview').setAmplitudeScale(scale);
-				  });
-				  */
-
-				  document.querySelector('button[data-action="resize"]').addEventListener('click', function(event) {
-					var zoomviewContainer = document.getElementById('zoomview-container');
-					var overviewContainer = document.getElementById('overview-container');
-
-					thisComponent.makeEditorFullWidth();
-				
-					//var zoomviewStyle = 'width:600px';
-					//var overviewStyle = 'width:600px';
-		
-					//var zoomviewStyle = zoomviewContainer.offsetHeight === 200 ? 'height:300px' : 'height:200px';
-					//var overviewStyle = overviewContainer.offsetHeight === 85  ? 'height:200px' : 'height:85px';
-		
-					//zoomviewContainer.setAttribute('style', zoomviewStyle);
-					//overviewContainer.setAttribute('style', overviewStyle);
-		
-					var zoomview = peaksInstance.views.getView('zoomview');
-					if (zoomview) {
-					  zoomview.fitToContainer();
-					}
-		
-					var overview = peaksInstance.views.getView('overview');
-					if (overview) {
-					  overview.fitToContainer();
-					}
-				  });
-
-				  // Points mouse events
-
-				  peaksInstance.on('points.mouseenter', function(point) {
-					console.log('points.mouseenter:', point);
-				  });
-		
-				  peaksInstance.on('points.mouseleave', function(point) {
-					console.log('points.mouseleave:', point);
-				  });
-		
-				  peaksInstance.on('points.dblclick', function(point) {
-					console.log('points.dblclick:', point);
-				  });
-		
-				  peaksInstance.on('points.dragstart', function(point) {
-					console.log('points.dragstart:', point);
-				  });
-		
-				  peaksInstance.on('points.dragmove', function(point) {
-					console.log('points.dragmove:', point);
-				  });
-		
-				  peaksInstance.on('points.dragend', function(point) {
-					console.log('points.dragend:', point);
-				  });
-		
-				  // Segments mouse events
-		
-				  peaksInstance.on('segments.dragstart', function(segment, startMarker) {
-					console.log('segments.dragstart:', segment, startMarker);
-				  });
-		
-				  peaksInstance.on('segments.dragend', function(segment, startMarker) {
-					thisComponent.updateSegment(segment);
-					console.log('segments.dragend:', segment, startMarker);
-				  });
-		
-				  peaksInstance.on('segments.dragged', function(segment, startMarker) {
-					
-					console.log('segments.dragged:', segment, startMarker);
-				  });
-		
-				  //OK
-				  peaksInstance.on('segments.mouseenter', function(segment) {
-					console.log('segments.mouseenter:', segment);
-				  });
-		
-				  //OK
-				  peaksInstance.on('segments.mouseleave', function(segment) {
-					console.log('segments.mouseleave:', segment);
-				  });
-		
-				  //OK
-				  peaksInstance.on('segments.click', function(segment) {
-					console.log('segments.click:', segment);
-				  });
-		
-				  //OK
-				  peaksInstance.on('zoomview.dblclick', function(time) {
-					console.log('zoomview.dblclick:', time);
-				  });
-		
-				  //OK
-				  peaksInstance.on('overview.dblclick', function(time) {
-					console.log('overview.dblclick:', time);
-				  });
-				  
-			  return resolve(peaksInstance);
-			}
-		  });
-		});
-	  }
-	
 
 	errorHandler = (err) => {
 		console.error(err.message);
@@ -557,29 +389,87 @@ class AudioEditor extends Component {
 		  });
 	  }
 
+
+
+	//gdy mamy już instancje zrobioną i tylko aktualizujemy dane
+	updateSource = (container) => {
+		if(this.peaks){
+
+			let data = this.getDataFromContainer(container);
+
+			//pytam serwer o nowe dane do wyrenderowania - tutaj można uruchomić preloader
+
+			this.setState({
+				isLoading: true,
+			})
+			this.requestWaveformData(data.datPath)
+				.then(waveformData => {
+
+					this.setState({
+						isLoading: false,
+					})
+
+					this.peaks.segments.removeAll();
+					
+
+					return {
+						title: container.containerName,
+						mediaUrl: data.audioPath,
+						waveformData: {
+						  arraybuffer: waveformData,
+						},
+					  };
+				})
+				.then(source => {
+					
+					this.peaks.setSource(source, error => {
+						if(error){
+							console.log(error);
+						}
+
+						this.peaks.segments.add(data.segments);
+						this.setState({
+							currentSegments: [...data.segments],
+						})
+					});
+
+					// TUTAJ zrobić update segmentow
+
+				})
+
+			
+		}
+	}
+
 	
 	componentDidUpdate = (prevProps, prevState) => {
 
 		//kiedy tylko zmieni się container, wtedy ładuje audio i binary data z serwera i uruchamiam podgląd
 		if(prevProps.containerForPreview !== this.props.containerForPreview){
 			
-			this.loadNewAudioToEditor();
+			console.log("componentDidUpdate")
+			//tutaj robie jedynie update po tym jak peaks jest już zainicjowany
+
+			this.updateSource(this.props.containerForPreview);
 			
 		}
 
 	}
 
 	componentDidMount = () => {
-		this.loadNewAudioToEditor();
+		console.log("ładuje na nowo")
+		this.loadNewAudioToEditor(this.props.containerForPreview);
 	}
+
 
 	updateSegment = (newSegment) => {
 
 		let segmentToUpdate = newSegment;
+
 		//tutaj sprawdzam czy jakiś segment nie nachodzi już na istniejący.
 		
 		//iteruje po obecnie istniejących segmentach
-		let allsegments = this.state.peaksInstance.segments.getSegments();
+		let allsegments = this.peaks.segments.getSegments();
 		let poprzedniseg = null;
 		for(let i=0;i<allsegments.length;i++){
 			let currentseg = allsegments[i];
@@ -594,11 +484,11 @@ class AudioEditor extends Component {
 					let idNowy = poprzedniseg.id;
 
 					//usuwam poprzedni i obecny segment
-					this.state.peaksInstance.segments.removeById(poprzedniseg.id);
-					this.state.peaksInstance.segments.removeById(currentseg.id);
+					this.peaks.segments.removeById(poprzedniseg.id);
+					this.peaks.segments.removeById(currentseg.id);
 
 					//dodaje jeden dluższy
-					this.state.peaksInstance.segments.add({
+					this.peaks.segments.add({
 						startTime: startTimeNowy,
 						endTime: endTimeNowy,
 						editable: true,
@@ -607,7 +497,7 @@ class AudioEditor extends Component {
 						id: idNowy,
 					})
 
-					segmentToUpdate = this.state.peaksInstance.segments.getSegment(idNowy);
+					segmentToUpdate = this.peaks.segments.getSegment(idNowy);
 
 					
 					break;
@@ -617,205 +507,75 @@ class AudioEditor extends Component {
 			poprzedniseg = currentseg;
 		}
 
+		let segmenty = this.convertPeaksSegments();
+
 		this.setState({
-			segments: [...this.state.peaksInstance.segments.getSegments()],
+			segments: [...segmenty],
 			czyZmienionoSegmenty: true,
 		})
-
-
-		//------------------------
-
-		//robie kopie pieaksInstance aby odswiezyc
-	   // let segment = this.state.peaksInstance.segments.getSegment(segmentToUpdate.id);
-		//segment.update({
-		//	...segmentToUpdate,
-		//	startTime: parseFloat(segmentToUpdate.startTime),
-		//	endTime: parseFloat(segmentToUpdate.endTime)})
-
-		/*
-		let peaksCopy = Object.assign({},this.state.peaksInstance);
-		this.setState({
-			peaksInstance: peaksCopy,
-		})
-		*/
-	
 		
 	};
 
 	updateSegmentLabel = (id, label) => {
-		let segment = this.state.peaksInstance.segments.getSegment(id);
+		let segment = this.peaks.segments.getSegment(id);
 		segment.update({labelText: label})
 
 		this.setState({
-			segments: [...this.state.peaksInstance.segments.getSegments()],
 			czyZmienionoSegmenty: true,
 		})
 
-		//robie kopie pieaksInstance aby odswiezyc
-	
-		/*
-		let peaksCopy = Object.assign({},this.state.peaksInstance);
-		this.setState({
-			peaksInstance: peaksCopy,
-		})
-		*/
-	
-		
 
 		console.log("update Segment Label " + id + " " + label);
 	}
 
 	updateSegmentStartTime = (id, newValue) => {
-		let segment = this.state.peaksInstance.segments.getSegment(id);
+		let segment = this.peaks.segments.getSegment(id);
 		segment.update({startTime: parseFloat(newValue)})
 
 		this.setState({
-			segments: [...this.state.peaksInstance.segments.getSegments()],
 			czyZmienionoSegmenty: true,
 		})
 
-
-		//robie kopie pieaksInstance aby odswiezyc
-		/*
-		let peaksCopy = Object.assign({},this.state.peaksInstance);
-		this.setState({
-			peaksInstance: peaksCopy,
-		})
-		*/
 
 		console.log("update Segment Start Time  " + id + " " + newValue);
 	}
 
 	updateSegmentEndTime = (id, newValue) => {
-		let segment = this.state.peaksInstance.segments.getSegment(id);
+		let segment = this.peaks.segments.getSegment(id);
 		segment.update({endTime: parseFloat(newValue)})
 
 		this.setState({
-			segments: [...this.state.peaksInstance.segments.getSegments()],
 			czyZmienionoSegmenty: true,
 		})
-
-
-		//robie kopie pieaksInstance aby odswiezyc
-		/*
-		let peaksCopy = Object.assign({},this.state.peaksInstance);
-		this.setState({
-			peaksInstance: peaksCopy,
-		})
-		*/
 
 		console.log("update Segment End Time " + id + " " + newValue);
 	}
 
-	/*
-	playSegment = (id) => {
-		console.log("play segment")
-		let segment = this.state.peaksInstance.segments.getSegment(id);
-		this.state.peaksInstance.player.playSegment(segment);
-	}
-
-	removeSegment = (id) => {
-		console.log("remove segment")
-		let segment = this.state.peaksInstance.segments.getSegment(id);
-		this.state.peaksInstance.segments.removeById(segment);
-
-		this.setState({
-			segments: [...this.state.peaksInstance.segments.getSegments()],
-		})
-	}
-	*/
 
 	saveSegmentChanges = () => {
 
 		//konwertuje segmenty z peaks js na bardziej uzyteczne
-
-		let simplerSegments = this.state.peaksInstance.segments.getSegments().map((segment,i)=>{
-			return {
-				startTime: parseFloat(segment.startTime).toFixed(2),
-				endTime: parseFloat(segment.endTime).toFixed(2),
-				labelText: segment.labelText,
-				editable: true,
-				color: '#394b55',
-			}
-		})
+		let simplerSegments = this.convertPeaksSegments();
 
 		if(this.props.toolType == "VAD"){
 			this.props.onSaveVADSegments(this.props.containerForPreview, this.props.toolType, this.props.token, simplerSegments);
 		}
 	}
-	
+
 
 	render() {
 
-		// widok segment edytora
-		let segmentEditor = null;
-		if(this.state.peaksInstance && (this.props.toolType=='VAD' || this.props.toolType=='DIA')){
-			if(this.state.segments.length > 0){
-				console.log("UPDATE")
-				segmentEditor = <SegmentEditor 
-				czyZmieniono={this.state.czyZmienionoSegmenty}
-				segments={this.state.peaksInstance.segments.getSegments()}
-				onUpdateSegmentLabel={(id, label)=>this.updateSegmentLabel(id, label)} 
-				onUpdateSegmentStartTime={(id, newValue)=>this.updateSegmentStartTime(id, newValue)}
-				onUpdateSegmentEndTime={(id, newValue)=>this.updateSegmentEndTime(id, newValue)}
-				onSaveSegmentChanges={this.saveSegmentChanges}
-				/>
-				//onPlaySegment={(id)=>this.playSegment(id)}
-				//onRemoveSegment={(id)=>this.removeSegment(id)}
-
-				//segmentEditor = <SegmentEditor 
-				//segments={this.state.peaksInstance.segments.getSegments()}
-				//onUpdateSegmentLabel={(id, label)=>this.updateSegmentLabel(id, label)} 
-				//onUpdateSegmentStartTime={(id, newValue)=>this.updateSegmentStartTime(id, newValue)}
-				//onUpdateSegmentEndTime={(id, newValue)=>this.updateSegmentEndTime(id, newValue)} />
-			}
-			
-		}
-		
-		// widok edytora tekstowego
-		let transcriptWindow = null;
-
-		if(this.props.toolType == "REC"){
-			transcriptWindow = <TextEditor 
-			toolType={this.props.toolType} 
-			container={this.props.containerForPreview}/>		
-		}
-
-
-		//przyciski do dodawania semgentow - nie we wszystkich narzedziach sa widoczne
-		let addSegmentPointBtns=null;
-
-		if(this.state.peaksInstance && (this.props.toolType=='VAD' || this.props.toolType=="DIA")){
-			addSegmentPointBtns = (
-				<>
-				<button data-tip data-for='addSegment' data-action="add-segment" onClick={this.addSegment}><FontAwesomeIcon icon={faGripLinesVertical} className="faIcon" /></button>
-				<ReactTooltip id="addSegment" delayShow={500}>
-					<span>Dodaj segment</span>
-				</ReactTooltip>
-	
-				<button data-tip data-for='addPoint' data-action="add-point" onClick={this.addPoint}><FontAwesomeIcon icon={faMapMarker} className="faIcon" /></button>
-				<ReactTooltip id="addPoint" delayShow={500}>
-					<span>Dodaj punkt</span>
-				</ReactTooltip>
-				</>
-			);
-		}
-
-		
-
-
-		// widok podglądu audio
-		let audioPreview = null;
-		let audioSource = this.state.audioPath;
-
+		//jaką ikonkę wyświetlić na przycisku play
 		let playPauseicon = null;
-		
 		if(this.state.isPlaying){
 			playPauseicon = <FontAwesomeIcon icon={faPause} className="faIcon" />
 		} else {
 			playPauseicon = <FontAwesomeIcon icon={faPlay} className="faIcon" />
 		}
 
+
+		// widok podglądu audio
+		let audioPreview = null;
 		if(this.props.containerForPreview == ""){
 			audioPreview = null
 		} else {
@@ -827,14 +587,13 @@ class AudioEditor extends Component {
 								<div className="col-12">
 									<div id="controls">
 
-										
 										<button data-tip data-for='fullscreen' data-action="resize"><FontAwesomeIcon icon={faExpand} className="faIcon" /></button>
 										<ReactTooltip id="fullscreen" delayShow={500}>
 											<span>Full screen</span>
 										</ReactTooltip>
 
 									 
-										<button data-tip data-for='playpause' data-action="play" onClick={this.togglePlaying}>{playPauseicon}</button>
+										<button data-tip data-for='playpause' data-action="play" >{playPauseicon}</button>
 										<ReactTooltip id="playpause" delayShow={500}>
 											<span>Play/pause (Alt+l)</span>
 										</ReactTooltip>
@@ -863,7 +622,6 @@ class AudioEditor extends Component {
 											<span>Wolniej (Alt+,)</span>
 										</ReactTooltip>
 
-										
 										<button data-tip data-for='zoomin' data-action="zoom-in"><FontAwesomeIcon icon={faSearchPlus} className="faIcon" /> </button>
 										<ReactTooltip id="zoomin" delayShow={500}>
 											<span>Przybliż</span>
@@ -875,18 +633,6 @@ class AudioEditor extends Component {
 											<span>Oddal</span>
 										</ReactTooltip>
 										
-										{
-											addSegmentPointBtns
-										}
-										
-										
-										
-
-										{
-
-											//<button data-action="log-data"><FontAwesomeIcon icon={faEye} className="faIcon" /></button>
-											//<input type="range" id="amplitude-scale" min="0" max="10" step="1" />
-										}
 										
 									</div>
 									
@@ -896,8 +642,8 @@ class AudioEditor extends Component {
 								</div>
 								<div className="col-12">
 								
-								<audio id="audio" controls={false}>
-									<source src={audioSource}/>
+								<audio id="audio" controls={true} ref={this.audioPlayer}>
+									<source src={this.state.audioPath} />
 										Your browser does not support the audio element.
 									</audio>
 								</div>
@@ -918,6 +664,25 @@ class AudioEditor extends Component {
 
 
 
+		// widok segment edytora
+		let segmentEditor = null;
+		if(this.peaks && (this.props.toolType=='VAD' || this.props.toolType=='DIA')){
+			if(this.state.currentSegments.length > 0){
+				console.log("UPDATE")
+				segmentEditor = <SegmentEditor 
+				czyZmieniono={this.state.czyZmienionoSegmenty}
+				segments={this.peaks.segments.getSegments()}
+				onUpdateSegmentLabel={(id, label)=>this.updateSegmentLabel(id, label)} 
+				onUpdateSegmentStartTime={(id, newValue)=>this.updateSegmentStartTime(id, newValue)}
+				onUpdateSegmentEndTime={(id, newValue)=>this.updateSegmentEndTime(id, newValue)}
+				onSaveSegmentChanges={this.saveSegmentChanges}
+				/>
+			}
+			
+		}
+
+
+
 		return (
 			<Hotkeys 
 					keyName=" alt+j, alt+k, alt+l, alt+i, alt+," 
@@ -928,6 +693,7 @@ class AudioEditor extends Component {
 					 }}
 				>
 					<Aux>
+						{this.state.isLoading ? loader(): null}
 						<div className="AudioEditor">
 						
 							{
@@ -937,14 +703,10 @@ class AudioEditor extends Component {
 							}
 
 							{
-								transcriptWindow
-							}
-
-
-							
-							{
 								segmentEditor
 							}
+
+						
 
 
 						</div>

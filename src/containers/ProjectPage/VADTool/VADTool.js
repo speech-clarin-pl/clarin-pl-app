@@ -20,7 +20,7 @@ import ToolItem from '../ToolItem/ToolItem';
 import TextareaAutosize from 'react-textarea-autosize';
 import { faSurprise } from '@fortawesome/free-solid-svg-icons';
 import * as vadActions from '../../../store/actions/index';
-import AudioEditor from '../../ProjectPage/AudioEditor/AudioEditor';
+import AudioEditor from '../AudioEditor/AudioEditor';
 
 class VADTool extends Component {
 
@@ -34,9 +34,10 @@ class VADTool extends Component {
 		//console.log(e)
 		
 		//uruchomienie full screen
-		if(this.state.editorFullWidth == false){
-            this.setState({editorFullWidth: true});
-        } 
+		//if(this.state.editorFullWidth == false){
+       //     this.setState({editorFullWidth: true});
+		//} 
+		
         this.props.openContainerInVADPreview(container);
 	}
 	
@@ -155,6 +156,7 @@ class VADTool extends Component {
 										this.props.containerForPreview != "" ? <AudioEditor
 										containerForPreview={this.props.containerForPreview}
 										editorFullWidth = {this.makeEditorFullWidth}
+										ifFullScreen = {this.state.editorFullWidth}
 										toolType="VAD" /> : null
 									}
 									

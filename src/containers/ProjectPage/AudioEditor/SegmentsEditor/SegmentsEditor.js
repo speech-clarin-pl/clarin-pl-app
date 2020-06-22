@@ -25,7 +25,6 @@ class SegmentsEditor extends Component {
 
     updateStartTime = (id, newValue) => {
         this.props.onUpdateSegmentStartTime(id, newValue);
-
     }
 
     updateEndTime = (id, newValue) => {

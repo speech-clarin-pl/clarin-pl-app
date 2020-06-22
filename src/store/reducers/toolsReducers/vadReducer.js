@@ -53,6 +53,32 @@ const addContainerToVAD = (state,action) => {
     });
 }
 
+const saveVADSegmentsSuccess = (state, action) => {
+    const containerId = action.containerId;
+    const toolType = action.toolType; 
+    const updatedSegments = action.updatedSegments;
+
+    const nextState = produce(state, draftState => {
+
+        //przepisuje wlasciwosci container z preview do odpowiedniego w liscie
+
+        let foundFileIdx = draftState.containersForVAD.findIndex(file => {
+            return file._id === containerId;
+        })
+
+        draftState.containersForVAD[foundFileIdx].VADUserSegments = updatedSegments;
+        draftState.vadContainerForPreview.VADUserSegments = updatedSegments;
+       
+       
+
+       
+       
+   })
+   
+
+   return nextState; 
+}
+
 const speechVADSuccess = (state, action) => {
     const containerId = action.containerId;
     const toolType = action.toolType; 
@@ -68,6 +94,12 @@ const speechVADSuccess = (state, action) => {
         draftState.containersForVAD[foundFileIdx].ifVAD = true;
         draftState.containersForVAD[foundFileIdx].statusVAD = 'done';
         draftState.containersForVAD[foundFileIdx].VADUserSegments = VADSegments;
+
+        //sprawdzam czy który miał robione rozpoznawanie był otwarty w preview
+
+        if(draftState.vadContainerForPreview._id == draftState.containersForVAD[foundFileIdx]._id){
+            draftState.vadContainerForPreview =  draftState.containersForVAD[foundFileIdx];
+        }
        
    })
    
@@ -91,7 +123,6 @@ const speechVADFailed = (state, action) => {
         draftState.containersForVAD[foundFileIdx].ifVAD = false;
         draftState.containersForVAD[foundFileIdx].statusVAD = 'error';
        
- 
    })
 
    return nextState;
@@ -133,6 +164,8 @@ const vadReducer = (state = initialState, action) => {
         case actionTypes.REPO_RUN_SPEECH_VAD_FAILED: return speechVADFailed(state,action);
 
         case actionTypes.SET_CONTAINER_STATUS: return changeToolItemStatus(state,action);
+
+        case actionTypes.SAVE_VAD_SEGMENTS_SUCCESS: return saveVADSegmentsSuccess(state,action);
 
         
         //case actionTypes.ADD_CONTAINER_TO_RECO: return addContainerToReco(state,action);

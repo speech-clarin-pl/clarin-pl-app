@@ -20,7 +20,7 @@ import ToolItem from '../ToolItem/ToolItem';
 import TextareaAutosize from 'react-textarea-autosize';
 import * as diaActions from '../../../store/actions/index';
 
-import AudioEditor from '../../ProjectPage/AudioEditor/AudioEditor';
+import AudioEditor from '../AudioEditor/AudioEditor';
 
 class DIATool extends Component {
 

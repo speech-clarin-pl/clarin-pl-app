@@ -57,11 +57,12 @@ return dispatch => {
 // ######## zapisywanie segmentów ##########
 // ###################################################################
 
-export const saveVADSegmentsSuccess = (message, containerId, toolType) => {
+export const saveVADSegmentsSuccess = (message, updatedSegments, containerId, toolType) => {
     return {
         type: actionTypes.SAVE_VAD_SEGMENTS_SUCCESS,
         message: message,
         containerId: containerId,
+        updatedSegments: updatedSegments,
         toolType: toolType,
     }
 }
@@ -90,7 +91,7 @@ return dispatch => {
     })
     .then(response => {
         console.log(response)
-        dispatch(saveVADSegmentsSuccess(response.data.message, container._id, toolType));
+        dispatch(saveVADSegmentsSuccess(response.data.message, response.data.updatedSegments, container._id, toolType));
       //  dispatch(closeModal());
     })
     .catch(error => {

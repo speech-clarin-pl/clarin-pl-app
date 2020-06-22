@@ -21,7 +21,7 @@ import { getExt, getFilenameFromURL } from '../../../utils/utils';
 import ToolItem from '../ToolItem/ToolItem';
 import TextareaAutosize from 'react-textarea-autosize';
 
-import AudioEditor from '../../ProjectPage/AudioEditor/AudioEditor';
+import AudioEditor from '../AudioEditor/AudioEditor';
 
 class SegmentTool extends Component {
 
