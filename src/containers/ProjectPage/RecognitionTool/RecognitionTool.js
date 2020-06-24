@@ -186,7 +186,29 @@ class RecognitionTool extends Component {
     runSpeechRecognition = (container, toolType, token) => {
         this.props.setContainerStatus(container._id, toolType, 'progress');
 		this.props.runSpeechRecognition(container, toolType, token); 
-	}
+    }
+    
+
+    loadNextElement = () => {
+        //przegladam liste dodanych do rozpoznawania i ładuje kolejny o ile nie jest to ostatni
+        let foundIdx = 0;
+        for(let i=0;i<this.props.containersForREC.length;i++){
+            
+            let current = this.props.containersForREC[i];
+           // console.log(current)
+            //sprawdzam ktory obecnie jest edytowany
+            if(current._id == this.props.containerForPreview._id){
+                foundIdx = i;
+            }
+        }
+
+       // console.log(foundIdx)
+
+        if(foundIdx < this.props.containersForREC.length-1){
+            this.openContainerInPreview(this.props.containersForREC[foundIdx+1]);
+        } 
+
+    }
 
     render() {
 
@@ -276,6 +298,8 @@ class RecognitionTool extends Component {
                         <div> <b>[Alt+j]</b> - powtórz 5 sek.</div>
                         <div> <b>[Alt+i]</b> - przyśpiesz.</div>
                         <div> <b>[Alt+,]</b> - zwolnij.</div>
+                        <div> <b>[Alt+m]</b> - zapisz transkrypcje.</div>
+                        <div> <b>[Alt+n]</b> - załaduj kolejny plik.</div>
                         <div>Możesz transkrybować nie odrywając rąk od pola tekstowego!</div>
                         </div>)
                     } >
@@ -353,7 +377,8 @@ class RecognitionTool extends Component {
                                     {
 										this.props.containerForPreview != "" ? <AudioEditor
 										containerForPreview={this.props.containerForPreview}
-										editorFullWidth = {this.makeEditorFullWidth}
+                                        editorFullWidth = {this.makeEditorFullWidth}
+                                        onLoadNextElement = {this.loadNextElement}
 										toolType="REC" /> : null
 									}
 

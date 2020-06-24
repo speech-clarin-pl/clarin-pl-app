@@ -84,18 +84,33 @@ class ToolItem extends Component {
 
         let iconType = faFileAlt;
 
+        //do wskazywania czy obecnie jest edytowany
+        let czyEdytowany = '';
+
         switch(this.props.type){
             case "DIA":
                 iconType = faComment;
+                if(this.props.container._id==this.props.RECcontainerInPreview._id){
+                    czyEdytowany='editing';
+                }
                 break;
             case "VAD":
                 iconType = faSurprise;
+                if(this.props.container._id==this.props.VADcontainerInPreview._id){
+                    czyEdytowany='editing';
+                }
                 break;
             case "REC":
                 iconType = faFileAlt;
+                if(this.props.container._id==this.props.RECcontainerInPreview._id){
+                    czyEdytowany='editing';
+                }
                 break;
             case "SEG":
                 iconType = faClock;
+                if(this.props.container._id==this.props.SEGcontainerInPreview._id){
+                    czyEdytowany='editing';
+                }
                 break;
             default:
                 console.log("Default"); //to do
@@ -119,6 +134,8 @@ class ToolItem extends Component {
                 </a>
             </Tooltip>
         );
+
+        
                        
 
         switch (this.props.status) {
@@ -167,12 +184,16 @@ class ToolItem extends Component {
             </Tooltip>
         )
 
+        
+
+
+
        
         return(
 
             <Aux>
                 <ContextMenuTrigger id="ToolItemId">
-                    <div className="ToolItem ">
+                    <div className={"ToolItem " + czyEdytowany}>
                         <div className={["row", "toolItem"].join(' ')}>
                             <div className="col-sm-6 file-info align-self-center pr-1">
                                 <span className={"fileName"}>{this.props.container.containerName}</span>
@@ -220,8 +241,10 @@ const mapStateToProps = state => {
         projectId: state.projectR.currentProjectID,
         token: state.homeR.token,
 
-
-
+        RECcontainerInPreview: state.recR.recoContainerForPreview,
+        VADcontainerInPreview: state.vadR.vadContainerForPreview,
+        DIAcontainerInPreview: state.diaR.diaContainerForPreview,
+        SEGcontainerInPreview: state.segR.alignContainerForPreview,
 
         //containersForRECO: state.recR.filesToUpload,
         //containersFor

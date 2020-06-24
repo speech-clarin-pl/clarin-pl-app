@@ -52,6 +52,8 @@ class AudioEditor extends Component {
 			audioPath: '',
 			datPath: '',
 			segments: [],
+			text: '',
+			transcriptHasChanged: false,
 			isPlaying: false,
 			speedFactor: 1,
 			odliczanie: null,
@@ -59,6 +61,7 @@ class AudioEditor extends Component {
 			czyZmienionoSegmenty: false,
 			currentSegments: [], //w przyjaznej formie
 			segmentCounter: 1,
+			currentZoom: 1,
 		}
 
 		this.audioPlayer = React.createRef();
@@ -89,8 +92,18 @@ class AudioEditor extends Component {
 			case 'alt+,': 
 			  this.decreasePlaybackSpeed();
 			  break;
+			case 'alt+n':
+			  this.loadNextElement();
+			  break;
+			case 'alt+m':
+			  this.saveChanges();
+			  break;
 			default: console.log(e);
 		}
+	 }
+
+	 saveChanges = () => {
+		this.props.onSaveTranscription(this.props.containerForPreview, this.props.toolType, this.props.token, this.state.text);
 	 }
 
 	 increasePlaybackSpeed = () => {
@@ -203,6 +216,9 @@ class AudioEditor extends Component {
 
 	  bindEventHandlers = (peaksInstance, options) => {
 
+
+		
+
 		document.querySelector('body').addEventListener('click', (event) => {
 			var element = event.target;
 			var action  = element.getAttribute('data-action');
@@ -228,10 +244,18 @@ class AudioEditor extends Component {
 
 		document.querySelector('[data-action="zoom-in"]').addEventListener('click', () =>{
 			peaksInstance.zoom.zoomIn();
+			this.setState({
+				currentZoom: peaksInstance.zoom.getZoom(),
+			})
+			console.log(this.state.currentZoom)
 		});
 
 		document.querySelector('[data-action="zoom-out"]').addEventListener('click', () =>{
 			peaksInstance.zoom.zoomOut();
+			this.setState({
+				currentZoom: peaksInstance.zoom.getZoom(),
+			})
+			console.log(this.state.currentZoom)
 		});
 
 		document.querySelector('[data-action="resize"]').addEventListener('click', () =>{
@@ -335,7 +359,7 @@ class AudioEditor extends Component {
 					currentSegments: segmenty,
 				})
 
-				//console.log(this.state.currentSegments)
+				
 				
 
 				this.bindEventHandlers(this.peaks, options);
@@ -459,7 +483,7 @@ class AudioEditor extends Component {
 						})
 					});
 
-					// TUTAJ zrobić update segmentow
+					this.peaks.zoom.setZoom(this.state.currentZoom);
 
 				})
 
@@ -473,7 +497,6 @@ class AudioEditor extends Component {
 		//kiedy tylko zmieni się container, wtedy ładuje audio i binary data z serwera i uruchamiam podgląd
 		if(prevProps.containerForPreview !== this.props.containerForPreview){
 			
-			console.log("componentDidUpdate")
 			//tutaj robie jedynie update po tym jak peaks jest już zainicjowany
 
 			this.setState({
@@ -481,8 +504,34 @@ class AudioEditor extends Component {
 			})
 
 			this.updateSource(this.props.containerForPreview);
+
 			
 		}
+
+
+		if(prevProps.containerForPreview !== this.props.containerForPreview){
+			this.loadTranscription();
+		}
+
+		// jeżeli zmieniła się transkrypcja
+		if(this.props.transcriptionData){
+			if(prevProps.transcriptionData !== this.props.transcriptionData){
+
+
+						if(this.props.containerForPreview.ifREC){
+							this.setState({
+								text: this.props.transcriptionData.blocks[0].data.text,
+								transcriptHasChanged: false,
+							})
+						}
+			}
+		} else {
+			this.setState({
+				text: '',
+				transcriptHasChanged: false,
+			})
+		}
+
 
 		//jeżeli zapisano i widok jest odświeżony z już odświeżonymi segmentami
 
@@ -697,7 +746,59 @@ class AudioEditor extends Component {
 	}
 
 
+	//ładuje kolejny element z listy
+	loadNextElement = () => {
+		this.props.onLoadNextElement();
+	}
+
+	textChanged = (evt) => {
+		// console.log(evt.target.value)
+	   // console.log(this.state.transcriptionData)
+		 this.setState({
+			 text: evt.target.value,
+			 transcriptHasChanged: true,
+		 })
+		 this.props.onTranscriptionChanged();
+	 }
+
+
+	 loadTranscription = () => {
+        if(this.props.containerForPreview.ifREC){
+            this.props.onLoadExistingTranscription(this.props.containerForPreview, this.props.toolType, this.props.token);
+        }  else {
+            this.setState({
+                text: "",
+                transcriptHasChanged: false,
+            })
+        }
+        
+        if(this.props.containerForPreview.ifDIA){
+            //this.props.onLoadExistingTranscription(this.props.container, this.props.toolType, this.props.token);
+        } else  if(this.props.containerForPreview.ifSEG){
+           // this.props.onLoadExistingTranscription(this.props.container, this.props.toolType, this.props.token);
+        } else  if(this.props.containerForPreview.ifVAD){
+           // this.props.onLoadExistingTranscription(this.props.container, this.props.toolType, this.props.token);
+        }  
+    }
+
+
 	render() {
+
+		// widok edytora tekstowego
+		let transcriptWindow = null;
+
+		if(this.props.toolType == "REC"){
+			transcriptWindow = <TextEditor 
+			toolType={this.props.toolType} 
+			container={this.props.containerForPreview}
+			onLoadNextElement={this.loadNextElement}
+			text = {this.state.text}
+			onTextChanged = {this.textChanged}
+			onLoadTranscription ={this.loadTranscription}
+			onSaveChanges={this.saveChanges}
+			transcriptHasChanged = {this.state.transcriptHasChanged}
+			/>		
+		}
 
 		//jaką ikonkę wyświetlić na przycisku play
 		let playPauseicon = null;
@@ -824,7 +925,7 @@ class AudioEditor extends Component {
 
 		return (
 			<Hotkeys 
-					keyName=" alt+j, alt+k, alt+l, alt+i, alt+," 
+					keyName=" alt+j, alt+k, alt+l, alt+i, alt+,alt+n,alt+m" 
 					onKeyDown={this.onKeyDown.bind(this)}
 					filter={(event) => {
 					//	console.log(event)
@@ -845,6 +946,10 @@ class AudioEditor extends Component {
 								segmentEditor
 							}
 
+							{
+								transcriptWindow
+							}
+
 						
 
 
@@ -862,6 +967,9 @@ const mapStateToProps = state => {
 		//	modalDisplay: state.projectR.modal,
 		//	ifRefusedAudio: state.segR.ifRefusedAudio,
 		token: state.homeR.token,
+
+		transcriptionSaved: state.projectR.transcriptionSaved,
+        transcriptionData: state.recR.transcriptionData,
 
 
 		containerBinaryPreviewREC:state.repoR.containerBinaryPreviewREC,
@@ -882,7 +990,10 @@ const mapDispatchToProps = dispatch => {
 
 		onSaveVADSegments: (container, toolType, token, segments) => dispatch(audioEditorActions.saveVADSegments(container, toolType, token, segments)),
 
-		 // onLoadAudioForPreview: (container, toolType, token) => dispatch(audioEditorActions.loadAudioForPreview(container, toolType, token)),
+		onSaveTranscription: (container, toolType, token, transcription) => dispatch(audioEditorActions.saveTranscription(container, toolType, token, transcription)),
+		onTranscriptionChanged: () => dispatch(audioEditorActions.transcriptionChanged()),
+		onLoadExistingTranscription: (container, toolType, token) => dispatch(audioEditorActions.loadTranscription(container, toolType, token)),
+		// onLoadAudioForPreview: (container, toolType, token) => dispatch(audioEditorActions.loadAudioForPreview(container, toolType, token)),
          // onLoadBinaryForPreview: (container, toolType, token) => dispatch(audioEditorActions.loadBinaryForPreview(container, toolType, token)),
 		//onOpenModalHandler: () => dispatch(segmentActions.openModalProject()),
        // onCloseModalHandler: () => dispatch(segmentActions.closeModalProject()),

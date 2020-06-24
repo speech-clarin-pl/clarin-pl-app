@@ -198,12 +198,22 @@ const speechRecognitionSuccess = (state, action) => {
 
         draftState.containersForREC[foundFileIdx].ifREC = true;
         draftState.containersForREC[foundFileIdx].statusREC = 'done';
+
+        //jeżeli plik był otwarty w preview edytorze
+
+        if(draftState.recoContainerForPreview._id == containerId){
+            draftState.recoContainerForPreview.ifREC = true;
+            draftState.recoContainerForPreview.statusREC = 'done';
+        }
        
    })
+
+   
 
    return nextState;
 
 }
+
 
 
 const speechRecognitionFailed = (state, action) => {

@@ -6,6 +6,10 @@
     position: relative;
 }
 
+.editing {
+    background: #e1e9ec;
+}
+
 .ToolItem .file-info {
     text-align: left;
     overflow: hidden;

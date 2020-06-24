@@ -610,6 +610,22 @@ const repoSelectSession = (state, action) => {
     
 }
 
+
+const saveTranscriptionSuccess = (state, action) => {
+    
+    const containerId = action.containerId;
+    const toolType = action.toolType;
+
+    const nextState = produce(state, draftState => {
+        draftState.containers.byId[containerId].ifREC = true;
+        draftState.containers.byId[containerId].statusREC = 'ready';
+
+   })
+
+   return nextState;  
+
+}
+
 //############################### pod spodem sa stare akcje
 //#############################
 //#############################
@@ -917,7 +933,7 @@ const repoPanelReducer = (state = initialState, action) => {
         case actionTypes.REPO_DELETE_CONTAINER_SUCCESS: return repoRemoveContainerSuccess(state,action);
         case actionTypes.REPO_DELETE_CONTAINER_FAILED: return repoRemoveContainerFailed(state,action);
 
-        
+        case actionTypes.SAVE_TRANSCRIPTION_SUCCESS: return saveTranscriptionSuccess(state,action);
 
         
 
