@@ -58,6 +58,7 @@ class AudioEditor extends Component {
 			isLoading: false,
 			czyZmienionoSegmenty: false,
 			currentSegments: [], //w przyjaznej formie
+			segmentCounter: 1,
 		}
 
 		this.audioPlayer = React.createRef();
@@ -201,6 +202,30 @@ class AudioEditor extends Component {
 
 
 	  bindEventHandlers = (peaksInstance, options) => {
+
+		document.querySelector('body').addEventListener('click', (event) => {
+			var element = event.target;
+			var action  = element.getAttribute('data-action');
+			var id      = element.getAttribute('data-id');
+
+			if (action === 'play-segment') {
+			  var segment = peaksInstance.segments.getSegment(id);
+			  peaksInstance.player.playSegment(segment);
+			}
+			else if (action === 'remove-point') {
+			  peaksInstance.points.removeById(id);
+			}
+			else if (action === 'remove-segment') {
+			  peaksInstance.segments.removeById(id);
+
+			  this.setState({
+				  czyZmienionoSegmenty: true,
+			  })
+
+			}
+		  });
+
+
 		document.querySelector('[data-action="zoom-in"]').addEventListener('click', () =>{
 			peaksInstance.zoom.zoomIn();
 		});
@@ -234,6 +259,7 @@ class AudioEditor extends Component {
 		 });
 
 		 peaksInstance.on('segments.dragend', (segment, startMarker) => {
+			
 			this.updateSegment(segment);
 			console.log('segments.dragend:', segment, startMarker);
 		  });
@@ -450,9 +476,16 @@ class AudioEditor extends Component {
 			console.log("componentDidUpdate")
 			//tutaj robie jedynie update po tym jak peaks jest już zainicjowany
 
+			this.setState({
+				czyZmienionoSegmenty: false,
+			})
+
 			this.updateSource(this.props.containerForPreview);
 			
 		}
+
+		//jeżeli zapisano i widok jest odświeżony z już odświeżonymi segmentami
+
 
 	}
 
@@ -464,47 +497,118 @@ class AudioEditor extends Component {
 
 	updateSegment = (newSegment) => {
 
-		let segmentToUpdate = newSegment;
 
 		//tutaj sprawdzam czy jakiś segment nie nachodzi już na istniejący.
 		
 		//iteruje po obecnie istniejących segmentach
 		let allsegments = this.peaks.segments.getSegments();
-		let poprzedniseg = null;
-		for(let i=0;i<allsegments.length;i++){
-			let currentseg = allsegments[i];
-			// iteruje po kolei i sprawdzam czy startTime obecnego jest mniejszy niż endTime poprzedniego
-			if(i>0){
-				if(currentseg.startTime < poprzedniseg.endTime){
-					//alert("nachodzą się")
-					//tutaj połączyć obecny z poprzednim segmentem
-					let startTimeNowy = poprzedniseg.startTime;
-					let endTimeNowy = currentseg.endTime;
-					let labelNowy = poprzedniseg.labelText + '-' + currentseg.labelText;
-					let idNowy = poprzedniseg.id;
 
-					//usuwam poprzedni i obecny segment
-					this.peaks.segments.removeById(poprzedniseg.id);
-					this.peaks.segments.removeById(currentseg.id);
+		//iteruje po wszyskich istniejących i porównuje obecny z wszystkimi istniejącymi
 
-					//dodaje jeden dluższy
-					this.peaks.segments.add({
-						startTime: startTimeNowy,
-						endTime: endTimeNowy,
-						editable: true,
-						color: '#394b55',
-						labelText: labelNowy,
-						id: idNowy,
-					})
-
-					segmentToUpdate = this.peaks.segments.getSegment(idNowy);
-
-					
-					break;
-				}
+		/*
+			wstawilem
+			{
+				startTime: 1.26,
+				endTime: 4.08,
+				id: peaks.segment.3
 			}
 
-			poprzedniseg = currentseg;
+			wszystkie inne
+
+			{
+				startTime: 11.14
+				endTime: 13.01,
+				id: peaks.segment.1
+			},
+			{
+				startTime: 13.392
+				endTime: 18.77,
+				id: peaks.segment.2
+			},
+			{
+				startTime: 1.256 
+				endTime: 4.088,
+				id: peaks.segment.3
+			}
+		*/
+
+
+		//rozpoznaje ktore leza w obrebie modyfikowanego
+		let ktoreIstniejaceWModified = [];
+
+
+		//wyłuskuje to segmenty które nachodzą się ze zmodyfikowany
+		for(let currentseg of allsegments){
+
+		   //jeżeli obecny to przeskakuje
+		   if(currentseg.id == newSegment.id) continue;
+
+		   if((currentseg.startTime >= newSegment.startTime) && (currentseg.startTime <= newSegment.endTime)){
+			   //startTime tego segmentu lezy w zmodyfikownym segmencie
+			   ktoreIstniejaceWModified.push({
+				startTime: currentseg.startTime,
+				endTime: currentseg.endTime,
+				labelText: currentseg.labelText,
+				id: currentseg.id,
+			   });
+		   }
+
+
+		   if(((currentseg.startTime <= newSegment.startTime) && (currentseg.startTime <= newSegment.endTime)) && (currentseg.endTime >= newSegment.startTime && currentseg.endTime >= newSegment.endTime)){
+			//startTime tego segmentu lezy w zmodyfikownym segmencie
+			ktoreIstniejaceWModified.push({
+			 startTime: currentseg.startTime,
+			 endTime: currentseg.endTime,
+			 labelText: currentseg.labelText,
+			 id: currentseg.id,
+			});
+		}
+
+		 
+
+		   if((currentseg.endTime >= newSegment.startTime) && (currentseg.endTime <= newSegment.endTime)){
+			//endTime tego segmentu lezy w zmodyfikownym segmencie
+			  ktoreIstniejaceWModified.push({
+				startTime: currentseg.startTime,
+				endTime: currentseg.endTime,
+				labelText: currentseg.labelText,
+				id: currentseg.id,
+			   });
+		   }
+
+		}
+
+		//teraz usuwam wszystkie (łącznie z nowo dodanym) i tworze nowy ktory nachodzi odpowiednio na granice nachodzacych
+
+		if(ktoreIstniejaceWModified.length > 0){
+
+								
+			let minTime = 999999999999;
+			let maxTime = 0;
+
+			let nowyLabel = "Custom";
+			for(let nachodzacy of ktoreIstniejaceWModified){
+				if(nachodzacy.startTime <= minTime) minTime = nachodzacy.startTime;
+				if(nachodzacy.endTime >= maxTime) maxTime = nachodzacy.endTime;
+
+				//let numerekFromId = nachodzacy.id.substr(nachodzacy.id.lastIndexOf('.')+1,nachodzacy.id.length);
+				nowyLabel = "Custom " +this.state.segmentCounter;
+				this.peaks.segments.removeById(nachodzacy.id);
+			}
+
+			//teraz zajmuje sie modyfikowanym
+			if(newSegment.startTime <= minTime) minTime = newSegment.startTime;
+			if(newSegment.endTime >= maxTime) maxTime = newSegment.endTime;
+			this.peaks.segments.removeById(newSegment.id);
+
+			//dodaje nowy wlasny
+			this.peaks.segments.add({
+				startTime: minTime,
+				endTime: maxTime,
+				editable: true,
+				color: '#394b55',
+				labelText: nowyLabel,
+			})
 		}
 
 		let segmenty = this.convertPeaksSegments();
@@ -513,8 +617,11 @@ class AudioEditor extends Component {
 			segments: [...segmenty],
 			czyZmienionoSegmenty: true,
 		})
+	
 		
 	};
+
+
 
 	updateSegmentLabel = (id, label) => {
 		let segment = this.peaks.segments.getSegment(id);
@@ -559,6 +666,33 @@ class AudioEditor extends Component {
 
 		if(this.props.toolType == "VAD"){
 			this.props.onSaveVADSegments(this.props.containerForPreview, this.props.toolType, this.props.token, simplerSegments);
+		}
+	}
+
+	addSegment = () => {
+		if(this.peaks){
+
+			let newSegment = {
+				startTime: this.peaks.player.getCurrentTime(),
+				endTime: this.peaks.player.getCurrentTime() + 3,
+				labelText: 'Segment ' + this.state.segmentCounter,
+				editable: true,
+			};
+
+
+			this.peaks.segments.add(newSegment);
+
+			let segmenty = this.convertPeaksSegments();
+
+			this.updateSegment(newSegment);
+			
+			this.setState({
+				segmentCounter: this.state.segmentCounter+1,
+				//czyZmienionoSegmenty: true,
+				//currentSegments: [...segmenty],
+			})
+
+			
 		}
 	}
 
@@ -632,6 +766,11 @@ class AudioEditor extends Component {
 										<ReactTooltip id="zoomout" delayShow={500}>
 											<span>Oddal</span>
 										</ReactTooltip>
+
+										<button data-tip data-for='addSegment' data-action="add-segment" onClick={this.addSegment}><FontAwesomeIcon icon={faGripLinesVertical} className="faIcon" /></button>
+										<ReactTooltip id="addSegment" delayShow={500}>
+											<span>Dodaj segment</span>
+										</ReactTooltip>
 										
 										
 									</div>
@@ -642,7 +781,7 @@ class AudioEditor extends Component {
 								</div>
 								<div className="col-12">
 								
-								<audio id="audio" controls={true} ref={this.audioPlayer}>
+								<audio id="audio" controls={false} ref={this.audioPlayer}>
 									<source src={this.state.audioPath} />
 										Your browser does not support the audio element.
 									</audio>

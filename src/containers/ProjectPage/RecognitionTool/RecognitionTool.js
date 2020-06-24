@@ -18,7 +18,7 @@ import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ToolItem from '../ToolItem/ToolItem';
 
-import AudioEditor from '../../ProjectPage/AudioEditor/AudioEditor';
+import AudioEditor from '../AudioEditor/AudioEditor';
 
 class RecognitionTool extends Component {
 

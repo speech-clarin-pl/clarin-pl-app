@@ -69,10 +69,6 @@ const saveVADSegmentsSuccess = (state, action) => {
         draftState.containersForVAD[foundFileIdx].VADUserSegments = updatedSegments;
         draftState.vadContainerForPreview.VADUserSegments = updatedSegments;
        
-       
-
-       
-       
    })
    
 

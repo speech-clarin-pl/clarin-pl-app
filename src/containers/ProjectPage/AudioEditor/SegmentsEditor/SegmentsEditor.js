@@ -54,6 +54,12 @@ class SegmentsEditor extends Component {
 
 
     renderSegments = () => {
+
+        //tutaj musze je posortować względem czasu
+        this.props.segments.sort((s1,s2)=>{
+            return s1.startTime - s2.startTime;
+        });
+
 		let segmentList = this.props.segments.map((segment,i) => {
             return <Segment 
                 labelText={segment.labelText} 
@@ -106,14 +112,16 @@ class SegmentsEditor extends Component {
                         </div>
                     </div>
 
-
-                    <ButtonLeftBar 
-                            napis={this.props.czyZmieniono?"Zapisz zmiany segmentów":"Edytuj segmenty"}
-                            iconType="file"
-                            icon={null}
-                            customeStyle={{textAlign:'center', marginBottom: '20px'}}
-                            disabled={czyDisabled}
-                            whenClicked={this.saveSegments}/>
+                    {
+                        this.props.czyZmieniono? <ButtonLeftBar 
+                        napis={"Zapisz zmiany segmentów"}
+                        iconType="file"
+                        icon={null}
+                        customeStyle={{textAlign:'center', marginBottom: '20px'}}
+                        disabled={czyDisabled}
+                        whenClicked={this.saveSegments}/> : null
+                    }
+                    
                 </div>
 			</Aux>
 		);
