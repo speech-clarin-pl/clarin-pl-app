@@ -92,8 +92,8 @@ class TextEditor extends Component {
 
         //jeżeli element nie miał zrobionej jeszcze transkrypcji to
         if(!this.props.container.ifREC){
-            loadTranscriptBtnDisabled = false;
-            loadTranscriptBtnText = "Automatyczne rozpoznawanie";
+            loadTranscriptBtnDisabled = true;
+            loadTranscriptBtnText = "Rozpocznij transkrypcje";
             loadTranscriptBtnStyle = {backgroundColor: '#3498db', textAlign: 'center'};
 
             saveTranscriptBtnDisabled = false;

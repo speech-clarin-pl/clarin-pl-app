@@ -90,7 +90,7 @@ class ToolItem extends Component {
         switch(this.props.type){
             case "DIA":
                 iconType = faComment;
-                if(this.props.container._id==this.props.RECcontainerInPreview._id){
+                if(this.props.container._id==this.props.DIAcontainerInPreview._id){
                     czyEdytowany='editing';
                 }
                 break;

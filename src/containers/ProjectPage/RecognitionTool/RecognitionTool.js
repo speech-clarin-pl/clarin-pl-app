@@ -297,7 +297,7 @@ class RecognitionTool extends Component {
                         <div> <b>[Alt+k]</b> - powtórz 3 sek.</div>
                         <div> <b>[Alt+j]</b> - powtórz 5 sek.</div>
                         <div> <b>[Alt+i]</b> - przyśpiesz.</div>
-                        <div> <b>[Alt+,]</b> - zwolnij.</div>
+                        <div> <b>[Alt+o]</b> - zwolnij.</div>
                         <div> <b>[Alt+m]</b> - zapisz transkrypcje.</div>
                         <div> <b>[Alt+n]</b> - załaduj kolejny plik.</div>
                         <div>Możesz transkrybować nie odrywając rąk od pola tekstowego!</div>

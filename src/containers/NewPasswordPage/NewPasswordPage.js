@@ -10,7 +10,8 @@ class NewPasswordPage extends Component {
   state = {
     password: "",
     confirmPassword: "",
-    submitted: false
+    submitted: false,
+    czyHaslaPasuja: true,
   }
 
   handleChange = key => e => {
@@ -19,34 +20,46 @@ class NewPasswordPage extends Component {
 
   updatePassword = e => {
     e.preventDefault()
-    const { userId, token } = this.props
-    const { password } = this.state
+    const { userId, token } = this.props;
+    const { password } = this.state;
+    const { confirmPassword } = this.state;
 
-    axios.post('/auth/enterNewPass/'+userId+'/'+token, {newPassword: password})
-        .then(res => {
-          console.log("RESPONSE FROM SERVER TO CLIENT:", res)
-        })
-        .catch(err => {
-          console.log("SERVER ERROR TO CLIENT:", err)
-        });
-    
-        this.setState({ submitted: !this.state.submitted })
+    if((password==confirmPassword) && password.length>5){
+
+      this.setState({
+        czyHaslaPasuja: true,
+      })
+
+      axios.post('/auth/enterNewPass/'+userId+'/'+token, {newPassword: password})
+          .then(res => {
+            console.log("RESPONSE FROM SERVER TO CLIENT:", res)
+          })
+          .catch(err => {
+            console.log("SERVER ERROR TO CLIENT:", err)
+          });
+      
+          this.setState({ submitted: !this.state.submitted })
+    } else {
+      this.setState({
+        czyHaslaPasuja: false,
+      })
+    }
   }
 
-
-  
-  
   
   render() {
     const { submitted } = this.state
     return (
       <Aux>
-        <h3 style={{ paddingBottom: "1.25rem" }}>Update your password</h3>
+        <p></p>
+        <h3 style={{ paddingBottom: "1.25rem" }}>Wpisz swoje nowe hasło</h3>
+        <p>Hasło musi składać się z conajmniej 5 znaków</p>
+        {this.state.czyHaslaPasuja==false?<b>Hasła nie pasują do siebie</b>:null}
         {submitted ? (
           <div className="reset-password-form-sent-wrapper">
-            <p>Your password has been saved.</p>
+            <p>Twoje hasło zostało zapisane.</p>
             <Link to="/login" className="ghost-btn">
-              Sign back in
+              Wróć aby się zalogować
             </Link>
           </div>
         ) : (

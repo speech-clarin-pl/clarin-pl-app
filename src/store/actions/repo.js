@@ -54,11 +54,12 @@ export const runSpeechVoiceActivityDetection = (container, toolType, token) => {
 // ############## Speech diarization #################
 // ###########################################################
 
-export const runSpeechDiarizationSuccess = (containerId, toolType) => {
+export const runSpeechDiarizationSuccess = (containerId, toolType, DIAsegments) => {
     return {
         type: actionTypes.REPO_RUN_SPEECH_DIARIZATION_DONE,
         containerId: containerId,
         toolType: toolType,
+        DIAsegments: DIAsegments,
     }
 }
 
@@ -85,7 +86,7 @@ export const runSpeechDiarization = (container, toolType, token) => {
             },
         })
         .then(response => {
-            dispatch(runSpeechDiarizationSuccess(container._id, toolType));
+            dispatch(runSpeechDiarizationSuccess(response.data.containerId, response.data.toolType, response.data.DIAsegments));
         })
         .catch(error => {
             dispatch(runSpeechDiarizationFailed(container._id, toolType));

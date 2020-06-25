@@ -188,6 +188,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 	return {
 		openContainerInDIAPreview: (container) => dispatch(diaActions.openContainerInDIAPreview(container)),
+		//runDIAInBatch: (DIAItems) => dispatch(diaActions.runDIAInBatch(DIAItems)),
 		runSpeechDiarization: (container, toolType, token) => dispatch(diaActions.runSpeechDiarization(container, toolType, token)),
 		setContainerStatus:  (containerId, toolType, status) => dispatch(diaActions.setContainerStatus(containerId, toolType, status)),
 		//onOpenModalHandler: () => dispatch(segmentActions.openModalProject()),

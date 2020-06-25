@@ -59,6 +59,7 @@ const addContainerToDIA = (state,action) => {
 const speechDiarizationSuccess = (state, action) => {
     const containerId = action.containerId;
     const toolType = action.toolType; 
+    const DIAsegments = action.DIAsegments;
 
    // console.log("TUTAJ TEZ POWINIENEM ")
     //console.log(action.containerId)
@@ -71,7 +72,14 @@ const speechDiarizationSuccess = (state, action) => {
 
         draftState.containersForDIA[foundFileIdx].ifDIA = true;
         draftState.containersForDIA[foundFileIdx].statusDIA = 'done';
+        draftState.containersForDIA[foundFileIdx].DIAUserSegments = DIAsegments;
        
+        //sprawdzam czy który był otwarty w preview
+
+        if(draftState.diaContainerForPreview._id == draftState.containersForDIA[foundFileIdx]._id){
+            draftState.diaContainerForPreview =  draftState.containersForDIA[foundFileIdx];
+        }
+
    })
 
    return nextState;
@@ -123,6 +131,26 @@ const changeToolItemStatus = (state, action) => {
 
 }
 
+const saveDIASegmentsSuccess = (state, action) => {
+    const containerId = action.containerId;
+    const toolType = action.toolType; 
+    const updatedSegments = action.updatedSegments;
+
+    const nextState = produce(state, draftState => {
+
+        //przepisuje wlasciwosci container z preview do odpowiedniego w liscie
+
+        let foundFileIdx = draftState.containersForDIA.findIndex(file => {
+            return file._id === containerId;
+        })
+
+        draftState.containersForDIA[foundFileIdx].DIAUserSegments = updatedSegments;
+        draftState.diaContainerForPreview.DIAUserSegments = updatedSegments;  
+   })
+
+   return nextState; 
+}
+
 
 const diaReducer = (state = initialState, action) => {
     switch(action.type){
@@ -133,10 +161,9 @@ const diaReducer = (state = initialState, action) => {
         case actionTypes.REPO_RUN_SPEECH_DIARIZATION_DONE: return speechDiarizationSuccess(state,action);
         case actionTypes.REPO_RUN_SPEECH_DIARIZATION_FAILED: return speechDiarizationFailed(state,action);
 
-
-        
-
         case actionTypes.SET_CONTAINER_STATUS: return changeToolItemStatus(state,action);
+
+        case actionTypes.SAVE_DIA_SEGMENTS_SUCCESS: return saveDIASegmentsSuccess(state,action);
 
         //case actionTypes.ADD_CONTAINER_TO_RECO: return addContainerToReco(state,action);
         //case actionTypes.DROP_FILES: return dropFiles(state, action);

@@ -89,7 +89,7 @@ class AudioEditor extends Component {
 			case 'alt+i': 
 			  this.increasePlaybackSpeed();
 			  break;
-			case 'alt+,': 
+			case 'alt+o': 
 			  this.decreasePlaybackSpeed();
 			  break;
 			case 'alt+n':
@@ -103,7 +103,22 @@ class AudioEditor extends Component {
 	 }
 
 	 saveChanges = () => {
-		this.props.onSaveTranscription(this.props.containerForPreview, this.props.toolType, this.props.token, this.state.text);
+
+		switch(this.props.toolType){
+			case("VAD"):
+				console.log('VAD')
+				break;
+			case("DIA"):
+				console.log('DIA')
+				break;
+			case("REC"):
+			    this.props.onSaveTranscription(this.props.containerForPreview, this.props.toolType, this.props.token, this.state.text);
+				break;
+			case("SEG"):
+				console.log('SEG')
+				break;
+		}
+		
 	 }
 
 	 increasePlaybackSpeed = () => {
@@ -118,14 +133,12 @@ class AudioEditor extends Component {
 
 	 decreasePlaybackSpeed = () => {
 		let player = document.getElementById("audio");
-
 		if(this.state.speedFactor > 0){
 			player.playbackRate = this.state.speedFactor - 0.5;
 			this.setState({
 				speedFactor: this.state.speedFactor - 0.5,
 			})
 		}
-		
 	 }
 
 	 togglePlaying = () => {
@@ -190,11 +203,7 @@ class AudioEditor extends Component {
 
 
 
-
-
-
 	createPeaksInstance = (options) => {
-		
 		
 		return new Promise((resolve, reject) => {
 		  Peaks.init(options, (err, peaksInstance) => {
@@ -308,7 +317,6 @@ class AudioEditor extends Component {
 
 
 	startPeaksLeaving = (audioPathok, datPathok, segments) => {
-
 
 		//arraybuffer: "http://localhost:1234/repoFiles/5e4b09e086f4ed663259fae9/5e9e175af4192d661ebf49dd/5e9e175af4192d661ebf49de/kleska.dat?api_key="+this.props.token,
 		
@@ -501,23 +509,33 @@ class AudioEditor extends Component {
 
 			this.setState({
 				czyZmienionoSegmenty: false,
+				isPlaying: false,
+				speedFactor: 1,
+				isLoading: false,
 			})
 
 			this.updateSource(this.props.containerForPreview);
 
-			
-		}
+			switch(this.props.toolType){
+				case("VAD"):
+					console.log('VAD')
+					break;
+				case("DIA"):
+					console.log('DIA')
+					break;
+				case("REC"):
+				    this.loadTranscription();
+					break;
+				case("SEG"):
+					console.log('SEG')
+					break;
+			}
 
-
-		if(prevProps.containerForPreview !== this.props.containerForPreview){
-			this.loadTranscription();
 		}
 
 		// jeżeli zmieniła się transkrypcja
 		if(this.props.transcriptionData){
 			if(prevProps.transcriptionData !== this.props.transcriptionData){
-
-
 						if(this.props.containerForPreview.ifREC){
 							this.setState({
 								text: this.props.transcriptionData.blocks[0].data.text,
@@ -531,15 +549,9 @@ class AudioEditor extends Component {
 				transcriptHasChanged: false,
 			})
 		}
-
-
-		//jeżeli zapisano i widok jest odświeżony z już odświeżonymi segmentami
-
-
 	}
 
 	componentDidMount = () => {
-		console.log("ładuje na nowo")
 		this.loadNewAudioToEditor(this.props.containerForPreview);
 	}
 
@@ -713,9 +725,23 @@ class AudioEditor extends Component {
 		//konwertuje segmenty z peaks js na bardziej uzyteczne
 		let simplerSegments = this.convertPeaksSegments();
 
-		if(this.props.toolType == "VAD"){
-			this.props.onSaveVADSegments(this.props.containerForPreview, this.props.toolType, this.props.token, simplerSegments);
+
+		switch(this.props.toolType){
+			case("VAD"):
+				this.props.onSaveVADSegments(this.props.containerForPreview, this.props.toolType, this.props.token, simplerSegments);
+				break;
+			case("DIA"):
+				this.props.onSaveDIASegments(this.props.containerForPreview, this.props.toolType, this.props.token, simplerSegments);
+				break;
+			case("REC"):
+			console.log('REC')
+				break;
+			case("SEG"):
+				console.log('SEG')
+				break;
 		}
+
+
 	}
 
 	addSegment = () => {
@@ -786,7 +812,6 @@ class AudioEditor extends Component {
 
 		// widok edytora tekstowego
 		let transcriptWindow = null;
-
 		if(this.props.toolType == "REC"){
 			transcriptWindow = <TextEditor 
 			toolType={this.props.toolType} 
@@ -799,6 +824,24 @@ class AudioEditor extends Component {
 			transcriptHasChanged = {this.state.transcriptHasChanged}
 			/>		
 		}
+
+		// widok segment edytora
+		let segmentEditor = null;
+		if(this.peaks && (this.props.toolType=='VAD' || this.props.toolType=='DIA')){
+			if(this.state.currentSegments.length > 0){
+				console.log("UPDATE")
+				segmentEditor = <SegmentEditor 
+				czyZmieniono={this.state.czyZmienionoSegmenty}
+				segments={this.peaks.segments.getSegments()}
+				onUpdateSegmentLabel={(id, label)=>this.updateSegmentLabel(id, label)} 
+				onUpdateSegmentStartTime={(id, newValue)=>this.updateSegmentStartTime(id, newValue)}
+				onUpdateSegmentEndTime={(id, newValue)=>this.updateSegmentEndTime(id, newValue)}
+				onSaveSegmentChanges={this.saveSegmentChanges}
+				/>
+			}	
+		}
+
+
 
 		//jaką ikonkę wyświetlić na przycisku play
 		let playPauseicon = null;
@@ -854,7 +897,7 @@ class AudioEditor extends Component {
 									
 										<button data-tip data-for='decreaseSpeed' data-action="slow-down" onClick={this.decreasePlaybackSpeed}><FontAwesomeIcon icon={faClock} className="faIcon" /> <FontAwesomeIcon icon={faLongArrowAltDown} className="faIcon" /><span style={{fontSize:'0.7em', width:'25px', display: 'inline-block'}}> x {this.state.speedFactor}</span></button>
 										<ReactTooltip id="decreaseSpeed" delayShow={500}>
-											<span>Wolniej (Alt+,)</span>
+											<span>Wolniej (Alt+o)</span>
 										</ReactTooltip>
 
 										<button data-tip data-for='zoomin' data-action="zoom-in"><FontAwesomeIcon icon={faSearchPlus} className="faIcon" /> </button>
@@ -904,28 +947,9 @@ class AudioEditor extends Component {
 
 
 
-		// widok segment edytora
-		let segmentEditor = null;
-		if(this.peaks && (this.props.toolType=='VAD' || this.props.toolType=='DIA')){
-			if(this.state.currentSegments.length > 0){
-				console.log("UPDATE")
-				segmentEditor = <SegmentEditor 
-				czyZmieniono={this.state.czyZmienionoSegmenty}
-				segments={this.peaks.segments.getSegments()}
-				onUpdateSegmentLabel={(id, label)=>this.updateSegmentLabel(id, label)} 
-				onUpdateSegmentStartTime={(id, newValue)=>this.updateSegmentStartTime(id, newValue)}
-				onUpdateSegmentEndTime={(id, newValue)=>this.updateSegmentEndTime(id, newValue)}
-				onSaveSegmentChanges={this.saveSegmentChanges}
-				/>
-			}
-			
-		}
-
-
-
 		return (
 			<Hotkeys 
-					keyName=" alt+j, alt+k, alt+l, alt+i, alt+,alt+n,alt+m" 
+					keyName=" alt+j, alt+k, alt+l, alt+i, alt+o,alt+n,alt+m" 
 					onKeyDown={this.onKeyDown.bind(this)}
 					filter={(event) => {
 					//	console.log(event)
@@ -989,6 +1013,7 @@ const mapDispatchToProps = dispatch => {
 	return {
 
 		onSaveVADSegments: (container, toolType, token, segments) => dispatch(audioEditorActions.saveVADSegments(container, toolType, token, segments)),
+		onSaveDIASegments: (container, toolType, token, segments) => dispatch(audioEditorActions.saveDIASegments(container, toolType, token, segments)),
 
 		onSaveTranscription: (container, toolType, token, transcription) => dispatch(audioEditorActions.saveTranscription(container, toolType, token, transcription)),
 		onTranscriptionChanged: () => dispatch(audioEditorActions.transcriptionChanged()),

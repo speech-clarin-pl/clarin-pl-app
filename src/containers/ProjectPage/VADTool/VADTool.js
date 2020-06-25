@@ -190,7 +190,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 	return {
 		openContainerInVADPreview: (container) => dispatch(vadActions.openContainerInVADPreview(container)),
-		runVADInBatch: (VADItems) => dispatch(vadActions.runVADInBatch(VADItems)),
+		//runVADInBatch: (VADItems) => dispatch(vadActions.runVADInBatch(VADItems)),
 		runSpeechVoiceActivityDetection: (container, toolType, token) => dispatch(vadActions.runSpeechVoiceActivityDetection(container, toolType, token)),
 		setContainerStatus:  (containerId, toolType, status) => dispatch(vadActions.setContainerStatus(containerId, toolType, status)),
 		//onOpenModalHandler: () => dispatch(segmentActions.openModalProject()),

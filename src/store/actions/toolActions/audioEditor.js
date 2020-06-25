@@ -52,9 +52,57 @@ return dispatch => {
 }
 
 
+// ###################################################################
+// ######## zapisywanie segmentów DIA ##########
+// ###################################################################
+
+export const saveDIASegmentsSuccess = (message, updatedSegments, containerId, toolType) => {
+    return {
+        type: actionTypes.SAVE_DIA_SEGMENTS_SUCCESS,
+        message: message,
+        containerId: containerId,
+        updatedSegments: updatedSegments,
+        toolType: toolType,
+    }
+}
+
+export const saveDIASegmentsFailed = (error, containerId, toolType) => {
+    return {
+        type: actionTypes.SAVE_DIA_SEGMENTS_FAILED,
+        error: error,
+        containerId: containerId,
+        toolType: toolType,
+    }
+}
+
+export const saveDIASegments = (container, toolType, token, segments) => {
+return dispatch => {
+
+    console.log("zapisuje DIA segmenty")
+    axios.put('/dia/saveSegments', {
+        segments: segments,
+        toolType: toolType,
+        container: container,
+    },{
+        headers: {
+            Authorization: 'Bearer ' + token
+        }
+    })
+    .then(response => {
+        console.log(response)
+        dispatch(saveDIASegmentsSuccess(response.data.message, response.data.updatedSegments, container._id, toolType));
+      //  dispatch(closeModal());
+    })
+    .catch(error => {
+        console.log(error)
+       dispatch(saveDIASegmentsFailed(error, container._id, toolType));
+    });
+}
+}
+
 
 // ###################################################################
-// ######## zapisywanie segmentów ##########
+// ######## zapisywanie segmentów VAD ##########
 // ###################################################################
 
 export const saveVADSegmentsSuccess = (message, updatedSegments, containerId, toolType) => {
