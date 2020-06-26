@@ -1,7 +1,40 @@
 import * as actionTypes from '../actionsTypes';
 import axios from 'axios';
 
+// ###################################################################
+// ######## otwieram podgląd contanera w EMU ##########
+// ###################################################################
 
+export const openContainerInEMUSuccess = (dataForEMU) => {
+    return {
+        type: actionTypes.OPEN_CONTAINER_IN_EMU_SUCCESS,
+        dataForEMU: dataForEMU,
+    }
+}
+
+export const openContainerInEMUFailed = (error) => {
+    return {
+        type: actionTypes.OPEN_CONTAINER_IN_EMU_FAILED,
+        error: error,
+    }
+}
+
+export const openContainerInEMU = (container,token) => {
+    return dispatch => {
+        axios.get('/seg/openInEMU'+"/"+container._id,
+            {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            })
+            .then(dataForEMU => {
+                dispatch(openContainerInEMUSuccess(dataForEMU));
+            })
+            .catch(error =>  {
+                dispatch(openContainerInEMUFailed(error));
+            })
+    }
+}
 
 // ###################################################################
 // ######## jeżeli tuż po zapisaniu zmieniłem coś w polu txt ##########

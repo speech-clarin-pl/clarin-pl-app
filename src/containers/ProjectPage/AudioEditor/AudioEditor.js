@@ -33,6 +33,7 @@ import TOLdemo from '../../../utils/TOL_6min_720p_download.json';
 import ReactTooltip from "react-tooltip";
 import {ContextMenu, MenuItem, ContextMenuTrigger} from 'react-contextmenu';
 import {withRouter } from 'react-router-dom';
+import ButtonLeftBar from '../../../components/UI/ButtonLeftBar/ButtonLeftBar';
 
 
 import TextEditor from './TextEditor/TextEditor';
@@ -805,10 +806,51 @@ class AudioEditor extends Component {
         } else  if(this.props.containerForPreview.ifVAD){
            // this.props.onLoadExistingTranscription(this.props.container, this.props.toolType, this.props.token);
         }  
-    }
+	}
+	
+
+	openPreviewInEMU = () => {
+		//this.props.openPreviewInEMU(this.props.containerForPreview, this.props.token);
+
+		//musze skonstruować coś takiego
+		//https://ips-lmu.github.io/EMU-webApp/?audioGetUrl=https:%2F%2Fmowa.clarin-pl.eu%2Ftools%2Fdownload%2F5ee14ac666eca6f9d593b059&labelGetUrl=https:%2F%2Fmowa.clarin-pl.eu%2Ftools%2Fannot%2F5ef6186e66eca66f0d79e978&labelType=annotJSON
+	
+		let container = this.props.containerForPreview;
+		const userId = container.owner;
+		const projectId = container.project;
+		const sessionId = container.session;
+		const fileName = container.fileName;
+		const containerId = container._id;
+		const token = this.props.token;
+
+		let audioGetUrl = process.env.REACT_APP_API_URL+ "/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/audio?api_key="+token;
+		let labelGetUrl = process.env.REACT_APP_API_URL+ "/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/SEGtextGrid?api_key="+token;
+		let labelType='TEXTGRID';
+
+		let finalPathToEMU = encodeURI('https://ips-lmu.github.io/EMU-webApp/?audioGetUrl=' + audioGetUrl + '&labelGetUrl=' + labelGetUrl + '&labelType=' + labelType);
+
+		window.open(finalPathToEMU, "_blank");
+	
+	}
+
 
 
 	render() {
+
+		//przycisk przycisku podglądu w EMU
+		let previewInEMUBtn = null;
+		if(this.props.containerForPreview.ifSEG){
+			previewInEMUBtn = <ButtonLeftBar 
+                        napis={"Otwórz w EMU"}
+                        iconType="file"
+                        icon={null}
+                        customeStyle={{textAlign:'center', marginBottom: '20px'}}
+                        disabled={false}
+                        whenClicked={this.openPreviewInEMU}/>
+		}
+
+
+		
 
 		// widok edytora tekstowego
 		let transcriptWindow = null;
@@ -967,6 +1009,10 @@ class AudioEditor extends Component {
 							}
 
 							{
+								previewInEMUBtn
+							}
+
+							{
 								segmentEditor
 							}
 
@@ -1011,6 +1057,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
 	return {
+
+		openPreviewInEMU: (container, token) => dispatch(audioEditorActions.openContainerInEMU(container, token)),
 
 		onSaveVADSegments: (container, toolType, token, segments) => dispatch(audioEditorActions.saveVADSegments(container, toolType, token, segments)),
 		onSaveDIASegments: (container, toolType, token, segments) => dispatch(audioEditorActions.saveDIASegments(container, toolType, token, segments)),

@@ -22,6 +22,7 @@ export {
     runSpeechDiarization,
     runSpeechVoiceActivityDetection,
     setContainerStatus,
+    exportToEMU,
     
 } from './repo';
 
@@ -33,6 +34,7 @@ export {
     loadTranscription,
     saveVADSegments,
     saveDIASegments,
+    openContainerInEMU,
 } from './toolActions/audioEditor';
 
 export {

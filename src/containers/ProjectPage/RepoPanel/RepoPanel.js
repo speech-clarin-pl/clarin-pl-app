@@ -35,8 +35,12 @@ class repoPanel extends Component {
 
     state = {
         clickCreateSession: false,
+        clickExportToMenu: false,
         clickRemoveItem: false,
         newSessionName: "",
+
+        modal: false,
+        whatClicked: '',
     }
 
     removeObjectFromRepo = () => {
@@ -83,12 +87,20 @@ class repoPanel extends Component {
     }
     
     addSession = () => {
-        this.setState({clickCreateSession: true});
-        this.props.onOpenModalHandler();
+        //this.setState({clickCreateSession: true});
+        //this.props.onOpenModalHandler();
+        this.setState({
+            modal: true,
+            whatClicked: 'addSession',
+        })
     }
 
     closeModalHandler = () => {
-		this.props.onCloseModalHandler();
+        this.setState({
+            modal:false,
+            whatClicked: '',
+        })
+		//this.props.onCloseModalHandler();
     }
 
     //zajmuje się obsługą updatu inputa dla nazwy nowego projektu
@@ -133,7 +145,15 @@ class repoPanel extends Component {
     }
 
     runEMUExport = () => {
-        alert('EMU EXPORT TO DO')
+        this.props.onExportToEMU(this.props.currentProjectID, this.props.currentProjectOwner, this.props.token);
+    }
+
+    openConfirmExportToEmu = () => {
+        this.setState({
+            modal: true,
+            whatClicked: 'EMUexport',
+        })
+        //this.props.onOpenModalHandler();
     }
 
 
@@ -147,9 +167,22 @@ class repoPanel extends Component {
         let lebelButton = "";
 
 
-        if(this.state.clickCreateSession){
-            modalTitle = "Tworzenie nowej sesji";
+        //jeżeli kliknięto w przycisk exportujący do EMU
+        if(this.state.whatClicked == 'EMUexport'){
+            modalTitle = "Czy jesteś pewien że chcesz eksportować do EMU?"
+            modalContent = (
+                <div>
+                    <p>Zostaną wyeksportowane tylko te pliki dla których zostały wykonane wszystkie poziomy annotacji.</p>
+                    <p>Obecnie nie zostanie wyeksportowanych ??? z ??? plików w repozytorium</p>
+                    <button type="button" className="btn btn-primary" onClick={this.runEMUExport}>Ok</button>
+                </div>
+                
+            );
+        }
 
+        //jeżeli kliknięto ikonkę do stworzenia sesji
+        if(this.state.whatClicked == 'addSession'){
+            modalTitle = "Tworzenie nowej sesji";
             lebelButton = "Stwórz sesje";
 
             modalContent = (
@@ -206,8 +239,9 @@ class repoPanel extends Component {
 		return (
 			<Aux>
 
+               
                 <Modal 
-                    show={this.props.modal}
+                    show={this.state.modal}
 					modalClosed={this.closeModalHandler}
                     modalTitle={modalTitle}
                 >
@@ -264,7 +298,7 @@ class repoPanel extends Component {
                                     icon={null}
                                     customeStyle={{height:'50px'}}
                                     disabled={false}
-                                    whenClicked={this.runEMUExport}/>
+                                    whenClicked={this.openConfirmExportToEmu}/>
                         </div>
 
                         
@@ -301,6 +335,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
 	return {
     //	onUploadFiles: (fileList, folderKey, userId, projectId, token) => dispatch(repoActions.uploadFiles(fileList,folderKey,userId, projectId, token)),
+    
+    onExportToEMU: (projectId, userId, token) => dispatch(repoActions.exportToEMU(projectId, userId, token)),
+
     onSelectSession: (sessionId) => dispatch(repoActions.selectSession(sessionId)),
     onSelectContainer: (containerId) => dispatch(repoActions.selectContainer(containerId)),
     onGetProjectFilesForUser: (userId, projectId, token) => dispatch(repoActions.getProjectFilesForUser(userId, projectId, token)),

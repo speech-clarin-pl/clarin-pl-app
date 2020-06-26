@@ -812,6 +812,8 @@ export const handleDownloadFile = (fileKey, projectId, userId, token) => {
     }
 }
 
+
+
 export const handleDeleteFile = (fileKey, projectId, userId, token) => {
     console.log('DELETE FILE:' + fileKey);
     return dispatch => {
@@ -833,6 +835,45 @@ export const handleDeleteFile = (fileKey, projectId, userId, token) => {
                    console.log(error)
                    dispatch(handleDeleteFileActionFailed(error));
                });
+    }
+}
+
+
+
+// #################################
+// ###### Export To EMU
+// ############################
+
+export const exportToEMUFailed = (message) => {
+    return {
+        type: actionTypes.EXPORT_TO_EMU_DONE_FAILED,
+        message: message,
+    }
+}
+
+export const exportToEMUSuccess = (message) => {
+    return {
+        type: actionTypes.EXPORT_TO_EMU_DONE_SUCCESS,
+        message: message,
+    }
+}
+
+export const exportToEMU = (projectId, userId, token) => {
+    console.log("Export to emu");
+    return dispatch => {
+        axios.get('/repoFiles/exportToEmu/'+userId+'/'+projectId, {
+            headers: {
+                Authorization: 'Bearer ' + token
+            }
+        })
+        .then(response => {
+            console.log(response)
+            dispatch(exportToEMUSuccess(response.data.message));
+        })
+        .catch(error => {
+            console.log(error)
+            dispatch(exportToEMUFailed(error.message));
+        });
     }
 }
 
