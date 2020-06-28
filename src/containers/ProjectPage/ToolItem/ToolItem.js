@@ -78,6 +78,10 @@ class ToolItem extends Component {
        
     }
 
+    handleClick = () => {
+       console.log("TO DO")
+    }
+
     
 
     render(){
@@ -217,14 +221,54 @@ class ToolItem extends Component {
 
                 <ContextMenu id="ToolItemId">
                     <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
-                    ContextMenu Item 1
-                    </MenuItem>
-                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
-                    ContextMenu Item 2
+                         Usuń element z listy
                     </MenuItem>
                     <MenuItem divider />
                     <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
-                    ContextMenu Item 3
+                         Pobierz plik audio
+                    </MenuItem>
+                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
+                         Pobierz plik detekcji mowy w formacie CTM
+                    </MenuItem>
+                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
+                         Pobierz plik detekcji mowy w formacie TextGrid
+                    </MenuItem>
+                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
+                         Pobierz plik diaryzacji w formacie CTM
+                    </MenuItem>
+                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
+                         Pobierz plik diaryzacji mowy w formacie TextGrid
+                    </MenuItem>
+                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
+                         Pobierz transkrypcje w formacie txt
+                    </MenuItem>
+                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
+                          Pobierz transkrypcje w formacie json
+                    </MenuItem>
+                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
+                         Pobierz segmentacje w formacie ctm
+                    </MenuItem>
+                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
+                        Pobierz segmentacje w formacie json
+                    </MenuItem>
+                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
+                         Pobierz segmentacje w formacie ctm
+                    </MenuItem>
+                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
+                        Pobierz segmentacje w formacie ctm
+                    </MenuItem>
+                    <MenuItem divider />
+                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
+                        Wyczyść Detekcje mowy
+                    </MenuItem>
+                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
+                        Wyczyść Diaryzację
+                    </MenuItem>
+                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
+                        Wyczyść Trankskrypcje
+                    </MenuItem>
+                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
+                        Wyczyść Segmentacje
                     </MenuItem>
                 </ContextMenu>
 

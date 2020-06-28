@@ -136,7 +136,10 @@ class repoPanel extends Component {
             this.props.currentProjectOwner,
             this.props.token
             );
-        this.props.onCloseModalHandler();
+       // this.props.onCloseModalHandler();
+       this.setState({
+           modal:false,
+       })
     }
 
 
@@ -208,6 +211,8 @@ class repoPanel extends Component {
 
             let akcjaKorpus = <button type="button" className="btn btn-primary" onClick={this.runEMUExport}>Ok</button>;
 
+            //sprawdzam czy przynajmniej jeden jest gotowy do eks
+
             if(this.props.exportToEmuReady){
                 akcjaKorpus = <button type="button" className="btn btn-primary" onClick={this.downloadCorpus}>Pobierz korpus</button>;
             } else {
@@ -229,12 +234,7 @@ class repoPanel extends Component {
                     <p>Podcas tego procesu nie wykonuj żadnych czynności</p>
                     {
                         akcjaKorpus
-                    }
-
-
-
-                    
-                   
+                    }                   
                     
                 </div>
                 

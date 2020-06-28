@@ -61,6 +61,27 @@ class DIATool extends Component {
 		this.props.runSpeechDiarization(container, toolType, token); 
 	}
 
+	loadNextElement = () => {
+        //przegladam liste dodanych do rozpoznawania i ładuje kolejny o ile nie jest to ostatni
+        let foundIdx = 0;
+        for(let i=0;i<this.props.containersForDIA.length;i++){
+            
+            let current = this.props.containersForDIA[i];
+           // console.log(current)
+            //sprawdzam ktory obecnie jest edytowany
+            if(current._id == this.props.containerForPreview._id){
+                foundIdx = i;
+            }
+        }
+
+       // console.log(foundIdx)
+
+        if(foundIdx < this.props.containersForDIA.length-1){
+            this.openContainerInPreview(this.props.containersForDIA[foundIdx+1]);
+        } 
+
+    }
+
 	render() {
 
 		let szer1col = "6 order-1";
@@ -110,7 +131,16 @@ class DIATool extends Component {
 
 				<LeftSiteBar
 					czyTopPart="true"
-					desc="Detekcja mówców" >
+					desc={(<div>
+                        <div>Przydatne skróty klawiaturowe: </div>
+                        <div> <b>[Alt+l]</b> - play/pausa </div>
+                        <div> <b>[Alt+k]</b> - powtórz 3 sek.</div>
+                        <div> <b>[Alt+j]</b> - powtórz 5 sek.</div>
+                        <div> <b>[Alt+i]</b> - przyśpiesz.</div>
+                        <div> <b>[Alt+o]</b> - zwolnij.</div>
+                        <div> <b>[Alt+n]</b> - załaduj kolejny plik.</div>
+                        </div>)
+                    } >
 						 <ButtonLeftBar 
 							napis="Uruchom diaryzację dla wszystkich"
 							icon={diaIcon}
@@ -155,6 +185,7 @@ class DIATool extends Component {
 										this.props.containerForPreview != "" ? <AudioEditor
 										containerForPreview={this.props.containerForPreview}
 										editorFullWidth = {this.makeEditorFullWidth}
+										onLoadNextElement = {this.loadNextElement}
 										toolType="DIA" /> : null
 									}
 

@@ -16,7 +16,7 @@ const decointro = (props) => {
                     <div className="row">
                         <div className="col">
                             <a href="#mowa" className={btnclasses.join(' ')}>
-                                    Przetwarzanie sygnałów mowy
+                                    Wsparcie w transkrypcji kolekcji plików audio
                             </a>
                             <a href="#pliki" className={btnclasses.join(' ')}>
                                     Tworzenie korpusów audio

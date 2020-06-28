@@ -529,7 +529,7 @@ class LoginArea extends Component {
 
                                 <Link to="/projectsList">
                                     <button className="btn btn-primary btn-lg btn-block gotoprojects">
-                                        Przejdź do listy projektów
+                                        Przejdź do listy swoich korpusów
                                     </button>
                                 </Link>
 
@@ -611,7 +611,7 @@ class LoginArea extends Component {
 
                                 <Link to="/projectsList">
                                     <button className="btn btn-primary btn-lg btn-block gotoprojects">
-                                        Przejdź do listy projektów
+                                        Przejdź do listy swoich korpusów
                                     </button>
                                 </Link>
 
@@ -653,13 +653,17 @@ class LoginArea extends Component {
                     <div className="container">
 
                         <div className="row">
+
+                            <div className="col">
+                                {this.props.isAuth? null : <p style={{textAlign:'center'}}>Aby skorzystać z serwisu należy być zalogowanym. Załóż konto poniżej</p>
+                                //  <div className="alert alert-info" role="alert">
+                                //      Aby skorzystać z serwisu należy się zarejestrować
+                                // </div>
+                                }
+                                  
+                            </div>
                             
-                            {this.props.isAuth? null : <p>Aby skorzystać z serwisu należy się zarejestrować i zalogować.</p>
-                              //  <div className="alert alert-info" role="alert">
-                              //      Aby skorzystać z serwisu należy się zarejestrować
-                             // </div>
-                              }
-                                                
+                                        
                         </div>
                         
                         <div className="row">

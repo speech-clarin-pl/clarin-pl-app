@@ -238,9 +238,10 @@ class ProjectsListPage extends Component {
     const deleteProject = (
       <Aux>
         <ConfirmationForm
-          messageQuestion={"Czy na pewnoe chcesz usunac projekt?"}
+          messageQuestion={"Czy na pewnoe chcesz usunac poniższy projekt? Wraz z nim zostaną usunięte wszystkie pliki audio oraz transkrypcje!"}
           onCancel={this.closeModalHandler}
-          onOk = {(projectId)=>this.removeProjectHandler(this.props.projectId)}
+          onOk = {()=>this.props.onDelete(this.props.projectId, this.props.userId, this.props.token)}
+
           projectName = {this.props.projectName}
         />
       </Aux>
@@ -267,11 +268,11 @@ class ProjectsListPage extends Component {
     //lewy sidebar
     const leftSiteBar = (
       <LeftSiteBar czyTopPart={false} 
-        desc="W tym miejscu można tworzyć własne projekty które stanowią przestrzeń roboczą dla wgranych plików. Projekty możesz grupować np. ze względu na tworzone przez Ciebie korpusy danych. UWAGA! w przypadku usunięcia projektu, zostaną również usunięte wszystkie wgrane do niego pliki!"
+        desc="W tym miejscu można tworzyć własne korpusy które stanowią przestrzeń roboczą dla wgranych plików. UWAGA! w przypadku usunięcia korpusu, zostaną również usunięte wszystkie wgrane do niego pliki!"
          >
         <ButtonLeftBar
           customeStyle={{ height: '50px' }}
-          napis="Dodaj projekt"
+          napis="Dodaj korpus"
           iconType="fa-plus"
           whenClicked={(actionType)=>this.openModalHandler(localActions.CREATE_NEW_PROJECT,'','')} />
       </LeftSiteBar>
@@ -302,13 +303,14 @@ class ProjectsListPage extends Component {
               owner={projekt.owner}
               modified={projekt.projectCreated}
               deleteProject={(actionType,projectId, projectName)=>this.openModalHandler(localActions.DELETE_PROJECT, projekt._id, projekt.name)}
+              //deleteProject={(actionType,projectId, projectName)=>this.openModalHandler(localActions.DELETE_PROJECT, projekt._id, projekt.name)}
               wyborprojektu = {(projektId, projektName, projektOwner)=>this.wyborProjektuOK(projekt._id, projekt.name, projekt.owner)}
               //wyborprojektu={() => this.props.onProjectChoice(projekt._id, projekt.name, projekt.owner)}
               //duplicateProject={() => this.props.onDuplicate(projekt._id)}
               editName={(actionType,projectId, projectName)=>this.openModalHandler(localActions.EDIT_NAME_PROJECT,projekt._id, projekt.name)}
    
               //shareProject={() => this.props.onShare(projekt._id)}
-              deleteProject={() => this.props.onDelete(projekt._id, this.props.userId, this.props.token)}
+             // deleteProject={() => this.props.onDelete(projekt._id, this.props.userId, this.props.token)}
             />
           });
 

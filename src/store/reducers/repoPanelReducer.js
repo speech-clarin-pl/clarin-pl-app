@@ -583,11 +583,10 @@ const repoSelectSession = (state, action) => {
                 let previouslySelectedSess = draftState.currentlySelectedSessions[0];
                 let previouslySelectedCont = draftState.currentlySelectedContainers[0];
 
-
+                //jeżeli kliknąłem z zaznaczoną to odznaczam
                 if(sessionId == previouslySelectedSess){
                     allSessions[sessionId].ifSelected = false;
                     draftState.currentlySelectedSessions[0] = null;
-
                 } else {
                     draftState.currentlySelectedSessions[0] = sessionId;
                     allSessions[sessionId].ifSelected = true;
@@ -602,7 +601,7 @@ const repoSelectSession = (state, action) => {
 
                     //odznaczam poprzendio zaznaczony o ile nie był pusty
                     if(allSessions[previouslySelectedSess] != null ){
-                    allSessions[previouslySelectedSess].ifSelected = false;
+                        allSessions[previouslySelectedSess].ifSelected = false;
                     }
                 }
         }
@@ -626,6 +625,17 @@ const saveTranscriptionSuccess = (state, action) => {
 
    return nextState;  
 
+}
+
+const exportToEmuFailed = (state, action) => {
+
+
+    const nextState = produce(state, draftState => {
+        draftState.exportToEmuReady = false;
+   })
+
+   return nextState; 
+    
 }
 
 const exportToEmuDone = (state, action) => {
@@ -963,7 +973,12 @@ const repoPanelReducer = (state = initialState, action) => {
 
         case actionTypes.EXPORT_TO_EMU_DONE_SUCCESS: return exportToEmuDone(state,action);
 
+        case actionTypes.EXPORT_TO_EMU_DONE_FAILED: return exportToEmuFailed(state,action);
+        
+
         case actionTypes.KORPUS_DOWNLOADED: return korpusDownloaded(state,action);
+
+        
 
         //case actionTypes.REPO_UPLOAD_FILE: return repoUploadFile(state,action);
         
