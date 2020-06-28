@@ -23,6 +23,7 @@ export {
     runSpeechVoiceActivityDetection,
     setContainerStatus,
     exportToEMU,
+    korpusDownloaded,
     
 } from './repo';
 

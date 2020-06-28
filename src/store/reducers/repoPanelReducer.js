@@ -132,6 +132,8 @@ const initialState = {
     containerAudioFileDIA: null,
     containerAudioFileSEG: null,
 
+    exportToEmuReady: false,
+
 }
 
 // ##################################################
@@ -626,6 +628,30 @@ const saveTranscriptionSuccess = (state, action) => {
 
 }
 
+const exportToEmuDone = (state, action) => {
+
+
+    const nextState = produce(state, draftState => {
+        draftState.exportToEmuReady = true;
+   })
+
+   return nextState; 
+    
+}
+
+const korpusDownloaded = (state, action) => {
+
+    const nextState = produce(state, draftState => {
+        draftState.exportToEmuReady = false;
+   })
+
+   return nextState; 
+    
+}
+
+
+
+
 //############################### pod spodem sa stare akcje
 //#############################
 //#############################
@@ -935,7 +961,9 @@ const repoPanelReducer = (state = initialState, action) => {
 
         case actionTypes.SAVE_TRANSCRIPTION_SUCCESS: return saveTranscriptionSuccess(state,action);
 
-        
+        case actionTypes.EXPORT_TO_EMU_DONE_SUCCESS: return exportToEmuDone(state,action);
+
+        case actionTypes.KORPUS_DOWNLOADED: return korpusDownloaded(state,action);
 
         //case actionTypes.REPO_UPLOAD_FILE: return repoUploadFile(state,action);
         

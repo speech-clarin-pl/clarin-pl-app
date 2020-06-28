@@ -4,7 +4,15 @@ import { saveAs } from 'file-saver';
 //import { saveSync } from 'save-file';
 //import streamSaver from 'StreamSaver';
 
+// ############################################################
+// ############## użytkownik pobrał korpus i można obliczyć go od nowa #################
+// ###########################################################
 
+export const korpusDownloaded = () => {
+    return {
+        type: actionTypes.KORPUS_DOWNLOADED,
+    }
+}
 
 // ############################################################
 // ############## Speech VAD #################
@@ -840,9 +848,50 @@ export const handleDeleteFile = (fileKey, projectId, userId, token) => {
 
 
 
+
+
+
 // #################################
 // ###### Export To EMU
 // ############################
+
+/*
+export const downloadCorpusSuccess = (message) => {
+    return {
+        type: actionTypes.DOWNLOAD_KORPUS_DONE,
+        message: message,
+    }
+}
+
+export const downloadCorpusFailed = (message) => {
+    return {
+        type: actionTypes.DOWNLOAD_KORPUS_FAILED,
+        message: message,
+    }
+}
+
+//tutaj możemy ściągnąć korpus na dysk
+
+export const downloadCorpus = (projectId, userId, token) => {
+    console.log("download corpus");
+    return dispatch => {
+        axios.get('/repoFiles/downloadKorpus/'+userId+'/'+projectId, {
+            headers: {
+                Authorization: 'Bearer ' + token
+            }
+        })
+        .then(response => {
+            console.log(response)
+            dispatch(downloadCorpusSuccess(response.data.message));
+        })
+        .catch(error => {
+            console.log(error)
+            dispatch(downloadCorpusFailed(error.message));
+        });
+    }
+}
+*/
+
 
 export const exportToEMUFailed = (message) => {
     return {
@@ -858,6 +907,8 @@ export const exportToEMUSuccess = (message) => {
     }
 }
 
+
+//it initializes creating corpus on the serwer
 export const exportToEMU = (projectId, userId, token) => {
     console.log("Export to emu");
     return dispatch => {
@@ -868,6 +919,10 @@ export const exportToEMU = (projectId, userId, token) => {
         })
         .then(response => {
             console.log(response)
+
+            //jak jest gotowy to go ściągam
+           // this.downloadCorpus(projectId, userId, token);
+
             dispatch(exportToEMUSuccess(response.data.message));
         })
         .catch(error => {

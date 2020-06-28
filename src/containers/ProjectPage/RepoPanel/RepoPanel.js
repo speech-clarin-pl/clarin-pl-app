@@ -17,6 +17,8 @@ import UploadAudio from '../../../components/UploadAudio/UploadAudio';
 import RepoSession from './RepoSession/RepoSession';
 import SingleInputForm from '../../../components/UI/SingleInputForm/SingleInputForm';
 import ButtonLeftBar from '../../../components/UI/ButtonLeftBar/ButtonLeftBar';
+import { RingLoader } from "react-spinners";
+import { css } from "@emotion/core";
 
 
 
@@ -31,6 +33,11 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 
 
+const override = css`
+  display: block;
+  margin: 0 auto;
+`;
+
 class repoPanel extends Component {
 
     state = {
@@ -41,6 +48,8 @@ class repoPanel extends Component {
 
         modal: false,
         whatClicked: '',
+
+        waitingForCorpus: false,
     }
 
     removeObjectFromRepo = () => {
@@ -75,6 +84,14 @@ class repoPanel extends Component {
 
     componentDidMount() {
 		this.refreshRepo();
+    }
+
+    componentDidUpdate = (prevProps) => {
+        if(prevProps.exportToEmuReady !== this.props.exportToEmuReady){
+            this.setState({
+                waitingForCorpus: false,
+            })
+        }
     }
     
 
@@ -145,6 +162,9 @@ class repoPanel extends Component {
     }
 
     runEMUExport = () => {
+        this.setState({
+            waitingForCorpus: true
+        });
         this.props.onExportToEMU(this.props.currentProjectID, this.props.currentProjectOwner, this.props.token);
     }
 
@@ -154,6 +174,21 @@ class repoPanel extends Component {
             whatClicked: 'EMUexport',
         })
         //this.props.onOpenModalHandler();
+    }
+
+
+    downloadCorpus = () => {
+
+        let projectId = this.props.currentProjectID;
+        let userId = this.props.currentProjectOwner;
+
+        //let audioGetUrl = process.env.REACT_APP_API_URL+ "/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/audio?api_key="+token;
+		
+        let corpusPath = process.env.REACT_APP_API_URL+ "/repoFiles/downloadKorpus/" + userId + "/" + projectId+"/?api_key="+this.props.token;;
+		
+        window.open(corpusPath);
+
+        this.props.onKorpusDownloaded();
     }
 
 
@@ -169,12 +204,38 @@ class repoPanel extends Component {
 
         //jeżeli kliknięto w przycisk exportujący do EMU
         if(this.state.whatClicked == 'EMUexport'){
-            modalTitle = "Czy jesteś pewien że chcesz eksportować do EMU?"
+            modalTitle = "Czy jesteś pewien że chcesz eksportować korpus do EMU?";
+
+            let akcjaKorpus = <button type="button" className="btn btn-primary" onClick={this.runEMUExport}>Ok</button>;
+
+            if(this.props.exportToEmuReady){
+                akcjaKorpus = <button type="button" className="btn btn-primary" onClick={this.downloadCorpus}>Pobierz korpus</button>;
+            } else {
+                if(this.state.waitingForCorpus){
+                    akcjaKorpus = <RingLoader
+                    css={override}
+                    size={'40px'}
+                    color={"rgb(52, 152, 219)"}
+                    loading={true}
+                    />;
+                }
+            }
+
+
+
             modalContent = (
                 <div>
                     <p>Zostaną wyeksportowane tylko te pliki dla których zostały wykonane wszystkie poziomy annotacji.</p>
-                    <p>Obecnie nie zostanie wyeksportowanych ??? z ??? plików w repozytorium</p>
-                    <button type="button" className="btn btn-primary" onClick={this.runEMUExport}>Ok</button>
+                    <p>Podcas tego procesu nie wykonuj żadnych czynności</p>
+                    {
+                        akcjaKorpus
+                    }
+
+
+
+                    
+                   
+                    
                 </div>
                 
             );
@@ -329,6 +390,7 @@ const mapStateToProps = (state) => {
         currentProjectOwner: state.projectR.currentProjectOwner,
         token: state.homeR.token,
         modal: state.projectR.modal,
+        exportToEmuReady: state.repoR.exportToEmuReady,
 	}
 }
 
@@ -352,6 +414,8 @@ const mapDispatchToProps = dispatch => {
     addContainerToVAD: (container) => dispatch(repoActions.addContainerToVAD(container)),
     addContainerToReco: (container) => dispatch(repoActions.addContainerToReco(container)),
     addContainerToAlign: (container) => dispatch(repoActions.addContainerToAlign(container)),
+
+    onKorpusDownloaded: () => dispatch(repoActions.korpusDownloaded()),
     
     createNewSession: (sessionName, projectId, userId, token) => dispatch(repoActions.createNewSession(sessionName, projectId, userId, token)),
 	}
