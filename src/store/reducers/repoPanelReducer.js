@@ -377,6 +377,78 @@ const speechRecognitionFailed = (state, action) => {
 }
 
 
+// #############################################
+// #### usuniecie pojedynczego sesji ###########
+//##############################################
+
+const repoRemoveSessionSuccess = (state, action) => {
+    const message = action.message;
+    const sessionId = action.sessionId;  // sesja którą chcemy usunąć
+
+    console.log(sessionId)
+
+    const nextState = produce(state, draftState => {
+
+        //zapisuje liste contenerów które też trzeba usunąć
+        let conteneryDoUsuniecia = state.sessions.byId[sessionId].containers;
+
+        console.log(conteneryDoUsuniecia)
+
+        
+        //usuwam samą sesje
+        let newSessions = Object.keys(state.sessions.byId).reduce((object, key) => {
+            if(key !== sessionId){
+                object[key] = state.sessions.byId[key];
+            }
+            return object
+        },{});
+
+         draftState.sessions.byId = newSessions;
+
+         console.log(newSessions)
+
+         //usuwam teraz kontenery
+
+          //usuwam kontener z listy kontenerow
+        let newContainers = Object.keys(state.containers.byId).reduce((object, key) => {
+            if(conteneryDoUsuniecia.includes(key)==false){
+                object[key] = state.containers.byId[key];
+            }
+            return object
+          
+        },{});
+
+         draftState.containers.byId = newContainers;
+
+         console.log(newContainers)
+        
+         //jezeli byly zaznaczone to odznaczam
+         draftState.currentlySelectedSessions[0] = null;
+         draftState.currentlySelectedContainers[0] = null;
+
+   })
+
+   return nextState;
+    
+}
+
+
+const repoRemoveSessionFailed = (state, action) => {
+
+    const message = action.error.message;
+  
+    const nextState = produce(state, draftState => {
+
+        draftState.message = message;
+        draftState.iferror = true;
+        
+   })
+
+   return nextState;
+    
+}
+
+
 
 // #############################################
 // #### usuniecie pojedynczego kontenera ###########
@@ -968,6 +1040,9 @@ const repoPanelReducer = (state = initialState, action) => {
 
         case actionTypes.REPO_DELETE_CONTAINER_SUCCESS: return repoRemoveContainerSuccess(state,action);
         case actionTypes.REPO_DELETE_CONTAINER_FAILED: return repoRemoveContainerFailed(state,action);
+
+        case actionTypes.REPO_DELETE_SESSION_SUCCESS: return repoRemoveSessionSuccess(state,action);
+        case actionTypes.REPO_DELETE_SESSION_FAILED: return repoRemoveSessionFailed(state,action);
 
         case actionTypes.SAVE_TRANSCRIPTION_SUCCESS: return saveTranscriptionSuccess(state,action);
 

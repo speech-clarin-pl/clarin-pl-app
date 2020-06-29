@@ -53,7 +53,10 @@ class VADTool extends Component {
 
 		for(let i = 0; i < this.props.VADItems.length; i++){
 			let container = this.props.VADItems[i];
-			this.runSpeechVoiceActivityDetection(container, "VAD", this.props.token); 
+			if(container.ifVAD==false){
+				this.runSpeechVoiceActivityDetection(container, "VAD", this.props.token); 
+			}
+			
 		}
 
 		//this.props.runVADInBatch(this.props.VADItems);
@@ -84,6 +87,10 @@ class VADTool extends Component {
             this.openContainerInPreview(this.props.VADItems[foundIdx+1]);
         } 
 
+	}
+	
+	removeToolItem = (container) => {
+        this.props.onRemoveElementFromVADList(container);
     }
 
 	render() {
@@ -112,6 +119,7 @@ class VADTool extends Component {
 						status={container.statusVAD}
 						openPreview = {this.openContainerInPreview}
 						runTool={(container, toolType, token) => this.runSpeechVoiceActivityDetection(container, toolType, token)}
+						onRemoveItem={this.removeToolItem}
                     />
 			)
 			
@@ -227,6 +235,8 @@ const mapDispatchToProps = dispatch => {
 		//runVADInBatch: (VADItems) => dispatch(vadActions.runVADInBatch(VADItems)),
 		runSpeechVoiceActivityDetection: (container, toolType, token) => dispatch(vadActions.runSpeechVoiceActivityDetection(container, toolType, token)),
 		setContainerStatus:  (containerId, toolType, status) => dispatch(vadActions.setContainerStatus(containerId, toolType, status)),
+		
+		onRemoveElementFromVADList: (container) => dispatch(vadActions.removeElementFromVADList(container)),
 		//onOpenModalHandler: () => dispatch(segmentActions.openModalProject()),
        // onCloseModalHandler: () => dispatch(segmentActions.closeModalProject()),
 	}

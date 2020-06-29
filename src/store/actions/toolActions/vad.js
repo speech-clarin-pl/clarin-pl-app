@@ -1,6 +1,21 @@
 import * as actionTypes from '../actionsTypes';
 import axios from 'axios';
 
+
+
+
+// ###################################################################
+// ######## usuwanie z listy ##########
+// ###################################################################
+
+export const removeElementFromVADList = (container) => {
+    return {
+        type: actionTypes.REMOVE_VAD_ITEM,
+        container: container,
+    }
+}
+
+
 // ###################################################################
 // ######## urucamianie wszystkich items w batchu ##########
 // ###################################################################

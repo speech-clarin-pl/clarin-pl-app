@@ -1,6 +1,18 @@
 import * as actionTypes from '../actionsTypes';
 import axios from 'axios';
 
+
+
+// ###################################################################
+// ######## usuwanie z listy seg ##########
+// ###################################################################
+export const removeSegmentationItem = (container) => {
+    return {
+        type: actionTypes.REMOVE_SEGMENTATION_ITEM,
+        container: container,
+    }
+}
+
 // ###################################################################
 // ######## dodawanie contanera z podglądu w dia ##########
 // ###################################################################

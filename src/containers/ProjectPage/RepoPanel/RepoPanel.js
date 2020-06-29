@@ -164,6 +164,16 @@ class repoPanel extends Component {
         this.props.addContainerToVAD(container);
     }
 
+    removeContainer = (container) => {
+        //this.props.removeContainer(container);
+        //console.log(container)
+        this.props.removeContainerFromRepo(this.props.currentProjectOwner, this.props.currentProjectID, container.session,container._id,this.props.token)
+    }
+
+    removeSession = (sessionId) => {
+        this.props.removeSessionFromRepo(this.props.currentProjectOwner, this.props.currentProjectID, sessionId,this.props.token)
+    }
+
     runEMUExport = () => {
         this.setState({
             waitingForCorpus: true
@@ -261,8 +271,13 @@ class repoPanel extends Component {
         //########### rendering listy sesji i contenerow
         let listaSesji = null;
         listaSesji = Object.keys(this.props.repoData.sessions.byId).map(sessionId => {
+
+            console.log(sessionId)
             
             let sId = this.props.repoData.sessions.byId[sessionId].id;
+
+            console.log(sId)
+
             let sessionName = this.props.repoData.sessions.byId[sessionId].sessionName;
             let ifSelected = this.props.repoData.sessions.byId[sessionId].ifSelected;
             let containersIds = this.props.repoData.sessions.byId[sessionId].containers; //tylko dla tej sesji
@@ -279,9 +294,12 @@ class repoPanel extends Component {
                                 sessionId = {sId}
                                 projectId = {this.props.currentProjectID}
                                 key = {sId}
+                                token={this.props.token}
                                 ifSelected = {ifSelected}
                                 selectTheSession = {this.selectSessionHandler}
                                 selectTheContainer = {this.selectContainerHandler} 
+                                onRemoveContainer = {(container => this.removeContainer(container))}
+                                onRemoveSession = {(sessionId) => this.removeSession(sessionId)}
                                 onAddContainerToDIA = {(container) => this.addContainerToDIAList(container)}
                                 onAddContainerToVAD = {(container) => this.addContainerToVADList(container)}
                                 onAddContainerToReco = {(container) => this.addContainerToRecoList(container)}
@@ -334,11 +352,15 @@ class repoPanel extends Component {
                                 </a> 
                             </Tooltip>
                             
+                            {
+                            /*
                             <Tooltip title="Usuń zaznaczony obiekt">
                                 <a href="#" role="button" onClick={this.removeObjectFromRepo}>
                                     <FontAwesomeIcon icon={faTrash} /> 
                                 </a>
                             </Tooltip>
+                            */
+                            }
 
                             
 
@@ -403,8 +425,8 @@ const mapDispatchToProps = dispatch => {
     onSelectSession: (sessionId) => dispatch(repoActions.selectSession(sessionId)),
     onSelectContainer: (containerId) => dispatch(repoActions.selectContainer(containerId)),
     onGetProjectFilesForUser: (userId, projectId, token) => dispatch(repoActions.getProjectFilesForUser(userId, projectId, token)),
-
-    removeContainerFromRepo: (containerId, userId, projectId, sessionId,token) => dispatch(repoActions.removeContainerFromRepo(containerId, userId, projectId, sessionId,token)),
+  
+    removeContainerFromRepo: (userId, projectId, sessionId, containerId, token) => dispatch(repoActions.removeContainerFromRepo(userId, projectId, sessionId,containerId,token)),
 
     onOpenModalHandler: () => dispatch(repoActions.openModalProject()),
 
@@ -418,6 +440,9 @@ const mapDispatchToProps = dispatch => {
     onKorpusDownloaded: () => dispatch(repoActions.korpusDownloaded()),
     
     createNewSession: (sessionName, projectId, userId, token) => dispatch(repoActions.createNewSession(sessionName, projectId, userId, token)),
+
+    removeSessionFromRepo: (userId, projectId, sessionId, token) => dispatch(repoActions.removeSessionFromRepo(userId, projectId, sessionId, token)),
+
 	}
 }
 

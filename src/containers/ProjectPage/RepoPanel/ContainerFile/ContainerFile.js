@@ -59,7 +59,76 @@ class ContainerFile extends Component {
         this.props.history.push('/projects/' + this.props.container.project +'/segment/');
         this.props.onAddContainerToAlign(this.props.container);
     }
+
+
+   
+    downloadElement = (action) => {
+        //console.log("Pobieram: " + toolType + " : " + action);
+
+
+        const userId = this.props.container.owner;
+        const projectId = this.props.container.project;
+        const sessionId = this.props.container.session;
+        const containerId = this.props.container._id;
+        const fileType = action;
+
+        
+        let linkToDownload = process.env.REACT_APP_API_URL+ "/repoFiles/" + userId + "/" + projectId+"/"+sessionId+"/"+containerId+"/"+fileType+"/?api_key="+this.props.token;
+
+        window.open(linkToDownload,"_self");
+
        
+    }
+
+    handleClick = (e, data) => {
+
+       //const toolType = data.toolType;
+       const action = data.action;
+
+       switch(action){
+           case 'usun':
+                this.props.onRemoveContainer(this.props.container);
+                break;
+            case 'audio':
+                this.downloadElement(action);
+                break;
+            case 'oryginalAudio':
+                this.downloadElement(action);
+                break;
+            case 'VADctm':
+                this.downloadElement(action);
+                break;
+            case 'VADtextGrid':
+                this.downloadElement(action);
+                break;
+            case 'DIActm':
+                this.downloadElement(action);
+                break;
+            case 'DIAtextGrid':
+                this.downloadElement(action);
+                break;
+            case 'TXTTranscript':
+                this.downloadElement(action);
+                break;
+            case 'JSONTranscript':
+                this.downloadElement(action);
+                break;
+            case 'SEGctm':
+                this.downloadElement(action);
+                break;
+            case 'SEGtextGrid':
+                this.downloadElement(action);
+                break;
+            case 'EMUJSON':
+                this.downloadElement(action);
+                break;
+            default:
+                console.log("wrong action")
+            
+       }
+    }
+
+
 
     render() {
 
@@ -76,7 +145,7 @@ class ContainerFile extends Component {
         return(
             <div>
               
-                <ContextMenuTrigger id="uniqueContainer">
+                <ContextMenuTrigger id={"ToolItemREPOId"+this.props.container._id}>
 
                     <div className={this.props.ifSelected? "ContainerFile selected" : "ContainerFile"} 
                         onClick={this.selectContainer}
@@ -134,56 +203,44 @@ class ContainerFile extends Component {
                     </div>
                 </ContextMenuTrigger>
 
-                <ContextMenu id="uniqueContainer">
-                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
-                         Usuń element z repozytorium
+                <ContextMenu id={"ToolItemREPOId"+this.props.container._id}>
+                    <MenuItem disabled={false} data={{toolType: this.props.type, action: 'usun'}} onClick={this.handleClick}>
+                         Usuń z repozytorium
                     </MenuItem>
                     <MenuItem divider />
-                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
-                         Pobierz plik audio
+                    <MenuItem disabled={false} data={{toolType: this.props.type, action: 'audio'}} onClick={this.handleClick}>
+                         Pobierz plik audio WAV 16000Hz, 16bit
                     </MenuItem>
-                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
+                    <MenuItem disabled={false} data={{toolType: this.props.type, action: 'oryginalAudio'}} onClick={this.handleClick}>
+                         Pobierz oryginalny plik audio
+                    </MenuItem>
+                    <MenuItem divider />
+                    <MenuItem disabled={this.props.container.ifVAD? false: true} data={{toolType: this.props.type, action: 'VADctm'}} onClick={this.handleClick}>
                          Pobierz plik detekcji mowy w formacie CTM
                     </MenuItem>
-                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
+                    <MenuItem disabled={this.props.container.ifVAD? false: true} data={{toolType: this.props.type, action: 'VADtextGrid'}} onClick={this.handleClick}>
                          Pobierz plik detekcji mowy w formacie TextGrid
                     </MenuItem>
-                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
+                    <MenuItem disabled={this.props.container.ifDIA? false: true} data={{toolType: this.props.type, action: 'DIActm'}} onClick={this.handleClick}>
                          Pobierz plik diaryzacji w formacie CTM
                     </MenuItem>
-                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
+                    <MenuItem disabled={this.props.container.ifDIA? false: true} data={{toolType: this.props.type, action: 'DIAtextGrid'}} onClick={this.handleClick}>
                          Pobierz plik diaryzacji mowy w formacie TextGrid
                     </MenuItem>
-                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
+                    <MenuItem disabled={this.props.container.ifREC? false: true} data={{toolType: this.props.type, action: 'TXTTranscript'}} onClick={this.handleClick}>
                          Pobierz transkrypcje w formacie txt
                     </MenuItem>
-                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
+                    <MenuItem disabled={this.props.container.ifREC? false: true} data={{toolType: this.props.type, action: 'JSONTranscript'}} onClick={this.handleClick}>
                           Pobierz transkrypcje w formacie json
                     </MenuItem>
-                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
+                    <MenuItem disabled={this.props.container.ifSEG? false: true} data={{toolType: this.props.type, action: 'SEGctm'}} onClick={this.handleClick}>
                          Pobierz segmentacje w formacie ctm
                     </MenuItem>
-                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
+                    <MenuItem disabled={this.props.container.ifSEG? false: true} data={{toolType: this.props.type, action: 'SEGtextGrid'}} onClick={this.handleClick}>
+                         Pobierz segmentacje w formacie TextGrid
+                    </MenuItem>
+                    <MenuItem disabled={this.props.container.ifSEG? false: true} data={{toolType: this.props.type, action: 'EMUJSON'}} onClick={this.handleClick}>
                         Pobierz segmentacje w formacie json
-                    </MenuItem>
-                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
-                         Pobierz segmentacje w formacie ctm
-                    </MenuItem>
-                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
-                        Pobierz segmentacje w formacie ctm
-                    </MenuItem>
-                    <MenuItem divider />
-                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
-                        Wyczyść Detekcje mowy
-                    </MenuItem>
-                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
-                        Wyczyść Diaryzację
-                    </MenuItem>
-                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
-                        Wyczyść Trankskrypcje
-                    </MenuItem>
-                    <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
-                        Wyczyść Segmentacje
                     </MenuItem>
                 </ContextMenu>
 

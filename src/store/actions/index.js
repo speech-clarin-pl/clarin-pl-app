@@ -24,7 +24,7 @@ export {
     setContainerStatus,
     exportToEMU,
     korpusDownloaded,
-    
+    removeSessionFromRepo,
 } from './repo';
 
 export {
@@ -83,12 +83,14 @@ export {
 export {
     addContainerToDIA,
     openContainerInDIAPreview,
+    removeFromDIAList,
 } from './toolActions/dia';
 
 export {
     addContainerToVAD,
     openContainerInVADPreview,
     runVADInBatch,
+    removeElementFromVADList,
 } from './toolActions/vad';
 
 export {
@@ -115,6 +117,7 @@ export {
     setRefusedSegmentTxtFiles,
     addContainerToAlign,
     openContainerInAlignPreview,
+    removeSegmentationItem,
 } from './toolActions/segmentation';
 
 

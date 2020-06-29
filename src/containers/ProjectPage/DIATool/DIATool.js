@@ -50,7 +50,10 @@ class DIATool extends Component {
 
 		for(let i = 0; i < this.props.containersForDIA.length; i++){
 			let container = this.props.containersForDIA[i];
-			this.runSpeechDiarization(container, "DIA", this.props.token); 
+			if(container.ifDIA==false){
+				this.runSpeechDiarization(container, "DIA", this.props.token); 
+			}
+			
 		}
 
 		//this.props.runVADInBatch(this.props.VADItems);
@@ -80,6 +83,10 @@ class DIATool extends Component {
             this.openContainerInPreview(this.props.containersForDIA[foundIdx+1]);
         } 
 
+	}
+	
+	removeToolItem = (container) => {
+        this.props.onRemoveElementFromDIAList(container);
     }
 
 	render() {
@@ -108,6 +115,7 @@ class DIATool extends Component {
 						status={container.statusDIA}
 						openPreview = {this.openContainerInPreview}
 						runTool={(container, toolType, token) => this.runSpeechDiarization(container, toolType, token)}
+						onRemoveItem={this.removeToolItem}
                     />
 			)
 			
@@ -222,6 +230,9 @@ const mapDispatchToProps = dispatch => {
 		//runDIAInBatch: (DIAItems) => dispatch(diaActions.runDIAInBatch(DIAItems)),
 		runSpeechDiarization: (container, toolType, token) => dispatch(diaActions.runSpeechDiarization(container, toolType, token)),
 		setContainerStatus:  (containerId, toolType, status) => dispatch(diaActions.setContainerStatus(containerId, toolType, status)),
+
+		onRemoveElementFromDIAList: (container) => dispatch(diaActions.removeFromDIAList(container)),
+
 		//onOpenModalHandler: () => dispatch(segmentActions.openModalProject()),
        // onCloseModalHandler: () => dispatch(segmentActions.closeModalProject()),
 	}

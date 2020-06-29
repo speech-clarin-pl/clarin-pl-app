@@ -150,6 +150,26 @@ const changeToolItemStatus = (state, action) => {
 }
 
 
+const removeVADItemFromList = (state, action)=>{
+
+    const containerId = action.container._id;
+
+    const nextState = produce(state, draftState => {
+       const nowaLista = state.containersForVAD.filter((container,index)=>{
+            if(container._id == containerId){
+                return false;
+            } else {
+                return true;
+            }
+       })
+       draftState.containersForVAD = nowaLista;
+     })
+
+   return nextState;
+
+}
+
+
 
 const vadReducer = (state = initialState, action) => {
     switch(action.type){
@@ -162,6 +182,8 @@ const vadReducer = (state = initialState, action) => {
         case actionTypes.SET_CONTAINER_STATUS: return changeToolItemStatus(state,action);
 
         case actionTypes.SAVE_VAD_SEGMENTS_SUCCESS: return saveVADSegmentsSuccess(state,action);
+
+        case actionTypes.REMOVE_VAD_ITEM: return removeVADItemFromList(state,action);
 
         
         //case actionTypes.ADD_CONTAINER_TO_RECO: return addContainerToReco(state,action);

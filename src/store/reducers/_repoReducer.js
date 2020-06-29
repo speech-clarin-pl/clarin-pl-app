@@ -1,4 +1,4 @@
-import * as actionTypes from '../../store/actions/actionsTypes';
+import * as actionTypes from '../actions/actionsTypes';
 import Moment from 'moment';
 import { updateObject } from '../utility';
 
@@ -326,6 +326,8 @@ const repoReducer = (state = initialState, action) => {
         case actionTypes.REPO_GET_USER_PROJECT_FILES: return repoGetUserProjectFiles(state,action);
         case actionTypes.REPO_GET_USER_PROJECT_FILES_FAILED: return repoGetUserProjectFilesFailed(state,action);
         case actionTypes.REPO_DOWNLOAD_FILE: return repoDownloadFile(state,action);
+        
+        
 
         
         

@@ -261,6 +261,48 @@ export const removeContainerFromRepo = (userId, projectId, sessionId, containerI
 }
 
 
+//############################################################
+// ############## usuwanie sesji z repo #################
+// ###########################################################
+
+export const removeSessionFromRepoSuccess = (message, sessionId) => {
+    return {
+        type: actionTypes.REPO_DELETE_SESSION_SUCCESS,
+        message: message,
+        sessionId: sessionId,
+    }
+}
+
+export const removeSessionFromRepoFailed = (error) => {
+    return {
+        type: actionTypes.REPO_DELETE_SESSION_FAILED,
+        error: error,
+    }
+}
+
+export const removeSessionFromRepo = (userId, projectId, sessionId,token) => {
+    return dispatch => {
+
+        axios.delete(('/repoFiles/' + userId+"/"+projectId+'/'+sessionId), 
+        {
+            headers: {
+                Authorization: 'Bearer ' + token
+            },
+        })
+        .then(response => {
+            dispatch(removeSessionFromRepoSuccess(response.data.message, response.data.sessionId));
+        })
+        .catch(error => {
+            dispatch(removeSessionFromRepoFailed(error));
+        }); 
+    }
+}
+
+
+
+
+
+
 // ############################################################
 // ################ pobieranie sesji projektu #################
 // ############################################################

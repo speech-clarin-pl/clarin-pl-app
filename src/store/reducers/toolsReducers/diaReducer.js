@@ -152,6 +152,26 @@ const saveDIASegmentsSuccess = (state, action) => {
 }
 
 
+const removeFromDIAItems = (state, action)=>{
+
+    const containerId = action.container._id;
+
+    const nextState = produce(state, draftState => {
+       const nowaLista = state.containersForDIA.filter((container,index)=>{
+            if(container._id == containerId){
+                return false;
+            } else {
+                return true;
+            }
+       })
+       draftState.containersForDIA = nowaLista;
+     })
+
+   return nextState;
+
+}
+
+
 const diaReducer = (state = initialState, action) => {
     switch(action.type){
 
@@ -164,6 +184,8 @@ const diaReducer = (state = initialState, action) => {
         case actionTypes.SET_CONTAINER_STATUS: return changeToolItemStatus(state,action);
 
         case actionTypes.SAVE_DIA_SEGMENTS_SUCCESS: return saveDIASegmentsSuccess(state,action);
+
+        case actionTypes.REMOVE_DIA_ITEM: return removeFromDIAItems(state,action);
 
         //case actionTypes.ADD_CONTAINER_TO_RECO: return addContainerToReco(state,action);
         //case actionTypes.DROP_FILES: return dropFiles(state, action);

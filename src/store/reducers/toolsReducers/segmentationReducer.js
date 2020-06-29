@@ -573,6 +573,29 @@ const speechSegmentationFailed = (state, action) => {
 
 }
 
+const removeSegmentationItem = (state, action)=>{
+
+    const containerId = action.container._id;
+
+    const nextState = produce(state, draftState => {
+
+       const nowaLista = state.containersForSEG.filter((container,index)=>{
+            if(container._id == containerId){
+                return false;
+            } else {
+                return true;
+            }
+       })
+
+
+       draftState.containersForSEG = nowaLista;
+
+     })
+
+   return nextState;
+
+}
+
 
 
 const segmentationReducer = (state = initialState, action) => {
@@ -587,6 +610,8 @@ const segmentationReducer = (state = initialState, action) => {
     
         case actionTypes.REPO_RUN_SPEECH_SEGMENTATION_DONE: return speechSegmentationSuccess(state,action);
         case actionTypes.REPO_RUN_SPEECH_SEGMENTATION_FAILED: return speechSegmentationFailed(state,action);
+
+        case actionTypes.REMOVE_SEGMENTATION_ITEM: return removeSegmentationItem(state,action);
 
         /*
         case actionTypes.DROP_AUDIO_FILES: return dropAudioFiles(state, action);

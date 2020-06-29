@@ -38,11 +38,11 @@ export const dropFiles = (files) => {
 }
 
 //################# removing item #################
-export const removeRecognitionItem = (fileId) => {
+export const removeRecognitionItem = (container) => {
     //console.log('REMOVING: ' + fileId)
     return {
         type: actionTypes.REMOVE_RECOGNITION_ITEM,
-        fileId: fileId,
+        container: container,
     }
 }
 

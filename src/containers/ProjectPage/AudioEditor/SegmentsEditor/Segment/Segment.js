@@ -120,7 +120,11 @@ class Segment extends Component {
 		return (
 			<Aux>
                 <tr className="Segment">
-                    <td>{this.props.segmentId}</td>
+                   {
+                       /*
+                            <td>{this.props.segmentId}</td>
+                       */
+                   } 
                     <td><input className="szerzej" data-action="update-segment-label" onChange={this.updateSegmentLabel} type="text" value={this.props.labelText} data-id={this.props.segmentId}/></td>
                     <td><input data-action="update-segment-start-time" onChange={this.updateStartTimeSegment} type="number" value={this.props.startTime} data-id={this.props.segmentId}/></td>
                     <td><input data-action="update-segment-end-time" onChange={this.updateEndTimeSegment} type="number" value={this.props.endTime} data-id={this.props.segmentId}/></td>

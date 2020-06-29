@@ -18,6 +18,7 @@ import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ToolItem from '../ToolItem/ToolItem';
 
+
 import AudioEditor from '../AudioEditor/AudioEditor';
 
 class RecognitionTool extends Component {
@@ -178,8 +179,10 @@ class RecognitionTool extends Component {
     runRECinBatch = () => {
 
 		for(let i = 0; i < this.props.containersForREC.length; i++){
-			let container = this.props.containersForREC[i];
-			this.runSpeechRecognition(container, "REC", this.props.token); 
+            let container = this.props.containersForREC[i];
+            if(container.ifREC == false){
+                this.runSpeechRecognition(container, "REC", this.props.token); 
+            }
 		}
 	}
 
@@ -208,6 +211,10 @@ class RecognitionTool extends Component {
             this.openContainerInPreview(this.props.containersForREC[foundIdx+1]);
         } 
 
+    }
+
+    removeToolItem = (container) => {
+        this.props.onRemoveElementFromRECList(container);
     }
 
     render() {
@@ -240,6 +247,7 @@ class RecognitionTool extends Component {
                             status={file.statusREC}
                             openPreview = {this.openContainerInPreview}
                             runTool={(container, toolType, token) => this.runSpeechRecognition(container, toolType, token)}
+                            onRemoveItem={this.removeToolItem}
                         />
                     //<RecognitionItem key={"key" + i}
                     //    file={file} />
@@ -368,7 +376,9 @@ class RecognitionTool extends Component {
                                     }
                                    
                                     <div className="file-list">
+                                
                                         {filelist}
+
                                     </div>
                                 </div>
 
@@ -420,10 +430,10 @@ const mapDispatchToProps = dispatch => {
         onCloseModalHandler: () => dispatch(recognitionActions.closeModalProject()),
         onStartBatchRecognition: (audioFilesArray, audioFilesIds) => dispatch(recognitionActions.initBatchRecognition(audioFilesArray, audioFilesIds)),
         onSetRefusionFiles: (refusedFiles) => dispatch(recognitionActions.setRefusedFiles(refusedFiles)),
-
         setContainerStatus:  (containerId, toolType, status) => dispatch(recognitionActions.setContainerStatus(containerId, toolType, status)),
-
         runSpeechRecognition: (container, toolType, token) => dispatch(recognitionActions.runSpeechRecognition(container, toolType, token)),
+        onRemoveElementFromRECList: (container) => dispatch(recognitionActions.removeRecognitionItem(container)),
+    
     }
 }
 

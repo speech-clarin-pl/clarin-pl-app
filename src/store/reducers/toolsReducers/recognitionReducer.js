@@ -51,23 +51,23 @@ const addContainerToPreviewReco = (state,action) => {
 const addContainerToReco = (state,action) => {
    
     const newElementToAdd = action.container;
-    let newElements = null;
 
-    //dodaje nowy element tylko jeżeli wcześniej nie istniał w bazie
-    let found = state.containersForREC.filter(file => {
-        return file._id == newElementToAdd._id
-    })
+    const nextState = produce(state, draftState => {
 
+        //dodaje nowy element tylko jeżeli wcześniej nie istniał w bazie
+        let found = state.containersForREC.filter(file => {
+            return file._id == newElementToAdd._id
+        })
 
-    if(found.length < 1){
-       newElements = [newElementToAdd, ...state.containersForREC];
-    } else {
-        newElements = [...state.containersForREC];
-    }
+        if(found.length < 1){
+            draftState.containersForREC.unshift(newElementToAdd);
+        }
+       
+   })
 
-    return updateObject(state, {
-        containersForREC:newElements, 
-    });
+   
+
+   return nextState;
 
 }
 
@@ -145,19 +145,25 @@ const updateFileState = (state,action) => {
 }
 
 const removeRecognitionItem = (state, action)=>{
-    const itemId = action.fileId;
 
-    //const tempftu = Array.from(state.containersForREC);
+    const containerId = action.container._id;
 
-    const newcontainersForREC = state.containersForREC.filter((item, index) => {
-        if(item.id !== itemId){
-            //item.file = null;
-            //item.id = null;
-            return true;
-        }
-    })
-    
-    return updateObject(state, { containersForREC: newcontainersForREC}) ; 
+    const nextState = produce(state, draftState => {
+
+       const nowaLista = state.containersForREC.filter((container,index)=>{
+            if(container._id == containerId){
+                return false;
+            } else {
+                return true;
+            }
+       })
+
+
+       draftState.containersForREC = nowaLista;
+
+     })
+
+   return nextState;
 
 }
 
@@ -208,7 +214,6 @@ const speechRecognitionSuccess = (state, action) => {
        
    })
 
-   
 
    return nextState;
 

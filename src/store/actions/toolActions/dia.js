@@ -2,6 +2,19 @@ import * as actionTypes from '../actionsTypes';
 import axios from 'axios';
 
 
+
+// ###################################################################
+// ######## usuwanie z listy dia ##########
+// ###################################################################
+
+export const removeFromDIAList = (container) => {
+    return {
+        type: actionTypes.REMOVE_DIA_ITEM,
+        container: container,
+    }
+}
+
+
 // ###################################################################
 // ######## dodawanie contanera z podglądu w dia ##########
 // ###################################################################

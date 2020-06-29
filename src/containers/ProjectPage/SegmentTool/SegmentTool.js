@@ -332,7 +332,9 @@ class SegmentTool extends Component {
 	runSEGinBatch = () => {
 		for(let i = 0; i < this.props.containersForSEG.length; i++){
 			let container = this.props.containersForSEG[i];
-			this.runSpeechSegmentation(container, "SEG", this.props.token); 
+			if(container.ifSEG == false){
+				this.runSpeechSegmentation(container, "SEG", this.props.token); 
+			}
 		}
 	}
 	
@@ -360,7 +362,13 @@ class SegmentTool extends Component {
             this.openContainerInPreview(this.props.containersForSEG[foundIdx+1]);
         } 
 
+	}
+
+	removeToolItem = (container) => {
+        this.props.onRemoveSegmentationItem(container);
     }
+	
+	
 
 	render() {
 
@@ -435,7 +443,10 @@ class SegmentTool extends Component {
 						status={container.statusSEG}
 						openPreview = {this.openContainerInPreview}
 						runTool={(container, toolType, token) => this.runSpeechSegmentation(container, toolType, token)}
+						onRemoveItem={this.removeToolItem}
                     />
+
+					
 
 					
 			)
@@ -666,6 +677,8 @@ const mapDispatchToProps = dispatch => {
 		setContainerStatus:  (containerId, toolType, status) => dispatch(segmentActions.setContainerStatus(containerId, toolType, status)),
 
 		openContainerInAlignPreview: (container) => dispatch(segmentActions.openContainerInAlignPreview(container)),
+
+		onRemoveSegmentationItem: (container) => dispatch(segmentActions.removeSegmentationItem(container)),
 		//onAudioDrop: (audioFiles) => dispatch(segmentActions.dropAudioFiles(audioFiles)),
 		//onTxtDrop: (txtFiles) => dispatch(segmentActions.dropTxtFiles(txtFiles)),
 		//onChangeAudioListOrder: (idsOrder) => dispatch(segmentActions.changeAudioListOrder(idsOrder)),

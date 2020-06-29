@@ -10,6 +10,7 @@ import { faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 import { faFolder } from '@fortawesome/free-solid-svg-icons';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import {ContextMenu, MenuItem, ContextMenuTrigger} from 'react-contextmenu';
 
 class RepoSession extends Component {
 
@@ -38,8 +39,24 @@ class RepoSession extends Component {
         return true;
     }
 
+    handleClick = (e, data) => {
+
+        //const toolType = data.toolType;
+        const action = data.action;
+ 
+        switch(action){
+            case 'usun':
+                 this.props.onRemoveSession(this.props.sessionId);
+                 break;
+             default:
+                 console.log("wrong action")
+        }
+     }
+
 
     render() {
+
+        
 
         let uploadCard = (
             <div className="uploadCard">
@@ -57,6 +74,8 @@ class RepoSession extends Component {
                             onAddContainerToVAD = {this.props.onAddContainerToVAD}
                             onAddContainerToDIA = {this.props.onAddContainerToDIA}
                             key = {container._id}
+                            onRemoveContainer = {this.props.onRemoveContainer}
+                            token={this.props.token}
                             ifSelected = {container.ifSelected}
                             selectContainer = {this.selectTheContainer}/>
         });
@@ -66,20 +85,28 @@ class RepoSession extends Component {
         return (
             <div className="RepoSession">
 
-                <div className={this.props.ifSelected? "sessionFolder selected" : "sessionFolder"} onClick={this.selectTheSession} >
+                <ContextMenuTrigger id={"ToolItemSESSIONId"+this.props.sessionId}>
+                    <div className={this.props.ifSelected? "sessionFolder selected" : "sessionFolder"} onClick={this.selectTheSession} >
 
-                    <FontAwesomeIcon icon={this.state.ifOpened? faChevronDown: faChevronRight} className="repoIcon" style={{fontSize: '0.7em'}} onClick={this.clickFolderHandler}/>
-                    <FontAwesomeIcon icon={this.state.ifOpened? faFolderOpen: faFolder} className="repoIcon" onClick={this.clickFolderHandler}/> 
-                    <span className="sessionName" >{this.props.sessionName}</span>
+                        <FontAwesomeIcon icon={this.state.ifOpened? faChevronDown: faChevronRight} className="repoIcon" style={{fontSize: '0.7em'}} onClick={this.clickFolderHandler}/>
+                        <FontAwesomeIcon icon={this.state.ifOpened? faFolderOpen: faFolder} className="repoIcon" onClick={this.clickFolderHandler}/> 
+                        <span className="sessionName" >{this.props.sessionName}</span>
 
-                    {this.props.ifSelected?
-                        <FontAwesomeIcon icon={faChevronDown} className="repoIcon" style={{fontSize: '0.7em', float: 'right', margin: '6px'}} onClick={this.clickFolderHandler}/> 
-                        :
-                        null
-                    }
-                    
+                        {this.props.ifSelected?
+                            <FontAwesomeIcon icon={faChevronDown} className="repoIcon" style={{fontSize: '0.7em', float: 'right', margin: '6px'}} onClick={this.clickFolderHandler}/> 
+                            :
+                            null
+                        }
+                        
 
-                </div>
+                    </div>
+                </ContextMenuTrigger>
+
+                <ContextMenu id={"ToolItemSESSIONId"+this.props.sessionId}>
+                    <MenuItem disabled={false} data={{action: 'usun'}} onClick={this.handleClick}>
+                         Usuń sesje wraz z zawartością
+                    </MenuItem>
+                </ContextMenu>
 
                 <div className="containerList">
                     {this.state.ifOpened? uploadCard: null}

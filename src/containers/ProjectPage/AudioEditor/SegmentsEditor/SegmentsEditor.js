@@ -98,7 +98,6 @@ class SegmentsEditor extends Component {
                             <table>
                             <thead>
                                 <tr>
-                                <th>ID</th>
                                 <th>Etykieta</th>
                                 <th>Początek</th>
                                 <th>Koniec</th>
