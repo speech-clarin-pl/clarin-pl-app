@@ -12,10 +12,16 @@ import { createNotification, loader } from '../../index';
 
 export const forgotPassFailed = (error) => {
 
-    let finalMessage = error.message;
+    let finalMessage = error.response.data.message;
     let status = error.response.status;
 
+    if(status >= 500){
+        createNotification('error',finalMessage);
+    } else if (status >= 300){
+        createNotification('warning',finalMessage);
+    }
 
+    
     return {
         type: actionTypes.FORGOT_PASS_FAILED,
         message: finalMessage,
@@ -24,6 +30,16 @@ export const forgotPassFailed = (error) => {
 }
 
 export const forgotPassAction = (message, resStatus) => {
+
+    if(resStatus==500){
+        createNotification('error','Problem is a problem with the server...');
+    } else if(resStatus==200){
+        createNotification('success',message);
+    } else {
+        createNotification('warning',message);
+    }
+
+
     return {
         type: actionTypes.FORGOT_PASS,
         message: message,
@@ -31,8 +47,6 @@ export const forgotPassAction = (message, resStatus) => {
     }
 }
 export const forgotPass = (emailaddr) => {
-
-    
     return dispatch => {
         dispatch(startLoading());
         axios.post('/auth/forgotPass/'+emailaddr)
@@ -41,17 +55,14 @@ export const forgotPass = (emailaddr) => {
             dispatch(forgotPassAction(response.data.message, response.status));
         })
         .catch(error => {
+            console.log(error.response)
             dispatch(stopLoading());
-            //console.log(error)
             dispatch(forgotPassFailed(error));
         });
     }
 
     
 }
-
-
-
 
 
 //######################################################
@@ -208,7 +219,7 @@ export const loginUser = (userEmail, userPass) => {
             }
 
 
-            console.log(response);
+           // console.log(response);
             //ustawic state na auth false i authloading na false
             //przekierowanie
             
@@ -217,8 +228,6 @@ export const loginUser = (userEmail, userPass) => {
             localStorage.setItem('userName', response.data.userName);
 
             dispatch(loginUserAction(true, response.data.token,false,response.data.userId,response.data.userName, response.status));
-
-          
 
             //gasnie za 10h
             const remainingMilliseconds = 60 * 60 * 10000;

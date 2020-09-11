@@ -43,6 +43,7 @@ class LoginArea extends Component {
                 touched: false
             },
         },
+
         forgotPassForm: {
             forgotPassEmail: {
                 elementType: 'input',
@@ -59,6 +60,8 @@ class LoginArea extends Component {
                 touched: false
             },
         },
+
+
         registerform: {
             registerName: {
                 elementType: 'input',
@@ -69,7 +72,7 @@ class LoginArea extends Component {
                 value: '',
                 validation: {
                     required: true,
-                    minLength: 2
+                    minLength: 3
                 },
                 valid: false,
                 touched: false
@@ -103,6 +106,7 @@ class LoginArea extends Component {
                 touched: false
             },
         },
+
         loginFormIsValid:false,
         forgotPassFormIsValid: false,
         registerFormIsValid: false,
@@ -112,7 +116,6 @@ class LoginArea extends Component {
 
     }
 
-    
 
     //simple validator....
     checkValidity(value, rules){
@@ -133,8 +136,6 @@ class LoginArea extends Component {
 
     forgotPassHandler = (event) => {
         event.preventDefault();
-
-       // this.setState({})
        let emailaddr = this.state.forgotPassForm.forgotPassEmail.value;
        this.props.onForgotPass(emailaddr);
 
@@ -164,10 +165,7 @@ class LoginArea extends Component {
             registerData[formRegisterElement] = this.state.registerform[formRegisterElement].value;
         }
 
-        //console.log(registerData);
-        
-        this.props.onRegister(registerData.registerName, registerData.registeremail, registerData.registerpass);
-        
+        this.props.onRegister(registerData.registerName, registerData.registeremail, registerData.registerpass);        
     }
 
 
@@ -333,13 +331,8 @@ class LoginArea extends Component {
 
     
     render() {
-
-        
-        
-        //console.log(this.state.registerform)
        
         let myclasses = ["container-fluid", "LoginArea"];
-
 
         // ######### formatowanie informacji po zalogowaniu się ########
         let messageForLogin = '';
@@ -347,7 +340,6 @@ class LoginArea extends Component {
             messageForLogin = 'Zaloguj się';
         } else {
             messageForLogin = 'Jesteś zalogowany jako:';
-
         }
 
 

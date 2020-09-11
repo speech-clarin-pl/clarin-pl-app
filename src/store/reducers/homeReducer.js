@@ -33,7 +33,7 @@ const forgotPassFailed = (state, action) => {
    let resForgotPassStatus = action.resForgotPassStatus;
 
    
-   createNotification('error',"Serwer error");
+   //createNotification('error',"Serwer error");
   
    return updateObject(state,{
         forgotPassMessage: message,
@@ -47,11 +47,11 @@ const forgotPass = (state, action) => {
    let message = action.message;
    let resForgotPassStatus = action.resForgotPassStatus;
 
-   if(resForgotPassStatus==200){
-        createNotification('success',"Instrukcje do zresetowania hasła zostały wysłane na podany email");
-    } else {
-        createNotification('warning',"Nie znaleziono użytkownika o podanym adresie email");
-    }
+   //if(resForgotPassStatus==200){
+   //     createNotification('success',"Instrukcje do zresetowania hasła zostały wysłane na podany email");
+   // } else {
+   //     createNotification('warning',"Nie znaleziono użytkownika o podanym adresie email");
+   // }
 
    return updateObject(state,{
         forgotPassMessage: message,

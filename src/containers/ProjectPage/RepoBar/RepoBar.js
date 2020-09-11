@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Aux from '../../../hoc/Auxiliary';
 import './RepoBar.css';
 import Moment from 'moment';
-import FileBrowser, { Icons } from 'react-keyed-file-browser-clarin';
+//import FileBrowser, { Icons } from 'react-keyed-file-browser-clarin';
 import { connect } from 'react-redux';
 import * as repoActions from '../../../store/actions/index';
 import { Redirect, withRouter } from 'react-router-dom';
@@ -434,7 +434,9 @@ class repoBar extends Component {
 
 					<div className="mainRepoContent">
 
-						<FileBrowser
+                   {
+					   /*
+<FileBrowser
 							files={this.props.files}
 							icons={{
 								File: <i className="fas fa-file"></i>,
@@ -484,6 +486,11 @@ class repoBar extends Component {
 						// onFolderClose: (folder) => {}, // Folder closed
 
 						/>
+						
+
+					   */
+				   }
+						
 
 						{mount[0]}
 

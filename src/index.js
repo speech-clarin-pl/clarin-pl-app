@@ -16,8 +16,6 @@ import { RingLoader } from "react-spinners";
 import { css } from "@emotion/core";
 import 'react-notifications/lib/notifications.css';
 
-
-
 // to jest stara wersja repo
 //import repoReducer from './store/reducers/repoReducer';
 
