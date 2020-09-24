@@ -28,7 +28,24 @@
   .ContainerFile .repoIconMain {
     margin-right: 8px;
     cursor: pointer;
+    float:left;
+    display: block;
   }
+
+  .ContainerFile .myInputContainerClass {
+    display:block;
+    position: absolute;
+    top:0px;
+    left:40px;
+    
+  }
+
+  .ContainerFile .myLabelContainerClass {
+    display: block;
+    float:left;
+  }
+
+  
 
 
   .ContainerFile .repoIcon:hover {
@@ -46,6 +63,10 @@
   .ContainerFile.selected .repoIcon.on {
     color:#00ff3a;
   }
+
+   .ContainerFile .error {
+     color: red !important;
+   }
 
  
 

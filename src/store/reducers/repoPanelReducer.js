@@ -644,13 +644,12 @@ const repoSelectSession = (state, action) => {
 
     const nextState = produce(state, draftState => {
 
-
         let allContainers = draftState.containers.byId;
         let allSessions = draftState.sessions.byId;
 
         //zapisuje poprzednio zaznaczony aby odznaczyc
 
-        if(draftState.currentlySelectedContainers.length > 0){
+        //if(draftState.currentlySelectedContainers.length > 0){
 
                 let previouslySelectedSess = draftState.currentlySelectedSessions[0];
                 let previouslySelectedCont = draftState.currentlySelectedContainers[0];
@@ -665,8 +664,10 @@ const repoSelectSession = (state, action) => {
 
                     //odznaczam również contenery o ile byly jakies zaznaczone
                     let ktorezaznaczonecontenery = draftState.currentlySelectedContainers[0];
-                    if(ktorezaznaczonecontenery != null){
+                    if(allContainers[ktorezaznaczonecontenery] !== undefined){
                         console.log(ktorezaznaczonecontenery)
+                        console.log(allContainers[ktorezaznaczonecontenery])
+                        
                         allContainers[ktorezaznaczonecontenery].ifSelected = false;
                         draftState.currentlySelectedContainers[0] = null;
                     }
@@ -676,7 +677,7 @@ const repoSelectSession = (state, action) => {
                         allSessions[previouslySelectedSess].ifSelected = false;
                     }
                 }
-        }
+        //}
     })
 
     return nextState;

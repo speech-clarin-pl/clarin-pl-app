@@ -219,7 +219,13 @@ class ToolItem extends Component {
                 previewIconAlpha = 1;
                 break;
             case 'error':
-                statusIcon = <FontAwesomeIcon icon={faExclamationCircle} className="faIcon" style={{color: 'red'}} /> ;
+                statusIcon = (<Tooltip title={this.props.errorMessage}>
+                                    <a href="#">
+                                        <FontAwesomeIcon icon={faExclamationCircle} className="faIcon" style={{color: 'red'}} /> 
+                                    </a>
+                            </Tooltip>)
+                
+                
                 break;
             case 'progress':
                 //statusIcon = <FontAwesomeIcon icon={faSpinner} className="faIcon" /> ;

@@ -116,6 +116,7 @@ class DIATool extends Component {
 						openPreview = {this.openContainerInPreview}
 						runTool={(container, toolType, token) => this.runSpeechDiarization(container, toolType, token)}
 						onRemoveItem={this.removeToolItem}
+						errorMessage={container.errorMessage}
                     />
 			)
 			

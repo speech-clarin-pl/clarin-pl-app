@@ -425,8 +425,8 @@ class LoginArea extends Component {
                             <h3>Zarejestruj się</h3>
                            
                             {
-                                this.props.registrationMessage !== ''?
-                                errorRegisterInfo : null
+                               // this.props.registrationMessage !== ''?
+                               // errorRegisterInfo : null
                             }
                              
                             <form onSubmit={this.registerHandler}>  
@@ -483,8 +483,8 @@ class LoginArea extends Component {
                                 <h3>Przypomnienie hasła</h3>
                                 
                                 {
-                                    this.props.forgotPassMessage !== ''?
-                                    errorForgotPassInfo: null 
+                                  //  this.props.forgotPassMessage !== ''?
+                                  //  errorForgotPassInfo: null 
                                 }
 
                                 <div className="form-group">
@@ -555,7 +555,7 @@ class LoginArea extends Component {
                                 {
                                     
                                     //this.props.loginMessage !== ''? createNotification('warning', this.props.loginMessage) : null
-                                    this.props.loginMessage != ''? errorLoginInfo: null
+                                   // this.props.loginMessage != ''? errorLoginInfo: null
                                    // errorLoginInfo: null 
                                 }
                                 <div className="form-group">

@@ -101,8 +101,6 @@ class App extends Component {
                 currLn={this.state.currln} />
             )} />
 
-            
-
             <Route path="/" render={(props) => (
               <HomePage {...props}
                 changeLn={this.changeLnHandler}

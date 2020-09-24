@@ -248,6 +248,7 @@ class RecognitionTool extends Component {
                             openPreview = {this.openContainerInPreview}
                             runTool={(container, toolType, token) => this.runSpeechRecognition(container, toolType, token)}
                             onRemoveItem={this.removeToolItem}
+                            errorMessage={file.errorMessage}
                         />
                     //<RecognitionItem key={"key" + i}
                     //    file={file} />

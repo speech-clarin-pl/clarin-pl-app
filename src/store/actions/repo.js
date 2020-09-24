@@ -27,11 +27,12 @@ export const runSpeechVoiceActivityDetectionSuccess = (containerId, toolType, VA
     }
 }
 
-export const runSpeechVoiceActivityDetectionFailed = (containerId, toolType) => {
+export const runSpeechVoiceActivityDetectionFailed = (containerId, toolType, message) => {
     return {
         type: actionTypes.REPO_RUN_SPEECH_VAD_FAILED,
         containerId: containerId,
         toolType: toolType,
+        message: message,
     }
 }
 
@@ -50,10 +51,13 @@ export const runSpeechVoiceActivityDetection = (container, toolType, token) => {
             },
         })
         .then(response => {
-            dispatch(runSpeechVoiceActivityDetectionSuccess(response.data.containerId, response.data.toolType, response.data.VADSegments));
+            dispatch(runSpeechVoiceActivityDetectionSuccess(response.data.containerId, response.data.toolType, response.data.VADSegments, response.data.message));
         })
         .catch(error => {
-            dispatch(runSpeechVoiceActivityDetectionFailed(container._id, toolType));
+            const errorMessage = error.response.data.message;
+            const containerId = error.response.data.containerId;
+            const toolType = error.response.data.toolType;
+            dispatch(runSpeechVoiceActivityDetectionFailed(containerId, toolType,errorMessage));
         }); 
     }
 }

@@ -108,16 +108,18 @@ const speechVADSuccess = (state, action) => {
 const speechVADFailed = (state, action) => {
     const containerId = action.containerId;
     const toolType = action.toolType; 
+    const message =  action.message;
 
     let foundFileIdx = state.containersForVAD.findIndex(file => {
         return file._id === containerId;
     })
 
-    createNotification('error', 'Wystąpił błąd diaryzacji pliku ' + state.containersForVAD[foundFileIdx].containerName);
+    createNotification('error', message + ', concerns: ' + state.containersForVAD[foundFileIdx].containerName);
 
     const nextState = produce(state, draftState => {
         draftState.containersForVAD[foundFileIdx].ifVAD = false;
         draftState.containersForVAD[foundFileIdx].statusVAD = 'error';
+        draftState.containersForVAD[foundFileIdx].errorMessage = message;
        
    })
 

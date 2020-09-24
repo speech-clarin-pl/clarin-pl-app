@@ -46,6 +46,32 @@ if (process.env.NODE_ENV === 'production') {
 //axios.defaults.headers.common['Authorization'] = 'AUTH TOKEN';
 //axios.defaults.headers.post['Content-Type'] = 'application/json';
 
+// global error handling
+
+axios.interceptors.response.use(function (response) {
+    // Any status code that lie within the range of 2xx cause this function to trigger
+    
+    return response;
+  }, function (error) {
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
+    
+    if(error.response){
+        const statusCode = error.response.status;
+        const statusText = error.response.statusText;
+        const errorData = error.response.data;
+
+        if(statusCode >=500){
+            createNotification("error",statusText + ' - ' + errorData.message)
+        } else if(statusCode >=300){
+            createNotification("warning",statusText + ' - ' + errorData.message)
+        }
+    } else if (error.request) {
+        createNotification("error","The application can not reach the server!")
+    }
+    
+    return Promise.reject(error);
+  });
+
 
 
 const rootReducer = combineReducers({

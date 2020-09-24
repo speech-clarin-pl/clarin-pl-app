@@ -17,7 +17,7 @@ export const forgotPassFailed = (error) => {
 
     if(status >= 500){
         createNotification('error',finalMessage);
-    } else if (status >= 300){
+    } else {
         createNotification('warning',finalMessage);
     }
 
@@ -31,14 +31,7 @@ export const forgotPassFailed = (error) => {
 
 export const forgotPassAction = (message, resStatus) => {
 
-    if(resStatus==500){
-        createNotification('error','Problem is a problem with the server...');
-    } else if(resStatus==200){
-        createNotification('success',message);
-    } else {
-        createNotification('warning',message);
-    }
-
+    createNotification('success',message);
 
     return {
         type: actionTypes.FORGOT_PASS,
@@ -81,6 +74,12 @@ export const registerUserActionFailed = (error) => {
         }
     }
 
+    if(status >= 500){
+        createNotification('error',finalMessage);
+    } else {
+        createNotification('warning',finalMessage);
+    }
+
     return {
         type: actionTypes.REGISTER_FAILED,
         message: finalMessage,
@@ -88,12 +87,19 @@ export const registerUserActionFailed = (error) => {
     }
 }
 
-export const registerUserAction = (message, userId, resStatus) => {
+export const registerUserAction = (response) => {
+
+    const message = response.data.message;
+    const userId = response.data.userId;
+    const status = response.status;
+
+    createNotification('success',message);
+
     return {
         type: actionTypes.REGISTER,
         message: message,
         userId: userId,
-        resRegistrationStatus: resStatus,
+        resRegistrationStatus: status,
     }
 }
 export const registerUser = (userName, userEmail, userPass) => {
@@ -106,35 +112,16 @@ export const registerUser = (userName, userEmail, userPass) => {
         })
         .then(response => {
             dispatch(stopLoading());
-            dispatch(registerUserAction(response.data.message, response.data.userId, response.status));
+            dispatch(registerUserAction(response));
         })
         .catch(error => {
             dispatch(stopLoading());
             dispatch(registerUserActionFailed(error));
         });
-    }
-
-    
+    }    
 }
 
 
-//####################################################
-//######################### preloader ################
-//####################################################
-
-export const startLoading = () => {
-    return {
-        type: actionTypes.START_LOADING,
-    }
-}
-
-export const stopLoading = () => {
-    
-    return {
-        type: actionTypes.STOP_LOADING,
-    }
-
-}
 
 
 //####################################################
@@ -143,6 +130,9 @@ export const stopLoading = () => {
 
 
 export const loginUserAction = (isAuth, token, authLoading, userId,userName,resStatus) => {
+   
+    //createNotification('success','Welcome '+userName);
+   
     return {
         type: actionTypes.LOG_IN,
         isAuth: isAuth,
@@ -159,6 +149,12 @@ export const loginUserActionFailed = (error) => {
     
     let finalMessage = error.response.data.message;
     let status = error.response.status;
+
+    if(status >= 500){
+        createNotification('error',finalMessage);
+    } else {
+        createNotification('warning',finalMessage);
+    }
 
     return {
         type: actionTypes.LOG_IN_FAILED,
@@ -248,4 +244,23 @@ export const loginUser = (userEmail, userPass) => {
         });
     }
    
+}
+
+
+
+//####################################################
+//######################### preloader ################
+//####################################################
+
+export const startLoading = () => {
+    return {
+        type: actionTypes.START_LOADING,
+    }
+}
+
+export const stopLoading = () => {
+    
+    return {
+        type: actionTypes.STOP_LOADING,
+    }
 }

@@ -7,6 +7,7 @@ import ItemTypes from '../../ItemDndTypes';
 
 import {ContextMenu, MenuItem, ContextMenuTrigger} from 'react-contextmenu';
 import dragImage from '../../../ProjectPage/dragImage';
+import EditableLabel from 'react-inline-editing';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileAudio } from '@fortawesome/free-solid-svg-icons';
@@ -130,15 +131,33 @@ class ContainerFile extends Component {
 
 
 
+    _handleFocus = (text) => {
+        // console.log('Focused with text: ' + text);
+     }
+ 
+     _handleFocusOut = (text) => {
+        // console.log('Left editor with text: ' + this.props.projectID + " " + text + " " + this.props.userId + " " + this.props.token);
+        //this.props.onChangeProjectName(this.props.projectID, text, this.props.userId, this.props.token);
+     }
+
+
+
     render() {
 
         
 
         //wyświetlam tylko pierwsze 11 znaków nazwy pliku....
         let contName = this.props.container.containerName;
-        if(contName.length > 11){
-            contName = contName.substring(1,11) + "...";
-        }
+        //if(contName.length > 11){
+        //    contName = contName.substring(1,11) + "...";
+        //}
+
+      
+        const VADerrorClass = this.props.container.statusVAD=='error'? "error":"";
+        const DIAerrorClass = this.props.container.statusDIA=='error'? "error":"";
+        const RECerrorClass = this.props.container.statusREC=='error'? "error":"";
+        const SEGerrorClass = this.props.container.statusSEG=='error'? "error":"";
+ 
 
         
 
@@ -155,9 +174,17 @@ class ContainerFile extends Component {
                             <div className="col">
                                 <div className="containerName">
                                     <FontAwesomeIcon icon={faFileAudio} className="repoIconMain" /> 
-                                    {
-                                        contName
-                                    }
+                                    
+                                     <EditableLabel text={contName}
+                                        labelClassName='myLabelContainerClass'
+                                        inputClassName='myInputContainerClass'
+                                        inputWidth='160px'
+                                        isEditing={false}
+                                        inputHeight='25px'
+                                        inputMaxLength={50}
+                                        onFocus={this._handleFocus}
+                                        onFocusOut={this._handleFocusOut}
+                                    />
                                 </div>
                                 
                             </div>
@@ -176,25 +203,26 @@ class ContainerFile extends Component {
 
                                 <Tooltip title="Detekcja mowy (VAD)">
                                     <a href="#" role="button"  onClick={this.runVAD} >
-                                        <FontAwesomeIcon icon={faSurprise} className={["repoIcon",this.props.container.ifVAD? "on": ""].join(" ")}/> 
+                                        
+                                        <FontAwesomeIcon icon={faSurprise} className={["repoIcon",VADerrorClass, this.props.container.ifVAD? "on": ""].join(" ")}/> 
                                     </a>
                                 </Tooltip>
 
                                 <Tooltip title="Diaryzacja (DIA)">
                                     <a href="#" role="button" onClick={this.runDIA} >
-                                        <FontAwesomeIcon icon={faComment} className={["repoIcon",this.props.container.ifDIA? "on": ""].join(" ")}/> 
+                                        <FontAwesomeIcon icon={faComment} className={["repoIcon",DIAerrorClass, this.props.container.ifDIA? "on": ""].join(" ")}/> 
                                     </a>
                                 </Tooltip>
 
                                 <Tooltip title="Rozpoznawanie mowy (REC)">
                                     <a href="#" role="button" onClick={this.runRECO} >
-                                        <FontAwesomeIcon icon={faFileAlt} className={["repoIcon",this.props.container.ifREC? "on": ""].join(" ")}/> 
+                                        <FontAwesomeIcon icon={faFileAlt} className={["repoIcon",RECerrorClass, this.props.container.ifREC? "on": ""].join(" ")}/> 
                                     </a>
                                 </Tooltip>
 
                                 <Tooltip title="Segmentacja (SEG)">
                                     <a href="#" role="button"  onClick={this.runALIGN}>
-                                        <FontAwesomeIcon icon={faClock} className={["repoIcon",this.props.container.ifSEG? "on": ""].join(" ")}/> 
+                                        <FontAwesomeIcon icon={faClock} className={["repoIcon",SEGerrorClass, this.props.container.ifSEG? "on": ""].join(" ")}/> 
                                     </a>
                                 </Tooltip>
                                

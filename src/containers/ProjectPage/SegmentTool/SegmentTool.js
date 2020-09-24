@@ -444,6 +444,7 @@ class SegmentTool extends Component {
 						openPreview = {this.openContainerInPreview}
 						runTool={(container, toolType, token) => this.runSpeechSegmentation(container, toolType, token)}
 						onRemoveItem={this.removeToolItem}
+						errorMessage={container.errorMessage}
                     />
 
 					

@@ -120,6 +120,7 @@ class VADTool extends Component {
 						openPreview = {this.openContainerInPreview}
 						runTool={(container, toolType, token) => this.runSpeechVoiceActivityDetection(container, toolType, token)}
 						onRemoveItem={this.removeToolItem}
+						errorMessage={container.errorMessage}
                     />
 			)
 			

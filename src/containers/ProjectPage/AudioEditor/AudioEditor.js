@@ -210,7 +210,7 @@ class AudioEditor extends Component {
 		  Peaks.init(options, (err, peaksInstance) => {
 
 			if (err) {
-			  console.log("uwaga error")
+			  console.log("Problem with Peaks initialization")
 			  reject(err);
 			}
 			else {
@@ -430,6 +430,9 @@ class AudioEditor extends Component {
 		if(container !== undefined){
 
 			let data = this.getDataFromContainer(container);
+			console.log(data.audioPath);
+			console.log(data.datPath);
+			console.log(data.segments);
 			this.startPeaksLeaving(data.audioPath, data.datPath, data.segments)
 
 		}
