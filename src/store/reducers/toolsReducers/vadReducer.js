@@ -114,7 +114,7 @@ const speechVADFailed = (state, action) => {
         return file._id === containerId;
     })
 
-    createNotification('error', message + ', concerns: ' + state.containersForVAD[foundFileIdx].containerName);
+    //createNotification('error', message + ', concerns: ' + state.containersForVAD[foundFileIdx].containerName);
 
     const nextState = produce(state, draftState => {
         draftState.containersForVAD[foundFileIdx].ifVAD = false;

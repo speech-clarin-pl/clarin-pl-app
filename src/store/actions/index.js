@@ -25,6 +25,7 @@ export {
     exportToEMU,
     korpusDownloaded,
     removeSessionFromRepo,
+    changeContainerName,
 } from './repo';
 
 export {

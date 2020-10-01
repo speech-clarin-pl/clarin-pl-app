@@ -95,7 +95,7 @@ const speechDiarizationFailed = (state, action) => {
         return file._id === containerId;
     })
 
-    createNotification('error', 'Wystąpił błąd diaryzacji pliku ' + state.containersForDIA[foundFileIdx].containerName);
+    //createNotification('error', 'Wystąpił błąd diaryzacji pliku ' + state.containersForDIA[foundFileIdx].containerName);
 
     const nextState = produce(state, draftState => {
         draftState.containersForDIA[foundFileIdx].ifDIA = false;

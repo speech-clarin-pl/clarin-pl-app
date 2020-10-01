@@ -15,11 +15,13 @@ export const forgotPassFailed = (error) => {
     let finalMessage = error.response.data.message;
     let status = error.response.status;
 
+    /*
     if(status >= 500){
         createNotification('error',finalMessage);
     } else {
         createNotification('warning',finalMessage);
     }
+    */
 
     
     return {
@@ -74,11 +76,13 @@ export const registerUserActionFailed = (error) => {
         }
     }
 
+    /*
     if(status >= 500){
         createNotification('error',finalMessage);
     } else {
         createNotification('warning',finalMessage);
     }
+    */
 
     return {
         type: actionTypes.REGISTER_FAILED,
@@ -150,11 +154,13 @@ export const loginUserActionFailed = (error) => {
     let finalMessage = error.response.data.message;
     let status = error.response.status;
 
+   /*
     if(status >= 500){
         createNotification('error',finalMessage);
     } else {
         createNotification('warning',finalMessage);
     }
+    */
 
     return {
         type: actionTypes.LOG_IN_FAILED,
@@ -166,7 +172,7 @@ export const loginUserActionFailed = (error) => {
 }
 
 export const setAutoLogout = (aftermilliseconds) => {
-    console.log('setAutoLogout! after:' + aftermilliseconds);
+   // console.log('setAutoLogout! after:' + aftermilliseconds);
     return {
         type: actionTypes.SET_AUTO_LOGOUT,
         autoLogoutAfter: aftermilliseconds,
@@ -174,7 +180,8 @@ export const setAutoLogout = (aftermilliseconds) => {
 }
 
 export const logout = () => {
-    console.log('LOG OUT');
+  //  console.log('LOG OUT');
+  createNotification('success','You are logged out. Bye!');
     return {
         type: actionTypes.LOG_OUT
     }
@@ -236,8 +243,6 @@ export const loginUser = (userEmail, userPass) => {
 
         })
         .catch(error => {
-            console.log('error occurs')
-            console.log(error)
             dispatch(stopLoading());
 
             dispatch(loginUserActionFailed(error));

@@ -73,12 +73,15 @@ class RepoSession extends Component {
                             onAddContainerToAlign = {this.props.onAddContainerToAlign}
                             onAddContainerToVAD = {this.props.onAddContainerToVAD}
                             onAddContainerToDIA = {this.props.onAddContainerToDIA}
+                            onChangeContainerName = {this.props.onChangeContainerName}
                             key = {container._id}
                             onRemoveContainer = {this.props.onRemoveContainer}
                             token={this.props.token}
                             ifSelected = {container.ifSelected}
                             selectContainer = {this.selectTheContainer}/>
         });
+
+        
 
 
 

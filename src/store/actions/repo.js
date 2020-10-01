@@ -264,6 +264,54 @@ export const removeContainerFromRepo = (userId, projectId, sessionId, containerI
     }
 }
 
+//############################################################
+// ############## zmiana nazwy contenera w repo #################
+// ###########################################################
+
+export const changeContainerNameSuccess = (containerId) => {
+    return {
+        type: actionTypes.REPO_CHANGE_CONTAINER_NAME_SUCCESS,
+        containerId: containerId,
+    }
+}
+
+export const changeContainerNameFailed = (error) => {
+    return {
+        type: actionTypes.REPO_CHANGE_CONTAINER_NAME_FAILED,
+        error: error,
+    }
+}
+
+
+export const changeContainerName = (container, text, token) => {
+    return dispatch => {
+
+        const projectId = container.project;
+        //const userId = container.owner;
+        const containerId = container._id;
+
+        console.log(token)
+
+     
+        axios.put(('/repoFiles/changeContainerName/' + projectId+'/'+containerId), 
+        {
+            newName: text
+        },
+        {
+            headers: {
+                Authorization: 'Bearer ' + token
+            },
+        })
+        .then(response => {
+            dispatch(changeContainerNameSuccess(response.data.containerId));
+        })
+        .catch(error => {
+            dispatch(changeContainerNameFailed(error));
+        }); 
+      
+    }
+}
+
 
 //############################################################
 // ############## usuwanie sesji z repo #################

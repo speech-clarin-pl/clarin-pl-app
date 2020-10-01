@@ -138,6 +138,8 @@ class ContainerFile extends Component {
      _handleFocusOut = (text) => {
         // console.log('Left editor with text: ' + this.props.projectID + " " + text + " " + this.props.userId + " " + this.props.token);
         //this.props.onChangeProjectName(this.props.projectID, text, this.props.userId, this.props.token);
+       //console.log(this.props.token)
+        this.props.onChangeContainerName(this.props.container, text, this.props.token);
      }
 
 

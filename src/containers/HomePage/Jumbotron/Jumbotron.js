@@ -23,12 +23,14 @@ const jumbotron = (props) => {
                         Automatyczne rozpoznawanie mowy z plików dźwiękowych, segmentacja, tworzenie korpusów audio.
                     </p>
 
-                    <div className="alert alert-info" role="alert">
-                        Portal w wersji beta.
-                    </div>
-                  
+                   
                    
                 {
+
+                  //  <div className="alert alert-info" role="alert">
+                  //  Portal w wersji beta.
+                  //  </div>
+
                     // <Link to="/projectsList">
                     //       <button className="btn btn-primary btn-lg btn-block gotoprojects">
                     //           Przejdz do listy projektow

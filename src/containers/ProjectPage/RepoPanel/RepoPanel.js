@@ -272,11 +272,11 @@ class repoPanel extends Component {
         let listaSesji = null;
         listaSesji = Object.keys(this.props.repoData.sessions.byId).map(sessionId => {
 
-            console.log(sessionId)
+            //console.log(sessionId)
             
             let sId = this.props.repoData.sessions.byId[sessionId].id;
 
-            console.log(sId)
+            //console.log(sId)
 
             let sessionName = this.props.repoData.sessions.byId[sessionId].sessionName;
             let ifSelected = this.props.repoData.sessions.byId[sessionId].ifSelected;
@@ -300,11 +300,14 @@ class repoPanel extends Component {
                                 selectTheContainer = {this.selectContainerHandler} 
                                 onRemoveContainer = {(container => this.removeContainer(container))}
                                 onRemoveSession = {(sessionId) => this.removeSession(sessionId)}
+                                onChangeContainerName = {(container, text, token) => this.props.changeContainerName(container, text, token)}
                                 onAddContainerToDIA = {(container) => this.addContainerToDIAList(container)}
                                 onAddContainerToVAD = {(container) => this.addContainerToVADList(container)}
                                 onAddContainerToReco = {(container) => this.addContainerToRecoList(container)}
                                 onAddContainerToAlign = {(container) => this.addContainerToAlignList(container)}/>
         })
+
+       
 
         //onAddContainerToDIA = {(containerId) => this.addContainerToDIAList(containerId)}
         //onAddContainerToVAD = {(containerId) => this.addContainerToVADList(containerId)}
@@ -443,6 +446,7 @@ const mapDispatchToProps = dispatch => {
 
     removeSessionFromRepo: (userId, projectId, sessionId, token) => dispatch(repoActions.removeSessionFromRepo(userId, projectId, sessionId, token)),
 
+    changeContainerName: (container, text, token) => dispatch(repoActions.changeContainerName(container,text, token)),
 	}
 }
 

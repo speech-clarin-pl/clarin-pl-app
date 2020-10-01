@@ -561,7 +561,7 @@ const speechSegmentationFailed = (state, action) => {
         return file._id === containerId;
     })
 
-    createNotification('error', 'Wystąpił błąd segmentacji pliku ' + state.containersForSEG[foundFileIdx].containerName);
+    //createNotification('error', 'Wystąpił błąd segmentacji pliku ' + state.containersForSEG[foundFileIdx].containerName);
 
     const nextState = produce(state, draftState => {
         draftState.containersForSEG[foundFileIdx].ifSEG = false;
