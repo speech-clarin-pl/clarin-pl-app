@@ -46,6 +46,9 @@ if (process.env.NODE_ENV === 'production') {
 //axios.defaults.headers.common['Authorization'] = 'AUTH TOKEN';
 //axios.defaults.headers.post['Content-Type'] = 'application/json';
 
+
+axios.defaults.timeout = 360000000;//100min
+
 // global error handling
 
 axios.interceptors.response.use(function (response) {

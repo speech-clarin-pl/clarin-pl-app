@@ -68,12 +68,16 @@
      color: red !important;
    }
 
+   .ContainerFile .repoManageIcons {
+     min-width: 90px;
+   }
+
  
 
 
 
   .ContainerFile .containerName {
-    padding-right: 5px;
-    padding-left: 5px;
+    width: 182px;
+    overflow: hidden;
     text-align: left;
   }

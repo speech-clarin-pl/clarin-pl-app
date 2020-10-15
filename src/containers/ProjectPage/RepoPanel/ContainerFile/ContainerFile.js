@@ -175,8 +175,12 @@ class ContainerFile extends Component {
                         <div className="row">
                             <div className="col">
                                 <div className="containerName">
-                                    <FontAwesomeIcon icon={faFileAudio} className="repoIconMain" /> 
-                                    
+
+                                {
+                                    //<FontAwesomeIcon icon={faFileAudio} className="repoIconMain" /> 
+                                }
+                                   
+                                
                                      <EditableLabel text={contName}
                                         labelClassName='myLabelContainerClass'
                                         inputClassName='myInputContainerClass'
@@ -187,10 +191,13 @@ class ContainerFile extends Component {
                                         onFocus={this._handleFocus}
                                         onFocusOut={this._handleFocusOut}
                                     />
+
+
                                 </div>
                                 
                             </div>
                             <div className="col">
+                                <div className="repoManageIcons">
                                 
                                 {
                                     /*
@@ -228,6 +235,8 @@ class ContainerFile extends Component {
                                     </a>
                                 </Tooltip>
                                
+                               </div>
+
                             </div>
                         </div>
                     </div>
