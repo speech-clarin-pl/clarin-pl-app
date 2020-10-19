@@ -5,3 +5,17 @@
 .Segment input.szerzej {
   
 }
+
+.Segment #playBtn {
+   background:#3498db;
+    color: white;
+    padding: 5px;
+    text-decoration: none;
+}
+
+.Segment #removeBtn {
+   background:#dba234;
+    color: white;
+    padding: 5px;
+    text-decoration: none;
+}

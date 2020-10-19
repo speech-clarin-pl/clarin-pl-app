@@ -128,8 +128,8 @@ class Segment extends Component {
                     <td><input className="szerzej" data-action="update-segment-label" onChange={this.updateSegmentLabel} type="text" value={this.props.labelText} data-id={this.props.segmentId}/></td>
                     <td><input data-action="update-segment-start-time" onChange={this.updateStartTimeSegment} type="number" value={this.props.startTime} data-id={this.props.segmentId}/></td>
                     <td><input data-action="update-segment-end-time" onChange={this.updateEndTimeSegment} type="number" value={this.props.endTime} data-id={this.props.segmentId}/></td>
-                    <td><a href={'#'+this.props.segmentId} data-action="play-segment" data-id={this.props.segmentId}>Play</a></td>
-                    <td><a href={'#'+this.props.segmentId} data-action="remove-segment" data-id={this.props.segmentId}>Usuń</a></td>
+                    <td><a href={'#'+this.props.segmentId} id="playBtn" data-action="play-segment" data-id={this.props.segmentId}>Play</a></td>
+                    <td><a href={'#'+this.props.segmentId} id="removeBtn" data-action="remove-segment" data-id={this.props.segmentId}>Usuń</a></td>
                     
                     
                     {

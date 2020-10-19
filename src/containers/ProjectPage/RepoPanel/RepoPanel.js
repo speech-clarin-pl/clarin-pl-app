@@ -50,6 +50,8 @@ class repoPanel extends Component {
         whatClicked: '',
 
         waitingForCorpus: false,
+
+        whichContainerToRemove: null,
     }
 
     removeObjectFromRepo = () => {
@@ -116,6 +118,7 @@ class repoPanel extends Component {
         this.setState({
             modal:false,
             whatClicked: '',
+            whichContainerToRemove: null,
         })
 		//this.props.onCloseModalHandler();
     }
@@ -166,8 +169,21 @@ class repoPanel extends Component {
 
     removeContainer = (container) => {
         //this.props.removeContainer(container);
-        //console.log(container)
-        this.props.removeContainerFromRepo(this.props.currentProjectOwner, this.props.currentProjectID, container.session,container._id,this.props.token)
+        
+
+        this.setState({
+            modal: true,
+            whatClicked: 'removeContainer',
+            whichContainerToRemove: container,
+        })
+        
+        
+    }
+
+
+    finallyRemoveContainer = () => {
+        this.props.removeContainerFromRepo(this.props.currentProjectOwner, this.props.currentProjectID, this.state.whichContainerToRemove.session,this.state.whichContainerToRemove._id,this.props.token);
+        this.closeModalHandler();
     }
 
     removeSession = (sessionId) => {
@@ -249,6 +265,25 @@ class repoPanel extends Component {
                 </div>
                 
             );
+        } else if(this.state.whatClicked == 'removeContainer'){
+            modalTitle = "Czy jesteś pewien że chcesz usunąć ?";
+            let containerName = this.state.whichContainerToRemove.containerName;
+
+            let akcje = (
+                <div>
+                    <p>
+                        {containerName}
+                    </p>
+                 
+                    <button type="button" className="btn btn-primary" onClick={this.finallyRemoveContainer}>TAK</button>
+                    
+
+                     <button type="button" className="btn btn-outline-primary" onClick={this.closeModalHandler}>NIE</button>
+                </div>
+            )
+
+            modalContent = akcje;
+
         }
 
         //jeżeli kliknięto ikonkę do stworzenia sesji
