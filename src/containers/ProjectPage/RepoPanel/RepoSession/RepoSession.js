@@ -46,7 +46,7 @@ class RepoSession extends Component {
  
         switch(action){
             case 'usun':
-                 this.props.onRemoveSession(this.props.sessionId);
+                 this.props.onRemoveSession(this.props.sessionId, this.props.sessionName);
                  break;
              default:
                  console.log("wrong action")

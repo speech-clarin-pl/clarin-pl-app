@@ -52,6 +52,7 @@ class repoPanel extends Component {
         waitingForCorpus: false,
 
         whichContainerToRemove: null,
+        whichSessionIdToRemove: null,
     }
 
     removeObjectFromRepo = () => {
@@ -119,6 +120,8 @@ class repoPanel extends Component {
             modal:false,
             whatClicked: '',
             whichContainerToRemove: null,
+            whichSessionIdToRemove: null,
+            whichSessionNameToRemove: '',
         })
 		//this.props.onCloseModalHandler();
     }
@@ -170,13 +173,11 @@ class repoPanel extends Component {
     removeContainer = (container) => {
         //this.props.removeContainer(container);
         
-
         this.setState({
             modal: true,
             whatClicked: 'removeContainer',
             whichContainerToRemove: container,
         })
-        
         
     }
 
@@ -186,15 +187,22 @@ class repoPanel extends Component {
         this.closeModalHandler();
     }
 
-    removeSession = (sessionId) => {
-        this.props.removeSessionFromRepo(this.props.currentProjectOwner, this.props.currentProjectID, sessionId,this.props.token)
+   
+
+    removeSession = (sessionId,sessionName) => {
+       // this.props.removeSessionFromRepo(this.props.currentProjectOwner, this.props.currentProjectID, sessionId,this.props.token)
+    
+       this.setState({
+            modal: true,
+            whatClicked: 'removeSession',
+            whichSessionIdToRemove: sessionId,
+            whichSessionNameToRemove: sessionName,
+        })
     }
 
-    runEMUExport = () => {
-        this.setState({
-            waitingForCorpus: true
-        });
-        this.props.onExportToEMU(this.props.currentProjectID, this.props.currentProjectOwner, this.props.token);
+    finallyRemoveSession = () => {
+        this.props.removeSessionFromRepo(this.props.currentProjectOwner, this.props.currentProjectID, this.state.whichSessionIdToRemove,this.props.token)
+        this.closeModalHandler();
     }
 
     openConfirmExportToEmu = () => {
@@ -204,6 +212,17 @@ class repoPanel extends Component {
         })
         //this.props.onOpenModalHandler();
     }
+
+
+
+    runEMUExport = () => {
+        this.setState({
+            waitingForCorpus: true
+        });
+        this.props.onExportToEMU(this.props.currentProjectID, this.props.currentProjectOwner, this.props.token);
+    }
+
+    
 
 
     downloadCorpus = () => {
@@ -220,56 +239,45 @@ class repoPanel extends Component {
         this.props.onKorpusDownloaded();
     }
 
+    modalContentEMUExport = () => {
 
+        let content = null;
+        let akcjaKorpus = <button type="button" className="btn btn-primary" onClick={this.runEMUExport}>Ok</button>;
 
-	render() {
-
-        //############## zawartość okna modalnego
-
-        let modalTitle = "";
-        let modalContent = null;
-        let lebelButton = "";
-
-
-        //jeżeli kliknięto w przycisk exportujący do EMU
-        if(this.state.whatClicked == 'EMUexport'){
-            modalTitle = "Czy jesteś pewien że chcesz eksportować korpus do EMU?";
-
-            let akcjaKorpus = <button type="button" className="btn btn-primary" onClick={this.runEMUExport}>Ok</button>;
-
-            //sprawdzam czy przynajmniej jeden jest gotowy do eks
-
-            if(this.props.exportToEmuReady){
-                akcjaKorpus = <button type="button" className="btn btn-primary" onClick={this.downloadCorpus}>Pobierz korpus</button>;
-            } else {
-                if(this.state.waitingForCorpus){
-                    akcjaKorpus = <RingLoader
-                    css={override}
-                    size={'40px'}
-                    color={"rgb(52, 152, 219)"}
-                    loading={true}
-                    />;
-                }
+        //sprawdzam czy przynajmniej jeden jest gotowy do eks
+        if(this.props.exportToEmuReady){
+            akcjaKorpus = <button type="button" className="btn btn-primary" onClick={this.downloadCorpus}>Pobierz korpus</button>;
+        } else {
+            if(this.state.waitingForCorpus){
+                akcjaKorpus = <RingLoader
+                css={override}
+                size={'40px'}
+                color={"rgb(52, 152, 219)"}
+                loading={true}
+                />;
             }
+        }
 
-
-
-            modalContent = (
-                <div>
-                    <p>Zostaną wyeksportowane tylko te pliki dla których zostały wykonane wszystkie poziomy annotacji.</p>
-                    <p>Podcas tego procesu nie wykonuj żadnych czynności</p>
-                    {
-                        akcjaKorpus
-                    }                   
-                    
-                </div>
+        content = (
+            <div>
+                <p>Zostaną wyeksportowane tylko te pliki dla których zostały wykonane wszystkie poziomy annotacji.</p>
+                <p>Podcas tego procesu nie wykonuj żadnych czynności</p>
+                {
+                    akcjaKorpus
+                }                   
                 
-            );
-        } else if(this.state.whatClicked == 'removeContainer'){
-            modalTitle = "Czy jesteś pewien że chcesz usunąć ?";
-            let containerName = this.state.whichContainerToRemove.containerName;
+            </div>
+            
+        );
 
-            let akcje = (
+        return content;
+    }
+
+
+    modalContentRemoveContainer = () => {
+        let containerName = this.state.whichContainerToRemove.containerName;
+
+            let content = (
                 <div>
                     <p>
                         {containerName}
@@ -282,24 +290,74 @@ class repoPanel extends Component {
                 </div>
             )
 
-            modalContent = akcje;
+            return content;
+    }
 
+    modalContentRemoveSession = () => {
+        let sessionName = this.state.whichSessionNameToRemove;
+
+            let content = (
+                <div>
+                    <p>
+                        {sessionName}
+                    </p>
+                 
+                    <button type="button" className="btn btn-primary" onClick={this.finallyRemoveSession}>TAK</button>
+                     <button type="button" className="btn btn-outline-primary" onClick={this.closeModalHandler}>NIE</button>
+                </div>
+            )
+
+            return content;
+    }
+
+    modalContentAddSession = () => {
+        let lebelButton  = "Stwórz sesje";
+
+        let content = (
+            <SingleInputForm 
+                placeholder={"Podaj nazwe sesji"}
+                onChangeHandler={this.newSessionChangeHandler}
+                value={this.state.newSessionName}
+                buttonLabel={lebelButton}
+                onSubmitHandler={this.onSubmitNewSessionHandler}/>
+        );
+
+        return content;
+    }
+
+
+
+	render() {
+
+        //############## zawartość okna modalnego
+
+        let modalTitle = "";
+        let modalContent = null;
+        
+
+        switch(this.state.whatClicked){
+            case 'EMUexport':
+                modalTitle = "Czy jesteś pewien że chcesz eksportować korpus do EMU?";
+                modalContent = this.modalContentEMUExport();
+                break;
+            case 'removeContainer':
+                modalTitle = "Czy jesteś pewien że chcesz usunąć ?";
+                modalContent = this.modalContentRemoveContainer();
+                break;
+            case 'removeSession':
+                modalTitle = "Czy jesteś pewien że chcesz usunąć całą sesję wraz z zawartością?";
+                modalContent = this.modalContentRemoveSession();
+                break;
+            case 'addSession':
+                modalTitle = "Tworzenie nowej sesji";
+                modalContent = this.modalContentAddSession();
+                break;
+            default:
+                // cos
         }
 
-        //jeżeli kliknięto ikonkę do stworzenia sesji
-        if(this.state.whatClicked == 'addSession'){
-            modalTitle = "Tworzenie nowej sesji";
-            lebelButton = "Stwórz sesje";
 
-            modalContent = (
-                <SingleInputForm 
-                    placeholder={"Podaj nazwe sesji"}
-                    onChangeHandler={this.newSessionChangeHandler}
-                    value={this.state.newSessionName}
-                    buttonLabel={lebelButton}
-                    onSubmitHandler={this.onSubmitNewSessionHandler}/>
-            );
-        }
+       
 
      
 
@@ -334,7 +392,7 @@ class repoPanel extends Component {
                                 selectTheSession = {this.selectSessionHandler}
                                 selectTheContainer = {this.selectContainerHandler} 
                                 onRemoveContainer = {(container => this.removeContainer(container))}
-                                onRemoveSession = {(sessionId) => this.removeSession(sessionId)}
+                                onRemoveSession = {(sessionId,sessionName) => this.removeSession(sessionId,sessionName)}
                                 onChangeContainerName = {(container, text, token) => this.props.changeContainerName(container, text, token)}
                                 onAddContainerToDIA = {(container) => this.addContainerToDIAList(container)}
                                 onAddContainerToVAD = {(container) => this.addContainerToVADList(container)}
