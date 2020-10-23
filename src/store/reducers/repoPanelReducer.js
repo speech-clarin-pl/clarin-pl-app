@@ -317,6 +317,7 @@ const speechDiarizationFailed = (state, action) => {
 const speechSegmentationDone = (state, action) => {
     const containerId = action.containerId;
     const toolType = action.toolType; 
+    const message = action.message;
 
     const nextState = produce(state, draftState => {
         draftState.containers.byId[containerId].ifSEG = true;
@@ -333,11 +334,12 @@ const speechSegmentationFailed = (state, action) => {
 
     const containerId = action.containerId;
     const toolType = action.toolType; 
+    const message = action.message;
 
     const nextState = produce(state, draftState => {
         draftState.containers.byId[containerId].ifSEG = false;
         draftState.containers.byId[containerId].statusSEG = 'error';
-
+        draftState.containers.byId[containerId].errorMessage = message;
    })
 
    return nextState;

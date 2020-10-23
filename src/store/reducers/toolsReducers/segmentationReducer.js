@@ -556,20 +556,24 @@ const speechSegmentationSuccess = (state, action) => {
 const speechSegmentationFailed = (state, action) => {
     const containerId = action.containerId;
     const toolType = action.toolType; 
+    const message = action.message;
 
     let foundFileIdx = state.containersForSEG.findIndex(file => {
         return file._id === containerId;
     })
 
-    //createNotification('error', 'Wystąpił błąd segmentacji pliku ' + state.containersForSEG[foundFileIdx].containerName);
+   // console.log("wiadomosc: " + message)
+
 
     const nextState = produce(state, draftState => {
         draftState.containersForSEG[foundFileIdx].ifSEG = false;
         draftState.containersForSEG[foundFileIdx].statusSEG = 'error';
+        draftState.containersForSEG[foundFileIdx].errorMessage = message;
        
    })
 
    return nextState;
+
 
 }
 

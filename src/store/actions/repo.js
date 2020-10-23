@@ -111,19 +111,23 @@ export const runSpeechDiarization = (container, toolType, token) => {
 // ############## Speech segmentation #################
 // ###########################################################
 
-export const runSpeechSegmentationSuccess = (containerId, toolType) => {
+export const runSpeechSegmentationSuccess = (message,containerId, toolType) => {
     return {
         type: actionTypes.REPO_RUN_SPEECH_SEGMENTATION_DONE,
         containerId: containerId,
         toolType: toolType,
+        message: message,
     }
 }
 
-export const runSpeechSegmentationFailed = (containerId, toolType) => {
+export const runSpeechSegmentationFailed = (message,containerId, toolType) => {
+
+
     return {
         type: actionTypes.REPO_RUN_SPEECH_SEGMENTATION_FAILED,
         containerId: containerId,
         toolType: toolType,
+        message: message,
     }
 }
 
@@ -142,10 +146,11 @@ export const runSpeechSegmentation = (container, toolType, token) => {
             },
         })
         .then(response => {
-            dispatch(runSpeechSegmentationSuccess(container._id, toolType));
+            dispatch(runSpeechSegmentationSuccess(response.message,container._id, toolType));
         })
-        .catch(error => {
-            dispatch(runSpeechSegmentationFailed(container._id, toolType));
+        .catch((error) => {
+            //console.log(error.response)
+            dispatch(runSpeechSegmentationFailed(error.response.data.message,container._id, toolType));
         }); 
     }
 }
