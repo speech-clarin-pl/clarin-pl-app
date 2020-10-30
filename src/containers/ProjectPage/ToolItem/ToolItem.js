@@ -22,6 +22,7 @@ import { faClock } from '@fortawesome/free-solid-svg-icons';
 import * as toolItemActions from '../../../store/actions/index';
 import { RingLoader } from "react-spinners";
 import { css } from "@emotion/core";
+import Modal from '../../../components/UI/Modal/Modal';
 
 
 const override = css`
@@ -31,6 +32,15 @@ const override = css`
 
 class ToolItem extends Component {
 
+    state = {
+        modal: false,
+    }
+
+    closeModalHandler = () => {
+        this.setState({
+            modal:false,
+        })
+    }
 
     componentDidUpdate = (prevProps,prevState) => {
 
@@ -52,6 +62,8 @@ class ToolItem extends Component {
         //this.setState({innerStatus: 'progress'});
 
         //this.props.setContainerStatus(this.props.container._id, this.props.type, 'progress');
+
+        this.closeModalHandler();
 
         this.props.runTool(this.props.container, this.props.type, this.props.token)
 
@@ -151,6 +163,11 @@ class ToolItem extends Component {
         this.props.onRemoveItem(this.props.container);
     }
 
+    runProcessAgain = () => {
+        this.setState({
+            modal:true,
+        })
+    }
         
 
     
@@ -161,6 +178,9 @@ class ToolItem extends Component {
 
         //do wskazywania czy obecnie jest edytowany
         let czyEdytowany = '';
+
+        let modalTitle = '';
+        let modalContent = '';
 
         switch(this.props.type){
             case "DIA":
@@ -251,7 +271,28 @@ class ToolItem extends Component {
                 statusIcon = <FontAwesomeIcon icon={faCheck} className="faIcon" /> ;
                 progressBar = null;
 
-                runProcessIcon = <FontAwesomeIcon icon={iconType} className="faIcon" style={{opacity: 0.5, color: '#1cce44'}}/>
+                modalTitle = 'Czy na pewno chcesz ponownie uruchomić usługę automatyczną?';
+                modalContent = (
+                    <div>
+                        <p>Wszystkie Twoje ręczne korekty zostaną nadpisane</p>
+                        <button type="button" className="btn btn-primary" onClick={this.runProcess}>TAK</button>
+                        <button type="button" className="btn btn-outline-primary" onClick={this.closeModalHandler}>NIE</button>
+                    </div>
+
+                    );
+
+                
+
+                
+
+                runProcessIcon = (
+                    <Tooltip title={"Uruchom " + this.props.type}>
+                        <a href="#" role="button" onClick={this.runProcessAgain}>
+                              <FontAwesomeIcon icon={iconType} className="faIcon" style={{opacity: 1, color: '#1cce44'}}/>
+                        </a>
+                    </Tooltip>
+                );
+
             default:
                 statusIcon = null;
         }
@@ -273,6 +314,16 @@ class ToolItem extends Component {
         return(
 
             <Aux>
+
+                <Modal 
+                    show={this.state.modal}
+					modalClosed={this.closeModalHandler}
+                    modalTitle={modalTitle}
+                >
+                    {modalContent}
+                </Modal> 
+
+
                 <ContextMenuTrigger id={"ToolItemId"+this.props.container._id}>
                     <div className={"ToolItem " + czyEdytowany}>
                         <div className={["row", "toolItem"].join(' ')}>

@@ -238,7 +238,7 @@ class ProjectsListPage extends Component {
     const deleteProject = (
       <Aux>
         <ConfirmationForm
-          messageQuestion={"Czy na pewnoe chcesz usunac poniższy projekt? Wraz z nim zostaną usunięte wszystkie pliki audio oraz transkrypcje!"}
+          messageQuestion={"Czy na pewno chcesz usunac poniższy projekt? Wraz z nim zostaną usunięte wszystkie pliki audio oraz transkrypcje!"}
           onCancel={this.closeModalHandler}
           onOk = {()=>this.props.onDelete(this.props.projectId, this.props.userId, this.props.token)}
 
