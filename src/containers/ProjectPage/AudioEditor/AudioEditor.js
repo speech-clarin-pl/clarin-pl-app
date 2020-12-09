@@ -410,10 +410,15 @@ class AudioEditor extends Component {
 		
 
 		//plik audio
-		let audioPath = process.env.REACT_APP_API_URL+ "/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/audio?api_key="+token;
+		//let audioPath = process.env.REACT_APP_API_URL+ "/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/audio?api_key="+token;
+		
+		let audioPath = process.env.REACT_APP_API_URL+ "/repoFiles/download/"+containerId+"/audio?api_key="+token;
 		
 		//meta data do renderingu waveform
-		let datPath = process.env.REACT_APP_API_URL + "/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/dat?api_key="+token;
+		//let datPath = process.env.REACT_APP_API_URL + "/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/dat?api_key="+token;
+		
+		let datPath = process.env.REACT_APP_API_URL + "/repoFiles/download/"+containerId+"/dat?api_key="+token;
+
 
 		return {
 			audioPath: audioPath,
@@ -964,7 +969,8 @@ class AudioEditor extends Component {
 										
 									</div>
 									
-									<p><b>{this.props.containerForPreview.containerName}</b></p>
+									<h3><b>{this.props.containerForPreview.containerName}</b></h3>
+									<p style={{fontSize: '11px'}}>{this.props.containerForPreview._id}</p>
 								
 
 								</div>

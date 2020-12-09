@@ -36,14 +36,14 @@ export const runSpeechVoiceActivityDetectionFailed = (containerId, toolType, mes
     }
 }
 
-export const runSpeechVoiceActivityDetection = (container, toolType, token) => {
+export const runSpeechVoiceActivityDetection = (container, token) => {
     
     return dispatch => {
 
         axios.put(('/repoFiles/runSpeechVAD/'+container._id), 
         {
-            containerId: container._id,
-            toolType: toolType,
+           // containerId: container._id,
+           // toolType: toolType,
         }, 
         {
             headers: {
@@ -75,22 +75,23 @@ export const runSpeechDiarizationSuccess = (containerId, toolType, DIAsegments) 
     }
 }
 
-export const runSpeechDiarizationFailed = (containerId, toolType) => {
+export const runSpeechDiarizationFailed = (containerId, toolType, message) => {
     return {
         type: actionTypes.REPO_RUN_SPEECH_DIARIZATION_FAILED,
         containerId: containerId,
         toolType: toolType,
+        message: message,
     }
 }
 
-export const runSpeechDiarization = (container, toolType, token) => {
+export const runSpeechDiarization = (container, token) => {
     
     return dispatch => {
 
         axios.put(('/repoFiles/runSpeechDiarization/'+container._id), 
         {
             containerId: container._id,
-            toolType: toolType,
+            //toolType: toolType,
         }, 
         {
             headers: {
@@ -101,7 +102,10 @@ export const runSpeechDiarization = (container, toolType, token) => {
             dispatch(runSpeechDiarizationSuccess(response.data.containerId, response.data.toolType, response.data.DIAsegments));
         })
         .catch(error => {
-            dispatch(runSpeechDiarizationFailed(container._id, toolType));
+            const errorMessage = error.response.data.message;
+            const containerId = error.response.data.containerId;
+            const toolType = error.response.data.toolType;
+            dispatch(runSpeechDiarizationFailed(containerId, toolType,errorMessage));
         }); 
     }
 }
@@ -131,14 +135,14 @@ export const runSpeechSegmentationFailed = (message,containerId, toolType) => {
     }
 }
 
-export const runSpeechSegmentation = (container, toolType, token) => {
+export const runSpeechSegmentation = (container, token) => {
     
     return dispatch => {
 
         axios.put(('/repoFiles/runSpeechSegmentation/'+container._id), 
         {
             containerId: container._id,
-            toolType: toolType,
+           // toolType: toolType,
         }, 
         {
             headers: {
@@ -146,11 +150,14 @@ export const runSpeechSegmentation = (container, toolType, token) => {
             },
         })
         .then(response => {
-            dispatch(runSpeechSegmentationSuccess(response.message,container._id, toolType));
+            dispatch(runSpeechSegmentationSuccess(response.message,container._id, response.data.toolType));
         })
         .catch((error) => {
-            //console.log(error.response)
-            dispatch(runSpeechSegmentationFailed(error.response.data.message,container._id, toolType));
+            const errorMessage = error.response.data.message;
+            const containerId = error.response.data.containerId;
+            const toolType = error.response.data.toolType;
+
+            dispatch(runSpeechSegmentationFailed(errorMessage,containerId, toolType));
         }); 
     }
 }
@@ -168,15 +175,16 @@ export const runSpeechRecognitionSuccess = (containerId, toolType) => {
     }
 }
 
-export const runSpeechRecognitionFailed = (containerId, toolType) => {
+export const runSpeechRecognitionFailed = (containerId, toolType, messsage) => {
     return {
         type: actionTypes.REPO_RUN_SPEECH_RECOGNITION_FAILED,
         containerId: containerId,
         toolType: toolType,
+        messsage: messsage,
     }
 }
 
-export const runSpeechRecognition = (container, toolType, token) => {
+export const runSpeechRecognition = (container, token) => {
     
     return dispatch => {
 
@@ -184,7 +192,7 @@ export const runSpeechRecognition = (container, toolType, token) => {
         axios.put(('/repoFiles/runSpeechRecognition/'+container._id), 
         {
             containerId: container._id,
-            toolType: toolType,
+            //toolType: toolType,
         }, 
         {
             headers: {
@@ -192,10 +200,13 @@ export const runSpeechRecognition = (container, toolType, token) => {
             },
         })
         .then(response => {
-            dispatch(runSpeechRecognitionSuccess(container._id, toolType));
+            dispatch(runSpeechRecognitionSuccess(container._id, response.data.toolType));
         })
         .catch(error => {
-            dispatch(runSpeechRecognitionFailed(container._id, toolType));
+            const errorMessage = error.response.data.message;
+            const containerId = error.response.data.containerId;
+            const toolType = error.response.data.toolType;
+            dispatch(runSpeechRecognitionFailed(containerId, toolType, errorMessage));
         }); 
     }
 }
@@ -255,7 +266,7 @@ export const removeContainerFromRepoFailed = (error) => {
 export const removeContainerFromRepo = (userId, projectId, sessionId, containerId,token) => {
     return dispatch => {
 
-        axios.delete(('/repoFiles/' + userId+"/"+projectId+'/'+sessionId+'/'+containerId), 
+        axios.delete(('/repoFiles/delete/'+containerId), 
         {
             headers: {
                 Authorization: 'Bearer ' + token

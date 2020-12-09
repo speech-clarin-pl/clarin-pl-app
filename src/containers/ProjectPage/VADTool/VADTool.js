@@ -64,7 +64,8 @@ class VADTool extends Component {
 
 	runSpeechVoiceActivityDetection = (container, toolType, token) => {
 		this.props.setContainerStatus(container._id, toolType, 'progress');
-		this.props.runSpeechVoiceActivityDetection(container, toolType, token); 
+		//this.props.runSpeechVoiceActivityDetection(container, toolType, token); 
+		this.props.runSpeechVoiceActivityDetection(container, token); 
 	}
 
 
@@ -234,7 +235,8 @@ const mapDispatchToProps = dispatch => {
 	return {
 		openContainerInVADPreview: (container) => dispatch(vadActions.openContainerInVADPreview(container)),
 		//runVADInBatch: (VADItems) => dispatch(vadActions.runVADInBatch(VADItems)),
-		runSpeechVoiceActivityDetection: (container, toolType, token) => dispatch(vadActions.runSpeechVoiceActivityDetection(container, toolType, token)),
+		//runSpeechVoiceActivityDetection: (container, toolType, token) => dispatch(vadActions.runSpeechVoiceActivityDetection(container, toolType, token)),
+		runSpeechVoiceActivityDetection: (container, token) => dispatch(vadActions.runSpeechVoiceActivityDetection(container, token)),
 		setContainerStatus:  (containerId, toolType, status) => dispatch(vadActions.setContainerStatus(containerId, toolType, status)),
 		
 		onRemoveElementFromVADList: (container) => dispatch(vadActions.removeElementFromVADList(container)),

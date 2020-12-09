@@ -51,7 +51,7 @@ class DIATool extends Component {
 		for(let i = 0; i < this.props.containersForDIA.length; i++){
 			let container = this.props.containersForDIA[i];
 			if(container.ifDIA==false){
-				this.runSpeechDiarization(container, "DIA", this.props.token); 
+				this.runSpeechDiarization(container, "DIA",this.props.token); 
 			}
 			
 		}
@@ -61,7 +61,7 @@ class DIATool extends Component {
 	
 	runSpeechDiarization = (container, toolType, token) => {
 		this.props.setContainerStatus(container._id, toolType, 'progress');
-		this.props.runSpeechDiarization(container, toolType, token); 
+		this.props.runSpeechDiarization(container, token); 
 	}
 
 	loadNextElement = () => {
@@ -229,7 +229,8 @@ const mapDispatchToProps = dispatch => {
 	return {
 		openContainerInDIAPreview: (container) => dispatch(diaActions.openContainerInDIAPreview(container)),
 		//runDIAInBatch: (DIAItems) => dispatch(diaActions.runDIAInBatch(DIAItems)),
-		runSpeechDiarization: (container, toolType, token) => dispatch(diaActions.runSpeechDiarization(container, toolType, token)),
+		//runSpeechDiarization: (container, toolType, token) => dispatch(diaActions.runSpeechDiarization(container, toolType, token)),
+		runSpeechDiarization: (container, token) => dispatch(diaActions.runSpeechDiarization(container, token)),
 		setContainerStatus:  (containerId, toolType, status) => dispatch(diaActions.setContainerStatus(containerId, toolType, status)),
 
 		onRemoveElementFromDIAList: (container) => dispatch(diaActions.removeFromDIAList(container)),

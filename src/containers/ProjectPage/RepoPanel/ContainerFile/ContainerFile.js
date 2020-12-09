@@ -64,8 +64,6 @@ class ContainerFile extends Component {
 
    
     downloadElement = (action) => {
-        //console.log("Pobieram: " + toolType + " : " + action);
-
 
         const userId = this.props.container.owner;
         const projectId = this.props.container.project;
@@ -74,12 +72,30 @@ class ContainerFile extends Component {
         const fileType = action;
 
         
-        let linkToDownload = process.env.REACT_APP_API_URL+ "/repoFiles/" + userId + "/" + projectId+"/"+sessionId+"/"+containerId+"/"+fileType+"/?api_key="+this.props.token;
+        //let linkToDownload = process.env.REACT_APP_API_URL+ "/repoFiles/" + userId + "/" + projectId+"/"+sessionId+"/"+containerId+"/"+fileType+"/?api_key="+this.props.token;
+
+        let linkToDownload = process.env.REACT_APP_API_URL+ "/repoFiles/download/"+containerId+"/"+fileType+"/?api_key="+this.props.token;
+      
 
         window.open(linkToDownload,"_self");
 
        
     }
+
+    copyToClipboard = (text) => {
+        const str = text;
+        const el = document.createElement('textarea');
+        el.value = str;
+        el.setAttribute('readonly', '');
+        el.style.position = 'absolute';
+        el.style.left = '-9999px';
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+    }
+
+    
 
     handleClick = (e, data) => {
 
@@ -87,6 +103,10 @@ class ContainerFile extends Component {
        const action = data.action;
 
        switch(action){
+           case 'copyId':
+                const theID = this.props.container._id;
+                this.copyToClipboard(theID);
+                break;
            case 'usun':
                 this.props.onRemoveContainer(this.props.container);
                 break;
@@ -243,6 +263,10 @@ class ContainerFile extends Component {
                 </ContextMenuTrigger>
 
                 <ContextMenu id={"ToolItemREPOId"+this.props.container._id}>
+                    <MenuItem disabled={false} data={{toolType: this.props.type, action: 'copyId'}} onClick={this.handleClick}>
+                         Kopiuj ID: {this.props.container._id}
+                    </MenuItem>
+                    <MenuItem divider />
                     <MenuItem disabled={false} data={{toolType: this.props.type, action: 'usun'}} onClick={this.handleClick}>
                          Usuń z repozytorium
                     </MenuItem>

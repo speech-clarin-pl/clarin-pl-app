@@ -116,6 +116,10 @@ class ToolItem extends Component {
        const action = data.action;
 
        switch(action){
+            case 'copyId':
+                const theID = this.props.container._id;
+                this.copyToClipboard(theID);
+                break;
            case 'usun':
                 this.props.onRemoveItem(this.props.container);
                 break;
@@ -167,6 +171,19 @@ class ToolItem extends Component {
         this.setState({
             modal:true,
         })
+    }
+
+    copyToClipboard = (text) => {
+        const str = text;
+        const el = document.createElement('textarea');
+        el.value = str;
+        el.setAttribute('readonly', '');
+        el.style.position = 'absolute';
+        el.style.left = '-9999px';
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
     }
         
 
@@ -325,6 +342,7 @@ class ToolItem extends Component {
 
 
                 <ContextMenuTrigger id={"ToolItemId"+this.props.container._id}>
+                <a href="#" role="button" onClick={previewIconAlpha===1? this.runPreview: null}>
                     <div className={"ToolItem " + czyEdytowany}>
                         <div className={["row", "toolItem"].join(' ')}>
                             <div className="col-sm-6 file-info align-self-center pr-1">
@@ -339,18 +357,25 @@ class ToolItem extends Component {
                             <div className="col-sm-3 actionIcons align-self-center pl-1 pr-1">
                                 {//playIcon
                                 }
-                                {previewIcon}
+                                {
+                                //previewIcon
+                                 }
                                 {runProcessIcon} 
                             </div>
                         </div>
                         {progressBar}
-                    </div>      
+                    </div>  
+                    </a>    
 
 
                 </ContextMenuTrigger>
 
 
                 <ContextMenu id={"ToolItemId"+this.props.container._id}>
+                    <MenuItem disabled={false} data={{toolType: this.props.type, action: 'copyId'}} onClick={this.handleClick}>
+                         Kopiuj ID: {this.props.container._id}
+                    </MenuItem>
+                    <MenuItem divider />
                     <MenuItem disabled={false} data={{toolType: this.props.type, action: 'usun'}} onClick={this.handleClick}>
                          Usuń element z listy
                     </MenuItem>

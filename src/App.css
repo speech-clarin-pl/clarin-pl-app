@@ -1,3 +1,13 @@
+a {
+  color: #394b55;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #10171b;
+  text-decoration: none;
+}
+
 .App {
   text-align: center;
 }
