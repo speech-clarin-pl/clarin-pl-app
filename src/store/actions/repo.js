@@ -203,9 +203,18 @@ export const runSpeechRecognition = (container, token) => {
             dispatch(runSpeechRecognitionSuccess(container._id, response.data.toolType));
         })
         .catch(error => {
-            const errorMessage = error.response.data.message;
-            const containerId = error.response.data.containerId;
-            const toolType = error.response.data.toolType;
+            let errorMessage;
+            let containerId;
+            let toolType;
+            if(error.response){
+                errorMessage = error.response.data.message;
+                containerId = error.response.data.containerId;
+                toolType = error.response.data.toolType;
+            } else {
+                errorMessage = "Coś poszło nie tak z rozpoznawaniem mowy";
+                containerId = container._id;
+                toolType = "REC";
+            }
             dispatch(runSpeechRecognitionFailed(containerId, toolType, errorMessage));
         }); 
     }

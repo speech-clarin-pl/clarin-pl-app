@@ -27,6 +27,7 @@ const projectListItem = (props) => {
                     //<td>{props.owner}</td>
                 }
                 
+                <td>{props.projektID}</td>
                 <td>{props.modified}</td>
                 <td>
                     {

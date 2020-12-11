@@ -45,9 +45,9 @@ class ProjectsListPage extends Component {
     const remainingMilliseconds =
       new Date(expiryDate).getTime() - new Date().getTime();
 
-    console.log(userId)
-    console.log(userName)
-    console.log(token)
+    //console.log(userId)
+    //console.log(userName)
+    //console.log(token)
     this.props.onSetLoggedIn(userId,userName, token);
     //this.setState({ isAuth: true, token: token, userId: userId });
     //this.setAutoLogout(remainingMilliseconds);
@@ -100,7 +100,7 @@ class ProjectsListPage extends Component {
     //bardzo prosta validacja po stronie przegladarki
     //taka sama jest po stronie serwera
     //nie moze byc puste i musi miec min. 3 znaki
-    //isValid = value.trim() !== '' && isValid;
+    isValid = value.trim() !== '' && isValid;
     //isValid = value.length >= 3 && isValid;
 
     return isValid;
@@ -156,8 +156,6 @@ class ProjectsListPage extends Component {
   onNewProjectDone = () => {
     this.closeModalHandler()
   }
-
-  
 
 
   //otwiera okno modalne
@@ -354,11 +352,13 @@ class ProjectsListPage extends Component {
           changeLn={this.props.changeLn}
           currLn={this.props.currLn} />
 
-        {leftSiteBar}
+          {
+          leftSiteBar
+          }
 
-        {
-          toDisplay
-        }
+          {
+            toDisplay
+          }
 
       </Aux>
     );

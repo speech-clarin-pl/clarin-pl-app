@@ -12,7 +12,7 @@ const projectsList = (props) => {
                 {
                     //<tSuperMpongoDBd >Właściciel</td>
                 }
-                
+                <td> Identyfikator</td>
                 <td >Data utworzenia</td>
                 <td >Akcje</td>
             </tr>
