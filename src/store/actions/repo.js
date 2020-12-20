@@ -290,8 +290,8 @@ export const removeContainerFromRepo = (userId, projectId, sessionId, containerI
     }
 }
 
-//############################################################
-// ############## zmiana nazwy contenera w repo #################
+// ###########################################################
+// ############## zmiana nazwy contenera w repo ############## OK
 // ###########################################################
 
 export const changeContainerNameSuccess = (containerId) => {
@@ -312,14 +312,11 @@ export const changeContainerNameFailed = (error) => {
 export const changeContainerName = (container, text, token) => {
     return dispatch => {
 
-        const projectId = container.project;
+        //const projectId = container.project;
         //const userId = container.owner;
         const containerId = container._id;
 
-        console.log(token)
-
-     
-        axios.put(('/repoFiles/changeContainerName/' + projectId+'/'+containerId), 
+        axios.put(('/repoFiles/changeContainerName/'+containerId), 
         {
             newName: text
         },
@@ -384,7 +381,7 @@ export const removeSessionFromRepo = (userId, projectId, sessionId,token) => {
 // ############################################################
 // ################ pobieranie sesji projektu #################
 // ############################################################
-
+/*
 export const getRepoAssetsSuccess = (userId, sessions, containers) => {
     return {
         type: actionTypes.REPO_GET_USER_PROJECT_FILES,
@@ -403,7 +400,9 @@ export const getRepoAssetsFailed = (error) => {
 // pobieram liste plikow w katalogu uzytkownika dla danego projektu
 export const getRepoAssets = (userId, projectId, token) => {
     return dispatch => {
-        axios.get(('/repoFiles/' + projectId+"/"+userId), {
+
+        //console.log("wysyłam getProjectAssets")
+        axios.get(('/repoFiles/getProjectAssets/' + projectId), {
             headers: {
                 Authorization: 'Bearer ' + token
             },
@@ -416,6 +415,7 @@ export const getRepoAssets = (userId, projectId, token) => {
         });
     }
 }
+*/
 
 
 // ############################################################
@@ -483,6 +483,91 @@ export const selectContainer = (containerId) => {
     }
 }
 
+
+
+//#################################################################
+//############## get user project files ######################
+//####################################################
+
+export const getProjectFilesForUserAction = (userId, sessions, containers) => {
+    return {
+        type: actionTypes.REPO_GET_USER_PROJECT_FILES,
+        sessions: sessions,
+        containers: containers,
+    }
+}
+
+export const getProjectFilesForUserActionFailed = (error) => {
+    return {
+        type: actionTypes.REPO_GET_USER_PROJECT_FILES_FAILED,
+        error: error,
+    }
+}
+
+// pobieram liste plikow w katalogu uzytkownika dla danego projektu
+export const getProjectFilesForUser = (userId, projectId, token) => {
+    return dispatch => {
+       
+        axios.get(('/repoFiles/getProjectAssets/' + projectId ), {
+            headers: {
+                Authorization: 'Bearer ' + token
+            },
+        })
+            .then(response => {
+                dispatch(getProjectFilesForUserAction(userId, response.data.sessions, response.data.containers));
+            })
+            .catch(error => {
+                dispatch(getProjectFilesForUserActionFailed(error));
+            });
+    }
+}
+
+
+
+// #################################
+// ###### Export To EMU
+// ############################
+
+export const exportToEMUFailed = (message) => {
+    return {
+        type: actionTypes.EXPORT_TO_EMU_DONE_FAILED,
+        message: message,
+    }
+}
+
+export const exportToEMUSuccess = (message) => {
+    return {
+        type: actionTypes.EXPORT_TO_EMU_DONE_SUCCESS,
+        message: message,
+    }
+}
+
+
+//it initializes creating corpus on the serwer
+export const exportToEMU = (projectId, userId, token) => {
+    console.log("Export to emu");
+    return dispatch => {
+        axios.get('/repoFiles/exportToEmu/'+userId+'/'+projectId, {
+            headers: {
+                Authorization: 'Bearer ' + token
+            }
+        })
+        .then(response => {
+            console.log(response)
+
+            //jak jest gotowy to go ściągam
+           // this.downloadCorpus(projectId, userId, token);
+
+            dispatch(exportToEMUSuccess(response.data.message));
+        })
+        .catch(error => {
+            console.log(error)
+            dispatch(exportToEMUFailed(error.message));
+        });
+    }
+}
+
+
 //#####################################################################################
 //#####################################################################################
 //#####################################################################################
@@ -498,6 +583,8 @@ export const selectContainer = (containerId) => {
 //#################################################################
 //############# upload plików do repo ############################
 //################################################################
+
+
 
 export const uploadFilesFinish = () =>{
     return {
@@ -607,6 +694,8 @@ export const uploadFiles = (fileList,folderKey,userId, projectId, token) => {
     }
 }
 
+
+
 //#################################################################
 //############## edycja pliku txt ######################
 //####################################################
@@ -649,44 +738,8 @@ export const handleUpdateTxtFile = (userId, projectId, token, key, newContent) =
 }
 
 
-//#################################################################
-//############## get user project files ######################
-//####################################################
 
-export const getProjectFilesForUserAction = (userId, sessions, containers) => {
-    return {
-        type: actionTypes.REPO_GET_USER_PROJECT_FILES,
-        sessions: sessions,
-        containers: containers,
-    }
-}
-
-export const getProjectFilesForUserActionFailed = (error) => {
-    return {
-        type: actionTypes.REPO_GET_USER_PROJECT_FILES_FAILED,
-        error: error,
-    }
-}
-
-// pobieram liste plikow w katalogu uzytkownika dla danego projektu
-export const getProjectFilesForUser = (userId, projectId, token) => {
-    return dispatch => {
-       
-        axios.get(('/repoFiles/' + projectId + "/" + userId), {
-            headers: {
-                Authorization: 'Bearer ' + token
-            },
-        })
-            .then(response => {
-                dispatch(getProjectFilesForUserAction(userId, response.data.sessions, response.data.containers));
-            })
-            .catch(error => {
-                dispatch(getProjectFilesForUserActionFailed(error));
-            });
-    }
-}
-
-//###########################################
+//#########################################
 //#######   tworzenie nowego folderu
 //#########################################
 
@@ -814,9 +867,6 @@ export const handleRenameFileActionFailed = (error) => {
 }
 
 export const handleRenameFile = (oldKey, newKey, projectId, userId, token) => {
-    console.log('RENAME FILE:' + oldKey + ' into ' + newKey);
-    console.log('projectId:' + projectId );
-    console.log('token:' + token );
     return dispatch => {
         axios.put(('/repoFiles/renameFile/'), {
             oldKey: oldKey, 
@@ -828,14 +878,13 @@ export const handleRenameFile = (oldKey, newKey, projectId, userId, token) => {
                 Authorization: 'Bearer ' + token
             },
         })
-            .then(response => {
-                console.log(response)
-                dispatch(handleRenameFileAction(response.data.oldKey, response.data.newKey, response.data.message));
-            })
-            .catch(error => {
-                dispatch(handleRenameFolderActionFailed(error));
-            });
-        
+        .then(response => {
+            console.log(response)
+            dispatch(handleRenameFileAction(response.data.oldKey, response.data.newKey, response.data.message));
+        })
+        .catch(error => {
+            dispatch(handleRenameFolderActionFailed(error));
+        });
     }
 }
 
@@ -877,8 +926,6 @@ export const handleDeleteFolder = (folderKey, projectId, userId,token) => {
                console.log(error)
                dispatch(handleDeleteFolderActionFailed(error));
            });
-
-      
     }
 }
 
@@ -967,88 +1014,4 @@ export const handleDeleteFile = (fileKey, projectId, userId, token) => {
 }
 
 
-
-
-
-
-// #################################
-// ###### Export To EMU
-// ############################
-
-/*
-export const downloadCorpusSuccess = (message) => {
-    return {
-        type: actionTypes.DOWNLOAD_KORPUS_DONE,
-        message: message,
-    }
-}
-
-export const downloadCorpusFailed = (message) => {
-    return {
-        type: actionTypes.DOWNLOAD_KORPUS_FAILED,
-        message: message,
-    }
-}
-
-//tutaj możemy ściągnąć korpus na dysk
-
-export const downloadCorpus = (projectId, userId, token) => {
-    console.log("download corpus");
-    return dispatch => {
-        axios.get('/repoFiles/downloadKorpus/'+userId+'/'+projectId, {
-            headers: {
-                Authorization: 'Bearer ' + token
-            }
-        })
-        .then(response => {
-            console.log(response)
-            dispatch(downloadCorpusSuccess(response.data.message));
-        })
-        .catch(error => {
-            console.log(error)
-            dispatch(downloadCorpusFailed(error.message));
-        });
-    }
-}
-*/
-
-
-export const exportToEMUFailed = (message) => {
-    return {
-        type: actionTypes.EXPORT_TO_EMU_DONE_FAILED,
-        message: message,
-    }
-}
-
-export const exportToEMUSuccess = (message) => {
-    return {
-        type: actionTypes.EXPORT_TO_EMU_DONE_SUCCESS,
-        message: message,
-    }
-}
-
-
-//it initializes creating corpus on the serwer
-export const exportToEMU = (projectId, userId, token) => {
-    console.log("Export to emu");
-    return dispatch => {
-        axios.get('/repoFiles/exportToEmu/'+userId+'/'+projectId, {
-            headers: {
-                Authorization: 'Bearer ' + token
-            }
-        })
-        .then(response => {
-            console.log(response)
-
-            //jak jest gotowy to go ściągam
-           // this.downloadCorpus(projectId, userId, token);
-
-            dispatch(exportToEMUSuccess(response.data.message));
-        })
-        .catch(error => {
-            console.log(error)
-            dispatch(exportToEMUFailed(error.message));
-        });
-    }
-}
 

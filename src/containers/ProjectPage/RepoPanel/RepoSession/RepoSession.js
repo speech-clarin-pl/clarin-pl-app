@@ -56,8 +56,6 @@ class RepoSession extends Component {
 
     render() {
 
-        
-
         let uploadCard = (
             <div className="uploadCard">
                 <UploadAudio forSession={this.props.sessionId} />

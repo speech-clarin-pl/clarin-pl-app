@@ -78,7 +78,7 @@ class UploadAudio extends Component {
           dataToSend.append('projectId', projectId);
           dataToSend.append('sessionId', sessionId);
           dataToSend.append('uniqueHash', uniqueHash);
-          dataToSend.append('audioFile', file);
+          dataToSend.append('myFile', file);
 
   
           axios.post('/repoFiles/uploadFile', dataToSend,{
