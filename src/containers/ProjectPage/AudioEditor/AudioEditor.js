@@ -831,8 +831,8 @@ class AudioEditor extends Component {
 		const containerId = container._id;
 		const token = this.props.token;
 
-		let audioGetUrl = process.env.REACT_APP_API_URL+ "/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/audio?api_key="+token;
-		let labelGetUrl = process.env.REACT_APP_API_URL+ "/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/SEGtextGrid?api_key="+token;
+		let audioGetUrl = process.env.REACT_APP_API_URL+ "/repoFiles/download/"+containerId+"/audio?api_key="+token;
+		let labelGetUrl = process.env.REACT_APP_API_URL+ "/repoFiles/download/"+containerId+"/SEGtextGrid?api_key="+token;
 		let labelType='TEXTGRID';
 
 		let finalPathToEMU = encodeURI('https://ips-lmu.github.io/EMU-webApp/?audioGetUrl=' + audioGetUrl + '&labelGetUrl=' + labelGetUrl + '&labelType=' + labelType);

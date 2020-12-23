@@ -37,7 +37,7 @@ class LoginArea extends Component {
                 value: '',
                 validation: {
                     required: true,
-                    minLength: 6
+                    minLength: 7
                 },
                 valid: false,
                 touched: false
@@ -100,7 +100,7 @@ class LoginArea extends Component {
                 value: '',
                 validation: {
                     required: true,
-                    minLength: 6
+                    minLength: 7
                 },
                 valid: false,
                 touched: false

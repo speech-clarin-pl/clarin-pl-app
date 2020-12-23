@@ -33,6 +33,10 @@ a:hover {
   color: #61dafb;
 }
 
+.react-contextmenu.react-contextmenu--visible {
+  z-index: 99999;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

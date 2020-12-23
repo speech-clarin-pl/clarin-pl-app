@@ -24,7 +24,7 @@ class NewPasswordPage extends Component {
     const { password } = this.state;
     const { confirmPassword } = this.state;
 
-    if((password==confirmPassword) && password.length>5){
+    if((password==confirmPassword) && password.length>6){
 
       this.setState({
         czyHaslaPasuja: true,
@@ -53,7 +53,7 @@ class NewPasswordPage extends Component {
       <Aux>
         <p></p>
         <h3 style={{ paddingBottom: "1.25rem" }}>Wpisz swoje nowe hasło</h3>
-        <p>Hasło musi składać się z conajmniej 5 znaków</p>
+        <p>Hasło musi składać się z conajmniej 7 znaków</p>
         {this.state.czyHaslaPasuja==false?<b>Hasła nie pasują do siebie</b>:null}
         {submitted ? (
           <div className="reset-password-form-sent-wrapper">
@@ -71,17 +71,17 @@ class NewPasswordPage extends Component {
               <input
                 onChange={this.handleChange("password")}
                 value={this.state.password}
-                placeholder="New password"
+                placeholder="Nowe hasło"
                 type="password"
               />
               <input
                 onChange={this.handleChange("confirmPassword")}
                 value={this.state.confirmPassword}
-                placeholder="Confirm password"
+                placeholder="Potwierdź hasło"
                 type="password"
               />
               <button className="btn-primary password-reset-btn">
-                Update password
+                Zmień hasło
               </button>
             </form>
           </div>
