@@ -39,6 +39,19 @@ class RepoSession extends Component {
         return true;
     }
 
+    copyToClipboard = (text) => {
+        const str = text;
+        const el = document.createElement('textarea');
+        el.value = str;
+        el.setAttribute('readonly', '');
+        el.style.position = 'absolute';
+        el.style.left = '-9999px';
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+    }
+
     handleClick = (e, data) => {
 
         //const toolType = data.toolType;
@@ -47,6 +60,10 @@ class RepoSession extends Component {
         switch(action){
             case 'usun':
                  this.props.onRemoveSession(this.props.sessionId, this.props.sessionName);
+                 break;
+            case 'kopiujID':
+                const theID = this.props.sessionId;
+                this.copyToClipboard(theID);
                  break;
              default:
                  console.log("wrong action")
@@ -104,6 +121,9 @@ class RepoSession extends Component {
                 </ContextMenuTrigger>
 
                 <ContextMenu id={"ToolItemSESSIONId"+this.props.sessionId}>
+                    <MenuItem disabled={false} data={{action: 'kopiujID'}} onClick={this.handleClick}>
+                         Kopiuj ID sesji: {this.props.sessionId}
+                    </MenuItem>
                     <MenuItem disabled={false} data={{action: 'usun'}} onClick={this.handleClick}>
                          Usuń sesje wraz z zawartością
                     </MenuItem>

@@ -96,7 +96,7 @@ export const addNewProject = (projectName, userId, token) => {
         //ustawiam loaded na false w reducerze aby wylaczyc okienko dopiero gdy sie zaladuje
         dispatch(initNewProjectAction())
 
-        axios.post('/projectsList', {
+        axios.post('/projectsList/addProject', {
                 projectName: projectName,
             },{
                 headers: {
@@ -157,8 +157,8 @@ export const deleteProjectAction = (projectId, message,userId, token) => {
 export const deleteProject = (projectId, userId, token) => {
     return dispatch => {
      
-        axios.delete('/projectsList/' + projectId, {
-             data: { idprojektu: projectId },
+        axios.delete('/projectsList/removeProject/' + projectId, {
+             //data: { idprojektu: projectId },
              headers: {
                 Authorization: 'Bearer ' + token
             } 
@@ -203,9 +203,8 @@ export const editName = (projectId, newName, userId, token) => {
     return dispatch => {
 
         //console.log('EDIT NAME')
-        axios.put('/projectsList/' + projectId, {
+        axios.put('/projectsList/updateProjectName/' + projectId, {
             newProjectName: newName,
-            projectId: projectId,
         },{
             headers: {
                 Authorization: 'Bearer ' + token
@@ -214,7 +213,7 @@ export const editName = (projectId, newName, userId, token) => {
             .then(response => {
                 //console.log("from action:")
                 //console.log(response)
-                dispatch(editNameProjectAction(response.data.projectEntry._id, response.data.projectEntry.name, response.data.message, userId, token));
+                dispatch(editNameProjectAction(response.data.projectId, response.data.newName, response.data.message, userId, token));
                 dispatch(closeModal());
             })
             .catch(error => {

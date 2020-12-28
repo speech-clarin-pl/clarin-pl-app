@@ -358,7 +358,7 @@ export const removeSessionFromRepoFailed = (error) => {
 export const removeSessionFromRepo = (userId, projectId, sessionId,token) => {
     return dispatch => {
 
-        axios.delete(('/repoFiles/' + userId+"/"+projectId+'/'+sessionId), 
+        axios.delete(('/repoFiles/deleteSession/'+sessionId), 
         {
             headers: {
                 Authorization: 'Bearer ' + token
