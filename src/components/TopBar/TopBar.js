@@ -5,7 +5,7 @@ import logoShort from '../../images/logo-clarin-pl-short.png';
 import { Link } from 'react-router-dom';
 //import { FormattedMessage } from 'react-intl';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faReply } from '@fortawesome/free-solid-svg-icons';
+import { faReply, faQuestion, faTerminal } from '@fortawesome/free-solid-svg-icons';
 import EditableLabel from 'react-inline-editing';
 //import { render } from 'react-dom';
 import { connect } from 'react-redux';
@@ -121,6 +121,17 @@ class topBar extends Component {
                         {
                             // pomoc 
                         }
+
+                        
+
+                        <li className="nav-item">
+                            <a href={process.env.PUBLIC_URL + '/apidoc/index.html'} 
+                                    target="_blank" 
+                                    id="navbarDropdownMenuLinkpomoc" 
+                                    className={["nav-link", "navLink"].join(' ')}>
+                                    <FontAwesomeIcon icon={faTerminal} className="faIcon" /> API doc
+                            </a>
+                        </li>
     
                         <li className="nav-item">
                             {
@@ -140,12 +151,14 @@ class topBar extends Component {
                                 */
                             }
                             
+
+                            
     
                             <a href={process.env.PUBLIC_URL + '/docs/doc.html'} 
-                            target="_blank" 
-                            id="navbarDropdownMenuLinkpomoc" 
-                            className={["nav-link", "navLink"].join(' ')}>
-                                <i className="fas fa-question-circle"></i>Pomoc
+                                target="_blank" 
+                                id="navbarDropdownMenuLinkpomoc" 
+                                className={["nav-link", "navLink"].join(' ')}>
+                                <FontAwesomeIcon icon={faQuestion} className="faIcon" /> Pomoc
                             </a>
     
                   
