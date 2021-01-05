@@ -1,5 +1,5 @@
 import * as actionTypes from '../../store/actions/actionsTypes';
-import Moment from 'moment';
+//import Moment from 'moment';
 import { updateObject, convertArrayToObject, getIdsArray } from '../utility';
 import produce from "immer";
 //import { loadContainerForPreview } from '../actions';

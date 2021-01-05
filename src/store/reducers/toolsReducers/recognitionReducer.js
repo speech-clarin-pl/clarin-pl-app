@@ -1,7 +1,7 @@
 import * as actionTypes from '../../actions/actionsTypes';
 import {updateObject} from '../../utility';
 import produce from "immer";
-import { createNotification, loader } from '../../../index';
+//import { createNotification, loader } from '../../../index';
 
 
 const initialState = {

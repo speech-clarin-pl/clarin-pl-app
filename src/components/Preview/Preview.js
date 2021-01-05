@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Aux from '../../hoc/Auxiliary';
 import { getExt } from '../../utils/utils';
 import { extensionMapping } from '../../utils/fileTypes';
-import AudioPlayer from '../../components/AudioPlayer/AudioPlayer'
+//import AudioPlayer from '../../components/AudioPlayer/AudioPlayer'
 import TextEdit from '../../components/TextEdit/TextEdit'
 import {getFileKeyFromURL} from '../../utils/utils';
 import MultimediaPreview from '../../containers/ProjectPage/MultimediaPreview/MultimediaPreview';

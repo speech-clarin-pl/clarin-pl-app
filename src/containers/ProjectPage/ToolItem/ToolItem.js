@@ -1,25 +1,25 @@
 import React, {Component} from 'react';
 import Aux from '../../../hoc/Auxiliary';
 import './ToolItem.css';
-import * as actionTypes from '../../../store/actions/actionsTypes';
+//import * as actionTypes from '../../../store/actions/actionsTypes';
 import {connect} from 'react-redux';
 import {withRouter } from 'react-router-dom'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import { faPlay } from '@fortawesome/free-solid-svg-icons';
+//import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import { faComment} from '@fortawesome/free-solid-svg-icons';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+//import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import { faMinusCircle } from '@fortawesome/free-solid-svg-icons';
+//import { faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 import {ContextMenu, MenuItem, ContextMenuTrigger} from 'react-contextmenu';
 import { Tooltip } from '@material-ui/core';
-import { faFileAudio } from '@fortawesome/free-solid-svg-icons';
+//import { faFileAudio } from '@fortawesome/free-solid-svg-icons';
 import { faSurprise } from '@fortawesome/free-solid-svg-icons';
 import { faClock } from '@fortawesome/free-solid-svg-icons';
-import * as toolItemActions from '../../../store/actions/index';
+//import * as toolItemActions from '../../../store/actions/index';
 import { RingLoader } from "react-spinners";
 import { css } from "@emotion/core";
 import Modal from '../../../components/UI/Modal/Modal';

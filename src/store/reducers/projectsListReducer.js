@@ -1,6 +1,6 @@
 import * as actionTypes from '../actions/actionsTypes';
 import { updateObject } from '../utility';
-import axios from 'axios';
+//import axios from 'axios';
 
 const initialState = {
     projects: [],

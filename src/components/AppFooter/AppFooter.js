@@ -1,7 +1,7 @@
 import React from 'react';
 import Aux from '../../hoc/Auxiliary';
 import './AppFooter.css';
-import { FormattedMessage } from 'react-intl';
+//import { FormattedMessage } from 'react-intl';
 import moment from 'moment';
 
 const appfooter = (props) => {

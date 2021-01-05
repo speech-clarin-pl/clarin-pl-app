@@ -181,7 +181,7 @@ export const setAutoLogout = (aftermilliseconds) => {
 
 export const logout = () => {
   //  console.log('LOG OUT');
-  createNotification('success','You are logged out. Bye!');
+  createNotification('success','Zostałeś wylogowany!');
     return {
         type: actionTypes.LOG_OUT
     }

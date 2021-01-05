@@ -6,7 +6,7 @@ import FooterTool from '../FooterTool/FooterTool';
 import LeftSiteBar from '../LeftSiteBar/LeftSiteBar';
 import { connect } from 'react-redux';
 import {withRouter, Link } from 'react-router-dom';
-import {bytesToSize} from '../../../utils/utils';
+//import {bytesToSize} from '../../../utils/utils';
 
 class Dashboard extends Component {
 

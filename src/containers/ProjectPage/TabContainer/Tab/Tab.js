@@ -4,7 +4,7 @@ import './Tab.css';
 import { NavLink } from 'react-router-dom';
 import {withRouter} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileAudio } from '@fortawesome/free-solid-svg-icons';
+//import { faFileAudio } from '@fortawesome/free-solid-svg-icons';
 import { faCogs } from '@fortawesome/free-solid-svg-icons';
 import { faSurprise } from '@fortawesome/free-solid-svg-icons';
 import { faComment } from '@fortawesome/free-solid-svg-icons';

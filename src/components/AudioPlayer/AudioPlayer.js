@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Aux from '../../hoc/Auxiliary';
-import { getExt } from '../../utils/utils';
-import { extensionMapping } from '../../utils/fileTypes';
+//import { getExt } from '../../utils/utils';
+//import { extensionMapping } from '../../utils/fileTypes';
 import ReactPlayer from 'react-player'
 import Duration from '../../utils/Duration'
 import './AudioPlayer.css'

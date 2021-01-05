@@ -1,7 +1,7 @@
 import React from 'react';
 import Aux from '../../../hoc/Auxiliary';
 import './ProjectListItem.css';
-import {Link} from 'react-router-dom';
+//import {Link} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 

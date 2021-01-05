@@ -2,12 +2,12 @@ import React, {Component} from 'react';
 import Aux from '../../../hoc/Auxiliary';
 import './LoginArea.css';
 import {withRouter, Link} from 'react-router-dom';
-import {FormattedMessage} from 'react-intl';
+//import {FormattedMessage} from 'react-intl';
 import {connect} from 'react-redux';
-import * as actionTypes from '../../../store/actions/actionsTypes';
+//import * as actionTypes from '../../../store/actions/actionsTypes';
 import Input from '../../../components/UI/Input/Input';
 import * as authActions from '../../../store/actions/index';
-import {createNotification, loader} from '../../../index';
+import {loader} from '../../../index';
 
 
 class LoginArea extends Component {

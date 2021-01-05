@@ -425,7 +425,7 @@ export const getRepoAssets = (userId, projectId, token) => {
 export const createNewSession = (sessionName, projectId, userId, token) => {
     return dispatch => {
 
-        axios.put('/repoFiles/createNewSession',
+        axios.post('/repoFiles/createNewSession',
             {
                 sessionName: sessionName,
                 projectId: projectId,

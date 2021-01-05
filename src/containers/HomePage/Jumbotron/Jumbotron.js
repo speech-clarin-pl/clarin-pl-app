@@ -1,8 +1,8 @@
 import React from 'react';
 import Aux from '../../../hoc/Auxiliary';
 import './Jumbotron.css';
-import {FormattedMessage} from 'react-intl';
-import {Link} from 'react-router-dom';
+//import {FormattedMessage} from 'react-intl';
+//import {Link} from 'react-router-dom';
 
 const jumbotron = (props) => {
 

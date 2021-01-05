@@ -15,6 +15,8 @@ import {NotificationContainer, NotificationManager} from 'react-notifications';
 import { RingLoader } from "react-spinners";
 import { css } from "@emotion/core";
 import 'react-notifications/lib/notifications.css';
+import chalk from 'chalk';
+import dotenvFlow from 'dotenv-flow';
 
 // to jest stara wersja repo
 //import repoReducer from './store/reducers/repoReducer';
@@ -27,27 +29,29 @@ import projectReducer from './store/reducers/projectReducer';
 import vadReducer from './store/reducers/toolsReducers/vadReducer';
 import diaReducer from './store/reducers/toolsReducers/diaReducer';
 
+dotenvFlow.config();
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-if (process.env.NODE_ENV !== 'development') {
-    console.log = () => {}
+if (process.env.NODE_ENV == 'development') {
+    console.log(chalk.green("APP IN DEVELOPMENT MODE"));
+    axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+} else if (process.env.NODE_ENV == 'production') {
+    console.log(chalk.green("APP IN PRODUCTION MODE"))
+    console.log = () => {};
+    axios.defaults.baseURL = window.axiosBaseURL;
+} else if (process.env.NODE_ENV == 'test') {
+    console.log(chalk.green("APP IN TEST MODE"))
+} else {
+    console.log(chalk.red("BRAK TRYBU URUCHOMIENIA APP"))
 }
 
-if (process.env.NODE_ENV === 'production') {
-    axios.defaults.baseURL = window.axiosBaseURL;
-} else {
-    axios.defaults.baseURL = process.env.REACT_APP_API_URL;
-}
 
 //console.log(process.env.NODE_ENV)
 //console.log(axios.defaults.baseURL)
 
-//axios.defaults.headers.common['Authorization'] = 'AUTH TOKEN';
-//axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-
-axios.defaults.timeout = 360000000;//100min
+axios.defaults.timeout = 720000000;//200min
 
 // global error handling
 
@@ -64,12 +68,12 @@ axios.interceptors.response.use(function (response) {
         const errorData = error.response.data;
 
         if(statusCode >=500){
-            createNotification("error",statusText + ' - ' + errorData.message)
+            createNotification("error",errorData.message)
         } else if(statusCode >=300){
-            createNotification("warning",statusText + ' - ' + errorData.message)
+            createNotification("warning",errorData.message)
         }
     } else if (error.request) {
-        createNotification("error","The application can not reach the server!")
+        createNotification("error","Coś poszło nie tak na serwerze!")
     }
     
     return Promise.reject(error);

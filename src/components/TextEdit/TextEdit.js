@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Aux from '../../hoc/Auxiliary';
-import { extensionMapping } from '../../utils/fileTypes';
+//import { extensionMapping } from '../../utils/fileTypes';
 import './TextEdit.css'
 import { connect } from 'react-redux';
 import * as repoActions from '../../store/actions/index'

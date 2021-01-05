@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import Aux from '../../../../../hoc/Auxiliary';
 import './Segment.css';
 import { connect } from 'react-redux';
-import { faTrash, faPlay } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+//import { faTrash, faPlay } from '@fortawesome/free-solid-svg-icons';
+//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 class Segment extends Component {

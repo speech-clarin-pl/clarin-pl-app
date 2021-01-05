@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import './TopBar.css';
-import logoBig from '../../images/logo-clarin-pl.png';
+//import logoBig from '../../images/logo-clarin-pl.png';
 import logoShort from '../../images/logo-clarin-pl-short.png';
 import { Link } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
+//import { FormattedMessage } from 'react-intl';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faReply } from '@fortawesome/free-solid-svg-icons';
 import EditableLabel from 'react-inline-editing';
-import { render } from 'react-dom';
+//import { render } from 'react-dom';
 import { connect } from 'react-redux';
 import * as projectListActions from '../../store/actions/projectsList';
 

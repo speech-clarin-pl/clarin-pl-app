@@ -1,8 +1,8 @@
 import * as actionTypes from '../../actions/actionsTypes';
 import {updateObject} from '../../utility';
-import { runSpeechDiarizationSuccess } from '../../actions/repo';
+//import { runSpeechDiarizationSuccess } from '../../actions/repo';
 import produce from "immer";
-import { createNotification, loader } from '../../../index';
+//import { createNotification, loader } from '../../../index';
 
 
 

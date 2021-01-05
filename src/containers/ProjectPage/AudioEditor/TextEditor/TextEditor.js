@@ -2,21 +2,21 @@ import React, { Component } from 'react';
 import Aux from '../../../../hoc/Auxiliary';
 import './TextEditor.css';
 import { connect } from 'react-redux';
-import uuid from 'uuid';
-import { faAlignJustify} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+//import uuid from 'uuid';
+//import { faAlignJustify} from '@fortawesome/free-solid-svg-icons';
+//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TextareaAutosize from 'react-textarea-autosize';
 import ButtonLeftBar from '../../../../components/UI/ButtonLeftBar/ButtonLeftBar';
-import * as audioEditorActions from '../../../../store/actions/index';
-import EditorJs from 'react-editor-js';
+//import * as audioEditorActions from '../../../../store/actions/index';
+//import EditorJs from 'react-editor-js';
 
-import List from "@editorjs/list";
-import Warning from "@editorjs/warning";
-import Header from "@editorjs/header";
-import Quote from "@editorjs/quote";
-import Marker from "@editorjs/marker";
-import Delimiter from "@editorjs/delimiter";
-import SimpleImage from "@editorjs/simple-image";
+//import List from "@editorjs/list";
+//import Warning from "@editorjs/warning";
+//import Header from "@editorjs/header";
+//import Quote from "@editorjs/quote";
+//import Marker from "@editorjs/marker";
+//import Delimiter from "@editorjs/delimiter";
+//import SimpleImage from "@editorjs/simple-image";
 
 /*
 export const EDITOR_JS_TOOLS = {

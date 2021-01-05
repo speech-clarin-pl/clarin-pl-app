@@ -1,6 +1,6 @@
 import * as actionTypes from '../../actions/actionsTypes';
 import {updateObject} from '../../utility';
-import { changeAudioDisplayed } from '../../actions';
+//import { changeAudioDisplayed } from '../../actions';
 
 
 const initialState = {

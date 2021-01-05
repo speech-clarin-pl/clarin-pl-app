@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './DragAndDrop.css';
-import { DropTarget } from 'react-dnd'
-import { NativeTypes } from 'react-dnd-html5-backend'
+//import { DropTarget } from 'react-dnd'
+//import { NativeTypes } from 'react-dnd-html5-backend'
   
 
 const dragAndDropStyles = {

@@ -3,12 +3,12 @@ import './UploadAudio.css'
 import Dropzone from '../UI/Dropzone/Dropzone';
 import Progress from '../UI/Progress/Progress';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
+//import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { CHANGE_AUDIO_DISPLAYED } from '../../store/actions/actionsTypes';
-import ContainerFile from '../../containers/ProjectPage/RepoPanel/ContainerFile/ContainerFile';
+//import { CHANGE_AUDIO_DISPLAYED } from '../../store/actions/actionsTypes';
+//import ContainerFile from '../../containers/ProjectPage/RepoPanel/ContainerFile/ContainerFile';
 import * as repoActions from '../../store/actions/index';
 import {getExt} from '../../utils/utils';
 import {extensionMapping} from '../../utils/fileTypes';

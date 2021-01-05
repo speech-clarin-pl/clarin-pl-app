@@ -1,9 +1,9 @@
 import * as actionTypes from '../../actions/actionsTypes';
-import uuid from 'uuid';
+//import uuid from 'uuid';
 import { updateObject } from '../../utility';
 //import { addContainerToAlign } from '../../actions';
 import produce from "immer";
-import { createNotification, loader } from '../../../index';
+//import { createNotification, loader } from '../../../index';
 
 
 const initialState = {
