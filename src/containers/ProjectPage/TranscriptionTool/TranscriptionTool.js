@@ -41,7 +41,7 @@ class TranscriptionTool extends Component {
     handleDropAudio = (audioFile) => {
         let audioFileURL = audioFile.fileURL;
         console.log(audioFileURL)
-        let audioFileId = audioFile.fileId;
+        //let audioFileId = audioFile.fileId;
         this.setState({
             audioFileURL: audioFileURL
         })
@@ -49,7 +49,7 @@ class TranscriptionTool extends Component {
 
     handleDropTxt = (txtFile) => {
         let txtFileURL = txtFile.fileURL;
-        let txtFileId = txtFile.fileId;
+        //let txtFileId = txtFile.fileId;
 
         this.setState({
             txtFileURL: txtFileURL
@@ -66,6 +66,7 @@ class TranscriptionTool extends Component {
         console.log("RENDER TRANSCRIPTION TOOL");
         multimediaPlayer = <MultimediaPreview fileToPreview={this.state.audioFileURL}/>;
 
+        /*
         let headerTxtField = (
             <p style={{ fontWeight: 'bold' }}>
                 Podgld pliku txt<span style={{ fontSize: 'bigger' }}>
@@ -73,7 +74,9 @@ class TranscriptionTool extends Component {
                 </span>
             </p>
         );
+        */
 
+        /*
         let headerAudioField = (
             <p style={{ fontWeight: 'bold' }}>
                 Podgld pliku audio <span style={{ fontSize: 'bigger' }}>
@@ -81,6 +84,7 @@ class TranscriptionTool extends Component {
                 </span>
             </p>
         );
+        */
 
         return (
             <Aux>
@@ -122,11 +126,10 @@ class TranscriptionTool extends Component {
                             <DragAndDrop whenDropped={this.handleDropTxt}>
 
                             {
-                                    this.state.txtFileURL != null ?
+                                    this.state.txtFileURL !== null ?
                                     <div className="form-group">
                                         <textarea
-                                            className="form-control"
-                                            className="TranskriptInput"
+                                            className="form-control TranskriptInput"
                                             placeholder="Przeciągnij i upuść plik tekstowy"
                                             value={this.props.txtContent}
                                             onChange={this.txtAreaChangedHandler}

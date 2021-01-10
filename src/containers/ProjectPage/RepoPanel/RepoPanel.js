@@ -22,15 +22,15 @@ import { css } from "@emotion/core";
 
 
 
-import ContainerFile from './ContainerFile/ContainerFile';
+//import ContainerFile from './ContainerFile/ContainerFile';
 
 import { Tooltip } from '@material-ui/core';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolderPlus } from '@fortawesome/free-solid-svg-icons';
 
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
+//import { faTrash } from '@fortawesome/free-solid-svg-icons';
+//import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 
 
 const override = css`

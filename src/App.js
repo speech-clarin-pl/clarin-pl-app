@@ -9,7 +9,7 @@ import { IntlProvider, addLocaleData } from 'react-intl';
 import { connect } from 'react-redux';
 import * as homeActions from './store/actions/index';
 import NewPasswordPage from './containers/NewPasswordPage/NewPasswordPage';
-import { withRouter, matchPath } from 'react-router-dom';
+import { withRouter} from 'react-router-dom';
 
 import en from 'react-intl/locale-data/en';
 import pl from 'react-intl/locale-data/pl';
@@ -24,7 +24,7 @@ const messages = {
   'en': messages_en
 };
 
-const language = navigator.language.split(/[-_]/)[0];  // language without region code
+//const language = navigator.language.split(/[-_]/)[0];  // language without region code
 
 class App extends Component {
 

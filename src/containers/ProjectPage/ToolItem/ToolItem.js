@@ -11,7 +11,7 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import { faComment} from '@fortawesome/free-solid-svg-icons';
 //import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { faEye } from '@fortawesome/free-solid-svg-icons';
+//import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 //import { faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 import {ContextMenu, MenuItem, ContextMenuTrigger} from 'react-contextmenu';
@@ -202,25 +202,25 @@ class ToolItem extends Component {
         switch(this.props.type){
             case "DIA":
                 iconType = faComment;
-                if(this.props.container._id==this.props.DIAcontainerInPreview._id){
+                if(this.props.container._id===this.props.DIAcontainerInPreview._id){
                     czyEdytowany='editing';
                 }
                 break;
             case "VAD":
                 iconType = faSurprise;
-                if(this.props.container._id==this.props.VADcontainerInPreview._id){
+                if(this.props.container._id===this.props.VADcontainerInPreview._id){
                     czyEdytowany='editing';
                 }
                 break;
             case "REC":
                 iconType = faFileAlt;
-                if(this.props.container._id==this.props.RECcontainerInPreview._id){
+                if(this.props.container._id===this.props.RECcontainerInPreview._id){
                     czyEdytowany='editing';
                 }
                 break;
             case "SEG":
                 iconType = faClock;
-                if(this.props.container._id==this.props.SEGcontainerInPreview._id){
+                if(this.props.container._id===this.props.SEGcontainerInPreview._id){
                     czyEdytowany='editing';
                 }
                 break;
@@ -241,9 +241,9 @@ class ToolItem extends Component {
         let progressBar = null;
         let runProcessIcon = (
             <Tooltip title={"Uruchom " + this.props.type}>
-                <a href="#" role="button" onClick={this.runProcess}>
+                <button onClick={this.runProcess}>
                     <FontAwesomeIcon icon={iconType} className="faIcon"/>
-                </a>
+                </button>
             </Tooltip>
         );
 
@@ -257,9 +257,9 @@ class ToolItem extends Component {
                 break;
             case 'error':
                 statusIcon = (<Tooltip title={this.props.errorMessage}>
-                                    <a href="#">
+                                    <button>
                                         <FontAwesomeIcon icon={faExclamationCircle} className="faIcon" style={{color: 'red'}} /> 
-                                    </a>
+                                    </button>
                             </Tooltip>)
                 
                 
@@ -304,17 +304,18 @@ class ToolItem extends Component {
 
                 runProcessIcon = (
                     <Tooltip title={"Uruchom " + this.props.type}>
-                        <a href="#" role="button" onClick={this.runProcessAgain}>
+                        <button onClick={this.runProcessAgain}>
                               <FontAwesomeIcon icon={iconType} className="faIcon" style={{opacity: 1, color: '#1cce44'}}/>
-                        </a>
+                        </button>
                     </Tooltip>
                 );
-
+                break;
             default:
                 statusIcon = null;
         }
 
 
+        /*
         let previewIcon = (
             <Tooltip title={"Podgląd " + this.props.type}>
                 <a href="#" role="button" onClick={previewIconAlpha===1? this.runPreview: null}>
@@ -322,10 +323,7 @@ class ToolItem extends Component {
                 </a>
             </Tooltip>
         )
-
-        
-
-
+        */
 
        
         return(
@@ -342,7 +340,7 @@ class ToolItem extends Component {
 
 
                 <ContextMenuTrigger id={"ToolItemId"+this.props.container._id}>
-                <a href="#" role="button" onClick={previewIconAlpha===1? this.runPreview: null}>
+                <button className="ToolItemWrapper" onClick={previewIconAlpha===1? this.runPreview: null}>
                     <div className={"ToolItem " + czyEdytowany}>
                         <div className={["row", "toolItem"].join(' ')}>
                             <div className="col-sm-6 file-info align-self-center pr-1">
@@ -365,7 +363,7 @@ class ToolItem extends Component {
                         </div>
                         {progressBar}
                     </div>  
-                    </a>    
+                    </button>    
 
 
                 </ContextMenuTrigger>

@@ -38,7 +38,7 @@ const addContainerToVAD = (state,action) => {
     let newElements = null;
     //dodaje nowy element tylko jeżeli wcześniej nie istniał w bazie
     let found = state.containersForVAD.filter(file => {
-        return file._id == newElementToAdd._id
+        return file._id === newElementToAdd._id
     })
 
     if(found.length < 1){
@@ -55,7 +55,7 @@ const addContainerToVAD = (state,action) => {
 
 const saveVADSegmentsSuccess = (state, action) => {
     const containerId = action.containerId;
-    const toolType = action.toolType; 
+    //const toolType = action.toolType; 
     const updatedSegments = action.updatedSegments;
 
     const nextState = produce(state, draftState => {
@@ -77,7 +77,7 @@ const saveVADSegmentsSuccess = (state, action) => {
 
 const speechVADSuccess = (state, action) => {
     const containerId = action.containerId;
-    const toolType = action.toolType; 
+    //const toolType = action.toolType; 
     const VADSegments = action.VADSegments;
 
 
@@ -93,7 +93,7 @@ const speechVADSuccess = (state, action) => {
 
         //sprawdzam czy który miał robione rozpoznawanie był otwarty w preview
 
-        if(draftState.vadContainerForPreview._id == draftState.containersForVAD[foundFileIdx]._id){
+        if(draftState.vadContainerForPreview._id === draftState.containersForVAD[foundFileIdx]._id){
             draftState.vadContainerForPreview =  draftState.containersForVAD[foundFileIdx];
         }
        
@@ -107,7 +107,7 @@ const speechVADSuccess = (state, action) => {
 
 const speechVADFailed = (state, action) => {
     const containerId = action.containerId;
-    const toolType = action.toolType; 
+    //const toolType = action.toolType; 
     const message =  action.message;
 
     let foundFileIdx = state.containersForVAD.findIndex(file => {
@@ -133,7 +133,7 @@ const changeToolItemStatus = (state, action) => {
     const toolType = action.toolType;
     const status = action.status;
 
-     if(toolType == 'VAD') {
+     if(toolType === 'VAD') {
         const nextState = produce(state, draftState => {
 
             let foundFileIdx = draftState.containersForVAD.findIndex(file => {
@@ -158,7 +158,7 @@ const removeVADItemFromList = (state, action)=>{
 
     const nextState = produce(state, draftState => {
        const nowaLista = state.containersForVAD.filter((container,index)=>{
-            if(container._id == containerId){
+            if(container._id === containerId){
                 return false;
             } else {
                 return true;
@@ -190,9 +190,10 @@ const vadReducer = (state = initialState, action) => {
         
         //case actionTypes.ADD_CONTAINER_TO_RECO: return addContainerToReco(state,action);
         //case actionTypes.DROP_FILES: return dropFiles(state, action);
+
+        default: return state;
     }
 
-    return state;
 }
 
 

@@ -70,7 +70,7 @@ const shareProject = (state, action) => {
 const removeProject = (state, action) => {
 
     const projectId = action.projectId;
-    const message = action.message;
+    //const message = action.message;
 
     //robie immutable removing project
     const projects = [...state.projects];
@@ -80,9 +80,10 @@ const removeProject = (state, action) => {
     let updatedProjects = projects.map((project,i) => {
         if(project._id !== projectId){
             return project;
-        } 
+        } else {
+            index = i;
+        }
         //jezeli znajdziemy to robimy update
-        index = i;
     })
 
     updatedProjects = [...updatedProjects.slice(0, index), ...updatedProjects.slice(index + 1)]
@@ -191,10 +192,9 @@ const projectsListReducer = (state = initialState, action) => {
         case actionTypes.EDIT_NAME_FAILED: return editNameFailed(state, action);
         case actionTypes.OPEN_MODAL: return openModal(state, action);
         case actionTypes.CLOSE_MODAL: return closeModal(state, action);
+        default: return state;
         
     }
-
-    return state;
 }
 
 export default projectsListReducer;

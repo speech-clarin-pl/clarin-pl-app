@@ -8,8 +8,6 @@ import { connect } from 'react-redux';
 
 class Segment extends Component {
     
-    constructor(props){
-        super(props)
         /*
         this.state = {
                 labelText: '',
@@ -18,8 +16,6 @@ class Segment extends Component {
                 segmentId: '',
         }
         */
-       
-    }
 
     componentDidMount() {
         /*

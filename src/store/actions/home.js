@@ -1,6 +1,6 @@
 import * as actionTypes from './actionsTypes';
 import axios from 'axios';
-import { createNotification, loader } from '../../index';
+import { createNotification } from '../../index';
 
 
 

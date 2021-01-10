@@ -37,7 +37,7 @@ const addContainerToDIA = (state,action) => {
     let newElements = null;
     //dodaje nowy element tylko jeżeli wcześniej nie istniał w bazie
     let found = state.containersForDIA.filter(file => {
-        return file._id == newElementToAdd._id
+        return file._id === newElementToAdd._id
     })
 
     if(found.length < 1){
@@ -58,7 +58,7 @@ const addContainerToDIA = (state,action) => {
 
 const speechDiarizationSuccess = (state, action) => {
     const containerId = action.containerId;
-    const toolType = action.toolType; 
+    //const toolType = action.toolType; 
     const DIAsegments = action.DIAsegments;
 
    // console.log("TUTAJ TEZ POWINIENEM ")
@@ -76,7 +76,7 @@ const speechDiarizationSuccess = (state, action) => {
        
         //sprawdzam czy który był otwarty w preview
 
-        if(draftState.diaContainerForPreview._id == draftState.containersForDIA[foundFileIdx]._id){
+        if(draftState.diaContainerForPreview._id === draftState.containersForDIA[foundFileIdx]._id){
             draftState.diaContainerForPreview =  draftState.containersForDIA[foundFileIdx];
         }
 
@@ -89,7 +89,7 @@ const speechDiarizationSuccess = (state, action) => {
 
 const speechDiarizationFailed = (state, action) => {
     const containerId = action.containerId;
-    const toolType = action.toolType; 
+    //const toolType = action.toolType; 
 
     let foundFileIdx = state.containersForDIA.findIndex(file => {
         return file._id === containerId;
@@ -113,7 +113,7 @@ const changeToolItemStatus = (state, action) => {
     const toolType = action.toolType;
     const status = action.status;
 
-     if(toolType == 'DIA') {
+     if(toolType === 'DIA') {
         const nextState = produce(state, draftState => {
 
             let foundFileIdx = draftState.containersForDIA.findIndex(file => {
@@ -133,7 +133,7 @@ const changeToolItemStatus = (state, action) => {
 
 const saveDIASegmentsSuccess = (state, action) => {
     const containerId = action.containerId;
-    const toolType = action.toolType; 
+    //const toolType = action.toolType; 
     const updatedSegments = action.updatedSegments;
 
     const nextState = produce(state, draftState => {
@@ -158,7 +158,7 @@ const removeFromDIAItems = (state, action)=>{
 
     const nextState = produce(state, draftState => {
        const nowaLista = state.containersForDIA.filter((container,index)=>{
-            if(container._id == containerId){
+            if(container._id === containerId){
                 return false;
             } else {
                 return true;
@@ -189,9 +189,11 @@ const diaReducer = (state = initialState, action) => {
 
         //case actionTypes.ADD_CONTAINER_TO_RECO: return addContainerToReco(state,action);
         //case actionTypes.DROP_FILES: return dropFiles(state, action);
+
+        default: return state;
     }
 
-    return state;
+  
 }
 
 

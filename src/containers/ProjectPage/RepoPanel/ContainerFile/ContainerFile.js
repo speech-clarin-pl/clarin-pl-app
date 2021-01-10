@@ -2,16 +2,16 @@ import React, {Component} from 'react';
 
 import './ContainerFile.css';
 
-import {DragPreviewImage, useDrag} from 'react-dnd';
-import ItemTypes from '../../ItemDndTypes';
+//import {DragPreviewImage, useDrag} from 'react-dnd';
+//import ItemTypes from '../../ItemDndTypes';
 
 import {ContextMenu, MenuItem, ContextMenuTrigger} from 'react-contextmenu';
-import dragImage from '../../../ProjectPage/dragImage';
+//import dragImage from '../../../ProjectPage/dragImage';
 import EditableLabel from 'react-inline-editing';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileAudio } from '@fortawesome/free-solid-svg-icons';
-import { faPlay } from '@fortawesome/free-solid-svg-icons';
+//import { faFileAudio } from '@fortawesome/free-solid-svg-icons';
+//import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faSurprise } from '@fortawesome/free-solid-svg-icons';
 import { faComment } from '@fortawesome/free-solid-svg-icons';
 import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
@@ -65,9 +65,9 @@ class ContainerFile extends Component {
    
     downloadElement = (action) => {
 
-        const userId = this.props.container.owner;
-        const projectId = this.props.container.project;
-        const sessionId = this.props.container.session;
+        //const userId = this.props.container.owner;
+        //const projectId = this.props.container.project;
+        //const sessionId = this.props.container.session;
         const containerId = this.props.container._id;
         const fileType = action;
 
@@ -175,10 +175,10 @@ class ContainerFile extends Component {
         //}
 
       
-        const VADerrorClass = this.props.container.statusVAD=='error'? "error":"";
-        const DIAerrorClass = this.props.container.statusDIA=='error'? "error":"";
-        const RECerrorClass = this.props.container.statusREC=='error'? "error":"";
-        const SEGerrorClass = this.props.container.statusSEG=='error'? "error":"";
+        const VADerrorClass = this.props.container.statusVAD==='error'? "error":"";
+        const DIAerrorClass = this.props.container.statusDIA==='error'? "error":"";
+        const RECerrorClass = this.props.container.statusREC==='error'? "error":"";
+        const SEGerrorClass = this.props.container.statusSEG==='error'? "error":"";
  
 
         
@@ -231,26 +231,26 @@ class ContainerFile extends Component {
                                
 
                                 <Tooltip title="Detekcja mowy (VAD)">
-                                    <a href="#" role="button"  onClick={this.runVAD} >
+                                    <a role="button"  onClick={this.runVAD} >
                                         
                                         <FontAwesomeIcon icon={faSurprise} className={["repoIcon",VADerrorClass, this.props.container.ifVAD? "on": ""].join(" ")}/> 
                                     </a>
                                 </Tooltip>
 
                                 <Tooltip title="Diaryzacja (DIA)">
-                                    <a href="#" role="button" onClick={this.runDIA} >
+                                    <a role="button" onClick={this.runDIA} >
                                         <FontAwesomeIcon icon={faComment} className={["repoIcon",DIAerrorClass, this.props.container.ifDIA? "on": ""].join(" ")}/> 
                                     </a>
                                 </Tooltip>
 
                                 <Tooltip title="Rozpoznawanie mowy (REC)">
-                                    <a href="#" role="button" onClick={this.runRECO} >
+                                    <a role="button" onClick={this.runRECO} >
                                         <FontAwesomeIcon icon={faFileAlt} className={["repoIcon",RECerrorClass, this.props.container.ifREC? "on": ""].join(" ")}/> 
                                     </a>
                                 </Tooltip>
 
                                 <Tooltip title="Segmentacja (SEG)">
-                                    <a href="#" role="button"  onClick={this.runALIGN}>
+                                    <a role="button"  onClick={this.runALIGN}>
                                         <FontAwesomeIcon icon={faClock} className={["repoIcon",SEGerrorClass, this.props.container.ifSEG? "on": ""].join(" ")}/> 
                                     </a>
                                 </Tooltip>

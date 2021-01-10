@@ -246,7 +246,7 @@ const loadBinaryForPreview = (state, action) => {
 
 const speechVADSuccess = (state, action) => {
     const containerId = action.containerId;
-    const toolType = action.toolType; 
+    //const toolType = action.toolType; 
     const VADSegments = action.VADSegments;
 
     const nextState = produce(state, draftState => {
@@ -263,7 +263,7 @@ const speechVADSuccess = (state, action) => {
 const speechVADFailed = (state, action) => {
 
     const containerId = action.containerId;
-    const toolType = action.toolType; 
+    //const toolType = action.toolType; 
 
     const nextState = produce(state, draftState => {
         draftState.containers.byId[containerId].ifVAD = false;
@@ -281,7 +281,7 @@ const speechVADFailed = (state, action) => {
 
 const speechDiarizationSuccess = (state, action) => {
     const containerId = action.containerId;
-    const toolType = action.toolType; 
+    //const toolType = action.toolType; 
 
     const nextState = produce(state, draftState => {
         draftState.containers.byId[containerId].ifDIA = true;
@@ -297,7 +297,7 @@ const speechDiarizationSuccess = (state, action) => {
 const speechDiarizationFailed = (state, action) => {
 
     const containerId = action.containerId;
-    const toolType = action.toolType; 
+    //const toolType = action.toolType; 
 
     const nextState = produce(state, draftState => {
         draftState.containers.byId[containerId].ifDIA = false;
@@ -316,8 +316,8 @@ const speechDiarizationFailed = (state, action) => {
 
 const speechSegmentationDone = (state, action) => {
     const containerId = action.containerId;
-    const toolType = action.toolType; 
-    const message = action.message;
+    //const toolType = action.toolType; 
+    //const message = action.message;
 
     const nextState = produce(state, draftState => {
         draftState.containers.byId[containerId].ifSEG = true;
@@ -333,7 +333,7 @@ const speechSegmentationDone = (state, action) => {
 const speechSegmentationFailed = (state, action) => {
 
     const containerId = action.containerId;
-    const toolType = action.toolType; 
+    //const toolType = action.toolType; 
     const message = action.message;
 
     const nextState = produce(state, draftState => {
@@ -348,7 +348,7 @@ const speechSegmentationFailed = (state, action) => {
 
 const speechRecognitionDone = (state, action) => {
     const containerId = action.containerId;
-    const toolType = action.toolType; 
+    //const toolType = action.toolType; 
 
     const nextState = produce(state, draftState => {
 
@@ -365,7 +365,7 @@ const speechRecognitionDone = (state, action) => {
 const speechRecognitionFailed = (state, action) => {
 
     const containerId = action.containerId;
-    const toolType = action.toolType; 
+    //const toolType = action.toolType; 
 
     const nextState = produce(state, draftState => {
 
@@ -384,7 +384,7 @@ const speechRecognitionFailed = (state, action) => {
 //##############################################
 
 const repoRemoveSessionSuccess = (state, action) => {
-    const message = action.message;
+    //const message = action.message;
     const sessionId = action.sessionId;  // sesja którą chcemy usunąć
 
     console.log(sessionId)
@@ -413,7 +413,7 @@ const repoRemoveSessionSuccess = (state, action) => {
 
           //usuwam kontener z listy kontenerow
         let newContainers = Object.keys(state.containers.byId).reduce((object, key) => {
-            if(conteneryDoUsuniecia.includes(key)==false){
+            if(conteneryDoUsuniecia.includes(key)===false){
                 object[key] = state.containers.byId[key];
             }
             return object
@@ -457,7 +457,7 @@ const repoRemoveSessionFailed = (state, action) => {
 //##############################################
 
 const repoRemoveContainerSuccess = (state, action) => {
-    const message = action.message;
+    //const message = action.message;
     const sessionId = action.sessionId;  // sesja z którego jest usuwany
     const containerId = action.containerId; //kontener do usuniecia
 
@@ -468,7 +468,7 @@ const repoRemoveContainerSuccess = (state, action) => {
 
         //usuwam ten kontener z listy sesji
         let newlistconts = state.sessions.byId[sessionId].containers.filter((value, index, arr)=>{
-           return value != containerId;
+           return value !== containerId;
          })
 
          draftState.sessions.byId[sessionId].containers = newlistconts;
@@ -577,6 +577,7 @@ const repoGetUserProjectFilesFailed = (state, action) => {
           iferror: true});
 }
 
+/*
 const deselectAll = (objects) => {
     for (var item in objects) {
         if (objects.hasOwnProperty(item)) {
@@ -587,6 +588,7 @@ const deselectAll = (objects) => {
     }
     return objects;
 }
+*/
 
 
 const repoSelectContainer = (state,action) => {
@@ -603,7 +605,7 @@ const repoSelectContainer = (state,action) => {
         let previouslySelectedCont = draftState.currentlySelectedContainers[0];
 
         //jezeli kliknalem to samo to robie toogle
-        if(containerId == previouslySelectedCont){
+        if(containerId === previouslySelectedCont){
             
             draftState.currentlySelectedContainers[0] = null;
             allContainers[previouslySelectedCont].ifSelected = false;
@@ -654,10 +656,10 @@ const repoSelectSession = (state, action) => {
         //if(draftState.currentlySelectedContainers.length > 0){
 
                 let previouslySelectedSess = draftState.currentlySelectedSessions[0];
-                let previouslySelectedCont = draftState.currentlySelectedContainers[0];
+                //let previouslySelectedCont = draftState.currentlySelectedContainers[0];
 
                 //jeżeli kliknąłem z zaznaczoną to odznaczam
-                if(sessionId == previouslySelectedSess){
+                if(sessionId === previouslySelectedSess){
                     allSessions[sessionId].ifSelected = false;
                     draftState.currentlySelectedSessions[0] = null;
                 } else {
@@ -690,7 +692,7 @@ const repoSelectSession = (state, action) => {
 const saveTranscriptionSuccess = (state, action) => {
     
     const containerId = action.containerId;
-    const toolType = action.toolType;
+    //const toolType = action.toolType;
 
     const nextState = produce(state, draftState => {
         draftState.containers.byId[containerId].ifREC = true;
@@ -750,6 +752,7 @@ const korpusDownloaded = (state, action) => {
 //############ tworzenie nowego folderu
 //#########################################
 
+/*
 const repoCreateFolder = (state, action) => {
 
     // const key = action.key;
@@ -768,7 +771,9 @@ const repoCreateFolder = (state, action) => {
     //     //     })
     //     //   }
 }
+*/
 
+/*
 const repoCreateFiles = (state, action) => {
 
     // const files = action.files;
@@ -809,12 +814,13 @@ const repoCreateFiles = (state, action) => {
 	// 	})
 	//   }
 }
+*/
 
 
 //##########################################
 //############ zmiana nazwy folderu w repo
 //#########################################
-
+/*
 const repoRenameFolder = (state, action) => {
 
     // const oldKey = action.oldKey;
@@ -857,11 +863,13 @@ const repoRenameFolder = (state, action) => {
 	// 	})
 	//   }
 }
+*/
 
 //##########################################
 //############ zmiana nazwy pliku w repo
 //#########################################
 
+/*
 const repoRenameFile = (state, action) => {
 
     // const oldKey = action.oldKey;
@@ -886,11 +894,13 @@ const repoRenameFile = (state, action) => {
     //     {files: newFiles});
 
 }
+*/
 
 //##########################################
 //############ usuwanie folderow z repo
 //#########################################
 
+/*
 const repoDeleteFolder = (state, action) => {
 
     // const folderKey = action.folderKey;
@@ -905,12 +915,13 @@ const repoDeleteFolder = (state, action) => {
     // return updateObject(state,
     //     {files: newFiles});
 }
+*/
 
 
 //##########################################
 //############ usuwanie plikow z repo ######
 //##########################################
-
+/*
 const repoDeleteFile = (state, action) => {
 
     // const fileKey = action.fileKey;
@@ -937,9 +948,10 @@ const repoDeleteFile = (state, action) => {
     // return updateObject(state,
     //     {files: newFiles});
 }
+*/
 
 
-
+/*
 const repoDownloadFile = (state,action) => {
     // return updateObject(state,
     //     {downloadedFile: action.downloadedFile});
@@ -954,9 +966,11 @@ const repoEditFileFailed = (state,action) => {
     // return updateObject(state,
     //     {editTxtFileOK: false});
 }
+*/
 
 //###################### upload plikow do repo ################
 //##############################################################
+/*
 const repoUploadFilesFinish = (state,action) => {
     
     // return updateObject(state,
@@ -965,7 +979,9 @@ const repoUploadFilesFinish = (state,action) => {
     //         //uploadProgress: 0,
     //     });
 }
+*/
 
+/*
 const repoUploadFilesInit = (state,action) => {
     
     // return updateObject(state,
@@ -975,7 +991,9 @@ const repoUploadFilesInit = (state,action) => {
     //         //uploadProgress: 0,
     //     });
 }
+*/
 
+/*
 const repoUploadFilesSuccess = (state,action) => {
     
     // return updateObject(state,
@@ -985,7 +1003,10 @@ const repoUploadFilesSuccess = (state,action) => {
     //         //uploadProgress: 0,
     //     });
 }
+*/
 
+
+/*
 const repoUploadFilesFailed = (state,action) => {
     // return updateObject(state,
     //     {
@@ -994,23 +1015,25 @@ const repoUploadFilesFailed = (state,action) => {
     //        // uploadProgress: 0,
     //     });
 }
+*/
 
+/*
 const repoUploadProgress = (state,action) => {
     // return updateObject(state,
     //     {
     //         uploadProgress: action.percent,
     //     });
 }
+*/
 
+/*
 const repoUploadFilesModalOpen = (state,action) => {
     // return updateObject(state,
     //     {
     //         uploadProgress: 0,
     //     });
 }
-
-
-
+*/
 
 const repoPanelReducer = (state = initialState, action) => {
     switch(action.type){
@@ -1078,9 +1101,11 @@ const repoPanelReducer = (state = initialState, action) => {
         // case actionTypes.REPO_DELETE_FILE: return repoDeleteFile(state,action);
         
         // case actionTypes.REPO_DOWNLOAD_FILE: return repoDownloadFile(state,action);
+
+        default: return state;
     }
 
-    return state;
+
 }
 
 export default repoPanelReducer;

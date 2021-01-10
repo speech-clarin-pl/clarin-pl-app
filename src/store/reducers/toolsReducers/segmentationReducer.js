@@ -429,6 +429,7 @@ const removeSegmentEntry = (state,action) => {
 
 */
 
+/*
 const fileSegmentationSuccess = (state,action) => {
     const entryId = action.entryId;
     //znajduje to entry i ustawiam mu odpowiedni status processingStatus
@@ -447,7 +448,9 @@ const fileSegmentationSuccess = (state,action) => {
 
     return updateObject(state, {segmentEntry: newSegmentEntry}) ;  
 }
+*/
 
+/*
 const fileSegmentationFailed = (state,action) => {
     const entryId = action.entryId;
     //znajduje to entry i ustawiam mu odpowiedni status processingStatus
@@ -464,6 +467,7 @@ const fileSegmentationFailed = (state,action) => {
 
     return updateObject(state, {segmentEntry: newSegmentEntry}) ;  
 }
+*/
 
 
 // changes the status of container in segmentation list
@@ -472,7 +476,7 @@ const changeToolItemStatus = (state, action) => {
     const toolType = action.toolType;
     const status = action.status;
 
-     if(toolType == 'SEG') {
+     if(toolType === 'SEG') {
         const nextState = produce(state, draftState => {
 
             let foundFileIdx = draftState.containersForSEG.findIndex(file => {
@@ -510,7 +514,7 @@ const addContainerToAlign  = (state, action) => {
 
     //dodaje nowy element tylko jeżeli wcześniej nie istniał w bazie
     let found = state.containersForSEG.filter(file => {
-        return file._id == newElementToAdd._id
+        return file._id === newElementToAdd._id
     })
 
 
@@ -535,7 +539,7 @@ const addContainerToAlign  = (state, action) => {
 
 const speechSegmentationSuccess = (state, action) => {
     const containerId = action.containerId;
-    const toolType = action.toolType; 
+   // const toolType = action.toolType; 
 
     const nextState = produce(state, draftState => {
 
@@ -555,7 +559,7 @@ const speechSegmentationSuccess = (state, action) => {
 
 const speechSegmentationFailed = (state, action) => {
     const containerId = action.containerId;
-    const toolType = action.toolType; 
+   // const toolType = action.toolType; 
     const message = action.message;
 
     let foundFileIdx = state.containersForSEG.findIndex(file => {
@@ -584,7 +588,7 @@ const removeSegmentationItem = (state, action)=>{
     const nextState = produce(state, draftState => {
 
        const nowaLista = state.containersForSEG.filter((container,index)=>{
-            if(container._id == containerId){
+            if(container._id === containerId){
                 return false;
             } else {
                 return true;
@@ -632,11 +636,11 @@ const segmentationReducer = (state = initialState, action) => {
         case actionTypes.REFUSE_SEGMENT_TXT_FILES: return setRefusedTxtFiles(state, action);
         */
         
-
+        default: return state;
         
     }
 
-    return state;
+  
 }
 
 export default segmentationReducer;

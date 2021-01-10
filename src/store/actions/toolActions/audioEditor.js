@@ -21,7 +21,7 @@ export const openContainerInEMUFailed = (error) => {
 
 export const openContainerInEMU = (container,token) => {
     return dispatch => {
-        axios.get('/seg/openInEMU'+"/"+container._id,
+        axios.get('/seg/openInEMU/'+container._id,
             {
                 headers: {
                     Authorization: 'Bearer ' + token
@@ -68,7 +68,7 @@ export const loadTranscriptionFailed = (error) => {
 export const loadTranscription = (container, toolType, token) => {
 return dispatch => {
 
-    axios.get('/recognition/loadTranscription'+"/"+container._id,
+    axios.get('/recognition/loadTranscription'+container._id,
         {
             headers: {
                 Authorization: 'Bearer ' + token

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 //import uuid from 'uuid';
 //import Modal from '../../../components/UI/Modal/Modal';
 //import { extensionMapping } from '../../../utils/fileTypes';
-import { faMapMarker, faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faPlay } from '@fortawesome/free-solid-svg-icons';
 //import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { faGripLinesVertical } from '@fortawesome/free-solid-svg-icons';
 import { faSearchMinus } from '@fortawesome/free-solid-svg-icons';
@@ -40,7 +40,7 @@ import TextEditor from './TextEditor/TextEditor';
 import SegmentEditor from './SegmentsEditor/SegmentsEditor';
 import Hotkeys from 'react-hot-keys';
 
-import {createNotification, loader} from '../../../index';
+import {loader} from '../../../index';
 
 
 class AudioEditor extends Component {
@@ -118,6 +118,8 @@ class AudioEditor extends Component {
 			case("SEG"):
 				console.log('SEG')
 				break;
+			default:
+				console.err("Zła nazwa narzędzia");
 		}
 		
 	 }
@@ -345,7 +347,6 @@ class AudioEditor extends Component {
 			zoomLevels: [128, 256, 512, 1024, 2048, 4096],
 			showPlayheadTime: true,
 			emitCueEvents: true,
-			showPlayheadTime: false,
 			segments: segments,
 		  };
 
@@ -382,10 +383,10 @@ class AudioEditor extends Component {
 
 	//wydobywa ścieżkę do metadanych, pliku audio i segmentów
 	getDataFromContainer = (container) => {
-		const userId = container.owner;
-		const projectId = container.project;
-		const sessionId = container.session;
-		const fileName = container.fileName;
+		//const userId = container.owner;
+		//const projectId = container.project;
+		//const sessionId = container.session;
+		//const fileName = container.fileName;
 		const containerId = container._id;
 		const token = this.props.token;
 
@@ -404,9 +405,11 @@ class AudioEditor extends Component {
 			case("SEG"):
 				segments = container.RECUserSegments;
 				break;
+			default:
+				console.error("wrong toolType")
 		}
 
-		if(segments==undefined) segments = [];
+		if(segments===undefined) segments = [];
 		
 
 		//plik audio
@@ -538,6 +541,8 @@ class AudioEditor extends Component {
 				case("SEG"):
 					console.log('SEG')
 					break;
+				default:
+					console.error("wrotn tool type")
 			}
 
 		}
@@ -611,7 +616,7 @@ class AudioEditor extends Component {
 		for(let currentseg of allsegments){
 
 		   //jeżeli obecny to przeskakuje
-		   if(currentseg.id == newSegment.id) continue;
+		   if(currentseg.id === newSegment.id) continue;
 
 		   if((currentseg.startTime >= newSegment.startTime) && (currentseg.startTime <= newSegment.endTime)){
 			   //startTime tego segmentu lezy w zmodyfikownym segmencie
@@ -748,6 +753,8 @@ class AudioEditor extends Component {
 			case("SEG"):
 				console.log('SEG')
 				break;
+			default:
+				console.error("wrong tool type")
 		}
 
 
@@ -766,7 +773,7 @@ class AudioEditor extends Component {
 
 			this.peaks.segments.add(newSegment);
 
-			let segmenty = this.convertPeaksSegments();
+			//let segmenty = this.convertPeaksSegments();
 
 			this.updateSegment(newSegment);
 			
@@ -824,10 +831,10 @@ class AudioEditor extends Component {
 		//https://ips-lmu.github.io/EMU-webApp/?audioGetUrl=https:%2F%2Fmowa.clarin-pl.eu%2Ftools%2Fdownload%2F5ee14ac666eca6f9d593b059&labelGetUrl=https:%2F%2Fmowa.clarin-pl.eu%2Ftools%2Fannot%2F5ef6186e66eca66f0d79e978&labelType=annotJSON
 	
 		let container = this.props.containerForPreview;
-		const userId = container.owner;
-		const projectId = container.project;
-		const sessionId = container.session;
-		const fileName = container.fileName;
+		//const userId = container.owner;
+		//const projectId = container.project;
+		//const sessionId = container.session;
+		//const fileName = container.fileName;
 		const containerId = container._id;
 		const token = this.props.token;
 
@@ -862,7 +869,7 @@ class AudioEditor extends Component {
 
 		// widok edytora tekstowego
 		let transcriptWindow = null;
-		if(this.props.toolType == "REC"){
+		if(this.props.toolType === "REC"){
 			transcriptWindow = <TextEditor 
 			toolType={this.props.toolType} 
 			container={this.props.containerForPreview}
@@ -877,7 +884,7 @@ class AudioEditor extends Component {
 
 		// widok segment edytora
 		let segmentEditor = null;
-		if(this.peaks && (this.props.toolType=='VAD' || this.props.toolType=='DIA')){
+		if(this.peaks && (this.props.toolType==='VAD' || this.props.toolType==='DIA')){
 			if(this.state.currentSegments.length > 0){
 				console.log("UPDATE")
 				segmentEditor = <SegmentEditor 
@@ -904,7 +911,7 @@ class AudioEditor extends Component {
 
 		// widok podglądu audio
 		let audioPreview = null;
-		if(this.props.containerForPreview == ""){
+		if(this.props.containerForPreview === ""){
 			audioPreview = null
 		} else {
 			audioPreview = (

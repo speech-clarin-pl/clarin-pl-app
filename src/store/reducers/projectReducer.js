@@ -25,9 +25,9 @@ const editNameFailed = (state, action) => {
  
  const editName = (state, action) => {
  
-     const projectId = action.projectId;
+     //const projectId = action.projectId;
      const newProjectName = action.newProjectName;
-     const message = action.message;
+     //const message = action.message;
  
      return updateObject(state, {
          currentProjectName: newProjectName,
@@ -91,14 +91,12 @@ const projectReducer = (state = initialState, action) => {
         case actionTypes.CLOSE_MODAL_PROJECT: return closeModalProject(state, action);
         case actionTypes.EDIT_NAME: return editName(state, action);
         case actionTypes.EDIT_NAME_FAILED: return editNameFailed(state, action);
-        case actionTypes.EDIT_NAME_FAILED: return editNameFailed(state, action);
         case actionTypes.SAVE_TRANSCRIPTION_SUCCESS: return saveTranscription(state,action);
         case actionTypes.SAVE_TRANSCRIPTION_FAILED: return saveTranscriptionFailed(state,action);
         case actionTypes.TRANSCRIPTION_CHANGED: return transcriptionChanged(state,action);
+        default: return state;
         
     }
-
-    return state;
 }
 
 export default projectReducer;

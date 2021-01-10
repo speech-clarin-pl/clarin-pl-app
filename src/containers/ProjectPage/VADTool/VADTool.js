@@ -42,7 +42,7 @@ class VADTool extends Component {
 	}
 	
 	makeEditorFullWidth = () => {
-        if(this.state.editorFullWidth == false){
+        if(this.state.editorFullWidth === false){
             this.setState({editorFullWidth: true});
         } else {
             this.setState({editorFullWidth: false});
@@ -53,7 +53,7 @@ class VADTool extends Component {
 
 		for(let i = 0; i < this.props.VADItems.length; i++){
 			let container = this.props.VADItems[i];
-			if(container.ifVAD==false){
+			if(container.ifVAD===false){
 				this.runSpeechVoiceActivityDetection(container, "VAD", this.props.token); 
 			}
 			
@@ -77,7 +77,7 @@ class VADTool extends Component {
             let current = this.props.VADItems[i];
            // console.log(current)
             //sprawdzam ktory obecnie jest edytowany
-            if(current._id == this.props.containerForPreview._id){
+            if(current._id === this.props.containerForPreview._id){
                 foundIdx = i;
             }
         }
@@ -99,7 +99,7 @@ class VADTool extends Component {
 		let szer1col = "6 order-1";
         let szer2col = "6 order-2";
 
-        if(this.state.editorFullWidth == true) {
+        if(this.state.editorFullWidth === true) {
             szer1col = "12 order-2";
             szer2col = "12 order-1";
         } else {
@@ -194,7 +194,7 @@ class VADTool extends Component {
 
                                 <div className={"col-md-"+szer2col}>
 									{
-										this.props.containerForPreview != "" ? <AudioEditor
+										this.props.containerForPreview !== "" ? <AudioEditor
 										containerForPreview={this.props.containerForPreview}
 										editorFullWidth = {this.makeEditorFullWidth}
 										onLoadNextElement = {this.loadNextElement}

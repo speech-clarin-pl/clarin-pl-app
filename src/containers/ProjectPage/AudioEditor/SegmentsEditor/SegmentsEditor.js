@@ -9,14 +9,6 @@ import ButtonLeftBar from '../../../../components/UI/ButtonLeftBar/ButtonLeftBar
 
 class SegmentsEditor extends Component {
     
-    constructor(props){
-        super(props)
-        
- 
-       
-    }
-
-
 
     updateLabel = (id, newLabel) => {
         this.props.onUpdateSegmentLabel(id, newLabel);
@@ -33,14 +25,6 @@ class SegmentsEditor extends Component {
     }
 
 
-    componentWillMount = () => {
-
-    }
-
-    componentDidUpdate = () => {
-       
-    }
-
     playSegment = (id) => {
         this.props.onPlaySegment(id);
     }
@@ -49,8 +33,6 @@ class SegmentsEditor extends Component {
         this.props.onRemoveSegment(id);
  
     }
-
-
 
 
     renderSegments = () => {

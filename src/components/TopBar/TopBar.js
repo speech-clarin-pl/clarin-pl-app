@@ -128,6 +128,7 @@ class topBar extends Component {
                             <a href={process.env.PUBLIC_URL + '/apidoc/index.html'} 
                                     target="_blank" 
                                     id="navbarDropdownMenuLinkpomoc" 
+                                    rel="noopener noreferrer"
                                     className={["nav-link", "navLink"].join(' ')}>
                                     <FontAwesomeIcon icon={faTerminal} className="faIcon" /> API doc
                             </a>
@@ -156,6 +157,7 @@ class topBar extends Component {
     
                             <a href={process.env.PUBLIC_URL + '/docs/doc.html'} 
                                 target="_blank" 
+                                rel="noopener noreferrer"
                                 id="navbarDropdownMenuLinkpomoc" 
                                 className={["nav-link", "navLink"].join(' ')}>
                                 <FontAwesomeIcon icon={faQuestion} className="faIcon" /> Pomoc

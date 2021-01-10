@@ -18,7 +18,7 @@ WaveSurfer.microphone = MicrophonePlugin;
 
 // register videojs-wavesurfer plugin with this import
 import 'videojs-wavesurfer/dist/css/videojs.wavesurfer.css';
-import Wavesurfer from 'videojs-wavesurfer/dist/videojs.wavesurfer.js';
+//import Wavesurfer from 'videojs-wavesurfer/dist/videojs.wavesurfer.js';
 
 const videoJsOptions = {
     controls: true,
@@ -140,7 +140,7 @@ class MultimediaPreview extends Component {
 
     render() {
 
-        if (this.player != undefined) {
+        if (this.player !== undefined) {
             this.setFileToPreview (this.state.fileToPreviewURL)
         }
     

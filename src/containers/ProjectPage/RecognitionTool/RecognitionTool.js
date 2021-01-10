@@ -61,7 +61,7 @@ class RecognitionTool extends Component {
     }
 
     makeEditorFullWidth = () => {
-        if(this.state.editorFullWidth == false){
+        if(this.state.editorFullWidth === false){
             this.setState({editorFullWidth: true});
         } else {
             this.setState({editorFullWidth: false});
@@ -72,7 +72,7 @@ class RecognitionTool extends Component {
 
 		for(let i = 0; i < this.props.containersForREC.length; i++){
             let container = this.props.containersForREC[i];
-            if(container.ifREC == false){
+            if(container.ifREC === false){
                 this.runSpeechRecognition(container, "REC", this.props.token); 
             }
 		}
@@ -92,7 +92,7 @@ class RecognitionTool extends Component {
             let current = this.props.containersForREC[i];
            // console.log(current)
             //sprawdzam ktory obecnie jest edytowany
-            if(current._id == this.props.containerForPreview._id){
+            if(current._id === this.props.containerForPreview._id){
                 foundIdx = i;
             }
         }
@@ -112,7 +112,7 @@ class RecognitionTool extends Component {
         let szer1col = "6 order-1";
         let szer2col = "6 order-2";
 
-        if(this.state.editorFullWidth == true) {
+        if(this.state.editorFullWidth === true) {
             szer1col = "12 order-2";
             szer2col = "12 order-1";
         } else {
@@ -206,7 +206,7 @@ class RecognitionTool extends Component {
                                 <div className={"col-md-"+szer2col}>
 
                                     {
-										this.props.containerForPreview != "" ? <AudioEditor
+										this.props.containerForPreview !== "" ? <AudioEditor
 										containerForPreview={this.props.containerForPreview}
                                         editorFullWidth = {this.makeEditorFullWidth}
                                         onLoadNextElement = {this.loadNextElement}

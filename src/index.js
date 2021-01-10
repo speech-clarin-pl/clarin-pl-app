@@ -33,14 +33,14 @@ dotenvFlow.config();
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-if (process.env.NODE_ENV == 'development') {
+if (process.env.NODE_ENV === 'development') {
     console.log(chalk.green("APP IN DEVELOPMENT MODE"));
     axios.defaults.baseURL = process.env.REACT_APP_API_URL;
-} else if (process.env.NODE_ENV == 'production') {
+} else if (process.env.NODE_ENV === 'production') {
     console.log(chalk.green("APP IN PRODUCTION MODE"))
     console.log = () => {};
     axios.defaults.baseURL = window.axiosBaseURL;
-} else if (process.env.NODE_ENV == 'test') {
+} else if (process.env.NODE_ENV === 'test') {
     console.log(chalk.green("APP IN TEST MODE"))
 } else {
     console.log(chalk.red("BRAK TRYBU URUCHOMIENIA APP"))
@@ -64,7 +64,7 @@ axios.interceptors.response.use(function (response) {
     
     if(error.response){
         const statusCode = error.response.status;
-        const statusText = error.response.statusText;
+        //const statusText = error.response.statusText;
         const errorData = error.response.data;
 
         if(statusCode >=500){

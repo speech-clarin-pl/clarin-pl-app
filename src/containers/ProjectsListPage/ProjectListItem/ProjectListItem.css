@@ -1,9 +1,11 @@
 
 
-.ProjectListItem a  {
+.ProjectListItem a, .ProjectListItem button   {
     text-decoration: none;
     color: inherit;
     cursor: pointer;
+    border:none;
+    background: none;
 }
 
 .ProjectListItem {

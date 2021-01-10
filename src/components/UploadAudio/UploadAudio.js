@@ -100,9 +100,9 @@ class UploadAudio extends Component {
           .then(response => {
   
             let oryginalName = response.data.oryginalName;
-            let sessionId = response.data.sessionId;
-            let containerId = response.data.containerId;
-            let message = response.data.message;
+            //let sessionId = response.data.sessionId;
+            //let containerId = response.data.containerId;
+            //let message = response.data.message;
   
             const copy = { ...this.state.uploadProgress };
             copy[oryginalName] = { state: "done", percentage: 100 };
@@ -282,7 +282,7 @@ class UploadAudio extends Component {
 
 
         const newFileList = this.state.files.filter((file) => {
-          return file != filetoremove;
+          return file !== filetoremove;
         });
 
         // usuwanie plików z listy plików do wgrania na serwer

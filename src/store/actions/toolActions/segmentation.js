@@ -152,7 +152,7 @@ export const startSegmentItem = (entryId, userId, projectId, audioFile, txtFile,
                 console.log('wysłano: ' + percent + '%');
                 //dispatch(changeUploadProgress(percent));
 
-                if(percent==100){
+                if(percent===100){
                     //dispatch(uploadFilesFinish());
                 }
             }

@@ -56,7 +56,7 @@ const addContainerToReco = (state,action) => {
 
         //dodaje nowy element tylko jeżeli wcześniej nie istniał w bazie
         let found = state.containersForREC.filter(file => {
-            return file._id == newElementToAdd._id
+            return file._id === newElementToAdd._id
         })
 
         if(found.length < 1){
@@ -85,6 +85,7 @@ const clearRecoStore = (state,action) => {
     });  
 }
 
+/*
 const openModal = (state,action) => {
     return updateObject(state, {
         modal: true,
@@ -96,6 +97,7 @@ const closeModal = (state,action) => {
         modal: false,
     }) ;  
 }
+*/
 
 
 
@@ -133,9 +135,9 @@ const updateFileState = (state,action) => {
             
     const nextState = produce(state, draftState => {
 
-        let foundFileIdx = draftState.containersForREC.findIndex(container => {
-            return container._id === containerId;
-        })
+       // let foundFileIdx = draftState.containersForREC.findIndex(container => {
+       //     return container._id === containerId;
+       // })
 
         draftState.containersForREC[containerId].status = status;
    })
@@ -151,7 +153,7 @@ const removeRecognitionItem = (state, action)=>{
     const nextState = produce(state, draftState => {
 
        const nowaLista = state.containersForREC.filter((container,index)=>{
-            if(container._id == containerId){
+            if(container._id === containerId){
                 return false;
             } else {
                 return true;
@@ -172,7 +174,7 @@ const openAudioRecPreview = (state, action) => {
 
     //znajduje pozycje w containersForREC aby wyciagnac z niej plik audio
 
-    let foundEntry = state.containersForREC.find(obj => obj.id == entryId);
+    let foundEntry = state.containersForREC.find(obj => obj.id === entryId);
     console.log(foundEntry.file)
 
     return updateObject(state, { recoFileForPreview: foundEntry.file}) ; 
@@ -191,7 +193,7 @@ const loadTranscription = (state, action) => {
 
 const speechRecognitionSuccess = (state, action) => {
     const containerId = action.containerId;
-    const toolType = action.toolType; 
+   // const toolType = action.toolType; 
 
    // console.log("TUTAJ TEZ POWINIENEM ")
     //console.log(action.containerId)
@@ -207,7 +209,7 @@ const speechRecognitionSuccess = (state, action) => {
 
         //jeżeli plik był otwarty w preview edytorze
 
-        if(draftState.recoContainerForPreview._id == containerId){
+        if(draftState.recoContainerForPreview._id === containerId){
             draftState.recoContainerForPreview.ifREC = true;
             draftState.recoContainerForPreview.statusREC = 'done';
         }
@@ -223,7 +225,7 @@ const speechRecognitionSuccess = (state, action) => {
 
 const speechRecognitionFailed = (state, action) => {
     const containerId = action.containerId;
-    const toolType = action.toolType; 
+    //const toolType = action.toolType; 
 
     let foundFileIdx = state.containersForREC.findIndex(file => {
         return file._id === containerId;
@@ -289,7 +291,7 @@ const changeToolItemStatus = (state, action) => {
     const toolType = action.toolType;
     const status = action.status;
 
-     if(toolType == 'REC') {
+     if(toolType === 'REC') {
         const nextState = produce(state, draftState => {
 
             let foundFileIdx = draftState.containersForREC.findIndex(file => {
@@ -330,9 +332,8 @@ const recognitionReducer = (state = initialState, action) => {
         case actionTypes.SET_CONTAINER_STATUS: return changeToolItemStatus(state,action);
 
         case actionTypes.SAVE_TRANSCRIPTION_SUCCESS: return saveTranscriptionSuccess(state,action);
+        default: return state;
     }
-
-    return state;
 }
 
 

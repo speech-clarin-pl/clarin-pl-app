@@ -10,7 +10,6 @@ import SegmentTool from './SegmentTool/SegmentTool';
 import VADTool from './VADTool/VADTool';
 import DIATool from './DIATool/DIATool';
 import TranscriptionTool from './TranscriptionTool/TranscriptionTool';
-
 import RepoBar from './RepoBar/RepoBar';
 import RepoPanel from './RepoPanel/RepoPanel';
 import ErrorPage from '../../components/ErrorPage/ErrorPage';

@@ -6,6 +6,17 @@
     position: relative;
 }
 
+.ToolItemWrapper {
+    width: 100%;
+    background: none;
+    border: 0px;
+}
+
+.ToolItem button {
+    background: none;
+    border: none;
+}
+
 .editing {
     background: #e1e9ec;
 }

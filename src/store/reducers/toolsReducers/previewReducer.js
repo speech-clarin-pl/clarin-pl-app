@@ -37,9 +37,11 @@ const clearPreviewStore = (state,action) => {
 }
 
 //zwraca rozszerzenie pliku
+/*
 const getExt = (path) => {
     return (path.match(/(?:.+..+[^\/]+$)/ig) != null) ? path.split('.').slice(-1)[0]: 'null';
 }
+*/
 
 const updateAudioPreview = (state, action) => {
     return updateObject(state, {
@@ -128,9 +130,10 @@ const previewReducer = (state = initialState, action) => {
         case actionTypes.TOGGLE_PLAYING_PREVIEW: return togglePlayingPreview(state,action);
         case actionTypes.CLEAR_PREVIEW_STORE: return clearPreviewStore(state, action);
         case actionTypes.CHANGE_AUDIO_DISPLAYED: return changeAudioDisplay(state,action);
+        default: return state;
     }
 
-    return state;
+
 }
 
 

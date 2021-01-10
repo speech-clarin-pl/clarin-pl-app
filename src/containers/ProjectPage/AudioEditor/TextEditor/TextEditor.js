@@ -50,7 +50,7 @@ class TextEditor extends Component {
         //};
         
         //let editor = null;  //text editor instance
-        let container = null;
+        //let container = null;
     }
 
  
@@ -132,7 +132,7 @@ class TextEditor extends Component {
         }
 
         // jeżeli user po zmianach zapisał
-        if(this.props.transcriptionSaved && this.props.text != ''){
+        if(this.props.transcriptionSaved && this.props.text !== ''){
             loadTranscriptBtnDisabled = true;
             loadTranscriptBtnText = "Transkrypcja została zapisana pomyślnie";
             loadTranscriptBtnStyle = {backgroundColor: '#46d363', textAlign: 'center'};

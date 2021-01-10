@@ -84,7 +84,7 @@ export const initFileRecognition = (file, entryId, userId, projectId, audioFrom)
         data.append('audioFrom', audioFrom);
 
         let config = null;
-        if(audioFrom=="repo"){
+        if(audioFrom==="repo"){
             config = {
                 headers: {
                     'content-type': 'multipart/form-data'
@@ -102,7 +102,7 @@ export const initFileRecognition = (file, entryId, userId, projectId, audioFrom)
                     
                     //dispatch(changeUploadProgress(percent));
     
-                    if(percent==100){
+                    if(percent===100){
                         //dispatch(uploadFilesFinish());
                     }
                 }

@@ -15,8 +15,8 @@ class Dashboard extends Component {
     render(){
 
         //let liczbaPlikowRepo = this.props.repoFiles.length;
-        let liczbaPlikowRepo = 0;
-        let miejscePlikowRepo = 0;
+        //let liczbaPlikowRepo = 0;
+        //let miejscePlikowRepo = 0;
        // this.props.repoFiles.map(file => {
        //     return miejscePlikowRepo = miejscePlikowRepo + file.size;
        // });

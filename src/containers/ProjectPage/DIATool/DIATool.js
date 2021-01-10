@@ -39,7 +39,7 @@ class DIATool extends Component {
 
 
 	makeEditorFullWidth = () => {
-        if(this.state.editorFullWidth == false){
+        if(this.state.editorFullWidth === false){
             this.setState({editorFullWidth: true});
         } else {
             this.setState({editorFullWidth: false});
@@ -50,7 +50,7 @@ class DIATool extends Component {
 
 		for(let i = 0; i < this.props.containersForDIA.length; i++){
 			let container = this.props.containersForDIA[i];
-			if(container.ifDIA==false){
+			if(container.ifDIA===false){
 				this.runSpeechDiarization(container, "DIA",this.props.token); 
 			}
 			
@@ -72,7 +72,7 @@ class DIATool extends Component {
             let current = this.props.containersForDIA[i];
            // console.log(current)
             //sprawdzam ktory obecnie jest edytowany
-            if(current._id == this.props.containerForPreview._id){
+            if(current._id === this.props.containerForPreview._id){
                 foundIdx = i;
             }
         }
@@ -94,7 +94,7 @@ class DIATool extends Component {
 		let szer1col = "6 order-1";
         let szer2col = "6 order-2";
 
-        if(this.state.editorFullWidth == true) {
+        if(this.state.editorFullWidth === true) {
             szer1col = "12 order-2";
             szer2col = "12 order-1";
         } else {
@@ -191,7 +191,7 @@ class DIATool extends Component {
                                 <div className={"col-md-"+szer2col}>
 
 									{
-										this.props.containerForPreview != "" ? <AudioEditor
+										this.props.containerForPreview !== "" ? <AudioEditor
 										containerForPreview={this.props.containerForPreview}
 										editorFullWidth = {this.makeEditorFullWidth}
 										onLoadNextElement = {this.loadNextElement}

@@ -5,7 +5,7 @@ import './RepoBar.css';
 //import FileBrowser, { Icons } from 'react-keyed-file-browser-clarin';
 import { connect } from 'react-redux';
 import * as repoActions from '../../../store/actions/index';
-import { Redirect, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { getExt } from '../../../utils/utils';
 import Modal from '../../../components/UI/Modal/Modal';
 import Preview from '../../../components/Preview/Preview';
@@ -51,7 +51,7 @@ class repoBar extends Component {
 
                 //rozpoznaje tylko pliki audio
                 if (extensionMapping.hasOwnProperty(fileExtention) &&
-                    (extensionMapping[fileExtention] == "Audio")) {
+                    (extensionMapping[fileExtention] === "Audio")) {
                     fileList.push(file);
                 } else {
                     refusedFileList.push(file);
@@ -64,13 +64,13 @@ class repoBar extends Component {
             
             const inputControl = files.currentTarget;
             
-            for (var i = 0; i < inputControl.files.length; i++) {
+            for (let i = 0; i < inputControl.files.length; i++) {
                 let file = inputControl.files[i];
                 let fileExtention = getExt(file.name)[0];
     
                  //rozpoznaje tylko pliki audio
                  if (extensionMapping.hasOwnProperty(fileExtention) &&
-                        (extensionMapping[fileExtention] == "Audio")) {
+                        (extensionMapping[fileExtention] === "Audio")) {
                         fileList.push(inputControl.files[i]);
                     } else {
                         refusedFileList.push(inputControl.files[i]);
@@ -264,7 +264,7 @@ class repoBar extends Component {
 
 		this.props.onCloseModalHandler();
 
-		if(this.props.uploadFilesDone==true){
+		if(this.props.uploadFilesDone===true){
 			
 			this.props.onUploadFilesFinish();
 			this.refreshRepo();

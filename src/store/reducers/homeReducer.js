@@ -87,7 +87,7 @@ const logInFailed = (state, action) => {
 
 const register = (state, action) => {
     const message = action.message;
-    const userId = action.userId;
+    //const userId = action.userId;
     const resRegistrationStatus = action.resRegistrationStatus;
 
     return updateObject(state,{
@@ -132,7 +132,6 @@ const logOut = (state,action) => {
         loginMessage: '',
         resRegistrationStatus: 0,
         resLoginStatus: 0,
-        token: '',
         authLoading: false,
         error: '',
         autoLogoutAfter: 0 //po ilu milisekundach bedzie wylogowanie
@@ -163,17 +162,12 @@ const homeReducer = (state = initialState, action) => {
         case actionTypes.REGISTER: return register(state,action); 
         case actionTypes.REGISTER_FAILED: return registerFailed(state,action);
         case actionTypes.SET_AUTO_LOGOUT: return autoLogout(state,action); 
-        
         case actionTypes.FORGOT_PASS_FAILED: return forgotPassFailed(state,action);
         case actionTypes.FORGOT_PASS: return forgotPass(state,action);
-
         case actionTypes.START_LOADING: return startLoading(state,action);
         case actionTypes.STOP_LOADING: return stopLoading(state,action);
-        
-        
+        default: return state;
     }
-
-    return state;
 }
 
 export default homeReducer;

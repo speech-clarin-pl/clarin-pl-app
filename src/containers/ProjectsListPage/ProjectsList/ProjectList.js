@@ -4,7 +4,7 @@ import './ProjectList.css';
 
 const projectsList = (props) => {
 
-    const ifLoading = props.ifLoading;
+    //const ifLoading = props.ifLoading;
 
      const listHeader = (
             <tr className="thead-dark">

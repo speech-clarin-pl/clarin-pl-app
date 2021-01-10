@@ -211,6 +211,7 @@ class LoginArea extends Component {
                 updatedregisterPass.touched = 1;
                 updatedRegisterForm.registerpass = updatedregisterPass;
                 break;
+            default: break;
         }
 
         //sprawdzam czy cały formularz jest poprawny
@@ -241,6 +242,7 @@ class LoginArea extends Component {
                 //assembling back after update
                 updatedForgotForm.forgotPassEmail = updatedforgotPassEmail;
                 break;
+            default: break;
         }
 
         //sprawdzam czy cały formularz jest poprawny
@@ -286,6 +288,8 @@ class LoginArea extends Component {
                 //assembling back after update
                 updatedLoginForm.loginpass = updatedLoginPass;
                 break;
+            default:
+                console.error("Złe pole logowania")
         }
 
         //sprawdzam czy cały formularz jest poprawny
@@ -335,16 +339,12 @@ class LoginArea extends Component {
         let myclasses = ["container-fluid", "LoginArea"];
 
         // ######### formatowanie informacji po zalogowaniu się ########
-        let messageForLogin = '';
-        if(this.props.isAuth==false){
-            messageForLogin = 'Zaloguj się';
-        } else {
-            messageForLogin = 'Jesteś zalogowany jako:';
-        }
+        //let messageForLogin = this.props.isAuth===false?'Zaloguj się':'Jesteś zalogowany jako:';
 
 
         // ######### formatowanie informacji error Register ########
-        let errorRegisterInfo = null;
+        /*
+        let errorRegisterInfo;
         if(this.props.resRegistrationStatus === 201 || this.props.resRegistrationStatus === 200){
             errorRegisterInfo = (
                 <div className="alert alert-success" role="alert">
@@ -358,10 +358,12 @@ class LoginArea extends Component {
                     </div>
                 )
         }
+        */
 
 
         // ######### formatowanie informacji error Login ########
-        let errorLoginInfo = null;
+        /*
+        let errorLoginInfo;
         if(this.props.resLoginStatus === 201 || this.props.resLoginStatus === 200){
             errorLoginInfo = (
                 <div className="alert alert-success" role="alert">
@@ -386,10 +388,11 @@ class LoginArea extends Component {
                 )
             }
         }
+        */
 
 
          // ######### formatowanie informacji forgot Pass########
-        let errorForgotPassInfo = null;
+        //let errorForgotPassInfo;
         /*
         if(this.props.resForgotPassStatus === 201 || this.props.resForgotPassStatus === 200){
             errorForgotPassInfo = (
@@ -508,7 +511,7 @@ class LoginArea extends Component {
                                 <br></br>
                                 <br></br>
 
-                                <a href="#" onClick={this.showLoginAreaBack}>Zaloguj się</a>
+                                <a onClick={this.showLoginAreaBack}>Zaloguj się</a>
 
                              
                             </form>   

@@ -17,9 +17,9 @@ const projectListItem = (props) => {
              <tr className="ProjectListItem">   
                 <td className="projectTitle">
 
-                     <a onClick={props.wyborprojektu}>
+                     <button onClick={props.wyborprojektu}>
                         {props.title}
-                     </a>
+                     </button>
                    
 
                 </td>
