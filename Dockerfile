@@ -12,8 +12,6 @@ RUN apt-get update && apt-get -y install python make
 
 RUN apt-get -y install g++
 
-COPY .env.production.local .
-
 RUN npm install
 
 RUN npm run build
