@@ -16,7 +16,7 @@ import { RingLoader } from "react-spinners";
 import { css } from "@emotion/core";
 import 'react-notifications/lib/notifications.css';
 import chalk from 'chalk';
-import dotenvFlow from 'dotenv-flow';
+
 
 // to jest stara wersja repo
 //import repoReducer from './store/reducers/repoReducer';
@@ -29,9 +29,11 @@ import projectReducer from './store/reducers/projectReducer';
 import vadReducer from './store/reducers/toolsReducers/vadReducer';
 import diaReducer from './store/reducers/toolsReducers/diaReducer';
 
+import dotenvFlow from 'dotenv-flow';
 dotenvFlow.config();
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 
 if (process.env.NODE_ENV === 'development') {
     console.log(chalk.green("APP IN DEVELOPMENT MODE"));

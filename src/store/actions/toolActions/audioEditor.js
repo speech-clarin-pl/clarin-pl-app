@@ -68,7 +68,7 @@ export const loadTranscriptionFailed = (error) => {
 export const loadTranscription = (container, toolType, token) => {
 return dispatch => {
 
-    axios.get('/recognition/loadTranscription'+container._id,
+    axios.get('/recognition/loadTranscription/'+container._id,
         {
             headers: {
                 Authorization: 'Bearer ' + token
