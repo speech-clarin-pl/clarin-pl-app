@@ -7,6 +7,7 @@ ADD package-lock.json ./
 ADD config-overrides.js ./
 ADD public ./public
 ADD src ./src
+ADD .env.production ./
 
 RUN apt-get update && apt-get -y install python make
 
