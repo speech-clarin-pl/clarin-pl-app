@@ -547,7 +547,7 @@ export const exportToEMUSuccess = (message) => {
 export const exportToEMU = (projectId, userId, token) => {
     console.log("Export to emu");
     return dispatch => {
-        axios.get('/repoFiles/exportToEmu/'+userId+'/'+projectId, {
+        axios.get('/repoFiles/createCorpus/'+projectId, {
             headers: {
                 Authorization: 'Bearer ' + token
             }

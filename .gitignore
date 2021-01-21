@@ -6,7 +6,7 @@
 /repo
 
 # pozostale
-# build/
+build/
 **/node_modules
 
 .vscode/

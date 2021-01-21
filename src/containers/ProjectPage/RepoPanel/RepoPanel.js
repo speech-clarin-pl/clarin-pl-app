@@ -232,7 +232,7 @@ class repoPanel extends Component {
 
         //let audioGetUrl = process.env.REACT_APP_API_URL+ "/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/audio?api_key="+token;
 		
-        let corpusPath = process.env.REACT_APP_API_URL+ "/repoFiles/downloadKorpus/" + userId + "/" + projectId+"/?api_key="+this.props.token;;
+        let corpusPath = process.env.REACT_APP_API_URL+ "/repoFiles/downloadCorpus/" + projectId+"/?api_key="+this.props.token;;
 		
         window.open(corpusPath);
 
