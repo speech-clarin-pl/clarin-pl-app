@@ -61,8 +61,6 @@ class App extends Component {
     }, milliseconds);
   };
 
-
-
   changeLnHandler = (ln) => {
     this.setState({
       currln: ln,

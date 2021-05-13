@@ -5,7 +5,7 @@ import logoShort from '../../images/logo-clarin-pl-short.png';
 import { Link } from 'react-router-dom';
 //import { FormattedMessage } from 'react-intl';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faReply, faQuestion, faTerminal } from '@fortawesome/free-solid-svg-icons';
+import { faReply, faQuestion, faTerminal, faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import EditableLabel from 'react-inline-editing';
 //import { render } from 'react-dom';
 import { connect } from 'react-redux';
@@ -130,7 +130,7 @@ class topBar extends Component {
                                     id="navbarDropdownMenuLinkpomoc" 
                                     rel="noopener noreferrer"
                                     className={["nav-link", "navLink"].join(' ')}>
-                                    <FontAwesomeIcon icon={faTerminal} className="faIcon" /> API doc
+                                    <FontAwesomeIcon icon={faTerminal} className="faIcon" /> API
                             </a>
                         </li>
     
@@ -151,19 +151,44 @@ class topBar extends Component {
                             </Link>
                                 */
                             }
-                            
-
-                            
     
-                            <a href={process.env.PUBLIC_URL + '/docs/doc.html'} 
+                            <a href="#" onClick={(e)=>{
+                                e.preventDefault();
+                                this.props.openTourHandler();
+                            }} 
                                 target="_blank" 
                                 rel="noopener noreferrer"
                                 id="navbarDropdownMenuLinkpomoc" 
                                 className={["nav-link", "navLink"].join(' ')}>
                                 <FontAwesomeIcon icon={faQuestion} className="faIcon" /> Pomoc
                             </a>
+                        </li>
+
+                        <li className="nav-item">
+                            {
+                                /*
+                            <Link to="/help" className={["nav-link", "navLink"].join(' ')}
     
-                  
+                                id="navbarDropdownMenuLinkpomoc"
+                                role="button"
+                                aria-haspopup="true"
+                                aria-expanded="false">
+    
+                                <i className="fas fa-question-circle"></i>
+    
+                                Pomoc
+    
+                            </Link>
+                                */
+                            }
+    
+                            <a href={process.env.PUBLIC_URL + '/docs/doc.html'} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                id="navbarDropdownMenuLinkpomoc" 
+                                className={["nav-link", "navLink"].join(' ')}>
+                                <FontAwesomeIcon icon={faFileAlt} className="faIcon" /> Dokumentacja
+                            </a>
                         </li>
     
     

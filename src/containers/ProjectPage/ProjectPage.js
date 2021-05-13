@@ -20,12 +20,49 @@ import Tab from '../ProjectPage/TabContainer/Tab/Tab';
 import * as projectActions from '../../store/actions/index';
 import {DndProvider} from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
+import Tour from 'reactour';
 
 //import axios from '../../axios-speechtools';
 
-
+const steps = [
+  {
+    selector: '[data-tut="step1"]',
+    content: `Repozytorium to miejsce w którym możesz wgrywać i przechowywać swoje pliki audio`
+  },
+  {
+    selector: '[data-tut="step2"]',
+    content: `Pliki możesz organizować w grupy zwane sesjami. Na początku stworzyliśmy dla Ciebie dwie przykładowe sesje: demo i sesję domyślną. 
+     Kliknij w sesje demo aby ją otworzyć `,
+  },
+  {
+    selector: '[data-tut="step3"]',
+    content: `Każdy nowo wgrany plik audio posiada status wykonania na nim narzędzi automatycznych, odpowiednio: detekcja mowy, diaryzacja, rozpoznawanie mowy oraz segmentacja.
+    Zielona ikonka oznacza zakończenie działania danego narzędzia na danym pliku. Kliknij ikonkę dokumentu aby przenieść plik do zakładki "Transkrypcje" `,
+  },
+  {
+    selector: '[data-tut="step4"]',
+    content: `Każda zakładka posiada swoją listę plików dodanych niej plików. Możesz w tym miejscu dodać większą listę plików aby przyśpieszyć proces transkrypcji. `,
+    action: () => {
+      alert("dodanie większej ilości plików")
+    }
+  },
+  {
+    selector: '[data-tut="step5"]',
+    content: `Kliknij w wybrany plik aby otworzyć go w widoku edytora`,
+  }
+]
 
 class ProjectPage extends Component {
+
+  state =  {
+    isTourOpen: false,
+  }
+
+  setIsTourOpen = (ifOpen) => {
+    this.setState({
+      isTourOpen: ifOpen
+    })
+  }
 
   componentWillUnmount = () => {
     localStorage.removeItem('projectId');
@@ -53,9 +90,6 @@ class ProjectPage extends Component {
     const remainingMilliseconds =
     new Date(expiryDate).getTime() - new Date().getTime();
 
-    console.log(userId)
-    console.log(userName)
-    console.log(token)
 
     this.props.onSetLoggedIn(userId,userName, token);    
 
@@ -85,9 +119,6 @@ class ProjectPage extends Component {
 
     }
 
-    console.log(projectId)
-    console.log(projectTitle)
-    console.log(projectOwnerId)
 
     this.props.onInitProjectHandler(projectId, projectTitle, projectOwnerId);
     this.props.onClearRecoStore();
@@ -101,8 +132,11 @@ class ProjectPage extends Component {
     return (
       <DndProvider backend={Backend}>
         <Aux>
-         
+
+            
             <TopBar 
+
+                  openTourHandler={()=>this.setIsTourOpen(true)}
                   version="longinit" 
                   wide="yes" 
                   language="pl" 
@@ -156,8 +190,15 @@ class ProjectPage extends Component {
            <RepoBar />
            */} 
            
-           <RepoPanel />
+           <RepoPanel/>
           
+           <Tour 
+              steps={steps}
+              isOpen={this.state.isTourOpen}
+              onRequestClose={()=>this.setIsTourOpen(false)}  
+              rounded={5}
+
+            />
         </Aux>
       </DndProvider>
     );
