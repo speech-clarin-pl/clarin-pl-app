@@ -196,14 +196,20 @@ class RecognitionTool extends Component {
                                         //<h3>Lista plików do przetworzenia</h3>
                                     }
                                    
-                                    <div className="file-list">
+                                    <div className="file-list" data-tut="toolList">
                                 
-                                        {filelist}
+                                        {
+                                            !filelist?
+                                            <div className="alert alert-primary" role="alert">
+                                                Dodaj pliki z repozytorium do listy transkrypcji
+                                            </div>
+                                            :filelist
+                                        }
 
                                     </div>
                                 </div>
 
-                                <div className={"col-md-"+szer2col}>
+                                <div className={"col-md-"+szer2col} data-tut="audioEdytor">
 
                                     {
 										this.props.containerForPreview !== "" ? <AudioEditor

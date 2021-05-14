@@ -15,7 +15,7 @@ import {ContextMenu, MenuItem, ContextMenuTrigger} from 'react-contextmenu';
 class RepoSession extends Component {
 
     state = {
-        ifOpened: false,
+        ifOpened: this.props.initSessionOpen || false,
     }
 
     clickFolderHandler = () => {

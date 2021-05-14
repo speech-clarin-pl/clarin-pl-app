@@ -24,38 +24,57 @@ import Tour from 'reactour';
 
 //import axios from '../../axios-speechtools';
 
-const steps = [
-  {
-    selector: '[data-tut="step1"]',
-    content: `Repozytorium to miejsce w którym możesz wgrywać i przechowywać swoje pliki audio`
-  },
-  {
-    selector: '[data-tut="step2"]',
-    content: `Pliki możesz organizować w grupy zwane sesjami. Na początku stworzyliśmy dla Ciebie dwie przykładowe sesje: demo i sesję domyślną. 
-     Kliknij w sesje demo aby ją otworzyć `,
-  },
-  {
-    selector: '[data-tut="step3"]',
-    content: `Każdy nowo wgrany plik audio posiada status wykonania na nim narzędzi automatycznych, odpowiednio: detekcja mowy, diaryzacja, rozpoznawanie mowy oraz segmentacja.
-    Zielona ikonka oznacza zakończenie działania danego narzędzia na danym pliku. Kliknij ikonkę dokumentu aby przenieść plik do zakładki "Transkrypcje" `,
-  },
-  {
-    selector: '[data-tut="step4"]',
-    content: `Każda zakładka posiada swoją listę plików dodanych niej plików. Możesz w tym miejscu dodać większą listę plików aby przyśpieszyć proces transkrypcji. `,
-    action: () => {
-      alert("dodanie większej ilości plików")
-    }
-  },
-  {
-    selector: '[data-tut="step5"]',
-    content: `Kliknij w wybrany plik aby otworzyć go w widoku edytora`,
-  }
-]
+
 
 class ProjectPage extends Component {
 
   state =  {
     isTourOpen: false,
+  }
+
+  //dla  reacttour
+   steps = [
+    {
+      selector: '[data-tut="repoPanel"]',
+      content: `Repozytorium to miejsce w którym możesz wgrywać i przechowywać swoje pliki audio. Twoim celem jest ich opis (z pomocą naszych narzędzi automatycznych) oraz ostateczne wygenerowanie anotowanego korpusu.`
+    },
+    {
+      selector: '[data-tut="repoSession"]',
+      content: `Pliki możesz organizować w grupy zwane sesjami. Na początku stworzyliśmy dla Ciebie dwie przykładowe sesje: demo i sesję domyślną. 
+       Kliknij w sesje demo aby ją otworzyć. `,
+       action: () => {
+        this.openDemoSession();
+      }
+    },
+    {
+      selector: '[data-tut="ikonkiRepo"]',
+      content: `Każdy plik posiada ikonki obrazujące status wykonania narzędzia automatycznego, odpowiednio od lewej: detekcja mowy, diaryzacja, rozpoznawanie mowy oraz segmentacja.`
+    },
+    {
+      selector: '[data-tut="zakladkiNarzedzi"]',
+      content: `Ikonki przy plikach w repozytorium odpowiadają zakładkom narzędzi automatycznych w tym miejscu. `
+    },
+    {
+      selector: '[data-tut="dodajOpowiesciDoTranskrypcji"]',
+      content: `Dodaj plik "opowieści" do listy "Transkrypcje" klikając tą ikonkę.`
+    },
+    {
+      selector: '[data-tut="dodajKleskaDoTranskrypcji"]',
+      content: `Możesz dodać wiele plików do dowolnego narzędzia np. do przetranskrybowania. Dodaj jeszcze plik "kleska" do listy "Transkrypcje".`
+    },
+    {
+      selector: '[data-tut="toolList"]',
+      content: `W ten sposób dodajesz pliki do kolejki przetwarzania za pomocą danego narzędzia. Kliknij w nazwę pierwszego pliku na liście.".`
+    },
+    {
+      selector: '[data-tut="audioEdytor"]',
+      content: `Zobaczysz widok edytora danego narzędzia wraz z załadowanym do niego plikiem audio. ".`
+    },
+  ]
+
+
+  openDemoSession = () => {
+    //alert("test")
   }
 
   setIsTourOpen = (ifOpen) => {
@@ -150,19 +169,13 @@ class ProjectPage extends Component {
 
             <div className="ProjectPage" id="ProjectPage">
  
-              <ul className={["nav nav-tabs", "darkbg"].join(' ')}>
-
+              <ul className={["nav nav-tabs", "darkbg"].join(' ')} data-tut="zakladkiNarzedzi" >
 
                   <Tab  title="Dashboard" iconType="DASH" whereToLink={'/dashboard'}/>
-                  <Tab  title="Detekcja mowy" iconType="VAD" whereToLink={'/vad'}/>
-                  <Tab  title="Diaryzacja" iconType="DIA" whereToLink={'/dia'}/>
-                  <Tab  title="Transkrypcje" iconType="REC" whereToLink={'/recognition'}/>
-                  <Tab  title="Segmentacja" iconType="SEG" whereToLink={'/segment'}/>
-                  {
-                    /*
-                    <Tab  title="Transkrypcje" whereToLink={'/transcrypt'}/>   
-                    */
-                  }            
+                    <Tab  title="Detekcja mowy" iconType="VAD" whereToLink={'/vad'}/>
+                    <Tab  title="Diaryzacja" iconType="DIA" whereToLink={'/dia'}/>
+                    <Tab  title="Transkrypcje" iconType="REC" whereToLink={'/recognition'}/>
+                    <Tab  title="Segmentacja" iconType="SEG" whereToLink={'/segment'}/>          
               </ul>
             
               <Switch>
@@ -193,7 +206,7 @@ class ProjectPage extends Component {
            <RepoPanel/>
           
            <Tour 
-              steps={steps}
+              steps={this.steps}
               isOpen={this.state.isTourOpen}
               onRequestClose={()=>this.setIsTourOpen(false)}  
               rounded={5}

@@ -355,10 +355,6 @@ class repoPanel extends Component {
             default:
                 // cos
         }
-
-
-       
-
      
 
         //########### rendering listy sesji i contenerow
@@ -383,6 +379,7 @@ class repoPanel extends Component {
 
                 return  <RepoSession 
                                 containers={containersArray} 
+                                initSessionOpen={true}
                                 sessionName={sessionName}
                                 sessionId = {sId}
                                 projectId = {this.props.currentProjectID}
@@ -423,7 +420,7 @@ class repoPanel extends Component {
                     {modalContent}
                 </Modal> 
 
-				<div className="RepoPanel" id="RepoPanel">
+				<div className="RepoPanel" id="RepoPanel" data-tut="repoPanel">
 					<div className="topPart">
 						<div className="repoTab" >
 							Repozytorium
@@ -464,7 +461,7 @@ class repoPanel extends Component {
                             
                         </div>
 
-                        <div className="fileList">
+                        <div className="fileList" data-tut="repoSession">
                       
                             
                             {listaSesji}

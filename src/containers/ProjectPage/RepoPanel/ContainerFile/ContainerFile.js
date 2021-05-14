@@ -179,7 +179,16 @@ class ContainerFile extends Component {
         const DIAerrorClass = this.props.container.statusDIA==='error'? "error":"";
         const RECerrorClass = this.props.container.statusREC==='error'? "error":"";
         const SEGerrorClass = this.props.container.statusSEG==='error'? "error":"";
- 
+
+
+        //na potrzeby instrukcji
+        let dataTutValue = "";
+        if(this.props.container.fileName==="opowiesci-811cddd0.wav") dataTutValue = "ikonkiRepo";
+
+        let addODoTranskrypcji = "";
+
+        if(this.props.container.fileName==="opowiesci-811cddd0.wav") addODoTranskrypcji = "dodajOpowiesciDoTranskrypcji";
+        if(this.props.container.fileName==="kleska-29d61ce0.wav") addODoTranskrypcji = "dodajKleskaDoTranskrypcji";
 
         
 
@@ -217,7 +226,7 @@ class ContainerFile extends Component {
                                 
                             </div>
                             <div className="col">
-                                <div className="repoManageIcons">
+                                <div className="repoManageIcons" data-tut={dataTutValue+""}>
                                 
                                 {
                                     /*
@@ -243,7 +252,7 @@ class ContainerFile extends Component {
                                     </a>
                                 </Tooltip>
 
-                                <Tooltip title="Rozpoznawanie mowy (REC)">
+                                <Tooltip title="Rozpoznawanie mowy (REC)" data-tut={addODoTranskrypcji+""}>
                                     <a role="button" onClick={this.runRECO} >
                                         <FontAwesomeIcon icon={faFileAlt} className={["repoIcon",RECerrorClass, this.props.container.ifREC? "on": ""].join(" ")}/> 
                                     </a>

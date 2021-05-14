@@ -63,29 +63,7 @@ class TranscriptionTool extends Component {
 
 
     render() {
-        console.log("RENDER TRANSCRIPTION TOOL");
         multimediaPlayer = <MultimediaPreview fileToPreview={this.state.audioFileURL}/>;
-
-        /*
-        let headerTxtField = (
-            <p style={{ fontWeight: 'bold' }}>
-                Podgld pliku txt<span style={{ fontSize: 'bigger' }}>
-                    {this.props.txtfileName}
-                </span>
-            </p>
-        );
-        */
-
-        /*
-        let headerAudioField = (
-            <p style={{ fontWeight: 'bold' }}>
-                Podgld pliku audio <span style={{ fontSize: 'bigger' }}>
-                    {this.props.audiofileName}
-                </span>
-            </p>
-        );
-        */
-
         return (
             <Aux>
 
@@ -110,8 +88,6 @@ class TranscriptionTool extends Component {
                                     this.state.audioFileURL != null?
                                     multimediaPlayer
                                     : 
-                                   
-
                                     <DropFilesArea
                                     whenFilesChose={this.handleDropAudio}
                                     mainTitle="Przeciągnij plik audio z Repozytorium"
@@ -147,8 +123,6 @@ class TranscriptionTool extends Component {
                                 
 
                             </DragAndDrop>
-
-                           
 
                         </div>
 
