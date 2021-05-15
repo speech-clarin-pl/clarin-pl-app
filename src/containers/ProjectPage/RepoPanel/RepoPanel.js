@@ -377,9 +377,10 @@ class repoPanel extends Component {
             })
 
 
+
                 return  <RepoSession 
                                 containers={containersArray} 
-                                initSessionOpen={true}
+                                initSessionOpen={false}
                                 sessionName={sessionName}
                                 sessionId = {sId}
                                 projectId = {this.props.currentProjectID}
@@ -506,6 +507,7 @@ const mapStateToProps = (state) => {
         token: state.homeR.token,
         modal: state.projectR.modal,
         exportToEmuReady: state.repoR.exportToEmuReady,
+        //reactTourOpenDemoSession: state.repoR.reactTourOpenDemoSession,
 	}
 }
 

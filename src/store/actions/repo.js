@@ -4,6 +4,16 @@ import { saveAs } from 'file-saver';
 //import { saveSync } from 'save-file';
 //import streamSaver from 'StreamSaver';
 
+//otwieram sesje DEMO na potrzeby reacttour
+
+export const openDemoSession = () => {
+    return {
+        type: actionTypes.OPEN_DEMO_SESSION,
+    }
+}
+
+
+
 // ############################################################
 // ############## użytkownik pobrał korpus i można obliczyć go od nowa #################
 // ###########################################################

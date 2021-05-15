@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import ContainerFile from '../ContainerFile/ContainerFile';
 import './RepoSession.css';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import UploadAudio from '../../../../components/UploadAudio/UploadAudio';
 
@@ -14,15 +16,19 @@ import {ContextMenu, MenuItem, ContextMenuTrigger} from 'react-contextmenu';
 
 class RepoSession extends Component {
 
+    
+
     state = {
-        ifOpened: this.props.initSessionOpen || false,
+        ifOpened: false,
     }
+
 
     clickFolderHandler = () => {
         this.setState({
             ifOpened: this.state.ifOpened? false: true,
         });
     }
+
 
     selectTheSession = () => {
       //  this.props.selectTheContainer(null);
@@ -35,7 +41,6 @@ class RepoSession extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState){
-        //console.log(nextProps)
         return true;
     }
 
@@ -73,6 +78,11 @@ class RepoSession extends Component {
 
     render() {
 
+        
+
+        //sprawdzam czy otworzyc folder demo na potrzeby react tour
+        
+
         let uploadCard = (
             <div className="uploadCard">
                 <UploadAudio forSession={this.props.sessionId} />
@@ -97,7 +107,12 @@ class RepoSession extends Component {
         });
 
         
+        let ifSessionOpened = this.state.ifOpened;
+        this.props.reactTourOpenDemoSession && this.props.sessionName==="demo" && ifSessionOpened===false?  ifSessionOpened = true : ifSessionOpened = false;
+           
 
+
+       // this.state.ifOpened || (this.props.reactTourOpenDemoSession && this.props.sessionName==="demo")? 
 
 
         return (
@@ -130,8 +145,8 @@ class RepoSession extends Component {
                 </ContextMenu>
 
                 <div className="containerList">
-                    {this.state.ifOpened? uploadCard: null}
-                    {this.state.ifOpened? containerList: null}
+                    {ifSessionOpened? uploadCard: null}
+                    {ifSessionOpened? containerList: null}
                 </div>
                 
              </div>
@@ -139,4 +154,21 @@ class RepoSession extends Component {
     }
 }
 
-export default RepoSession;
+const mapStateToProps = (state) => {
+	return {
+        reactTourOpenDemoSession: state.repoR.reactTourOpenDemoSession,
+	}
+}
+
+
+
+const mapDispatchToProps = dispatch => {
+	return {
+    //	onUploadFiles: (fileList, folderKey, userId, projectId, token) => dispatch(repoActions.uploadFiles(fileList,folderKey,userId, projectId, token)),
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(RepoSession));
+
+
+

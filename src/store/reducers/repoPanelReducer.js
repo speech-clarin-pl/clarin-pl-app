@@ -134,6 +134,18 @@ const initialState = {
 
     exportToEmuReady: false,
 
+    reactTourOpenDemoSession: false,
+
+}
+
+//otwieram folder demo session na potrzeby react tour
+
+const openDemoSession = (state, action) => {
+    const nextState = produce(state, draftState => {
+        draftState.reactTourOpenDemoSession = true;
+   })
+
+   return nextState;
 }
 
 // ##################################################
@@ -1075,9 +1087,10 @@ const repoPanelReducer = (state = initialState, action) => {
         case actionTypes.EXPORT_TO_EMU_DONE_SUCCESS: return exportToEmuDone(state,action);
 
         case actionTypes.EXPORT_TO_EMU_DONE_FAILED: return exportToEmuFailed(state,action);
-        
-
+    
         case actionTypes.KORPUS_DOWNLOADED: return korpusDownloaded(state,action);
+
+        case actionTypes.OPEN_DEMO_SESSION: return openDemoSession(state,action);
 
         
 

@@ -26,6 +26,7 @@ export {
     korpusDownloaded,
     removeSessionFromRepo,
     changeContainerName,
+    openDemoSession,
 } from './repo';
 
 export {

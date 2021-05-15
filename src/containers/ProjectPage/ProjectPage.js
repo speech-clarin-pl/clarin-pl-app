@@ -40,10 +40,9 @@ class ProjectPage extends Component {
     },
     {
       selector: '[data-tut="repoSession"]',
-      content: `Pliki możesz organizować w grupy zwane sesjami. Na początku stworzyliśmy dla Ciebie dwie przykładowe sesje: demo i sesję domyślną. 
-       Kliknij w sesje demo aby ją otworzyć. `,
+      content: `Pliki możesz organizować w grupy zwane sesjami. Na początku stworzyliśmy dla Ciebie dwie przykładowe sesje: demo i sesję domyślną.`,
        action: () => {
-        this.openDemoSession();
+        this.props.onOpenDemoSession();
       }
     },
     {
@@ -73,10 +72,6 @@ class ProjectPage extends Component {
   ]
 
 
-  openDemoSession = () => {
-    //alert("test")
-  }
-
   setIsTourOpen = (ifOpen) => {
     this.setState({
       isTourOpen: ifOpen
@@ -88,6 +83,7 @@ class ProjectPage extends Component {
     localStorage.removeItem('projectTitle');
     localStorage.removeItem('projectOwnerId');
   }
+
 
 
   componentWillMount = () => {
@@ -238,6 +234,7 @@ const mapDispatchToProps = dispatch => {
      onClearRecoStore: () => dispatch(projectActions.clearRecoStore()),
      onClearSegmentStore: () => dispatch(projectActions.clearSegmentStore()),
      onClearPreviewStore: () => dispatch(projectActions.clearPreviewStore()),
+     onOpenDemoSession: () => dispatch(projectActions.openDemoSession()),
     }
 }
 
