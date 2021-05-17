@@ -47,32 +47,94 @@ class ProjectPage extends Component {
     },
     {
       selector: '[data-tut="ikonkiRepo"]',
-      content: `Każdy plik posiada ikonki obrazujące status wykonania narzędzia automatycznego, odpowiednio od lewej: detekcja mowy, diaryzacja, rozpoznawanie mowy oraz segmentacja.`
+      content: `Każdy plik posiada ikonki obrazujące status wykonania narzędzia automatycznego, odpowiednio od lewej: detekcja mowy, diaryzacja, rozpoznawanie mowy oraz segmentacja. Klikając w ikonkę, przenosisz dany plik do kolejki danego narzędzia automatycznego.`
+    },
+    {
+      selector: '[data-tut="toolList"]',
+      content: `Dodaliśmy za Ciebie dwa pliki (opowiesci i kleska) do kolejki narzędzia służącego do automatycznego rozpoznawania mowy. Dzięki kolejkowaniu plików, możesz zdecydować którymi plikami chcesz się zajmować i wykonywać ich transkrypcje po koleii, plik po pliku.".`,
+      action: () => {
+      
+
+        
+
+        //console.log(this.props.history)
+        this.addDemoFilesToReco();
+      }
     },
     {
       selector: '[data-tut="zakladkiNarzedzi"]',
-      content: `Ikonki przy plikach w repozytorium odpowiadają zakładkom narzędzi automatycznych w tym miejscu. `
+      content: `Zwróć uwagę żę ikonki przy plikach w repozytorium odpowiadają zakładkom narzędzi automatycznych w tym miejscu. `
     },
     {
       selector: '[data-tut="dodajOpowiesciDoTranskrypcji"]',
-      content: `Dodaj plik "opowieści" do listy "Transkrypcje" klikając tą ikonkę.`
+      content: `Klikając w ikonki dodajesz odpowiedni plik do kolejki przetwarzania określonego narzędzia. Dla przykładu, klikając w ikonkę ?? dodajesz plik do kolejki automatycznego rozpoznawania mowy.`
     },
     {
       selector: '[data-tut="dodajKleskaDoTranskrypcji"]',
       content: `Możesz dodać wiele plików do dowolnego narzędzia np. do przetranskrybowania. Dodaj jeszcze plik "kleska" do listy "Transkrypcje".`
     },
-    {
-      selector: '[data-tut="toolList"]',
-      content: `W ten sposób dodajesz pliki do kolejki przetwarzania za pomocą danego narzędzia. Kliknij w nazwę pierwszego pliku na liście.".`
-    },
+    
     {
       selector: '[data-tut="audioEdytor"]',
       content: `Zobaczysz widok edytora danego narzędzia wraz z załadowanym do niego plikiem audio. ".`
     },
   ]
 
+  addDemoFilesToReco = () => {
+
+    //znajduje contenery kleska i opowiesci i dodaje je do listy rozpoznawania
+
+
+
+    const allContainers =  Object.values(this.props.repoData.containers.byId);
+    let kleska = null;
+    let opowiesci = null;
+
+    console.log(allContainers)
+    for (let i = 0; i<allContainers.length; i++){
+      let currCon =allContainers[i];
+      if(currCon.fileName === "kleska-29d61ce0.wav"){
+        kleska = currCon;
+      }
+      
+      if(currCon.fileName === "opowiesci-811cddd0.wav"){
+        opowiesci = currCon;
+      }
+    }
+
+    //console.log(kleska)
+    //console.log(opowiesci)
+
+   
+    
+    if(kleska) {
+      
+      this.props.addContainerToReco(kleska);
+    }
+    if(opowiesci) this.props.addContainerToReco(opowiesci);
+    
+  }
+
 
   setIsTourOpen = (ifOpen) => {
+
+    if(ifOpen){
+      //przechodze do zakładki Transkrypcje
+      const currLocation = this.props.history.location.pathname;
+      const splittedLoc = currLocation.split("/");
+      splittedLoc[splittedLoc.length-1] = "recognition";
+      let finalPathTo = '';
+      for (let j=0;j<splittedLoc.length;j++){
+        if(j===0){
+          finalPathTo = splittedLoc[j];
+        } else {
+          finalPathTo = finalPathTo + "/" + splittedLoc[j];
+        }
+        
+      }
+
+      this.props.history.push(finalPathTo);
+    }
     this.setState({
       isTourOpen: ifOpen
     })
@@ -217,12 +279,9 @@ class ProjectPage extends Component {
 const mapStateToProps = (state) => {
   return {
     currentProjectID: state.prolistR.chosenProjectID,
-    //currentProjectID: state.projectR.currentProjectID,
-   // currentProjectName: state.prolistR.chosenProjectName,
+    repoData: state.repoR,
     currentProjectName: state.projectR.currentProjectName,
     currentProjectOwner: state.prolistR.chosenProjectOwner,
-    //currentProjectOwner: state.projectR.currentProjectOwner,
-
   }
 }
 
@@ -235,6 +294,7 @@ const mapDispatchToProps = dispatch => {
      onClearSegmentStore: () => dispatch(projectActions.clearSegmentStore()),
      onClearPreviewStore: () => dispatch(projectActions.clearPreviewStore()),
      onOpenDemoSession: () => dispatch(projectActions.openDemoSession()),
+     addContainerToReco: (container) => dispatch(projectActions.addContainerToReco(container)),
     }
 }
 

@@ -27,6 +27,7 @@ export {
     removeSessionFromRepo,
     changeContainerName,
     openDemoSession,
+    addDemoFilesToReco,
 } from './repo';
 
 export {

@@ -4,11 +4,20 @@ import { saveAs } from 'file-saver';
 //import { saveSync } from 'save-file';
 //import streamSaver from 'StreamSaver';
 
-//otwieram sesje DEMO na potrzeby reacttour
 
+
+//otwieram sesje DEMO na potrzeby reacttour
 export const openDemoSession = () => {
     return {
         type: actionTypes.OPEN_DEMO_SESSION,
+    }
+}
+
+//dodaje dwa pliki do listy przetwarzania RECO na potrzeby reacttour
+
+export const addDemoFilesToReco = () => {
+    return {
+        type: actionTypes.ADD_DEMO_FILES_TO_RECO,
     }
 }
 
@@ -563,7 +572,6 @@ export const exportToEMU = (projectId, userId, token) => {
             }
         })
         .then(response => {
-            console.log(response)
 
             //jak jest gotowy to go ściągam
            // this.downloadCorpus(projectId, userId, token);

@@ -108,7 +108,10 @@ class RepoSession extends Component {
 
         
         let ifSessionOpened = this.state.ifOpened;
-        this.props.reactTourOpenDemoSession && this.props.sessionName==="demo" && ifSessionOpened===false?  ifSessionOpened = true : ifSessionOpened = false;
+        if(this.props.reactTourOpenDemoSession){
+            (this.props.sessionName==="demo" && ifSessionOpened===false)?  ifSessionOpened = true : ifSessionOpened = false;
+        }
+       
            
 
 
