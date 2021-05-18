@@ -42,15 +42,6 @@ class ToolItem extends Component {
         })
     }
 
-    componentDidUpdate = (prevProps,prevState) => {
-
-    }
-
-
-    componentDidMount = () => {
-     
-    }
-
     runPreview = (e) => {
         this.props.openPreview(this.props.container);
     }
@@ -352,7 +343,7 @@ class ToolItem extends Component {
                             <div className="col-sm-1 status align-self-center pl-1 pr-1">
                                 {statusIcon}
                             </div>
-                            <div className="col-sm-3 actionIcons align-self-center pl-1 pr-1">
+                            <div className="col-sm-3 actionIcons align-self-center pl-1 pr-1" data-tut="wlaczenieNarzedzia">
                                 {//playIcon
                                 }
                                 {
@@ -431,9 +422,6 @@ const mapStateToProps = state => {
         VADcontainerInPreview: state.vadR.vadContainerForPreview,
         DIAcontainerInPreview: state.diaR.diaContainerForPreview,
         SEGcontainerInPreview: state.segR.alignContainerForPreview,
-
-        //containersForRECO: state.recR.filesToUpload,
-        //containersFor
         
     }
 }
@@ -441,20 +429,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
        // runSpeechRecognition: (containerId, toolType, token) => dispatch(toolItemActions.runSpeechRecognition(containerId, toolType, token)),
-       // runSpeechSegmentation: (containerId, toolType, token) => dispatch(toolItemActions.runSpeechSegmentation(containerId, toolType, token)),
-       // runSpeechDiarization: (containerId, toolType, token) => dispatch(toolItemActions.runSpeechDiarization(containerId, toolType, token)),
-        //runSpeechVoiceActivityDetection: (containerId, toolType, token) => dispatch(toolItemActions.runSpeechVoiceActivityDetection(containerId, toolType, token)),
-
-        
-       // setContainerStatus:  (containerId, toolType, status) => dispatch(toolItemActions.setContainerStatus(containerId, toolType, status)),
-       // setToolItemStatus: (containerId, toolType, status) => dispatch(toolItemActions.setToolItemStatus(containerId, toolType, status)),
-       // updateFileState: (fileID, status,percLoaded) => dispatch(toolItemActions.updateFileState(fileID, status,percLoaded)),
-     //     openContainerInPreview: (container, openIn) => dispatch(toolItemActions.openContainerInPreview(container, openIn)),
-     
-    //    onGetProjectFilesForUser: (userId, projectId, token) => dispatch(recognitionActions.getProjectFilesForUser(userId,projectId, token)),
-    //    onFileRecognition: (file, entryId,userId, projectId, audioFrom) => dispatch(recognitionActions.initFileRecognition(file, entryId, userId, projectId, audioFrom)),
-    //    onRemoveItem:(fileId) => dispatch(recognitionActions.removeRecognitionItem(fileId)),
-    //    onOpenRecognitionAudioPreview:(entryId) => dispatch(recognitionActions.openRecognitionAudioPreview(entryId))
     }
 }
 

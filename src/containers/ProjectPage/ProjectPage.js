@@ -24,12 +24,11 @@ import Tour from 'reactour';
 
 //import axios from '../../axios-speechtools';
 
-
-
 class ProjectPage extends Component {
 
   state =  {
     isTourOpen: false,
+    kleskaContainer: null,
   }
 
   //dla  reacttour
@@ -51,15 +50,19 @@ class ProjectPage extends Component {
     },
     {
       selector: '[data-tut="toolList"]',
-      content: `Dodaliśmy za Ciebie dwa pliki (opowiesci i kleska) do kolejki narzędzia służącego do automatycznego rozpoznawania mowy. Dzięki kolejkowaniu plików, możesz zdecydować którymi plikami chcesz się zajmować i wykonywać ich transkrypcje po koleii, plik po pliku.".`,
+      content: `Dodaliśmy za Ciebie dwa pliki (opowiesci i kleska) do kolejki narzędzia służącego do automatycznego rozpoznawania mowy. Dzięki kolejkowaniu plików, możesz zdecydować którymi plikami chcesz się zajmować i wykonywać ich transkrypcje po koleii, plik po pliku.`,
       action: () => {
-      
-
-        
-
         //console.log(this.props.history)
         this.addDemoFilesToReco();
       }
+    },
+    {
+      selector: '[data-tut="wlaczenieNarzedzia"]',
+      content: `Klikając ikonkę przy nazwie pliku, możesz uruchomić np. automatyczne rozpoznawanie mowy. Po zakończeniu działania możesz podejrzeć rezultaty w oknie edytora oraz skorygować je ręcznie.`
+    },
+    {
+      selector: '[data-tut="audioEdytor"]',
+      content: `Klikając w wybrany plik z listy, możesz otworzyć go w edytorze. Umożliwia od odsłuchanie oraz edycje rezultatów narzędzi automatycznych. W tym przypadku istnieje możliwość włączenia automatycznego rozpoznawania mowy.`,
     },
     {
       selector: '[data-tut="zakladkiNarzedzi"]',
@@ -73,24 +76,16 @@ class ProjectPage extends Component {
       selector: '[data-tut="dodajKleskaDoTranskrypcji"]',
       content: `Możesz dodać wiele plików do dowolnego narzędzia np. do przetranskrybowania. Dodaj jeszcze plik "kleska" do listy "Transkrypcje".`
     },
-    
-    {
-      selector: '[data-tut="audioEdytor"]',
-      content: `Zobaczysz widok edytora danego narzędzia wraz z załadowanym do niego plikiem audio. ".`
-    },
   ]
 
   addDemoFilesToReco = () => {
 
     //znajduje contenery kleska i opowiesci i dodaje je do listy rozpoznawania
 
-
-
     const allContainers =  Object.values(this.props.repoData.containers.byId);
     let kleska = null;
     let opowiesci = null;
 
-    console.log(allContainers)
     for (let i = 0; i<allContainers.length; i++){
       let currCon =allContainers[i];
       if(currCon.fileName === "kleska-29d61ce0.wav"){
@@ -102,18 +97,18 @@ class ProjectPage extends Component {
       }
     }
 
-    //console.log(kleska)
-    //console.log(opowiesci)
-
-   
-    
     if(kleska) {
       
       this.props.addContainerToReco(kleska);
+      
     }
-    if(opowiesci) this.props.addContainerToReco(opowiesci);
+    if(opowiesci) {
+      this.props.addContainerToReco(opowiesci);
+      this.props.openContainerInRecoPreview(opowiesci); //od razu włączam opowiesci w edytorze
+    }
     
   }
+
 
 
   setIsTourOpen = (ifOpen) => {
@@ -295,6 +290,7 @@ const mapDispatchToProps = dispatch => {
      onClearPreviewStore: () => dispatch(projectActions.clearPreviewStore()),
      onOpenDemoSession: () => dispatch(projectActions.openDemoSession()),
      addContainerToReco: (container) => dispatch(projectActions.addContainerToReco(container)),
+     openContainerInRecoPreview: (container) => dispatch(projectActions.openContainerInRecoPreview(container)),
     }
 }
 

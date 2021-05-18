@@ -191,12 +191,12 @@ class RecognitionTool extends Component {
                      
 
                             <div className="row">
-                                <div className={"col-md-"+szer1col}>
+                                <div className={"col-md-"+szer1col} data-tut="toolList">
                                     {
                                         //<h3>Lista plików do przetworzenia</h3>
                                     }
                                    
-                                    <div className="file-list" data-tut="toolList">
+                                    <div className="file-list" >
                                 
                                         {
                                             !filelist?
