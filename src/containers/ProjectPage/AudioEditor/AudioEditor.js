@@ -886,7 +886,6 @@ class AudioEditor extends Component {
 		let segmentEditor = null;
 		if(this.peaks && (this.props.toolType==='VAD' || this.props.toolType==='DIA')){
 			if(this.state.currentSegments.length > 0){
-				console.log("UPDATE")
 				segmentEditor = <SegmentEditor 
 				czyZmieniono={this.state.czyZmienionoSegmenty}
 				segments={this.peaks.segments.getSegments()}
@@ -920,7 +919,7 @@ class AudioEditor extends Component {
 					<div id="demo-controls">
 							<div className="row">
 								<div className="col-12">
-									<div id="controls">
+									<div id="controls" data-tut="edytorControls">
 
 										<button data-tip data-for='fullscreen' data-action="resize"><FontAwesomeIcon icon={faExpand} className="faIcon" /></button>
 										<ReactTooltip id="fullscreen" delayShow={500}>
@@ -994,8 +993,8 @@ class AudioEditor extends Component {
 					</div>
 
 					<div id="waveform-container">
-						<div id="overview-container"></div>
-						<div id="zoomview-container"></div>
+						<div id="overview-container" data-tut="edytorNavigator"></div>
+						<div id="zoomview-container" data-tut="edytorWaveform"></div>
 					</div>
 
 					
@@ -1024,20 +1023,20 @@ class AudioEditor extends Component {
 							
 							}
 
-							{
-								previewInEMUBtn
-							}
+								<div data-tut="edytorOtworzwEMU">
+									{previewInEMUBtn}
+								</div>
+							
 
 							{
 								segmentEditor
 							}
 
-							{
-								transcriptWindow
-							}
-
-						
-
+							
+								<div data-tut="edytorTextField">
+									{transcriptWindow}
+								</div>
+							
 
 						</div>
 					</Aux>
@@ -1049,20 +1048,13 @@ class AudioEditor extends Component {
 const mapStateToProps = state => {
 	return {
 
-		// DIAItems: state.diaR.filesToUpload,
-		//	modalDisplay: state.projectR.modal,
-		//	ifRefusedAudio: state.segR.ifRefusedAudio,
 		token: state.homeR.token,
-
 		transcriptionSaved: state.projectR.transcriptionSaved,
         transcriptionData: state.recR.transcriptionData,
-
-
 		containerBinaryPreviewREC:state.repoR.containerBinaryPreviewREC,
 		containerBinaryPreviewVAD:state.repoR.containerBinaryPreviewVAD,
 		containerBinaryPreviewDIA:state.repoR.containerBinaryPreviewDIA,
 		containerBinaryPreviewSEG:state.repoR.containerBinaryPreviewSEG,
-
 		audioFileREC:state.repoR.containerAudioFileREC,
 		audioFileVAD:state.repoR.containerAudioFileVAD,
 		audioFileDIA:state.repoR.containerAudioFileDIA,
@@ -1073,19 +1065,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-
 		openPreviewInEMU: (container, token) => dispatch(audioEditorActions.openContainerInEMU(container, token)),
-
 		onSaveVADSegments: (container, toolType, token, segments) => dispatch(audioEditorActions.saveVADSegments(container, toolType, token, segments)),
 		onSaveDIASegments: (container, toolType, token, segments) => dispatch(audioEditorActions.saveDIASegments(container, toolType, token, segments)),
-
 		onSaveTranscription: (container, toolType, token, transcription) => dispatch(audioEditorActions.saveTranscription(container, toolType, token, transcription)),
 		onTranscriptionChanged: () => dispatch(audioEditorActions.transcriptionChanged()),
 		onLoadExistingTranscription: (container, toolType, token) => dispatch(audioEditorActions.loadTranscription(container, toolType, token)),
-		// onLoadAudioForPreview: (container, toolType, token) => dispatch(audioEditorActions.loadAudioForPreview(container, toolType, token)),
-         // onLoadBinaryForPreview: (container, toolType, token) => dispatch(audioEditorActions.loadBinaryForPreview(container, toolType, token)),
-		//onOpenModalHandler: () => dispatch(segmentActions.openModalProject()),
-       // onCloseModalHandler: () => dispatch(segmentActions.closeModalProject()),
 	}
 }
 

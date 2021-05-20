@@ -40,8 +40,6 @@ class TranscriptionTool extends Component {
 
     handleDropAudio = (audioFile) => {
         let audioFileURL = audioFile.fileURL;
-        console.log(audioFileURL)
-        //let audioFileId = audioFile.fileId;
         this.setState({
             audioFileURL: audioFileURL
         })
@@ -49,8 +47,6 @@ class TranscriptionTool extends Component {
 
     handleDropTxt = (txtFile) => {
         let txtFileURL = txtFile.fileURL;
-        //let txtFileId = txtFile.fileId;
-
         this.setState({
             txtFileURL: txtFileURL
         })

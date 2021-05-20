@@ -48,7 +48,6 @@ class RecognitionTool extends Component {
             return entry.id;
         })
 
-        //console.log(audioFilesArray)
 
         this.props.onStartBatchRecognition(audioFilesArray, audioFilesIds);
         this.closeModalHandler();

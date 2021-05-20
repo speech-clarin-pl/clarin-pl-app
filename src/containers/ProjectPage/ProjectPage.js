@@ -58,23 +58,42 @@ class ProjectPage extends Component {
     },
     {
       selector: '[data-tut="wlaczenieNarzedzia"]',
-      content: `Klikając ikonkę przy nazwie pliku, możesz uruchomić np. automatyczne rozpoznawanie mowy. Po zakończeniu działania możesz podejrzeć rezultaty w oknie edytora oraz skorygować je ręcznie.`
+      content: `Klikając ikonkę przy nazwie pliku, możesz uruchomić narzędzie automatyczne. Zielona ikonka oznacza, że dane narzędzie zostało już wykonane. Możesz podejrzeć rezultaty jego działania w oknie edytora i ewentualnie skorygować je ręcznie.`
     },
     {
       selector: '[data-tut="audioEdytor"]',
-      content: `Klikając w wybrany plik z listy, możesz otworzyć go w edytorze. Umożliwia od odsłuchanie oraz edycje rezultatów narzędzi automatycznych. W tym przypadku istnieje możliwość włączenia automatycznego rozpoznawania mowy.`,
+      content: `Edytor umożliwia odsłuchanie oraz edycje rezultatów narzędzi automatycznych. W tym przypadku mamy otworzony plik "celnik" oraz transkrypcję która została wykonana automatycznie. Możesz ją poprawić ręcznie i zapisać korekty.`,
     },
     {
-      selector: '[data-tut="zakladkiNarzedzi"]',
-      content: `Zwróć uwagę żę ikonki przy plikach w repozytorium odpowiadają zakładkom narzędzi automatycznych w tym miejscu. `
+      selector: '[data-tut="edytorControls"]',
+      content: `W tym miejscu możesz kontrolować różne aspekty odtwarzania pliku audio. Oznaczają one odpowiednio od lewej.
+        
+        - rozszerzenie widoku edytora do całej szerokości dostępnego okna
+        - Play/pausa [Alt+l]
+        - Odtworzenie ostatnich 3 sekund, począwszy od aktualnej pozycji głowicy [Alt+k]
+        - Odtworzenie ostatnich 5 sekund, począwszy od aktualnej pozycji głowicy [Alt+j]
+        - Przyśpieszenie odtwarzania [Alt+i]
+        - Spowolnienie odtwarzania [Alt+o]
+        - Orzybliżenie
+        - Oddalenie
+        - Dodanie segmentu
+      . Warto nauczyć się również skrótów klawiaturowych.`
     },
     {
-      selector: '[data-tut="dodajOpowiesciDoTranskrypcji"]',
-      content: `Klikając w ikonki dodajesz odpowiedni plik do kolejki przetwarzania określonego narzędzia. Dla przykładu, klikając w ikonkę ?? dodajesz plik do kolejki automatycznego rozpoznawania mowy.`
+      selector: '[data-tut="edytorNavigator"]',
+      content: `W tym miejscu widać podgląd całego pliku dźwiękowego. Dzięki temu możesz szybko nawigować do dowolnego jego fragmentu, bez względu na to jak długe jest nagranie.`
     },
     {
-      selector: '[data-tut="dodajKleskaDoTranskrypcji"]',
-      content: `Możesz dodać wiele plików do dowolnego narzędzia np. do przetranskrybowania. Dodaj jeszcze plik "kleska" do listy "Transkrypcje".`
+      selector: '[data-tut="edytorWaveform"]',
+      content: `W zależności od powiększenia, w tym miejscu widać fragment nagrania ze szczegółami. To tutaj możesz precyzyjnie ustawić głowicę odtwarzającą oraz granice segmentów.`
+    },
+    {
+      selector: '[data-tut="edytorOtworzwEMU"]',
+      content: `Jeżeli na pliku jest wykonane narzędzie segmentacji (jak w tym przypadku), możesz otworzyć plik w zewnętrznej aplikacji EMU [Screen] `
+    },
+    {
+      selector: '[data-tut="edytorTextField"]',
+      content: `W tym miejscu dokonujesz korekty narzędzi automatycznych. W tym przypadku jest to transkrypcja. Zmiany możesz zapisać do systemu [Alt+m]. Po zakończeniu transkrypcji, możesz przejść do kolejnego pliku na liścien [Alt+n]`
     },
   ]
 
@@ -85,11 +104,16 @@ class ProjectPage extends Component {
     const allContainers =  Object.values(this.props.repoData.containers.byId);
     let kleska = null;
     let opowiesci = null;
+    let celnik = null;
 
     for (let i = 0; i<allContainers.length; i++){
       let currCon =allContainers[i];
       if(currCon.fileName === "kleska-29d61ce0.wav"){
         kleska = currCon;
+      }
+
+      if(currCon.fileName === "celnik-1189e21a.wav"){
+        celnik = currCon;
       }
       
       if(currCon.fileName === "opowiesci-811cddd0.wav"){
@@ -98,13 +122,14 @@ class ProjectPage extends Component {
     }
 
     if(kleska) {
-      
       this.props.addContainerToReco(kleska);
-      
     }
     if(opowiesci) {
       this.props.addContainerToReco(opowiesci);
-      this.props.openContainerInRecoPreview(opowiesci); //od razu włączam opowiesci w edytorze
+    }
+    if(celnik){
+      this.props.addContainerToReco(celnik);
+      this.props.openContainerInRecoPreview(celnik); //od razu włączam opowiesci w edytorze
     }
     
   }
