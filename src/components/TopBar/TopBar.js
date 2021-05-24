@@ -5,21 +5,39 @@ import logoShort from '../../images/logo-clarin-pl-short.png';
 import { Link } from 'react-router-dom';
 //import { FormattedMessage } from 'react-intl';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faReply, faQuestion, faTerminal, faFileAlt } from '@fortawesome/free-solid-svg-icons';
+import { faReply, faQuestion, faTerminal, faEnvelope, faFighterJet } from '@fortawesome/free-solid-svg-icons';
 import EditableLabel from 'react-inline-editing';
 //import { render } from 'react-dom';
 import { connect } from 'react-redux';
 import * as projectListActions from '../../store/actions/projectsList';
+import Modal from '../../components/UI/Modal/Modal';
+import ContactToAdminFrom from '../../containers/ContactToAdminForm/ContactToAdminForm';
 
 class topBar extends Component {
 
-  
+    state = {
+        modal: false,
+    }
+
+    closeModalHandler = () => {
+        this.setState({
+            modal: false,
+        })
+    }
+
     _handleFocus = (text) => {
+        //TO DO
        // console.log('Focused with text: ' + text);
     }
 
+    openSendToAdminModal = (event) => {
+        event.preventDefault();
+        this.setState({
+            modal: true,
+        })
+    }
+
     _handleFocusOut = (text) => {
-       // console.log('Left editor with text: ' + this.props.projectID + " " + text + " " + this.props.userId + " " + this.props.token);
        this.props.onChangeProjectName(this.props.projectID, text, this.props.userId, this.props.token);
     }
 
@@ -32,8 +50,33 @@ class topBar extends Component {
         let navClassNames = ["TopBar", "navbar", "navbar-expand"];
         if (czyInit) navClassNames.push("init");
 
+        const fastTourLink = this.props.ifTourLink?
+                        <li className="nav-item">
+                            <a href="#" onClick={(e)=>{
+                                e.preventDefault();
+                                this.props.openTourHandler();
+                            }} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                id="navbarDropdownMenuLinkpomoc" 
+                                className={["nav-link", "navLink"].join(' ')}>
+                                <FontAwesomeIcon icon={faFighterJet} className="faIcon" /> Szybki przewodnik
+                            </a>
+                        </li>
+                 :
+                        null;
+
         return (
 
+            <>
+
+                <Modal 
+                    show={this.state.modal}
+					modalClosed={this.closeModalHandler}
+                    modalTitle={"Wyślij wiadomość do Administratora strony"}
+                >
+                    <ContactToAdminFrom />
+                </Modal> 
 
             <nav className={navClassNames.join(' ')}>
     
@@ -77,23 +120,10 @@ class topBar extends Component {
                                         onFocusOut={this._handleFocusOut}
                                     />
                                 </div>
-    
-                               
-                                {
-                                    /*
-
-                                     <span className="editField">{this.props.projectTitle}</span>
-                                        <a href="#"><i className={["fas", "fa-edit"].join(' ')}></i></a>
-                                    */
-                                }
-    
                             </div>
                         )}
                     </div>
-    
-    
-    
-    
+
                     <ul className="navbar-nav">
     
     
@@ -122,8 +152,6 @@ class topBar extends Component {
                             // pomoc 
                         }
 
-                        
-
                         <li className="nav-item">
                             <a href={process.env.PUBLIC_URL + '/apidoc/index.html'} 
                                     target="_blank" 
@@ -134,60 +162,28 @@ class topBar extends Component {
                             </a>
                         </li>
     
-                        <li className="nav-item">
-                            {
-                                /*
-                            <Link to="/help" className={["nav-link", "navLink"].join(' ')}
-    
-                                id="navbarDropdownMenuLinkpomoc"
-                                role="button"
-                                aria-haspopup="true"
-                                aria-expanded="false">
-    
-                                <i className="fas fa-question-circle"></i>
-    
-                                Pomoc
-    
-                            </Link>
-                                */
-                            }
-    
-                            <a href="#" onClick={(e)=>{
-                                e.preventDefault();
-                                this.props.openTourHandler();
-                            }} 
-                                target="_blank" 
-                                rel="noopener noreferrer"
-                                id="navbarDropdownMenuLinkpomoc" 
-                                className={["nav-link", "navLink"].join(' ')}>
-                                <FontAwesomeIcon icon={faQuestion} className="faIcon" /> Pomoc
-                            </a>
-                        </li>
+                        {
+                            fastTourLink
+                        }
 
                         <li className="nav-item">
-                            {
-                                /*
-                            <Link to="/help" className={["nav-link", "navLink"].join(' ')}
-    
-                                id="navbarDropdownMenuLinkpomoc"
-                                role="button"
-                                aria-haspopup="true"
-                                aria-expanded="false">
-    
-                                <i className="fas fa-question-circle"></i>
-    
-                                Pomoc
-    
-                            </Link>
-                                */
-                            }
     
                             <a href={process.env.PUBLIC_URL + '/docs/doc.html'} 
                                 target="_blank" 
                                 rel="noopener noreferrer"
                                 id="navbarDropdownMenuLinkpomoc" 
                                 className={["nav-link", "navLink"].join(' ')}>
-                                <FontAwesomeIcon icon={faFileAlt} className="faIcon" /> Dokumentacja
+                                <FontAwesomeIcon icon={faQuestion} className="faIcon" /> Dokumentacja
+                            </a>
+                        </li>
+
+                        <li className="nav-item">
+    
+                            <a href="#" 
+                                className={["nav-link", "navLink"].join(' ')}
+                                onClick={this.openSendToAdminModal}>
+                                
+                                <FontAwesomeIcon icon={faEnvelope} className="faIcon" /> Zgłoś do Admina
                             </a>
                         </li>
     
@@ -224,6 +220,7 @@ class topBar extends Component {
                 </div>
     
             </nav>
+            </>
         );
     }   
 }
@@ -240,10 +237,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		 // onLoadAudioForPreview: (container, toolType, token) => dispatch(audioEditorActions.loadAudioForPreview(container, toolType, token)),
-         // onLoadBinaryForPreview: (container, toolType, token) => dispatch(audioEditorActions.loadBinaryForPreview(container, toolType, token)),
-		//onOpenModalHandler: () => dispatch(segmentActions.openModalProject()),
-       // onCloseModalHandler: () => dispatch(segmentActions.closeModalProject()),
        onChangeProjectName: (projectId, newName, userId, token) => dispatch(projectListActions.editName(projectId, newName, userId, token))
 	}
 }

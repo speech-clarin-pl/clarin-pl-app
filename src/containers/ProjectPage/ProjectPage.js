@@ -95,6 +95,18 @@ class ProjectPage extends Component {
       selector: '[data-tut="edytorTextField"]',
       content: `W tym miejscu dokonujesz korekty narzędzi automatycznych. W tym przypadku jest to transkrypcja. Zmiany możesz zapisać do systemu [Alt+m]. Po zakończeniu transkrypcji, możesz przejść do kolejnego pliku na liścien [Alt+n]`
     },
+    {
+      selector: '[data-tut="edytorUruchomDlaWszystkich"]',
+      content: `Zamiast uruchamiać narzędzia pojedynczo, możesz je uruchomić jednocześnie do wszystkich plików znajdujących się w kolejce. W tym celu należy kliknąć w tym miejscu.`
+    },
+    {
+      selector: '[data-tut="EdytorPodpowiedzi"]',
+      content: `W tym miejscu znajdziesz wskazówki dotyczące zasady działania poszczególnych narzędzi oraz niezbędne skróty klawiaturowe.`
+    },
+    {
+      selector: '[data-tut="edytorExportCorpus"]',
+      content: `Wszystkie pliki na których zostały wykonane wszystkie poziomy annotacji (i ewentualnie poprawione przez Ciebie), mogą zostać wyeksportowane do gotowego korpusu w formacie EMU-SDMS. Po odczekaniu, będziesz mógł go ściągnąć w formacie ZIP.`
+    },
   ]
 
   addDemoFilesToReco = () => {
@@ -236,6 +248,7 @@ class ProjectPage extends Component {
                   openTourHandler={()=>this.setIsTourOpen(true)}
                   version="longinit" 
                   wide="yes" 
+                  ifTourLink={true}
                   language="pl" 
                   projectTitle={""+this.props.currentProjectName}
                   changeLn = {this.props.changeLn}

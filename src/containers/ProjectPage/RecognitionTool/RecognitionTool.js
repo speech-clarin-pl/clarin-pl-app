@@ -163,6 +163,7 @@ class RecognitionTool extends Component {
                         </div>)
                     } >
 
+                    
                     <ButtonLeftBar 
                         napis="Uruchom rozpoznawanie dla wszystkich"
                         iconType="file"
@@ -170,7 +171,7 @@ class RecognitionTool extends Component {
                         customeStyle={null}
                         disabled={false}
                         whenClicked={this.runRECinBatch}/>
-
+               
 
                 </LeftSiteBar>
 

@@ -14,13 +14,11 @@ const leftSiteBar = (props) => {
 				</div>
 
                 <div className={props.czyTopPart==="true" ? "hintPanel" : "resetHintPanel"}>
-                            <div className="btn-group-vertical btn-block" id="hint-buttons">
-
+                            <div className="btn-group-vertical btn-block" id="hint-buttons" data-tut="edytorUruchomDlaWszystkich">
                                 {props.children}
-
                             </div>
 
-                            <div id="hint-content"  data-scrollbar>
+                            <div id="hint-content"  data-scrollbar data-tut="EdytorPodpowiedzi">
                                 <div className="container-fluid texts">
                                     {props.desc} 
                                 </div> 

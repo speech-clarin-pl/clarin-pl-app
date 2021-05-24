@@ -18,10 +18,12 @@ const input = (props) => {
         case('input'):
             inputElement = <input 
                 onChange={props.whenchanged}
+                defaultValue={props.defaultValue}
                 className={inputClasses.join(' ')} {...props}/>;
             break;
         case('textarea'):
             inputElement = <textarea 
+                rows="7"
                 onChange={props.whenchanged}
                 className={inputClasses.join(' ')}
                  {...props}/>

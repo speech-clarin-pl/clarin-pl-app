@@ -469,7 +469,7 @@ class repoPanel extends Component {
          
                         </div>
 
-                        <div className="exportToEmu">
+                        <div className="exportToEmu" data-tut="edytorExportCorpus">
                             <ButtonLeftBar 
                                     napis="Eksportuj korpus do EMU-SDMS"
                                     icon={null}

@@ -353,7 +353,7 @@ class ProjectsListPage extends Component {
           currLn={this.props.currLn} />
 
           {
-          leftSiteBar
+          //leftSiteBar
           }
 
           {
