@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import HomePage from './containers/HomePage/HomePage';
+import RegisterConfirmationPage from './containers/RegisterConfirmationPage/RegisterConfirmationPage';
 import { Route, Switch } from 'react-router-dom';
 import ProjectPage from './containers/ProjectPage/ProjectPage';
 import ProjectsListPage from './containers/ProjectsListPage/ProjectsListPage';
@@ -76,10 +77,17 @@ class App extends Component {
 
           <Switch>
 
-          <Route path="/enterNewPass/:userId/:token" render={({match}) => (
-              <NewPasswordPage userId={match.params.userId} token={match.params.token} />
+            <Route path="/enterNewPass/:userId/:token" render={({match}) => (
+              <NewPasswordPage 
+                userId={match.params.userId} 
+                token={match.params.token}
+                currLn={this.state.currln} />
             )} />
 
+            <Route path="/confirmRegistration/:confirmationCode" render={(props) => (
+              <RegisterConfirmationPage {...props}
+                currLn={this.state.currln} />
+            )} />
 
             <Route path="/projects/:projectID" render={(props) => (
               <ProjectPage {...props}
