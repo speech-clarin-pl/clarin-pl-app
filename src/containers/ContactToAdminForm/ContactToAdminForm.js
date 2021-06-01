@@ -4,10 +4,10 @@ import './ContactToAdminForm.css';
 import {withRouter, Link} from 'react-router-dom';
 //import {FormattedMessage} from 'react-intl';
 import {connect} from 'react-redux';
-//import * as actionTypes from '../../../store/actions/actionsTypes';
+//import * as actionTypes from '../../store/actions/actionsTypes';
 import Input from '../../components/UI/Input/Input';
-import * as authActions from '../../store/actions/index';
-import {loader} from '../../index';
+import * as homeActions from '../../store/actions/index';
+//import {loader} from '../../index';
 
 
 class ContactToAdminForm extends Component {
@@ -20,13 +20,13 @@ class ContactToAdminForm extends Component {
                     type: 'text',
                     placeholder: 'Podaj email na których chcesz aby przyszła odpowiedź.'
                 },
-                value: '',
+                value: this.props.loggedEmail,
                 validation: {
                     required: true,
                     minLength: 3
                 },
-                valid: false,
-                touched: false
+                valid: true,
+                touched: true
             },
             message: {
                 elementType: 'input',
@@ -45,6 +45,7 @@ class ContactToAdminForm extends Component {
         },
 
         formIsValid:false,
+        emailSent: false,
     }
 
 
@@ -117,14 +118,16 @@ class ContactToAdminForm extends Component {
         event.preventDefault();
 
         //I am transforming the state to more compact form
-        /*
-        let registerData = {};
-        for (let formRegisterElement in this.state.registerform) {
-            registerData[formRegisterElement] = this.state.registerform[formRegisterElement].value;
+        let contactAdminData = {};
+        for (let contactElement in this.state.contactAdminForm) {
+            contactAdminData[contactElement] = this.state.contactAdminForm[contactElement].value;
         }
 
-        this.props.onRegister(registerData.registerName, registerData.registeremail, registerData.registerpass);   
-        */     
+        this.props.onSendEmailToAdmin(contactAdminData.email, contactAdminData.message, this.props.loggedEmail, this.props.token);   
+
+        this.setState({
+            emailSent: true
+        })
     }
 
     
@@ -144,16 +147,18 @@ class ContactToAdminForm extends Component {
 
                             <div className="col" key="a1">
 
-                                <p>Wiadomość zostanie wysłana na adres mklec@pjwstk.edu.pl oraz danijel@pjwstk.edu.pl.</p>
+                                <p>Wiadomość zostanie wysłana na adres mklec@pjwstk.edu.pl oraz danijel@pjwstk.edu.pl. <br></br>Jeżeli chcesz wysłać wiadomość z załącznikami, użyj własnego klienta pocztowego.</p>
+                                
                             
                                 <form onSubmit={this.sendEmailToAdmin}>  
                                     <div className="form-group">
                                         <Input 
                                             inputtype="input" 
                                             type="text"
-                                            label="Adres Email"
+                                            label="Adres Email (na który przyjdzie odpowiedź)"
                                             placeholder="Podaj swój adres email"
                                             name="adresEmail"
+                                            defaultValue={this.props.loggedEmail}
                                             touched = {this.state.contactAdminForm.email.touched}
                                             invalid={!this.state.contactAdminForm.email.valid}
                                             whenchanged={(event) => this.inputChangedHandler(event)}/>
@@ -170,7 +175,9 @@ class ContactToAdminForm extends Component {
                                             whenchanged={(event) => this.inputChangedHandler(event)}/>
                                     </div>
                                     
-                                    <button disabled={!this.state.formIsValid} className="btn btn-primary">
+                                    <button 
+                                        disabled={!this.state.formIsValid || this.state.emailSent} 
+                                        className="btn btn-primary">
                                         Wyślij wiadomość
                                     </button>
                                 </form> 
@@ -187,7 +194,7 @@ class ContactToAdminForm extends Component {
 const mapStateToProps = state => {
     return {
       //  isAuth: state.homeR.isAuth,
-      //  userToken: state.homeR.token,
+        token: state.homeR.token,
         loggedEmail: state.homeR.email,
       //  userName: state.homeR.userName,
       //  registrationMessage: state.homeR.registrationMessage,
@@ -204,6 +211,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        onSendEmailToAdmin:(email, message, loggedEmail, token) => dispatch(homeActions.sendEmailToAdmin(email,message,loggedEmail, token))
      //   onForgotPass: (emailaddr) => dispatch(authActions.forgotPass(emailaddr)),
      //   onLogIn: (email, pass) => dispatch(authActions.loginUser(email, pass)),
      //   onRegister: (userName, userEmail, userPass) => dispatch(authActions.registerUser(userName, userEmail, userPass)),

@@ -299,8 +299,6 @@ class LoginArea extends Component {
         }
 
 
-        console.log(formIsValid)
-
         this.setState({loginform: updatedLoginForm, loginFormIsValid: formIsValid});
     }
 

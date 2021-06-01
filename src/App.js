@@ -36,6 +36,10 @@ class App extends Component {
   componentDidMount() {
     const token = localStorage.getItem('token');
     const expiryDate = localStorage.getItem('expiryDate');
+    const userId = localStorage.getItem('userId');
+    const userName = localStorage.getItem('userName');
+    const email = localStorage.getItem('email');
+
     if (!token || !expiryDate) {
       return;
     }
@@ -43,11 +47,9 @@ class App extends Component {
       this.logoutHandler();
       return;
     }
-    const userId = localStorage.getItem('userId');
-    const userName = localStorage.getItem('userName');
-    const remainingMilliseconds =
-      new Date(expiryDate).getTime() - new Date().getTime();
-    this.props.onSetLoggedIn(userId, userName, token)
+    
+    const remainingMilliseconds = new Date(expiryDate).getTime() - new Date().getTime();
+    this.props.onSetLoggedIn(userId, userName, email, token)
     //this.setState({ isAuth: true, token: token, userId: userId });
     this.setAutoLogout(remainingMilliseconds);
   }
@@ -129,7 +131,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onLogout: () => dispatch(homeActions.logout()),
-    onSetLoggedIn: (userId, userName, token) => dispatch(homeActions.setLoggedIn(userId, userName, token))
+    onSetLoggedIn: (userId, userName, email, token) => dispatch(homeActions.setLoggedIn(userId, userName, email, token))
   }
 }
 

@@ -62,10 +62,11 @@ const forgotPass = (state, action) => {
 
 
 const logIn = (state, action) => {
-       // console.log(action)
+        console.log(action)
         return updateObject(state,{
             isAuth: action.isAuth,
             userName: action.userName,
+            email: action.email,
             token: action.token,
             authLoading: action.authLoading,
             userId:action.userId,

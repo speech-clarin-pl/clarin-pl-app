@@ -1,6 +1,8 @@
 import * as actionTypes from './actionsTypes';
 import axios from 'axios';
-import { createNotification } from '../../index';
+import {
+    createNotification
+} from '../../index';
 
 
 
@@ -23,7 +25,7 @@ export const forgotPassFailed = (error) => {
     }
     */
 
-    
+
     return {
         type: actionTypes.FORGOT_PASS_FAILED,
         message: finalMessage,
@@ -33,7 +35,7 @@ export const forgotPassFailed = (error) => {
 
 export const forgotPassAction = (message, resStatus) => {
 
-    createNotification('success',message);
+    createNotification('success', message);
 
     return {
         type: actionTypes.FORGOT_PASS,
@@ -44,19 +46,41 @@ export const forgotPassAction = (message, resStatus) => {
 export const forgotPass = (emailaddr) => {
     return dispatch => {
         dispatch(startLoading());
-        axios.post('/auth/forgotPass',{email: emailaddr})
-        .then(response => {
-            dispatch(stopLoading());
-            dispatch(forgotPassAction(response.data.message, response.status));
-        })
-        .catch(error => {
-            console.log(error.response)
-            dispatch(stopLoading());
-            dispatch(forgotPassFailed(error));
-        });
+        axios.post('/auth/forgotPass', {
+                email: emailaddr
+            })
+            .then(response => {
+                dispatch(stopLoading());
+                dispatch(forgotPassAction(response.data.message, response.status));
+            })
+            .catch(error => {
+                dispatch(stopLoading());
+                dispatch(forgotPassFailed(error));
+            });
     }
+}
 
-    
+export const sendEmailToAdmin = (email, message, loggedEmail, token) => {
+    return dispatch => {
+        dispatch(startLoading());
+        axios.post('/auth/sendEmailToAdmin', {
+                email,
+                message,
+                loggedEmail
+            }, {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            })
+            .then(response => {
+                dispatch(stopLoading());
+                createNotification('success', response.data.message);
+            })
+            .catch(error => {
+                dispatch(stopLoading());
+                createNotification('error', "Błąd wysłania wiadomości");
+            });
+    }
 }
 
 
@@ -69,20 +93,12 @@ export const registerUserActionFailed = (error) => {
     let finalMessage = error.response.data.message;
     let status = error.response.status;
 
-    if(error.response.data.data.length >= 1) {
-        for(let i =0; i< error.response.data.data.length; i++){
+    if (error.response.data.data.length >= 1) {
+        for (let i = 0; i < error.response.data.data.length; i++) {
             finalMessage = finalMessage + '\n';
             finalMessage = finalMessage + error.response.data.data[i].msg;
         }
     }
-
-    /*
-    if(status >= 500){
-        createNotification('error',finalMessage);
-    } else {
-        createNotification('warning',finalMessage);
-    }
-    */
 
     return {
         type: actionTypes.REGISTER_FAILED,
@@ -97,7 +113,7 @@ export const registerUserAction = (response) => {
     const userId = response.data.userId;
     const status = response.status;
 
-    createNotification('success',message);
+    createNotification('success', message);
 
     return {
         type: actionTypes.REGISTER,
@@ -109,20 +125,20 @@ export const registerUserAction = (response) => {
 export const registerUser = (userName, userEmail, userPass) => {
     return dispatch => {
         dispatch(startLoading());
-        axios.put('/auth/registration',{
-            name: userName,
-            email: userEmail,
-            password: userPass,
-        })
-        .then(response => {
-            dispatch(stopLoading());
-            dispatch(registerUserAction(response));
-        })
-        .catch(error => {
-            dispatch(stopLoading());
-            dispatch(registerUserActionFailed(error));
-        });
-    }    
+        axios.put('/auth/registration', {
+                name: userName,
+                email: userEmail,
+                password: userPass,
+            })
+            .then(response => {
+                dispatch(stopLoading());
+                dispatch(registerUserAction(response));
+            })
+            .catch(error => {
+                dispatch(stopLoading());
+                dispatch(registerUserActionFailed(error));
+            });
+    }
 }
 
 
@@ -133,10 +149,10 @@ export const registerUser = (userName, userEmail, userPass) => {
 //####################################################
 
 
-export const loginUserAction = (isAuth, token, authLoading, userId,userName,resStatus) => {
-   
+export const loginUserAction = (isAuth, token, authLoading, userId, userName, email, resStatus) => {
+
     //createNotification('success','Welcome '+userName);
-   
+
     return {
         type: actionTypes.LOG_IN,
         isAuth: isAuth,
@@ -145,22 +161,14 @@ export const loginUserAction = (isAuth, token, authLoading, userId,userName,resS
         userId: userId,
         userName: userName,
         resLoginStatus: resStatus,
-
+        email: email,
     }
 }
 
 export const loginUserActionFailed = (error) => {
-    
+
     let finalMessage = error.response.data.message;
     let status = error.response.status;
-
-   /*
-    if(status >= 500){
-        createNotification('error',finalMessage);
-    } else {
-        createNotification('warning',finalMessage);
-    }
-    */
 
     return {
         type: actionTypes.LOG_IN_FAILED,
@@ -172,7 +180,6 @@ export const loginUserActionFailed = (error) => {
 }
 
 export const setAutoLogout = (aftermilliseconds) => {
-   // console.log('setAutoLogout! after:' + aftermilliseconds);
     return {
         type: actionTypes.SET_AUTO_LOGOUT,
         autoLogoutAfter: aftermilliseconds,
@@ -180,75 +187,71 @@ export const setAutoLogout = (aftermilliseconds) => {
 }
 
 export const logout = () => {
-  //  console.log('LOG OUT');
-  createNotification('success','Zostałeś wylogowany!');
+    //  console.log('LOG OUT');
+    createNotification('success', 'Zostałeś wylogowany!');
     return {
         type: actionTypes.LOG_OUT
     }
 }
 
 // wywolywane pod odwiezeniu strony gdy token jest jeszcze w przegladarce
-export const setLoggedIn = (userId, userName, token) => {
-    return loginUserAction(true,token,false,userId,userName)
+export const setLoggedIn = (userId, userName, email, token) => {
+    return loginUserAction(true, token, false, userId, userName, email)
 }
 
 
 
 export const loginUser = (userEmail, userPass) => {
 
-    
+
     return dispatch => {
 
         dispatch(startLoading());
-        
-        axios.post('/auth/login',{
-            email: userEmail,
-            password: userPass
-        }).then(response => {
-          
-            dispatch(stopLoading());
 
-            if(response.status === 422){
-                throw new Error('Validation failed.');
-            }
+        axios.post('/auth/login', {
+                email: userEmail,
+                password: userPass
+            }).then(response => {
 
-            if(response.status === 404){
-              
-                throw new Error('Page not found')
-            }
+                dispatch(stopLoading());
 
-            if(response.status !== 200 & response.status !== 201){
-                throw new Error('Could not authenticate')
-            }
+                if (response.status === 422) {
+                    throw new Error('Validation failed.');
+                }
 
+                if (response.status === 404) {
 
-           // console.log(response);
-            //ustawic state na auth false i authloading na false
-            //przekierowanie
-            
-            localStorage.setItem('token',response.data.token);
-            localStorage.setItem('userId', response.data.userId);
-            localStorage.setItem('userName', response.data.userName);
+                    throw new Error('Page not found')
+                }
 
-            dispatch(loginUserAction(true, response.data.token,false,response.data.userId,response.data.userName, response.status));
+                if (response.status !== 200 & response.status !== 201) {
+                    throw new Error('Could not authenticate')
+                }
 
-            //gasnie za 10h
-            const remainingMilliseconds = 60 * 60 * 10000;
-            const expiryDate = new Date(
-                new Date().getTime() + remainingMilliseconds
-            );
-            localStorage.setItem('expiryDate', expiryDate.toISOString());
-            dispatch(setAutoLogout(remainingMilliseconds));
-            //this.props.history.replace('/projectsList');
+                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('userId', response.data.userId);
+                localStorage.setItem('userName', response.data.userName);
+                localStorage.setItem('email', response.data.email);
 
-        })
-        .catch(error => {
-            dispatch(stopLoading());
+                dispatch(loginUserAction(true, response.data.token, false, response.data.userId, response.data.userName, response.data.email, response.status));
 
-            dispatch(loginUserActionFailed(error));
-        });
+                //gasnie za 10h
+                const remainingMilliseconds = 60 * 60 * 10000;
+                const expiryDate = new Date(
+                    new Date().getTime() + remainingMilliseconds
+                );
+                localStorage.setItem('expiryDate', expiryDate.toISOString());
+                dispatch(setAutoLogout(remainingMilliseconds));
+                //this.props.history.replace('/projectsList');
+
+            })
+            .catch(error => {
+                dispatch(stopLoading());
+
+                dispatch(loginUserActionFailed(error));
+            });
     }
-   
+
 }
 
 
@@ -264,7 +267,7 @@ export const startLoading = () => {
 }
 
 export const stopLoading = () => {
-    
+
     return {
         type: actionTypes.STOP_LOADING,
     }

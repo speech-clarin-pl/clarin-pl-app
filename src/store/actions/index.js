@@ -71,6 +71,7 @@ export {
     logout,
     setLoggedIn,
     forgotPass,
+    sendEmailToAdmin,
 } from './home';
 
 export {

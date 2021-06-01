@@ -5,7 +5,7 @@ import logoShort from '../../images/logo-clarin-pl-short.png';
 import { Link } from 'react-router-dom';
 //import { FormattedMessage } from 'react-intl';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faReply, faQuestion, faTerminal, faEnvelope, faFighterJet } from '@fortawesome/free-solid-svg-icons';
+import { faReply, faQuestion, faTerminal, faEnvelope, faFighterJet, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import EditableLabel from 'react-inline-editing';
 //import { render } from 'react-dom';
 import { connect } from 'react-redux';
@@ -187,34 +187,19 @@ class topBar extends Component {
                             </a>
                         </li>
     
-    
-                        {
-                            // konto 
-    
-    
-                            /*
-            
-                            { czyInit ? null : (
-                            <li className="nav-item">
-                                <a className={["nav-link", "navLink"].join(' ')}
-                                   href="#" 
-                                   id="navbarDropdownMenuLinkkonto" 
-                                   role="button" 
-                                   aria-haspopup="true" 
-                                   aria-expanded="false">
-                                   <i className="fas fa-user-circle"></i> 
-                                    
-                                   <FormattedMessage
-                                        id="TopBar.konto"
-                                        defaultMessage=" Konto"
-                                        />
-                                        
-                                        </a>
-                            </li>
-                            )}
-                                    */
-    
-                        }
+                        <li className="nav-item">
+                            <a className={["nav-link", "navLink"].join(' ')}
+                                href="#" 
+                                id="navbarDropdownMenuLinkkonto" 
+                                role="button" 
+                                aria-haspopup="true" 
+                                aria-expanded="false">
+
+                                <FontAwesomeIcon icon={faUserCircle} className="faIcon" /> Twoje konto
+
+                            </a>
+                        </li>
+                       
                     </ul>
     
                 </div>
