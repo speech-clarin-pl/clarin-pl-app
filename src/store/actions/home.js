@@ -153,7 +153,9 @@ export const loginUserAction = (isAuth, token, authLoading, userId, userName, em
 
     //createNotification('success','Welcome '+userName);
 
-    return {
+
+
+    const objectToReturn = {
         type: actionTypes.LOG_IN,
         isAuth: isAuth,
         token: token,
@@ -162,7 +164,11 @@ export const loginUserAction = (isAuth, token, authLoading, userId, userName, em
         userName: userName,
         resLoginStatus: resStatus,
         email: email,
-    }
+    };
+
+    
+
+    return objectToReturn
 }
 
 export const loginUserActionFailed = (error) => {
@@ -196,14 +202,18 @@ export const logout = () => {
 
 // wywolywane pod odwiezeniu strony gdy token jest jeszcze w przegladarce
 export const setLoggedIn = (userId, userName, email, token) => {
+
+    console.log(userId)
+    console.log(userName)
+    console.log(email)
+    console.log(token)
+    //(isAuth, token, authLoading, userId, userName, email, resStatus)
     return loginUserAction(true, token, false, userId, userName, email)
 }
 
 
 
 export const loginUser = (userEmail, userPass) => {
-
-
     return dispatch => {
 
         dispatch(startLoading());
@@ -212,6 +222,8 @@ export const loginUser = (userEmail, userPass) => {
                 email: userEmail,
                 password: userPass
             }).then(response => {
+
+               
 
                 dispatch(stopLoading());
 
@@ -233,6 +245,7 @@ export const loginUser = (userEmail, userPass) => {
                 localStorage.setItem('userName', response.data.userName);
                 localStorage.setItem('email', response.data.email);
 
+                
                 dispatch(loginUserAction(true, response.data.token, false, response.data.userId, response.data.userName, response.data.email, response.status));
 
                 //gasnie za 10h
@@ -243,7 +256,6 @@ export const loginUser = (userEmail, userPass) => {
                 localStorage.setItem('expiryDate', expiryDate.toISOString());
                 dispatch(setAutoLogout(remainingMilliseconds));
                 //this.props.history.replace('/projectsList');
-
             })
             .catch(error => {
                 dispatch(stopLoading());

@@ -196,11 +196,12 @@ class ProjectPage extends Component {
     }
     const userId = localStorage.getItem('userId');
     const userName = localStorage.getItem('userName');
+    const email = localStorage.getItem('email');
     const remainingMilliseconds =
     new Date(expiryDate).getTime() - new Date().getTime();
 
 
-    this.props.onSetLoggedIn(userId,userName, token);    
+    this.props.onSetLoggedIn(userId,userName, email,token);    
 
     //laduje podstawowe informacje o projekcie
     //pozostale rzeczy beda pochodzic z serwera i db
@@ -321,7 +322,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
   return {
      onInitProjectHandler: (projectId, projectTitle, projectOwner) => dispatch(projectActions.initProject(projectId, projectTitle, projectOwner)),
-     onSetLoggedIn:(userId, userName, token) => dispatch(projectActions.setLoggedIn(userId, userName, token)),
+     onSetLoggedIn:(userId, userName, email, token) => dispatch(projectActions.setLoggedIn(userId, userName, email, token)),
      onLogOut: () => dispatch(projectActions.logout()),
      onClearRecoStore: () => dispatch(projectActions.clearRecoStore()),
      onClearSegmentStore: () => dispatch(projectActions.clearSegmentStore()),
