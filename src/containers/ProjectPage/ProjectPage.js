@@ -250,6 +250,9 @@ class ProjectPage extends Component {
                   version="longinit" 
                   wide="yes" 
                   ifTourLink={true}
+                  ifContactToAdmin={true}
+                  ifLogOut={true}
+                  ifAPI={true}
                   language="pl" 
                   projectTitle={""+this.props.currentProjectName}
                   changeLn = {this.props.changeLn}

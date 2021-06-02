@@ -42,13 +42,11 @@ class ProjectsListPage extends Component {
     }
     const userId = localStorage.getItem('userId');
     const userName = localStorage.getItem('userName');
+    const email = localStorage.getItem('email');
     const remainingMilliseconds =
-      new Date(expiryDate).getTime() - new Date().getTime();
+    new Date(expiryDate).getTime() - new Date().getTime();
 
-    //console.log(userId)
-    //console.log(userName)
-    //console.log(token)
-    this.props.onSetLoggedIn(userId,userName, token);
+    this.props.onSetLoggedIn(userId,userName, email, token);
     //this.setState({ isAuth: true, token: token, userId: userId });
     //this.setAutoLogout(remainingMilliseconds);
     
@@ -349,6 +347,10 @@ class ProjectsListPage extends Component {
           wide="yes"
           language="pl"
           projectTitle=""
+          ifTourLink={false}
+          ifContactToAdmin={true}
+          ifLogOut={true}
+          ifAPI={true}
           changeLn={this.props.changeLn}
           currLn={this.props.currLn} />
 
@@ -396,7 +398,7 @@ const mapDispatchToProps = dispatch => {
     onDelete: (projectId, userId, token) => dispatch(projectListActions.deleteProject(projectId, userId, token)),
     onNameEdit: (projectId, newProjectName,userId, token) => dispatch(projectListActions.editName(projectId, newProjectName,userId, token)),
     onGetProjectsList: (userId, token) => dispatch(projectListActions.getProjectsList(userId, token)),
-    onSetLoggedIn:(userId, userName, token) => dispatch(projectListActions.setLoggedIn(userId, userName, token)),
+    onSetLoggedIn:(userId, userName, email, token) => dispatch(projectListActions.setLoggedIn(userId, userName, email, token)),
     onLogOut: () => dispatch(projectListActions.logout()),
   }
 }

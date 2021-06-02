@@ -203,10 +203,6 @@ export const logout = () => {
 // wywolywane pod odwiezeniu strony gdy token jest jeszcze w przegladarce
 export const setLoggedIn = (userId, userName, email, token) => {
 
-    console.log(userId)
-    console.log(userName)
-    console.log(email)
-    console.log(token)
     //(isAuth, token, authLoading, userId, userName, email, resStatus)
     return loginUserAction(true, token, false, userId, userName, email)
 }

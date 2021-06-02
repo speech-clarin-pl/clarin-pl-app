@@ -16,6 +16,10 @@ const homePage = (props) => {
                 wide="no" 
                 language="pl" 
                 projectTitle=""
+                ifTourLink={false}
+                ifContactToAdmin={true}
+                ifLogOut={true}
+                ifAPI={true}
                 changeLn = {props.changeLn}
                 currLn = {props.currLn}
                  />
