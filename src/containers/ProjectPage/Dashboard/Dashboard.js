@@ -11,7 +11,6 @@ import {withRouter, Link } from 'react-router-dom';
 class Dashboard extends Component {
 
       
-
     render(){
 
         //let liczbaPlikowRepo = this.props.repoFiles.length;
@@ -49,7 +48,7 @@ class Dashboard extends Component {
                                     <div className={["card-header", "cardHeader"].join(' ')}>Aktualności</div>
                                     <div className="card-body text-dark">
                                     <h5 className="news-title">Wersja beta nowego serwisu </h5>
-                                    <div className="news-date">01.07.2020</div>
+                                    <div className="news-date">01.07.2021</div>
                                     <p className="news-body">
                                         Miło nam przywitać Cię w panelu nowego serwisu. <b>Wszelkie uwagi na temat jego funkcjonowania </b> są mile widziane. Skontaktuj się z nami jeżeli masz jakiekolwiek pytania:
                                     </p>
@@ -80,7 +79,7 @@ class Dashboard extends Component {
                                         </Link>
                                       </p>
                                       <p>
-                                        <Link to="/help"> 
+                                        <Link to="/docs/doc.html"> 
                                              <button type="button" className="btn btn-primary btn-block op-btn"><i className="fas fa-question-circle"></i> Pomoc</button>
                                         </Link>
                                      </p>
@@ -136,40 +135,27 @@ class Dashboard extends Component {
 
                                 
                             </div>
-                        </div>
-    
-    {
-        /*
-   
-                        <div className="row">
+
                             <div className="col-md-6">
                                 <div className="card mb-3">
                                     <div className={["card-header", "cardHeader"].join(' ')}>Użycie repozytorium</div>
                                     <div className="card-body text-dark">
-                                        <p> Liczba plikow w repozytorium: ({liczbaPlikowRepo})</p>
-                                        {
-                                        
-                                        //<p> Zajmowana pamiec: ({bytesToSize(miejscePlikowRepo)})</p>
-
-                                        }
-                                     
+                                        <p> Liczba plikow w repozytorium: </p>
+                                        <p> Zajmowana pamiec: </p>
                                     </div>
                                 </div>
                             </div>
                             <div className="col-md-6">
-                               
+                                <div className="card mb-3">
+                                    <div className={["card-header", "cardHeader"].join(' ')}>Transkrypcja wyrazów</div>
+                                    <div className="card-body text-dark">
+                                        <p> TO DO </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-
-                        */
-                                    }
-    
-    
                     </div>
-    
-                
-    
-                    <p> </p>
+
                                 
                     </div>
     

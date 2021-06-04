@@ -28,8 +28,7 @@ import { Tooltip } from '@material-ui/core';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolderPlus } from '@fortawesome/free-solid-svg-icons';
-
-//import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 //import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 
 
@@ -60,7 +59,13 @@ class repoPanel extends Component {
         let selectedContainers = this.props.currentlySelectedContainers;
 
         if(selectedSession[0] !== null && selectedSession.length > 0) {
-            alert("Czy chcesz usunąć sesję wraz ze wszystkimi plikami w tej sesji?")
+            const sessionIdToRemove = selectedSession[0];
+
+            //dowiaduje się nazwy sesji
+            const sessionNameToRemove = this.props.repoData.sessions.byId[sessionIdToRemove].sessionName?this.props.repoData.sessions.byId[sessionIdToRemove].sessionName:"unknown";
+
+            
+            this.removeSession(sessionIdToRemove,sessionNameToRemove);
         } else {
             //usuwam zaznaczone containery
             for(let i=0;i<selectedContainers.length;i++){
@@ -398,16 +403,24 @@ class repoPanel extends Component {
                                 onAddContainerToAlign = {(container) => this.addContainerToAlignList(container)}/>
         })
 
-       
+        const trackIconComp = <Tooltip title="Usuń zaznaczony obiekt">
+                                <a href="#" role="button" >
+                                    <FontAwesomeIcon icon={faTrash} onClick={this.removeObjectFromRepo}/> 
+                                </a>
+                            </Tooltip>
 
-        //onAddContainerToDIA = {(containerId) => this.addContainerToDIAList(containerId)}
-        //onAddContainerToVAD = {(containerId) => this.addContainerToVADList(containerId)}
-        //onAddContainerToReco = {(containerId) => this.addContainerToRecoList(containerId)}
-       //onAddContainerToAlign = {(containerId) => this.addContainerToAlignList(containerId)}/>
+        let trashIcon = null;
 
+        //jeżeli jest zaznaczona jakaś sesja
+        if((this.props.currentlySelectedSessions[0] !== null && this.props.currentlySelectedSessions.length > 0)){
+            trashIcon = trackIconComp;
+        } 
 
+        //jeżeli jest zaznaczony jakiś kontener
+        if(this.props.currentlySelectedContainers[0] !== null && this.props.currentlySelectedContainers.length > 0){
+            trashIcon = trackIconComp;
+        } 
 
- 
 
 		return (
 			<Aux>
@@ -447,24 +460,19 @@ class repoPanel extends Component {
                             </Tooltip>
                             
                             {
-                            /*
-                            <Tooltip title="Usuń zaznaczony obiekt">
-                                <a href="#" role="button" onClick={this.removeObjectFromRepo}>
-                                    <FontAwesomeIcon icon={faTrash} /> 
-                                </a>
-                            </Tooltip>
-                            */
+                               
+                               trashIcon
                             }
-
                             
 
-                            
+
+
+      
                             
                         </div>
 
                         <div className="fileList" data-tut="repoSession">
                       
-                            
                             {listaSesji}
          
                         </div>
@@ -477,15 +485,6 @@ class repoPanel extends Component {
                                     disabled={false}
                                     whenClicked={this.openConfirmExportToEmu}/>
                         </div>
-
-                        
-
-                        {
-                            //<div className="CardRepo">
-                           //     <UploadAudio />
-                           // </div>
-                        }
-                        
 					</div>
 				</div>
 
@@ -496,50 +495,38 @@ class repoPanel extends Component {
 }
 
 const mapStateToProps = (state) => {
-	return {
-        //repoSessions: state.repoR,
+    return {
         repoData: state.repoR,
         currentlySelectedSessions: state.repoR.currentlySelectedSessions,
         currentlySelectedContainers: state.repoR.currentlySelectedContainers,
         currentProjectID: state.projectR.currentProjectID,
-		currentProjectName: state.projectR.currentProjectName,
+        currentProjectName: state.projectR.currentProjectName,
         currentProjectOwner: state.projectR.currentProjectOwner,
         token: state.homeR.token,
         modal: state.projectR.modal,
         exportToEmuReady: state.repoR.exportToEmuReady,
-        //reactTourOpenDemoSession: state.repoR.reactTourOpenDemoSession,
-	}
+    }
 }
 
 const mapDispatchToProps = dispatch => {
-	return {
-    //	onUploadFiles: (fileList, folderKey, userId, projectId, token) => dispatch(repoActions.uploadFiles(fileList,folderKey,userId, projectId, token)),
-    
-    onExportToEMU: (projectId, userId, token) => dispatch(repoActions.exportToEMU(projectId, userId, token)),
+    return {
 
-    onSelectSession: (sessionId) => dispatch(repoActions.selectSession(sessionId)),
-    onSelectContainer: (containerId) => dispatch(repoActions.selectContainer(containerId)),
-    onGetProjectFilesForUser: (userId, projectId, token) => dispatch(repoActions.getProjectFilesForUser(userId, projectId, token)),
-  
-    removeContainerFromRepo: (userId, projectId, sessionId, containerId, token) => dispatch(repoActions.removeContainerFromRepo(userId, projectId, sessionId,containerId,token)),
-
-    onOpenModalHandler: () => dispatch(repoActions.openModalProject()),
-
-    onCloseModalHandler: () => dispatch(repoActions.closeModalProject()),
-
-    addContainerToDIA: (container) => dispatch(repoActions.addContainerToDIA(container)),
-    addContainerToVAD: (container) => dispatch(repoActions.addContainerToVAD(container)),
-    addContainerToReco: (container) => dispatch(repoActions.addContainerToReco(container)),
-    addContainerToAlign: (container) => dispatch(repoActions.addContainerToAlign(container)),
-
-    onKorpusDownloaded: () => dispatch(repoActions.korpusDownloaded()),
-    
-    createNewSession: (sessionName, projectId, userId, token) => dispatch(repoActions.createNewSession(sessionName, projectId, userId, token)),
-
-    removeSessionFromRepo: (userId, projectId, sessionId, token) => dispatch(repoActions.removeSessionFromRepo(userId, projectId, sessionId, token)),
-
-    changeContainerName: (container, text, token) => dispatch(repoActions.changeContainerName(container,text, token)),
-	}
+        onExportToEMU: (projectId, userId, token) => dispatch(repoActions.exportToEMU(projectId, userId, token)),
+        onSelectSession: (sessionId) => dispatch(repoActions.selectSession(sessionId)),
+        onSelectContainer: (containerId) => dispatch(repoActions.selectContainer(containerId)),
+        onGetProjectFilesForUser: (userId, projectId, token) => dispatch(repoActions.getProjectFilesForUser(userId, projectId, token)),
+        removeContainerFromRepo: (userId, projectId, sessionId, containerId, token) => dispatch(repoActions.removeContainerFromRepo(userId, projectId, sessionId, containerId, token)),
+        onOpenModalHandler: () => dispatch(repoActions.openModalProject()),
+        onCloseModalHandler: () => dispatch(repoActions.closeModalProject()),
+        addContainerToDIA: (container) => dispatch(repoActions.addContainerToDIA(container)),
+        addContainerToVAD: (container) => dispatch(repoActions.addContainerToVAD(container)),
+        addContainerToReco: (container) => dispatch(repoActions.addContainerToReco(container)),
+        addContainerToAlign: (container) => dispatch(repoActions.addContainerToAlign(container)),
+        onKorpusDownloaded: () => dispatch(repoActions.korpusDownloaded()),
+        createNewSession: (sessionName, projectId, userId, token) => dispatch(repoActions.createNewSession(sessionName, projectId, userId, token)),
+        removeSessionFromRepo: (userId, projectId, sessionId, token) => dispatch(repoActions.removeSessionFromRepo(userId, projectId, sessionId, token)),
+        changeContainerName: (container, text, token) => dispatch(repoActions.changeContainerName(container, text, token)),
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(repoPanel));
