@@ -424,8 +424,6 @@ class repoPanel extends Component {
 
 		return (
 			<Aux>
-
-               
                 <Modal 
                     show={this.state.modal}
 					modalClosed={this.closeModalHandler}

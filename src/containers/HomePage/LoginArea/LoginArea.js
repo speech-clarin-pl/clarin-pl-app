@@ -601,9 +601,14 @@ class LoginArea extends Component {
                             <div>
 
                                 <h4>Witaj: <span className="loggedAs">{this.props.userName}</span></h4>
+                                {
+                                    /*
                                 <p>Jeżeli chcesz skorzystać z usług z lini poleceń, użyj poniższego klucza API (czytaj więcej <a href="/docs/api.html" target="_blank">TUTAJ</a>):</p>
                                 <p style={{fontSize:'10px'}}><b>{this.props.userToken}</b></p>
                                 <p>Jeżeli chcesz skorzystać z interfejsu graficznego</p>
+                                    */
+                                }
+                                
 
                                 <Link to="/projectsList">
                                     <button className="btn btn-primary btn-lg btn-block gotoprojects">
@@ -611,15 +616,19 @@ class LoginArea extends Component {
                                     </button>
                                 </Link>
 
-                                <div> lub </div>
+                                {
+                                    /*
+                                        <button 
+                                            className="btn btn-secondary"
+                                            onClick={this.logOutHandler}>
 
-                                <button 
-                                    className="btn btn-secondary"
-                                    onClick={this.logOutHandler}>
+                                            Wyloguj się
+                                        
+                                        </button>
+                                    */
+                                }
 
-                                    Wyloguj się
                                 
-                                </button>
 
                             </div>
 
