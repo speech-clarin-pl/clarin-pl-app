@@ -585,9 +585,6 @@ export const exportToEMU = (projectId, userId, token) => {
 }
 
 export const getRepoStats = (projectId, token) => {
-    console.log("aaaaadd")
-    console.log(projectId)
-    console.log(token)
     return dispatch => {
         axios.get('/repoFiles/getRepoStats/'+projectId, {
             headers: {
