@@ -111,7 +111,6 @@ class UploadAudio extends Component {
             resolve(response);
           })
           .catch(error=>{
-
             reject(error);
 
           });
@@ -126,29 +125,30 @@ class UploadAudio extends Component {
 
       const promises = [];
 
-     
       this.state.files.forEach(file => {
-        promises.push(this.sendRequest(file));
+        //wysyłam tylko te które przeszły walidacje
+        if(this.state.uploadValid[file.name] === true){
+          promises.push(this.sendRequest(file));
+        }
+        
       });
 
       //czekam aż wszystkie pliki się załadują
-      try {
-        await Promise.all(promises);
+ 
+        Promise.all(promises)
+        .then(()=>{
+          console.log("TAK")
+          this.setState({ successfullUploaded: true, uploading: false });
+        })
+        .catch(()=>{
+          console.log("NIE")
+          this.setState({ successfullUploaded: false, uploading: false });
+        })
     
-        this.setState({ successfullUploaded: true, uploading: false });
-
-         // this.props.onGetProjectFilesForUser(
-         //  this.props.currentProjectOwner, 
-         //  this.props.currentProjectID,
-         //  this.props.token);
-         // this.setState({ files: [], successfullUploaded: true,  uploading: false });
-
-
-      } catch (e) {
+ 
         
-        // TO DO: musze dorobić jakiś error handling tutaj - narazie jest tylko to
-        this.setState({ successfullUploaded: false, uploading: false });
-      }
+
+  
 
     }
 

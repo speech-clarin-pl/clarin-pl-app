@@ -173,7 +173,7 @@ export const loginUserAction = (isAuth, token, authLoading, userId, userName, em
 
 export const loginUserActionFailed = (error) => {
 
-    let finalMessage = error.response.data.message;
+    let finalMessage = error.response.data?error.response.data.message:"";
     let status = error.response.status;
 
     return {
