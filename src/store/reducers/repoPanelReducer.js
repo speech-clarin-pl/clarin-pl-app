@@ -136,6 +136,8 @@ const initialState = {
 
     reactTourOpenDemoSession: false,
 
+    repoStats: null,
+
 }
 
 //otwieram folder demo session na potrzeby react tour
@@ -748,6 +750,14 @@ const korpusDownloaded = (state, action) => {
     
 }
 
+const getRepoStats = (state, action) => {
+    const nextState = produce(state, draftState => {
+        draftState.repoStats = action.repoStats;
+    })
+
+    return nextState;
+}
+
 
 
 
@@ -1049,6 +1059,8 @@ const repoUploadFilesModalOpen = (state,action) => {
 
 const repoPanelReducer = (state = initialState, action) => {
     switch(action.type){
+
+        case actionTypes.GET_REPO_STATS: return getRepoStats(state,action);
 
         case actionTypes.SET_CONTAINER_STATUS: return changeContainerStatus(state,action);
 

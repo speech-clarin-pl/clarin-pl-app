@@ -7,7 +7,6 @@ export function bytesToSize(bytes){
 }
 
 export function getExt(path){
-    console.log(path)
     return (path.match(/(?:.+..+[^\/]+$)/ig) != null) ? path.split('.').slice(-1): 'null';
   // return  path.split('.').slice(-1);
 }

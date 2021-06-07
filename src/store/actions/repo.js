@@ -564,7 +564,6 @@ export const exportToEMUSuccess = (message) => {
 
 //it initializes creating corpus on the serwer
 export const exportToEMU = (projectId, userId, token) => {
-    console.log("Export to emu");
     return dispatch => {
         axios.get('/repoFiles/createCorpus/'+projectId, {
             headers: {
@@ -582,6 +581,25 @@ export const exportToEMU = (projectId, userId, token) => {
             console.log(error)
             dispatch(exportToEMUFailed(error.message));
         });
+    }
+}
+
+export const getRepoStats = (projectId, token) => {
+    console.log("aaaaadd")
+    console.log(projectId)
+    console.log(token)
+    return dispatch => {
+        axios.get('/repoFiles/getRepoStats/'+projectId, {
+            headers: {
+                Authorization: 'Bearer ' + token
+            }
+        })
+        .then(response => {
+            dispatch({
+                type: actionTypes.GET_REPO_STATS,
+                repoStats: response.data.repoStats,
+            });
+        })
     }
 }
 

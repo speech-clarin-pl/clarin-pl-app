@@ -28,6 +28,7 @@ export {
     changeContainerName,
     openDemoSession,
     addDemoFilesToReco,
+    getRepoStats,
 } from './repo';
 
 export {

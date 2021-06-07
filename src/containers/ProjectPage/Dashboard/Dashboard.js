@@ -6,10 +6,15 @@ import FooterTool from '../FooterTool/FooterTool';
 import LeftSiteBar from '../LeftSiteBar/LeftSiteBar';
 import { connect } from 'react-redux';
 import {withRouter, Link } from 'react-router-dom';
+import * as projectActions from '../../../store/actions/index';
+import {bytesToSize} from '../../../utils/utils';
 //import {bytesToSize} from '../../../utils/utils';
 
 class Dashboard extends Component {
 
+    componentDidMount(){
+        this.props.onGetRepoStats(this.props.projectId, this.props.token);
+    }
       
     render(){
 
@@ -140,8 +145,10 @@ class Dashboard extends Component {
                                 <div className="card mb-3">
                                     <div className={["card-header", "cardHeader"].join(' ')}>Użycie repozytorium</div>
                                     <div className="card-body text-dark">
-                                        <p> Liczba plikow w repozytorium: </p>
-                                        <p> Zajmowana pamiec: </p>
+                                        <p> Liczba kontenerów w repozytorium: {this.props.repoStats? this.props.repoStats.containersNumber: null}</p>
+                                        <p> Zajmowana pamiec przez wgrane pliki: {this.props.repoStats? bytesToSize(this.props.repoStats.weightOfOryginal): null}</p>
+                                        <p> Zajmowana pamiec przez przekonwertowane pliki: {this.props.repoStats? bytesToSize(this.props.repoStats.weightOfConverted): null}</p>
+                                        <p> Całkowieta zajmowana pamięć repozytorium: {this.props.repoStats? bytesToSize(this.props.repoStats.totalWeight): null}</p>
                                     </div>
                                 </div>
                             </div>
@@ -176,13 +183,16 @@ const mapStateToProps = (state) => {
         containersForREC: state.recR.containersForREC, //pliki do rozpoznawania
         containersForSEG: state.segR.containersForSEG, //pliko do segmentacji 
         repoFiles: state.repoR.files,
+        repoStats: state.repoR.repoStats,
+        token: state.homeR.token,
+        projectId: state.projectR.currentProjectID,
     }
   }
   
   const mapDispatchToProps = dispatch => {
     return {
       //onOpenModalHandler: (actionType,projectId, projectName) => dispatch(projectListActions.openModal(actionType,projectId, projectName)),
- 
+        onGetRepoStats: (projectId, token) => dispatch(projectActions.getRepoStats(projectId, token)),
     }
   }
 
