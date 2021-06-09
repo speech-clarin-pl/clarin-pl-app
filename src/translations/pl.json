@@ -3,5 +3,6 @@
     "TopBar.konto": "Konto",
     "Jumbotron.lead": "Łatwa w użyciu platfroma do analizy sygnału mowy w nagraniach dźwiękowych",
     "Jumbotron.sublead": "Znajdziesz tutaj narzędzia do rozpoznawania mowy, transkrypcji, segmentacji, analizy itp.",
-    "Jumbotron.register": "Zarejestruj się"
+    "Jumbotron.register": "Zarejestruj się",
+    "HomegotoProjectBtn": "Przejdź do listy swoich korpusów"
 }

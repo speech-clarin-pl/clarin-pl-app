@@ -408,8 +408,6 @@ const repoRemoveSessionSuccess = (state, action) => {
         //zapisuje liste contenerów które też trzeba usunąć
         let conteneryDoUsuniecia = state.sessions.byId[sessionId].containers;
 
-        console.log(conteneryDoUsuniecia)
-
         
         //usuwam samą sesje
         let newSessions = Object.keys(state.sessions.byId).reduce((object, key) => {
@@ -420,8 +418,6 @@ const repoRemoveSessionSuccess = (state, action) => {
         },{});
 
          draftState.sessions.byId = newSessions;
-
-         console.log(newSessions)
 
          //usuwam teraz kontenery
 
@@ -535,13 +531,14 @@ const repoCreateSession = (state, action) => {
    const nextState = produce(state, draftState => {
 
         draftState.sessions.byId = {
-            ...draftState.sessions.byId,
             [sessionId]: {
                 id : sessionId,
                 sessionName : sessionName,
                 ifSelected : false,
                 containers : []
             },
+            ...draftState.sessions.byId,
+            
         };
        draftState.sessions.allIds.push(sessionId);
 

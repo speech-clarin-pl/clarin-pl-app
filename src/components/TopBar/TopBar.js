@@ -207,7 +207,7 @@ class topBar extends Component {
     
                         {
                           
-                          /*
+                       
                           <li className={["nav-item", "dropdown"].join(' ')}>
                             <a  className={["nav-link", "dropdown-toggle", "navLink"].join(' ')} 
                                 href="#" 
@@ -223,7 +223,7 @@ class topBar extends Component {
                               <a className="dropdown-item" onClick={() => alert("EN")}>EN</a>
                           </div>
                           </li>
-                          */
+                         
                            
                         }
     

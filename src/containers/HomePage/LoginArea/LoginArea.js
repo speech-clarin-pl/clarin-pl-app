@@ -8,7 +8,7 @@ import {connect} from 'react-redux';
 import Input from '../../../components/UI/Input/Input';
 import * as authActions from '../../../store/actions/index';
 import {loader} from '../../../index';
-
+import {FormattedMessage} from 'react-intl'
 
 class LoginArea extends Component {
 
@@ -522,7 +522,14 @@ class LoginArea extends Component {
 
                                 <Link to="/projectsList">
                                     <button className="btn btn-primary btn-lg btn-block gotoprojects">
-                                        Przejdź do listy swoich korpusów
+
+                                        
+                                    <FormattedMessage
+                                        id="HomegotoProjectBtn"
+                                        description="napisz na przycisku do listy korpusów" // Description should be a string literal
+                                        defaultMessage="Przejdź do listy swoich korpusów" // Message should be a string literal
+                                    />
+
                                     </button>
                                 </Link>
 
@@ -612,7 +619,12 @@ class LoginArea extends Component {
 
                                 <Link to="/projectsList">
                                     <button className="btn btn-primary btn-lg btn-block gotoprojects">
-                                        Przejdź do listy swoich korpusów
+                                        <FormattedMessage
+                                            id="HomegotoProjectBtn"
+                                            description="napisz na przycisku do listy korpusów" // Description should be a string literal
+                                            defaultMessage="Przejdź do listy swoich korpusów" // Message should be a string literal
+                                        />
+
                                     </button>
                                 </Link>
 

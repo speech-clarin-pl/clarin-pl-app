@@ -3,5 +3,6 @@
     "TopBar.konto": "Account",
     "Jumbotron.lead": "Easy to use platform for analyzing the speech signal",
     "Jumbotron.sublead": "You'll find here tools for speech recognition, transcription, segmentation, analysis and much more",
-    "Jumbotron.register": "Register"
+    "Jumbotron.register": "Register",
+    "HomegotoProjectBtn": "Go to the projects list"
 }
