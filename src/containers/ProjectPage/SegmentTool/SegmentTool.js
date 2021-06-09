@@ -151,7 +151,13 @@ class SegmentTool extends Component {
 							<div className="row">
                                 <div className={"col-md-"+szer1col}>
                                     <div className="file-list">
-                                        {filelist}
+									    {
+                                            filelist.length == 0?
+                                            <div className="alert alert-primary" role="alert">
+                                                Dodaj pliki z repozytorium do listy segmentacji
+                                            </div>
+                                            :filelist
+                                        }
                                     </div>
                                 </div>
 

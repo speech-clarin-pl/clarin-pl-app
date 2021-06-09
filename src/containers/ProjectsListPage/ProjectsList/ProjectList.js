@@ -21,14 +21,17 @@ const projectsList = (props) => {
 
     return(
         <Aux>
+           
             <div className={"ProjectList"}>
                 {props.siteBar}
-                <table className="table">
-                    <tbody>
-                        {listHeader}
-                        {props.children}
-                    </tbody>
-                </table>
+                <div className="containerForListProject">
+                    <table className="table">
+                        <tbody>
+                            {listHeader}
+                            {props.children}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </Aux>
     );

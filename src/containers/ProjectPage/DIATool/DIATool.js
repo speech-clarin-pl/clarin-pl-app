@@ -184,7 +184,13 @@ class DIATool extends Component {
 										//<h3>Lista plików do przetworzenia</h3>
 									}
                                     <div className="file-list">
-                                        {filelist}
+										{
+                                            filelist.length == 0?
+                                            <div className="alert alert-primary" role="alert">
+                                                Dodaj pliki z repozytorium do listy diaryzacji
+                                            </div>
+                                            :filelist
+                                        }
                                     </div>
                                 </div>
 

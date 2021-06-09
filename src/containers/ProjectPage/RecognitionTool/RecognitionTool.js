@@ -124,7 +124,7 @@ class RecognitionTool extends Component {
 
         let filelist = null;
 
-        if (this.props.containersForREC.length > 0) {
+       // if (this.props.containersForREC.length > 0) {
 
                 filelist = this.props.containersForREC.map((file, i) => {
 
@@ -142,7 +142,7 @@ class RecognitionTool extends Component {
                     )
                 }  
             )
-        }
+      //  }
 
 
         return (
@@ -199,7 +199,7 @@ class RecognitionTool extends Component {
                                     <div className="file-list" >
                                 
                                         {
-                                            !filelist?
+                                            filelist.length === 0?
                                             <div className="alert alert-primary" role="alert">
                                                 Dodaj pliki z repozytorium do listy transkrypcji
                                             </div>

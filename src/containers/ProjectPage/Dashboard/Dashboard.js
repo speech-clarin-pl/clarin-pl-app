@@ -18,19 +18,14 @@ class Dashboard extends Component {
       
     render(){
 
-        //let liczbaPlikowRepo = this.props.repoFiles.length;
-        //let liczbaPlikowRepo = 0;
-        //let miejscePlikowRepo = 0;
-       // this.props.repoFiles.map(file => {
-       //     return miejscePlikowRepo = miejscePlikowRepo + file.size;
-       // });
+        console.log(this.props.location)
 
         return(
             <Aux>
     
                 <LeftSiteBar 
                     czyTopPart="true"
-                    desc="W tym miejscu znajdują się statystyki aktualnie wykonywanych usług oraz przestrzeni zajmowanej przez wgrane pliki do repozytorium." />
+                    desc="W tym miejscu znajdują się statystyki przestrzeni zajmowanej przez wgrane pliki do repozytorium oraz pomocne skróty." />
     
                 <SettingBar />
     
@@ -66,30 +61,59 @@ class Dashboard extends Component {
                             </div>
                             <div className="col-md-6">
 
-                                <div className="card mb-3">
-                                    <div className={["card-header", "cardHeader"].join(' ')}>Szybkie linki</div>
-                                    <div className="card-body text-dark">
-                                      
-                                      <p> 
-                                        <Link to={this.props.location.pathname.replace('dashboard','recognition')}>
-                                            <button type="button" className="btn btn-primary btn-block op-btn">
-                                                <i className="fas fa-comments"></i> Rozpoznawanie mowy
+                            <div className="card mb-3">
+                                <div className={["card-header", "cardHeader"].join(' ')}>Szybkie linki</div>
+                                <div className="card-body text-dark">
+                                    <p> 
+                                            <button type="button" className="btn btn-primary btn-block op-btn" onClick={()=>alert("test")}>
+                                                <i className="fas fa-comments"></i> Szybki przewodnik
                                             </button>
-                                        </Link>
-                                      </p>
-                                      <p>
-                                        <Link to={this.props.location.pathname.replace('dashboard','segment')}>
+                                    </p>
+                                    
+                                    <p> 
+                                        <a href="/docs/doc.html" target="_blank">
                                             <button type="button" className="btn btn-primary btn-block op-btn">
-                                                <i className="fas fa-cogs"></i> Segmentacja</button>
-                                        </Link>
-                                      </p>
-                                      <p>
-                                        <Link to="/docs/doc.html"> 
-                                             <button type="button" className="btn btn-primary btn-block op-btn"><i className="fas fa-question-circle"></i> Pomoc</button>
-                                        </Link>
-                                     </p>
-                                    </div>
+                                                <i className="fas fa-comments"></i> Instrukcja obsługi
+                                            </button>
+                                        </a>
+                                    </p>
+                                    <p> 
+                                        <a href="/apidoc/index.html" target="_blank">
+                                            <button type="button" className="btn btn-primary btn-block op-btn">
+                                                <i className="fas fa-comments"></i> Dokumentacja API
+                                            </button>
+                                        </a>
+                                    </p>
+                                    <p> 
+                                            <button type="button" className="btn btn-primary btn-block op-btn" onClick={()=>alert("test")}>
+                                                <i className="fas fa-comments"></i> Zgłoś awarię bądź sugestię
+                                            </button>
+                                    </p>
+                                    <p> 
+                                            <button type="button" className="btn btn-primary btn-block op-btn" onClick={()=>alert("test")}>
+                                                <i className="fas fa-comments"></i> Wyloguj
+                                            </button>
+                                    </p>
+                                    {
+                                        /*
+                                            <p> 
+                                                <Link to={this.props.location.pathname.replace('dashboard','recognition')}>
+                                                    <button type="button" className="btn btn-primary btn-block op-btn">
+                                                        <i className="fas fa-comments"></i> Rozpoznawanie mowy
+                                                    </button>
+                                                </Link>
+                                                </p>
+                                                <p>
+                                                <Link to={this.props.location.pathname.replace('dashboard','segment')}>
+                                                    <button type="button" className="btn btn-primary btn-block op-btn">
+                                                        <i className="fas fa-cogs"></i> Segmentacja</button>
+                                                </Link>
+                                            </p>
+                                        */
+                                    }
+                                   
                                 </div>
+                            </div>
 
                                 {
 
