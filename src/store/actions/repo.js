@@ -225,6 +225,12 @@ export const runSpeechRecognition = (container, token) => {
             let errorMessage;
             let containerId;
             let toolType;
+
+            errorMessage = error.message;
+            containerId = container._id;
+            toolType = "REC";
+
+              /*
             if(error.response){
                 errorMessage = error.response.data.message;
                 containerId = error.response.data.containerId;
@@ -233,7 +239,7 @@ export const runSpeechRecognition = (container, token) => {
                 errorMessage = "Coś poszło nie tak z rozpoznawaniem mowy";
                 containerId = container._id;
                 toolType = "REC";
-            }
+            }*/
             dispatch(runSpeechRecognitionFailed(containerId, toolType, errorMessage));
         }); 
     }
