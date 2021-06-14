@@ -224,8 +224,10 @@ const speechRecognitionSuccess = (state, action) => {
 
 
 const speechRecognitionFailed = (state, action) => {
+
     const containerId = action.containerId;
     //const toolType = action.toolType; 
+
 
     let foundFileIdx = state.containersForREC.findIndex(file => {
         return file._id === containerId;

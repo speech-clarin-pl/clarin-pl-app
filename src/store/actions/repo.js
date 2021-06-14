@@ -74,8 +74,8 @@ export const runSpeechVoiceActivityDetection = (container, token) => {
         })
         .catch(error => {
             const errorMessage = error.response.data.message;
-            const containerId = error.response.data.containerId;
-            const toolType = error.response.data.toolType;
+            const containerId = container._id;
+            const toolType = "VAD"
             dispatch(runSpeechVoiceActivityDetectionFailed(containerId, toolType,errorMessage));
         }); 
     }
@@ -122,8 +122,8 @@ export const runSpeechDiarization = (container, token) => {
         })
         .catch(error => {
             const errorMessage = error.response.data.message;
-            const containerId = error.response.data.containerId;
-            const toolType = error.response.data.toolType;
+            const containerId = container._id;
+            const toolType = "DIA";
             dispatch(runSpeechDiarizationFailed(containerId, toolType,errorMessage));
         }); 
     }
@@ -173,9 +173,8 @@ export const runSpeechSegmentation = (container, token) => {
         })
         .catch((error) => {
             const errorMessage = error.response.data.message;
-            const containerId = error.response.data.containerId;
-            const toolType = error.response.data.toolType;
-
+            const containerId = container._id;
+            const toolType = "SEG";
             dispatch(runSpeechSegmentationFailed(errorMessage,containerId, toolType));
         }); 
     }
@@ -222,24 +221,9 @@ export const runSpeechRecognition = (container, token) => {
             dispatch(runSpeechRecognitionSuccess(container._id, response.data.toolType));
         })
         .catch(error => {
-            let errorMessage;
-            let containerId;
-            let toolType;
-
-            errorMessage = error.message;
-            containerId = container._id;
-            toolType = "REC";
-
-              /*
-            if(error.response){
-                errorMessage = error.response.data.message;
-                containerId = error.response.data.containerId;
-                toolType = error.response.data.toolType;
-            } else {
-                errorMessage = "Coś poszło nie tak z rozpoznawaniem mowy";
-                containerId = container._id;
-                toolType = "REC";
-            }*/
+            const errorMessage = error.response.data.message;
+            const containerId = container._id;
+            const toolType = "REC";
             dispatch(runSpeechRecognitionFailed(containerId, toolType, errorMessage));
         }); 
     }

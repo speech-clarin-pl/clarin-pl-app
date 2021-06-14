@@ -233,7 +233,7 @@ class ToolItem extends Component {
         let runProcessIcon = (
             <Tooltip title={"Uruchom " + this.props.type}>
                 <button onClick={this.runProcess}>
-                    <FontAwesomeIcon icon={iconType} className="faIcon"/>
+                    <FontAwesomeIcon icon={iconType} className="faIcon uruchomProcess"/>
                 </button>
             </Tooltip>
         );
@@ -276,7 +276,7 @@ class ToolItem extends Component {
             case 'done':
 
                 previewIconAlpha = 1;
-                statusIcon = <FontAwesomeIcon icon={faCheck} className="faIcon" /> ;
+                statusIcon = <FontAwesomeIcon icon={faCheck} className="faIcon " /> ;
                 progressBar = null;
 
                 modalTitle = 'Czy na pewno chcesz ponownie uruchomić usługę automatyczną?';

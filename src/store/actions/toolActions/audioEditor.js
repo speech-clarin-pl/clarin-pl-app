@@ -111,7 +111,6 @@ export const saveDIASegmentsFailed = (error, containerId, toolType) => {
 export const saveDIASegments = (container, toolType, token, segments) => {
 return dispatch => {
 
-    console.log("zapisuje DIA segmenty")
     axios.put('/dia/saveSegments', {
         segments: segments,
         toolType: toolType,
@@ -122,12 +121,16 @@ return dispatch => {
         }
     })
     .then(response => {
-        console.log(response)
+        dispatch({
+            type: actionTypes.SET_CONTAINER_STATUS,
+            containerId: container._id,
+            toolType: "DIA",
+            status: 'done',
+        })
         dispatch(saveDIASegmentsSuccess(response.data.message, response.data.updatedSegments, container._id, toolType));
       //  dispatch(closeModal());
     })
     .catch(error => {
-        console.log(error)
        dispatch(saveDIASegmentsFailed(error, container._id, toolType));
     });
 }
@@ -159,8 +162,6 @@ export const saveVADSegmentsFailed = (error, containerId, toolType) => {
 
 export const saveVADSegments = (container, toolType, token, segments) => {
 return dispatch => {
-
-    console.log("zapisuje VAD segmenty")
     axios.put('/vad/saveSegments', {
         segments: segments,
         toolType: toolType,
@@ -171,12 +172,16 @@ return dispatch => {
         }
     })
     .then(response => {
-        console.log(response)
+        dispatch({
+            type: actionTypes.SET_CONTAINER_STATUS,
+            containerId: container._id,
+            toolType: "VAD",
+            status: 'done',
+        })
         dispatch(saveVADSegmentsSuccess(response.data.message, response.data.updatedSegments, container._id, toolType));
       //  dispatch(closeModal());
     })
     .catch(error => {
-        console.log(error)
        dispatch(saveVADSegmentsFailed(error, container._id, toolType));
     });
 }
@@ -218,8 +223,12 @@ export const saveTranscription = (container, toolType, token, transcription) => 
             }
         })
         .then(response => {
-            //console.log("from action:")
-            console.log(response)
+            dispatch({
+                type: actionTypes.SET_CONTAINER_STATUS,
+                containerId: container._id,
+                toolType: "REC",
+                status: 'done',
+            })
             dispatch(saveTranscriptionSuccess(response.data.message, container._id, toolType));
           //  dispatch(closeModal());
         })
