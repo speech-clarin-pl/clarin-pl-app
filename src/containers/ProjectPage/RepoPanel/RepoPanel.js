@@ -82,12 +82,12 @@ class repoPanel extends Component {
     }
 
 
-    selectSessionHandler = (sessionId) => {
-        this.props.onSelectSession(sessionId);
+    selectSessionHandler = (sessionId, ifCtrl) => {
+        this.props.onSelectSession(sessionId, ifCtrl);
     }
 
-    selectContainerHandler = (containerId) => {
-        this.props.onSelectContainer(containerId);
+    selectContainerHandler = (containerId, ifCtrl) => {
+        this.props.onSelectContainer(containerId, ifCtrl);
     }
 
     componentDidMount() {
@@ -381,8 +381,6 @@ class repoPanel extends Component {
                 return this.props.repoData.containers.byId[containerId];
             })
 
-
-
                 return  <RepoSession 
                                 containers={containersArray} 
                                 initSessionOpen={false}
@@ -510,8 +508,8 @@ const mapDispatchToProps = dispatch => {
     return {
 
         onExportToEMU: (projectId, userId, token) => dispatch(repoActions.exportToEMU(projectId, userId, token)),
-        onSelectSession: (sessionId) => dispatch(repoActions.selectSession(sessionId)),
-        onSelectContainer: (containerId) => dispatch(repoActions.selectContainer(containerId)),
+        onSelectSession: (sessionId, ifCtrl) => dispatch(repoActions.selectSession(sessionId, ifCtrl)),
+        onSelectContainer: (containerId, ifCtrl) => dispatch(repoActions.selectContainer(containerId, ifCtrl)),
         onGetProjectFilesForUser: (userId, projectId, token) => dispatch(repoActions.getProjectFilesForUser(userId, projectId, token)),
         removeContainerFromRepo: (userId, projectId, sessionId, containerId, token) => dispatch(repoActions.removeContainerFromRepo(userId, projectId, sessionId, containerId, token)),
         onOpenModalHandler: () => dispatch(repoActions.openModalProject()),

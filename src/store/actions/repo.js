@@ -478,17 +478,19 @@ export const createNewSessionFailed = (error) => {
 // ################## zazbaczanie w repo #####################
 // ##########################################################
 
-export const selectSession = (sessionId) =>{
+export const selectSession = (sessionId,ifCtrl) =>{
     return {
         type: actionTypes.REPO_SELECT_SESSION,
         sessionId: sessionId,
+        ifCtrl: ifCtrl,
     }
 }
 
-export const selectContainer = (containerId) => {
+export const selectContainer = (containerId,ifCtrl) => {
     return {
         type: actionTypes.REPO_SELECT_CONTAINER,
         containerId: containerId,
+        ifCtrl: ifCtrl,
     }
 }
 

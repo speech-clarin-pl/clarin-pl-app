@@ -109,6 +109,9 @@ const initialState = {
     currentlySelectedSessions: [],
     currentlySelectedContainers: [],
 
+    lastSelectedContainer: null,
+    lastSelectedSession: null,
+
     sessions : {
         byId : {},
         allIds : []
@@ -606,18 +609,64 @@ const repoSelectContainer = (state,action) => {
     
     // jeżeli jest null to znaczy że chce odznaczyć wszystko
     let containerId = action.containerId;
+    let ifCtrl = action.ifCtrl;
  
     const nextState = produce(state, draftState => {
-
+        
         let allContainers = draftState.containers.byId;
-        let allSessions = draftState.sessions.byId;
+
+        //jeżeli jest przetrzymany ctrl to zaznaczamy wiecej elementow
+        if(ifCtrl){
+            //toggle
+            allContainers[containerId].ifSelected = !allContainers[containerId].ifSelected;
+
+             //aktualizuje liste aktualnie zaznaczonych
+            if(allContainers[containerId].ifSelected){
+                draftState.currentlySelectedContainers.push(containerId);
+            } else {
+                draftState.currentlySelectedContainers = draftState.currentlySelectedContainers.filter(element => {
+                    return element !== containerId;
+                })
+            }
+            
+            //jeżeli jest bez ctrla to zazanczam tylko jedno
+        } else {
+
+            allContainers[containerId].ifSelected = !allContainers[containerId].ifSelected;
+
+             //aktualizuje liste aktualnie zaznaczonych - zawsze tylko jeden. Przy okazji odznaczam
+             //poprzednie jeżeli był wciśnięty ctrl
+             if(draftState.currentlySelectedContainers){
+                draftState.currentlySelectedContainers.forEach(value => {
+                    if(allContainers[value])  allContainers[value].ifSelected = false;
+                })
+             }
+             
+             if(allContainers[containerId].ifSelected){
+                draftState.currentlySelectedContainers = [containerId];
+            } else {
+                draftState.currentlySelectedContainers = [];
+            }
+
+            //odznaczam poprzednio zaznaczone
+            if(draftState.lastSelectedContainer){
+                if(draftState.lastSelectedContainer !== containerId){
+                    allContainers[draftState.lastSelectedContainer].ifSelected = false;
+                }
+            }
+        }
+
+        draftState.lastSelectedContainer = containerId;
+
+        //
+
+        /*
 
         //zapisuje poprzednio zaznaczony aby odznaczyc
         let previouslySelectedCont = draftState.currentlySelectedContainers[0];
 
         //jezeli kliknalem to samo to robie toogle
         if(containerId === previouslySelectedCont){
-            
             draftState.currentlySelectedContainers[0] = null;
             allContainers[previouslySelectedCont].ifSelected = false;
         } else {
@@ -646,6 +695,8 @@ const repoSelectContainer = (state,action) => {
                 }
             }
         }
+
+        */
     })
 
     return nextState;
@@ -656,43 +707,82 @@ const repoSelectContainer = (state,action) => {
 const repoSelectSession = (state, action) => {
 
     let sessionId = action.sessionId;
+    let ifCtrl = action.ifCtrl;
 
     const nextState = produce(state, draftState => {
 
-        let allContainers = draftState.containers.byId;
         let allSessions = draftState.sessions.byId;
 
-        //zapisuje poprzednio zaznaczony aby odznaczyc
+        //jeżeli jest przetrzymany ctrl to zaznaczamy wiecej elementow
+        if(ifCtrl){
+            //toggle
+            allSessions[sessionId].ifSelected = !allSessions[sessionId].ifSelected;
 
-        //if(draftState.currentlySelectedContainers.length > 0){
+             //aktualizuje liste aktualnie zaznaczonych
+            if(allSessions[sessionId].ifSelected){
+                draftState.currentlySelectedSessions.push(sessionId);
+            } else {
+                draftState.currentlySelectedSessions = draftState.currentlySelectedSessions.filter(element => {
+                    return element !== sessionId;
+                })
+            }
+            
+            //jeżeli jest bez ctrla to zazanczam tylko jedno
+        } else {
+            allSessions[sessionId].ifSelected = !allSessions[sessionId].ifSelected;
 
-                let previouslySelectedSess = draftState.currentlySelectedSessions[0];
-                //let previouslySelectedCont = draftState.currentlySelectedContainers[0];
+             //aktualizuje liste aktualnie zaznaczonych - zawsze tylko jeden. Przy okazji odznaczam
+             //poprzednie jeżeli był wciśnięty ctrl
+             if(draftState.currentlySelectedSessions){
+                draftState.currentlySelectedSessions.forEach(value => {
+                    if(allSessions[value])  allSessions[value].ifSelected = false;
+                   
+                })
+             }
+             
+             if(allSessions[sessionId].ifSelected){
+                draftState.currentlySelectedSessions = [sessionId];
+            } else {
+                draftState.currentlySelectedSessions = [];
+            }
 
-                //jeżeli kliknąłem z zaznaczoną to odznaczam
-                if(sessionId === previouslySelectedSess){
-                    allSessions[sessionId].ifSelected = false;
-                    draftState.currentlySelectedSessions[0] = null;
-                } else {
-                    draftState.currentlySelectedSessions[0] = sessionId;
-                    allSessions[sessionId].ifSelected = true;
-
-                    //odznaczam również contenery o ile byly jakies zaznaczone
-                    let ktorezaznaczonecontenery = draftState.currentlySelectedContainers[0];
-                    if(allContainers[ktorezaznaczonecontenery] !== undefined){
-                        console.log(ktorezaznaczonecontenery)
-                        console.log(allContainers[ktorezaznaczonecontenery])
-                        
-                        allContainers[ktorezaznaczonecontenery].ifSelected = false;
-                        draftState.currentlySelectedContainers[0] = null;
-                    }
-
-                    //odznaczam poprzendio zaznaczony o ile nie był pusty
-                    if(allSessions[previouslySelectedSess] != null ){
-                        allSessions[previouslySelectedSess].ifSelected = false;
-                    }
+            //odznaczam poprzednio zaznaczone
+            if(draftState.lastSelectedSession){
+                if(draftState.lastSelectedSession !== sessionId){
+                    allSessions[draftState.lastSelectedSession].ifSelected = false;
                 }
-        //}
+            }
+        }
+
+        draftState.lastSelectedSession = sessionId;
+
+        //zapisuje poprzednio zaznaczony aby odznaczyc
+        /*
+        let previouslySelectedSess = draftState.currentlySelectedSessions[0];
+
+        if(sessionId === previouslySelectedSess){
+            allSessions[sessionId].ifSelected = false;
+            draftState.currentlySelectedSessions[0] = null;
+        } else {
+            draftState.currentlySelectedSessions[0] = sessionId;
+            allSessions[sessionId].ifSelected = true;
+
+            //odznaczam również contenery o ile byly jakies zaznaczone
+            let ktorezaznaczonecontenery = draftState.currentlySelectedContainers[0];
+            if(allContainers[ktorezaznaczonecontenery] !== undefined){
+                console.log(ktorezaznaczonecontenery)
+                console.log(allContainers[ktorezaznaczonecontenery])
+                
+                allContainers[ktorezaznaczonecontenery].ifSelected = false;
+                draftState.currentlySelectedContainers[0] = null;
+            }
+
+            //odznaczam poprzendio zaznaczony o ile nie był pusty
+            if(allSessions[previouslySelectedSess] != null ){
+                allSessions[previouslySelectedSess].ifSelected = false;
+            }
+        }
+        */
     })
 
     return nextState;

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import ContainerFile from '../ContainerFile/ContainerFile';
+import FileContainer from '../ContainerFile/FileContainer';
 import './RepoSession.css';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -30,14 +30,20 @@ class RepoSession extends Component {
     }
 
 
-    selectTheSession = () => {
-      //  this.props.selectTheContainer(null);
-        this.props.selectTheSession(this.props.sessionId);
+    selectTheSession = (event) => {
+        event.stopPropagation();
+
+        if(event.ctrlKey){
+            this.props.selectTheSession(this.props.sessionId, true);
+        } else {
+            this.props.selectTheSession(this.props.sessionId, false);
+        }
+       
     }
 
-    selectTheContainer = (containerId) => {
+    selectTheContainer = (containerId, ifCtrl) => {
        // this.selectTheSession();
-        this.props.selectTheContainer(containerId);
+        this.props.selectTheContainer(containerId, ifCtrl);
     }
 
     shouldComponentUpdate(nextProps, nextState){
@@ -78,11 +84,8 @@ class RepoSession extends Component {
 
     render() {
 
-        
-
         //sprawdzam czy otworzyc folder demo na potrzeby react tour
         
-
         let uploadCard = (
             <div className="uploadCard">
                 <UploadAudio forSession={this.props.sessionId} />
@@ -92,7 +95,7 @@ class RepoSession extends Component {
         let containerList = null;
 
         containerList = this.props.containers.map(container => {
-            return   <ContainerFile 
+            return   <FileContainer 
                             container = {container}
                             onAddContainerToReco = {this.props.onAddContainerToReco}
                             onAddContainerToAlign = {this.props.onAddContainerToAlign}

@@ -22,15 +22,24 @@ import {withRouter } from 'react-router-dom';
 
 
 
-class ContainerFile extends Component {
+class FileContainer extends Component {
 
-    selectContainer = () => {
-        this.props.selectContainer(this.props.container._id)
+    selectContainer = (event) => {
+        event.stopPropagation();
+
+        if(event.ctrlKey){
+            this.props.selectContainer(this.props.container._id, true);
+        } else {
+            this.props.selectContainer(this.props.container._id, false);
+        }
+        
     }
 
+    /*
     handleClick = (e, data) => {
         console.log(data.foo);
     }
+    */
 
     componentDidMount = () =>{
        // console.log("ready")
@@ -165,8 +174,6 @@ class ContainerFile extends Component {
 
 
     render() {
-
-        
 
         //wyświetlam tylko pierwsze 11 znaków nazwy pliku....
         let contName = this.props.container.containerName;
@@ -324,4 +331,4 @@ class ContainerFile extends Component {
     }
 }
 
-export default withRouter(ContainerFile);
+export default withRouter(FileContainer);
