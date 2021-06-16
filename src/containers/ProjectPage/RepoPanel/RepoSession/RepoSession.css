@@ -14,12 +14,13 @@
   cursor: pointer;
   padding: 3px;
   padding-left:6px;
+  overflow: auto;
 }
 
 .RepoSession .sessionFolder .repoIcon {
 
   margin-left: 5px;
-
+  float: left;
 }
 
 
@@ -29,6 +30,7 @@
 
 .RepoSession .sessionFolder .sessionName {
     padding-left: 6px;
+    float:left;
 }
 
 

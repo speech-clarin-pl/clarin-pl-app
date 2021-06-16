@@ -13,6 +13,8 @@ import { faFolder } from '@fortawesome/free-solid-svg-icons';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import {ContextMenu, MenuItem, ContextMenuTrigger} from 'react-contextmenu';
+import EditableLabel from 'react-inline-editing';
+import * as repoActions from '../../../../store/actions/index';
 
 class RepoSession extends Component {
 
@@ -82,6 +84,19 @@ class RepoSession extends Component {
      }
 
 
+     _handleFocus = (text) => {
+        // console.log('Focused with text: ' + text);
+     }
+ 
+     _handleFocusOut = (text) => {
+        // console.log('Left editor with text: ' + this.props.projectID + " " + text + " " + this.props.userId + " " + this.props.token);
+        //this.props.onChangeProjectName(this.props.projectID, text, this.props.userId, this.props.token);
+       //console.log(this.props.token)
+       this.props.onChangeSessionName(this.props.sessionId, text, this.props.token);
+       //alert("dziala")
+     }
+
+
     render() {
 
         //sprawdzam czy otworzyc folder demo na potrzeby react tour
@@ -115,8 +130,6 @@ class RepoSession extends Component {
             (this.props.sessionName==="demo" && ifSessionOpened===false)?  ifSessionOpened = true : ifSessionOpened = false;
         }
        
-           
-
 
        // this.state.ifOpened || (this.props.reactTourOpenDemoSession && this.props.sessionName==="demo")? 
 
@@ -127,9 +140,26 @@ class RepoSession extends Component {
                 <ContextMenuTrigger id={"ToolItemSESSIONId"+this.props.sessionId}>
                     <div className={this.props.ifSelected? "sessionFolder selected" : "sessionFolder"} onClick={this.selectTheSession} >
 
-                        <FontAwesomeIcon icon={this.state.ifOpened? faChevronDown: faChevronRight} className="repoIcon" style={{fontSize: '0.7em'}} onClick={this.clickFolderHandler}/>
-                        <FontAwesomeIcon icon={this.state.ifOpened? faFolderOpen: faFolder} className="repoIcon" onClick={this.clickFolderHandler}/> 
-                        <span className="sessionName" >{this.props.sessionName}</span>
+                        <FontAwesomeIcon icon={this.state.ifOpened? faChevronDown: faChevronRight} className="repoIcon" style={{fontSize: '0.7em', marginTop: '8px'}} onClick={this.clickFolderHandler}/>
+                        <FontAwesomeIcon icon={this.state.ifOpened? faFolderOpen: faFolder} className="repoIcon" style={{marginTop: '5px', marginRight: '5px'}} onClick={this.clickFolderHandler}/> 
+                        <div className="sessionName" >
+                            {
+                               // this.props.sessionName
+                            }
+                                <div className="edytorNazwySesji">
+                                    <EditableLabel text={this.props.sessionName}
+                                        labelClassName='myLabelSessionClass'
+                                        inputClassName='myInputSessionClass'
+                                        inputWidth='160px'
+                                        isEditing={false}
+                                        inputHeight='25px'
+                                        inputMaxLength={50}
+                                        onFocus={this._handleFocus}
+                                        onFocusOut={this._handleFocusOut}
+                                    />
+                                </div>
+                                
+                        </div>
 
                         {this.props.ifSelected?
                             <FontAwesomeIcon icon={faChevronDown} className="repoIcon" style={{fontSize: '0.7em', float: 'right', margin: '6px'}} onClick={this.clickFolderHandler}/> 
@@ -171,7 +201,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
 	return {
     //	onUploadFiles: (fileList, folderKey, userId, projectId, token) => dispatch(repoActions.uploadFiles(fileList,folderKey,userId, projectId, token)),
-	}
+      onChangeSessionName: (sessionId, newText, token) => dispatch(repoActions.changeSessionName(sessionId, newText, token)),
+}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(RepoSession));

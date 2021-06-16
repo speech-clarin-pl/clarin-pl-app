@@ -29,6 +29,7 @@ export {
     openDemoSession,
     addDemoFilesToReco,
     getRepoStats,
+    changeSessionName
 } from './repo';
 
 export {
