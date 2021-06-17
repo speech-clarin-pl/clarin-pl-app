@@ -523,6 +523,23 @@ const repoRemoveContainerFailed = (state, action) => {
     
 }
 
+// ################## zmiana nazwy sesji ###############
+
+const changeSessionName = (state,action) => {
+    const sessionId = action.sessionId;
+    const newName = action.newName;
+
+    const nextState = produce(state, draftState => {
+
+        draftState.sessions.byId[sessionId].sessionName = newName;
+
+   })
+
+   return nextState;
+
+
+}
+
 // #############################################
 // ############### tworze nową sesje ###########
 //##############################################
@@ -1148,6 +1165,8 @@ const repoPanelReducer = (state = initialState, action) => {
     switch(action.type){
 
         case actionTypes.GET_REPO_STATS: return getRepoStats(state,action);
+
+        case actionTypes.REPO_CHANGE_SESSION_NAME_SUCCESS: return changeSessionName(state,action);
 
         case actionTypes.SET_CONTAINER_STATUS: return changeContainerStatus(state,action);
 

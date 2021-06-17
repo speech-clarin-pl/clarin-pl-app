@@ -304,10 +304,11 @@ export const removeContainerFromRepo = (userId, projectId, sessionId, containerI
 // ############## zmiana nazwy sesji w repo ############## OK
 // ###########################################################
 
-export const changeSessionNameSuccess = (sessionId) => {
+export const changeSessionNameSuccess = (sessionId, newName) => {
     return {
         type: actionTypes.REPO_CHANGE_SESSION_NAME_SUCCESS,
         sessionId: sessionId,
+        newName: newName,
     }
 }
 
@@ -332,7 +333,7 @@ export const changeSessionName = (sessionId, newName, token) => {
             },
         })
         .then(response => {
-            dispatch(changeSessionNameSuccess(response.data.sessionId));
+            dispatch(changeSessionNameSuccess(response.data.sessionId, response.data.newName));
         })
         .catch(error => {
             dispatch(changeSessionNameFailed(error));
