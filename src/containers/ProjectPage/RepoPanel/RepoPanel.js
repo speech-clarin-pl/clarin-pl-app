@@ -29,6 +29,7 @@ import { Tooltip } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolderPlus } from '@fortawesome/free-solid-svg-icons';
 import { faFolderMinus } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDoubleRight } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 //import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 
@@ -53,7 +54,13 @@ class repoPanel extends Component {
 
         whichContainersToRemove: null,
         whichSessionIdToRemove: null,
+
+        chosenSessionToMove: null,
     }
+
+   
+  
+    
 
     //removeObjectFromRepo = () => {
         //let selectedSession = this.props.currentlySelectedSessions;
@@ -85,6 +92,18 @@ class repoPanel extends Component {
       //  this.removeContainers();
     //}
 
+    moveContainers = () => {
+
+        //robie liste kontenerow do usuniecia
+        const selectedContainers = this.props.currentlySelectedContainers;
+
+        this.setState({
+            modal: true,
+            whatClicked: 'moveContainer',
+            whichContainersToRemove: selectedContainers,
+        })
+        
+    }
 
     removeContainers = () => {
 
@@ -97,6 +116,24 @@ class repoPanel extends Component {
             whichContainersToRemove: selectedContainers,
         })
         
+    }
+
+    finallyMoveContainers = () => {
+
+        const selectedContainers = this.props.currentlySelectedContainers;
+        const whereToMove = this.state.chosenSessionToMove;
+ 
+
+        for (let i = 0; i < selectedContainers.length; i++) {
+            let containerId = selectedContainers[i];
+            this.props.onMoveContainerToSession(
+                containerId,
+                whereToMove,
+                this.props.token
+            )
+        }
+
+        this.closeModalHandler();
     }
 
 
@@ -312,6 +349,59 @@ class repoPanel extends Component {
         return content;
     }
 
+    changeSessionToMove = (event) => {
+        this.setState({
+            chosenSessionToMove: event.target.value,
+        })
+    }
+
+    modalContentMoveContainer = () => {
+        const containersToMove = this.state.whichContainersToRemove;
+
+        //przekształcam identyfikatory na nazwy
+        const containerNames = containersToMove.map(conId => {
+            return (
+                <span style={{margin:'8px', padding: '5px', border: '1px solid black'}}>{this.props.repoData.containers.byId[conId].containerName}</span>
+            )
+        })
+
+        //generuje liste wszystkich sesji
+        const sessionkeys = Object.keys(this.props.repoData.sessions.byId);
+        const allSessionList =sessionkeys.map(sessionId=>{
+            return(
+                <option value={sessionId}>
+                    {this.props.repoData.sessions.byId[sessionId].sessionName}
+                </option>
+            )
+        })
+
+
+        let content = (
+            <div>
+                <h5>Następujące kontenery:</h5>
+                <span style={{marginRight: '8px'}}> {containerNames} </span>
+
+                <h5>Zostaną przeniesione do sesji...</h5>
+
+                <div>
+                    <select name="session"  onChange={this.changeSessionToMove} value={this.state.chosenSessionToMove}>
+                        <option>Wybierz sesje</option>
+                    {
+                        allSessionList
+                    }
+                    </select>
+                </div>
+                
+                <p></p>
+                
+                <button type="button" className="btn btn-primary" disabled={!this.state.chosenSessionToMove} onClick={this.finallyMoveContainers}>Przenieś kontenery</button>
+                <button type="button" className="btn btn-outline-primary" onClick={this.closeModalHandler}>Anuluj</button>
+            </div>
+        )
+
+        return content;
+    }
+
 
     modalContentRemoveContainer = () => {
         const containersToRemove = this.state.whichContainersToRemove;
@@ -396,6 +486,10 @@ class repoPanel extends Component {
                 modalTitle = "Czy jesteś pewien że chcesz usunąć następujące kontenery ?";
                 modalContent = this.modalContentRemoveContainer();
                 break;
+            case 'moveContainer':
+                modalTitle = "Wybierz sesje do której chcesz przenieść kontenery";
+                modalContent = this.modalContentMoveContainer();
+                break;
             case 'removeSession':
                 modalTitle = "Czy jesteś pewien że chcesz usunąć całą sesję wraz z zawartością?";
                 modalContent = this.modalContentRemoveSession();
@@ -405,7 +499,7 @@ class repoPanel extends Component {
                 modalContent = this.modalContentAddSession();
                 break;
             default:
-                // cos
+           
         }
      
 
@@ -429,7 +523,6 @@ class repoPanel extends Component {
                 return this.props.repoData.containers.byId[containerId];
             })
 
-            console.log(containersArray)
 
                 return  <RepoSession 
                                 containers={containersArray} 
@@ -462,9 +555,16 @@ class repoPanel extends Component {
                                         <FontAwesomeIcon icon={faFolderMinus} onClick={this.removeSessions}/> 
                                     </a>
                                  </Tooltip>
+        
+        const moveContainersToSession = <Tooltip title="Przesuń zaznaczone kontenery do innej sesji">
+                                            <a href="#" role="button" >
+                                                <FontAwesomeIcon icon={faAngleDoubleRight} onClick={this.moveContainers}/> 
+                                            </a>
+                                        </Tooltip>
 
         let trashIconContainer = null;
-        let trashIconSession = null
+        let trashIconSession = null;
+        let moveCntainerIcon = null;
 
         //jeżeli jest zaznaczona jakaś sesja
         if((this.props.currentlySelectedSessions[0] !== null && this.props.currentlySelectedSessions.length > 0)){
@@ -474,6 +574,7 @@ class repoPanel extends Component {
         //jeżeli jest zaznaczony jakiś kontener
         if(this.props.currentlySelectedContainers[0] !== null && this.props.currentlySelectedContainers.length > 0){
             trashIconContainer = trachIcon;
+            moveCntainerIcon = moveContainersToSession;
         } 
 
 
@@ -517,6 +618,9 @@ class repoPanel extends Component {
                             {
                                
                                trashIconContainer
+                            }
+                            {
+                                moveCntainerIcon
                             }
                         
                             
@@ -564,6 +668,7 @@ const mapDispatchToProps = dispatch => {
 
         onExportToEMU: (projectId, userId, token) => dispatch(repoActions.exportToEMU(projectId, userId, token)),
         onSelectSession: (sessionId, ifCtrl) => dispatch(repoActions.selectSession(sessionId, ifCtrl)),
+        onMoveContainerToSession: (containerId, sessionId, token) => dispatch(repoActions.moveContainerToSession(containerId, sessionId, token)),
         onSelectContainer: (containerId, ifCtrl) => dispatch(repoActions.selectContainer(containerId, ifCtrl)),
         onGetProjectFilesForUser: (userId, projectId, token) => dispatch(repoActions.getProjectFilesForUser(userId, projectId, token)),
         removeContainerFromRepo: (userId, projectId, sessionId, containerId, token) => dispatch(repoActions.removeContainerFromRepo(userId, projectId, sessionId, containerId, token)),

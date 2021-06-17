@@ -387,6 +387,45 @@ export const changeContainerName = (container, text, token) => {
     }
 }
 
+// ############### przenoszenie kontenera do innej sesji ##############
+
+export const moveContainerToSessionSuccess = (containerId, sessionId) => {
+    return {
+        type: actionTypes.REPO_MOVE_CONTAINER_TO_SESSION_SUCCESS,
+        containerId: containerId,
+        sessionId: sessionId,
+    }
+}
+
+export const moveContainerToSessionFailed = (error) => {
+    return {
+        type: actionTypes.REPO_MOVE_CONTAINER_TO_SESSION_FAILED,
+        error: error,
+    }
+}
+
+
+export const moveContainerToSession = (containerId, sessionId, token) => {
+ 
+    return dispatch => {
+        axios.put(('/repoFiles/moveContainerToSession/'+containerId), 
+        {
+            sessionId: sessionId
+        },
+        {
+            headers: {
+                Authorization: 'Bearer ' + token
+            },
+        })
+        .then(response => {
+            dispatch(moveContainerToSessionSuccess(response.data.containerId, response.data.sessionId));
+        })
+        .catch(error => {
+            dispatch(moveContainerToSessionFailed(error));
+        }); 
+    }
+}
+
 
 //############################################################
 // ############## usuwanie sesji z repo #################

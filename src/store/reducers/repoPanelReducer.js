@@ -577,6 +577,37 @@ const repoCreateSessionFailes = (state, action) => {
     return nextState;
 }
 
+//##############################################
+//### przesuwa kontener z jednej sesji do drugiej
+//##################################################
+const moveContainerToSession = (state, action) => {
+
+    const containerId = action.containerId;
+    const sessionIdTO = action.sessionId;
+    
+    const nextState = produce(state, draftState => {
+
+        const sessionIdFROM = state.containers.byId[containerId].session;
+
+        //zmieniam informacje do jakiej sesji nalezy kontener
+        draftState.containers.byId[containerId].session = sessionIdTO;
+
+        //usuwam dany kontener z listy kontenerow w sesji
+        const filteredContainers = state.sessions.byId[sessionIdFROM].containers.filter(contId => {
+            return contId !== containerId;
+        });
+        draftState.sessions.byId[sessionIdFROM].containers = filteredContainers;
+
+        //dodaje dany kontener do listy kontenerow w nowej sesji
+        draftState.sessions.byId[sessionIdTO].containers.push(containerId);
+
+
+    })
+
+    return nextState;
+
+}
+
 //######################################################
 //########## pobieram liste sesji i kontenerow uzytkownika ################
 //######################################################
@@ -1170,6 +1201,8 @@ const repoPanelReducer = (state = initialState, action) => {
         case actionTypes.GET_REPO_STATS: return getRepoStats(state,action);
 
         case actionTypes.REPO_CHANGE_SESSION_NAME_SUCCESS: return changeSessionName(state,action);
+
+        case actionTypes.REPO_MOVE_CONTAINER_TO_SESSION_SUCCESS: return moveContainerToSession(state,action);
 
         case actionTypes.SET_CONTAINER_STATUS: return changeContainerStatus(state,action);
 
