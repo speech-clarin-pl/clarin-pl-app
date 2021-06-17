@@ -537,7 +537,6 @@ const changeSessionName = (state,action) => {
 
    return nextState;
 
-
 }
 
 // #############################################
@@ -668,7 +667,10 @@ const repoSelectContainer = (state,action) => {
             //odznaczam poprzednio zaznaczone
             if(draftState.lastSelectedContainer){
                 if(draftState.lastSelectedContainer !== containerId){
-                    allContainers[draftState.lastSelectedContainer].ifSelected = false;
+                    if(allContainers[draftState.lastSelectedContainer]){
+                        allContainers[draftState.lastSelectedContainer].ifSelected = false;
+                    }
+                    
                 }
             }
         }
@@ -753,7 +755,6 @@ const repoSelectSession = (state, action) => {
              if(draftState.currentlySelectedSessions){
                 draftState.currentlySelectedSessions.forEach(value => {
                     if(allSessions[value])  allSessions[value].ifSelected = false;
-                   
                 })
              }
              
@@ -766,7 +767,9 @@ const repoSelectSession = (state, action) => {
             //odznaczam poprzednio zaznaczone
             if(draftState.lastSelectedSession){
                 if(draftState.lastSelectedSession !== sessionId){
-                    allSessions[draftState.lastSelectedSession].ifSelected = false;
+                    if(allSessions[draftState.lastSelectedSession]){
+                        allSessions[draftState.lastSelectedSession].ifSelected = false;
+                    }
                 }
             }
         }

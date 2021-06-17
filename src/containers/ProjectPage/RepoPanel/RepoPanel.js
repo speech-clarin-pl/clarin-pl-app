@@ -28,6 +28,7 @@ import { Tooltip } from '@material-ui/core';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolderPlus } from '@fortawesome/free-solid-svg-icons';
+import { faFolderMinus } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 //import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 
@@ -50,14 +51,15 @@ class repoPanel extends Component {
 
         waitingForCorpus: false,
 
-        whichContainerToRemove: null,
+        whichContainersToRemove: null,
         whichSessionIdToRemove: null,
     }
 
-    removeObjectFromRepo = () => {
-        let selectedSession = this.props.currentlySelectedSessions;
-        let selectedContainers = this.props.currentlySelectedContainers;
+    //removeObjectFromRepo = () => {
+        //let selectedSession = this.props.currentlySelectedSessions;
+        //let selectedContainers = this.props.currentlySelectedContainers;
 
+        /*
         if(selectedSession[0] !== null && selectedSession.length > 0) {
             const sessionIdToRemove = selectedSession[0];
 
@@ -67,7 +69,6 @@ class repoPanel extends Component {
             
             this.removeSession(sessionIdToRemove,sessionNameToRemove);
         } else {
-            //usuwam zaznaczone containery
             for(let i=0;i<selectedContainers.length;i++){
                 let containerId = selectedContainers[i];
                 this.props.removeContainerFromRepo(
@@ -77,9 +78,75 @@ class repoPanel extends Component {
                     containerId,
                     this.props.token);
             }
-
         }
+        */
+
+        //usuwam zaznaczone containery
+      //  this.removeContainers();
+    //}
+
+
+    removeContainers = () => {
+
+        //robie liste kontenerow do usuniecia
+        const selectedContainers = this.props.currentlySelectedContainers;
+
+        this.setState({
+            modal: true,
+            whatClicked: 'removeContainer',
+            whichContainersToRemove: selectedContainers,
+        })
+        
     }
+
+
+    finallyRemoveContainers = () => {
+
+        const selectedContainers = this.props.currentlySelectedContainers;
+
+        for (let i = 0; i < selectedContainers.length; i++) {
+            let containerId = selectedContainers[i];
+            this.props.removeContainerFromRepo(
+                this.props.currentProjectOwner,
+                this.props.currentProjectID,
+                this.props.repoData.containers.byId[containerId].session,
+                containerId,
+                this.props.token);
+        }
+
+        this.closeModalHandler();
+    }
+
+   
+    removeSessions = (sessionId,sessionName) => {
+
+        let selectedSession = this.props.currentlySelectedSessions;
+       this.setState({
+            modal: true,
+            whatClicked: 'removeSession',
+            whichSessionIdToRemove: selectedSession,
+           // whichSessionNameToRemove: sessionName,
+        })
+    }
+
+    finallyRemoveSession = () => {
+        const selectedSessions = this.props.currentlySelectedSessions;
+
+        for (let i = 0; i < selectedSessions.length; i++) {
+            let sessionId = selectedSessions[i];
+            this.props.removeSessionFromRepo(
+                this.props.currentProjectOwner, 
+                this.props.currentProjectID, 
+                sessionId,
+                this.props.token)
+        }
+
+        this.closeModalHandler();
+        
+
+    }
+
+
 
 
     selectSessionHandler = (sessionId, ifCtrl) => {
@@ -175,40 +242,7 @@ class repoPanel extends Component {
         this.props.addContainerToVAD(container);
     }
 
-    removeContainer = (container) => {
-        //this.props.removeContainer(container);
-        
-        this.setState({
-            modal: true,
-            whatClicked: 'removeContainer',
-            whichContainerToRemove: container,
-        })
-        
-    }
-
-
-    finallyRemoveContainer = () => {
-        this.props.removeContainerFromRepo(this.props.currentProjectOwner, this.props.currentProjectID, this.state.whichContainerToRemove.session,this.state.whichContainerToRemove._id,this.props.token);
-        this.closeModalHandler();
-    }
-
    
-
-    removeSession = (sessionId,sessionName) => {
-       // this.props.removeSessionFromRepo(this.props.currentProjectOwner, this.props.currentProjectID, sessionId,this.props.token)
-    
-       this.setState({
-            modal: true,
-            whatClicked: 'removeSession',
-            whichSessionIdToRemove: sessionId,
-            whichSessionNameToRemove: sessionName,
-        })
-    }
-
-    finallyRemoveSession = () => {
-        this.props.removeSessionFromRepo(this.props.currentProjectOwner, this.props.currentProjectID, this.state.whichSessionIdToRemove,this.props.token)
-        this.closeModalHandler();
-    }
 
     openConfirmExportToEmu = () => {
         this.setState({
@@ -280,17 +314,23 @@ class repoPanel extends Component {
 
 
     modalContentRemoveContainer = () => {
-        let containerName = this.state.whichContainerToRemove.containerName;
+        const containersToRemove = this.state.whichContainersToRemove;
+
+        //przekształcam identyfikatory na nazwy
+        const containerNames = containersToRemove.map(conId => {
+            return (
+                <span style={{marginRight:'8px'}}>{this.props.repoData.containers.byId[conId].containerName}</span>
+            )
+        })
+     
 
             let content = (
                 <div>
                     <p>
-                        {containerName}
+                        {containerNames}
                     </p>
                  
-                    <button type="button" className="btn btn-primary" onClick={this.finallyRemoveContainer}>TAK</button>
-                    
-
+                    <button type="button" className="btn btn-primary" onClick={this.finallyRemoveContainers}>TAK</button>
                      <button type="button" className="btn btn-outline-primary" onClick={this.closeModalHandler}>NIE</button>
                 </div>
             )
@@ -299,12 +339,19 @@ class repoPanel extends Component {
     }
 
     modalContentRemoveSession = () => {
-        let sessionName = this.state.whichSessionNameToRemove;
+        let sessionIds = this.state.whichSessionIdToRemove;
+
+        //przekształcam identyfikatory na nazwy
+        const sessionNames = sessionIds.map(conId => {
+            return (
+                <span style={{marginRight:'8px'}}>{this.props.repoData.sessions.byId[conId].sessionName}</span>
+            )
+        })
 
             let content = (
                 <div>
                     <p>
-                        {sessionName}
+                        {sessionNames}
                     </p>
                  
                     <button type="button" className="btn btn-primary" onClick={this.finallyRemoveSession}>TAK</button>
@@ -346,7 +393,7 @@ class repoPanel extends Component {
                 modalContent = this.modalContentEMUExport();
                 break;
             case 'removeContainer':
-                modalTitle = "Czy jesteś pewien że chcesz usunąć ?";
+                modalTitle = "Czy jesteś pewien że chcesz usunąć następujące kontenery ?";
                 modalContent = this.modalContentRemoveContainer();
                 break;
             case 'removeSession':
@@ -364,6 +411,7 @@ class repoPanel extends Component {
 
         //########### rendering listy sesji i contenerow
         let listaSesji = null;
+   
         listaSesji = Object.keys(this.props.repoData.sessions.byId).map(sessionId => {
 
             //console.log(sessionId)
@@ -380,6 +428,8 @@ class repoPanel extends Component {
             let containersArray = containersIds.map(containerId => {
                 return this.props.repoData.containers.byId[containerId];
             })
+
+            console.log(containersArray)
 
                 return  <RepoSession 
                                 containers={containersArray} 
@@ -401,22 +451,29 @@ class repoPanel extends Component {
                                 onAddContainerToAlign = {(container) => this.addContainerToAlignList(container)}/>
         })
 
-        const trackIconComp = <Tooltip title="Usuń zaznaczony obiekt">
-                                <a href="#" role="button" >
-                                    <FontAwesomeIcon icon={faTrash} onClick={this.removeObjectFromRepo}/> 
-                                </a>
-                            </Tooltip>
+        const trachIcon = <Tooltip title="Usuń zaznaczone kontenery">
+                                        <a href="#" role="button" >
+                                            <FontAwesomeIcon icon={faTrash} onClick={this.removeContainers}/> 
+                                        </a>
+                                    </Tooltip>
 
-        let trashIcon = null;
+        const removeSessionIcon = <Tooltip title="Usuń zaznaczone sesje">
+                                    <a href="#" role="button" >
+                                        <FontAwesomeIcon icon={faFolderMinus} onClick={this.removeSessions}/> 
+                                    </a>
+                                 </Tooltip>
+
+        let trashIconContainer = null;
+        let trashIconSession = null
 
         //jeżeli jest zaznaczona jakaś sesja
         if((this.props.currentlySelectedSessions[0] !== null && this.props.currentlySelectedSessions.length > 0)){
-            trashIcon = trackIconComp;
+            trashIconSession = removeSessionIcon;
         } 
 
         //jeżeli jest zaznaczony jakiś kontener
         if(this.props.currentlySelectedContainers[0] !== null && this.props.currentlySelectedContainers.length > 0){
-            trashIcon = trackIconComp;
+            trashIconContainer = trachIcon;
         } 
 
 
@@ -454,16 +511,14 @@ class repoPanel extends Component {
                                         <FontAwesomeIcon icon={faFolderPlus} onClick={this.addSession} /> 
                                 </a> 
                             </Tooltip>
-                            
+                            {
+                                trashIconSession
+                            }
                             {
                                
-                               trashIcon
+                               trashIconContainer
                             }
-                            
-
-
-
-      
+                        
                             
                         </div>
 

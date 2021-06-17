@@ -109,20 +109,26 @@ class RepoSession extends Component {
 
         let containerList = null;
 
-        containerList = this.props.containers.map(container => {
-            return   <FileContainer 
-                            container = {container}
-                            onAddContainerToReco = {this.props.onAddContainerToReco}
-                            onAddContainerToAlign = {this.props.onAddContainerToAlign}
-                            onAddContainerToVAD = {this.props.onAddContainerToVAD}
-                            onAddContainerToDIA = {this.props.onAddContainerToDIA}
-                            onChangeContainerName = {this.props.onChangeContainerName}
-                            key = {container._id}
-                            onRemoveContainer = {this.props.onRemoveContainer}
-                            token={this.props.token}
-                            ifSelected = {container.ifSelected}
-                            selectContainer = {this.selectTheContainer}/>
-        });
+        if(this.props.containers && this.props.containers.length > 0){
+            containerList = this.props.containers.map(container => {
+                if(container){
+                    return   <FileContainer 
+                                    container = {container}
+                                    onAddContainerToReco = {this.props.onAddContainerToReco}
+                                    onAddContainerToAlign = {this.props.onAddContainerToAlign}
+                                    onAddContainerToVAD = {this.props.onAddContainerToVAD}
+                                    onAddContainerToDIA = {this.props.onAddContainerToDIA}
+                                    onChangeContainerName = {this.props.onChangeContainerName}
+                                    key = {container._id}
+                                    onRemoveContainer = {this.props.onRemoveContainer}
+                                    token={this.props.token}
+                                    ifSelected = {container.ifSelected}
+                                    selectContainer = {this.selectTheContainer}/>
+                 }
+             
+            });
+        }
+        
 
         
         let ifSessionOpened = this.state.ifOpened;
