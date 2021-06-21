@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import {withRouter, Link } from 'react-router-dom';
 import * as projectActions from '../../../store/actions/index';
 import {bytesToSize} from '../../../utils/utils';
+import G2PTool from '../G2PTool/G2PTool';
 //import {bytesToSize} from '../../../utils/utils';
 
 class Dashboard extends Component {
@@ -180,7 +181,7 @@ class Dashboard extends Component {
                                 <div className="card mb-3">
                                     <div className={["card-header", "cardHeader"].join(' ')}>Transkrypcja wyrazów</div>
                                     <div className="card-body text-dark">
-                                        <p> TO DO </p>
+                                        <G2PTool />
                                     </div>
                                 </div>
                             </div>
