@@ -28,6 +28,7 @@ import axios from 'axios';
 import projectReducer from './store/reducers/projectReducer';
 import vadReducer from './store/reducers/toolsReducers/vadReducer';
 import diaReducer from './store/reducers/toolsReducers/diaReducer';
+import G2PReducer from './store/reducers/toolsReducers/G2PReducer';
 
 import dotenvFlow from 'dotenv-flow';
 dotenvFlow.config();
@@ -93,6 +94,7 @@ const rootReducer = combineReducers({
     diaR: diaReducer,
     repoR: repoReducer,
     previewR: previewReducer,
+    G2PR: G2PReducer,
 });
 
 

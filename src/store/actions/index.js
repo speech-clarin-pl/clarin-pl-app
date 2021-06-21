@@ -45,6 +45,10 @@ export {
 } from './toolActions/audioEditor';
 
 export {
+    startG2P,
+} from './toolActions/G2P'
+
+export {
     projectChoice,
     duplicateProject,
     shareProject,
