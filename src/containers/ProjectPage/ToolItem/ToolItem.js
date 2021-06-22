@@ -82,24 +82,19 @@ class ToolItem extends Component {
        
     }
 
-
     downloadElement = (action) => {
-        //console.log("Pobieram: " + toolType + " : " + action);
 
-
-        const userId = this.props.container.owner;
-        const projectId = this.props.container.project;
-        const sessionId = this.props.container.session;
         const containerId = this.props.container._id;
         const fileType = action;
 
-        
-        let linkToDownload = process.env.REACT_APP_API_URL+ "/repoFiles/" + userId + "/" + projectId+"/"+sessionId+"/"+containerId+"/"+fileType+"/?api_key="+this.props.token;
+        let linkToDownload = process.env.REACT_APP_API_URL+ "/repoFiles/download/"+containerId+"/"+fileType+"/?api_key="+this.props.token;
+      
 
         window.open(linkToDownload,"_self");
 
        
     }
+
 
     handleClick = (e, data) => {
 

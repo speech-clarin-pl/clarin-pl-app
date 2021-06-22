@@ -49,6 +49,10 @@ export {
 } from './toolActions/G2P'
 
 export {
+    startKWS,
+} from './toolActions/KWS'
+
+export {
     projectChoice,
     duplicateProject,
     shareProject,

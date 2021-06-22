@@ -9,6 +9,7 @@ import {withRouter, Link } from 'react-router-dom';
 import * as projectActions from '../../../store/actions/index';
 import {bytesToSize} from '../../../utils/utils';
 import G2PTool from '../G2PTool/G2PTool';
+import KWSTool from '../KWSTool/KWSTool';
 //import {bytesToSize} from '../../../utils/utils';
 
 class Dashboard extends Component {
@@ -19,7 +20,6 @@ class Dashboard extends Component {
       
     render(){
 
-        console.log(this.props.location)
 
         return(
             <Aux>
@@ -60,111 +60,52 @@ class Dashboard extends Component {
                                     </div>
                                 </div>
                             </div>
+                            
+                            {
+                            /*
                             <div className="col-md-6">
 
-                            <div className="card mb-3">
-                                <div className={["card-header", "cardHeader"].join(' ')}>Szybkie linki</div>
-                                <div className="card-body text-dark">
-                                    <p> 
-                                            <button type="button" className="btn btn-primary btn-block op-btn" onClick={()=>alert("test")}>
-                                                <i className="fas fa-comments"></i> Szybki przewodnik
-                                            </button>
-                                    </p>
-                                    
-                                    <p> 
-                                        <a href="/docs/doc.html" target="_blank">
-                                            <button type="button" className="btn btn-primary btn-block op-btn">
-                                                <i className="fas fa-comments"></i> Instrukcja obsługi
-                                            </button>
-                                        </a>
-                                    </p>
-                                    <p> 
-                                        <a href="/apidoc/index.html" target="_blank">
-                                            <button type="button" className="btn btn-primary btn-block op-btn">
-                                                <i className="fas fa-comments"></i> Dokumentacja API
-                                            </button>
-                                        </a>
-                                    </p>
-                                    <p> 
-                                            <button type="button" className="btn btn-primary btn-block op-btn" onClick={()=>alert("test")}>
-                                                <i className="fas fa-comments"></i> Zgłoś awarię bądź sugestię
-                                            </button>
-                                    </p>
-                                    <p> 
-                                            <button type="button" className="btn btn-primary btn-block op-btn" onClick={()=>alert("test")}>
-                                                <i className="fas fa-comments"></i> Wyloguj
-                                            </button>
-                                    </p>
-                                    {
-                                        /*
-                                            <p> 
-                                                <Link to={this.props.location.pathname.replace('dashboard','recognition')}>
-                                                    <button type="button" className="btn btn-primary btn-block op-btn">
-                                                        <i className="fas fa-comments"></i> Rozpoznawanie mowy
-                                                    </button>
-                                                </Link>
-                                                </p>
-                                                <p>
-                                                <Link to={this.props.location.pathname.replace('dashboard','segment')}>
-                                                    <button type="button" className="btn btn-primary btn-block op-btn">
-                                                        <i className="fas fa-cogs"></i> Segmentacja</button>
-                                                </Link>
-                                            </p>
-                                        */
-                                    }
-                                   
-                                </div>
-                            </div>
-
-                                {
-
-                              /*
                                 <div className="card mb-3">
-                                    <div className={["card-header", "cardHeader"].join(' ')}>Aktualnie działające procesy</div>
+                                    <div className={["card-header", "cardHeader"].join(' ')}>Szybkie linki</div>
                                     <div className="card-body text-dark">
-    
-                                    <div className="row mb-3">
-                                        <div className="col">
-                                            <h5 className="news-title">Rozpoznawanie:</h5>
-                                            <p>Całkowita licza plików w kolejce: ({this.props.containersForREC.length})</p>
-                                            
-                                            {
-                                             
-                                            //<p>Procent przetworzonych plików:</p>
-                                            //<div className="progress">
-                                            //    <div className="progress-bar" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                                            //</div>
-                                                
-                                            }
-                                            
-                                        </div>
-                                    </div>
-    
-                                    <div className="row">
-                                        <div className="col">
-                                            <h5 className="news-title">Segmentacja:</h5>
-                                            <p>Całkowita licza plików w kolejce: (
-                                                {this.props.containersForSEG.length}))</p>
-                                            {
-                                                
-                                              //  <p>Procent przetworzonych plików:</p>
-                                               // <div className="progress">
-                                               //     <div className="progress-bar" role="progressbar" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">25%</div>
-                                               // </div>
-                                               
-                                            }
-                                            
-                                        </div>
-                                    </div>
-                                    
+                                        <p> 
+                                                <button type="button" className="btn btn-primary btn-block op-btn" onClick={()=>alert("test")}>
+                                                    <i className="fas fa-comments"></i> Szybki przewodnik
+                                                </button>
+                                        </p>
                                         
+                                        <p> 
+                                            <a href="/docs/doc.html" target="_blank">
+                                                <button type="button" className="btn btn-primary btn-block op-btn">
+                                                    <i className="fas fa-comments"></i> Instrukcja obsługi
+                                                </button>
+                                            </a>
+                                        </p>
+                                        <p> 
+                                            <a href="/apidoc/index.html" target="_blank">
+                                                <button type="button" className="btn btn-primary btn-block op-btn">
+                                                    <i className="fas fa-comments"></i> Dokumentacja API
+                                                </button>
+                                            </a>
+                                        </p>
+                                        <p> 
+                                                <button type="button" className="btn btn-primary btn-block op-btn" onClick={()=>alert("test")}>
+                                                    <i className="fas fa-comments"></i> Zgłoś awarię bądź sugestię
+                                                </button>
+                                        </p>
+                                        <p> 
+                                                <button type="button" className="btn btn-primary btn-block op-btn" onClick={()=>alert("test")}>
+                                                    <i className="fas fa-comments"></i> Wyloguj
+                                                </button>
+                                        </p>
                                     </div>
-                                </div>
-*/
-                                        }
-
+                                </div>      
                                 
                             </div>
+                            */
+                            }
+
+                        
 
                             <div className="col-md-6">
                                 <div className="card mb-3">
@@ -179,12 +120,23 @@ class Dashboard extends Component {
                             </div>
                             <div className="col-md-6">
                                 <div className="card mb-3">
-                                    <div className={["card-header", "cardHeader"].join(' ')}>Transkrypcja wyrazów</div>
+                                    <div className={["card-header", "cardHeader"].join(' ')}>Transkrypcja Wyrazów</div>
                                     <div className="card-body text-dark">
                                         <G2PTool />
                                     </div>
                                 </div>
                             </div>
+
+                            <div className="col-md-6">
+                                <div className="card mb-3">
+                                    <div className={["card-header", "cardHeader"].join(' ')}>Detekcja Słów Kluczowych</div>
+                                    <div className="card-body text-dark">
+                                        <KWSTool />
+                                    </div>
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
 

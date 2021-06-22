@@ -74,9 +74,6 @@ class FileContainer extends Component {
    
     downloadElement = (action) => {
 
-        //const userId = this.props.container.owner;
-        //const projectId = this.props.container.project;
-        //const sessionId = this.props.container.session;
         const containerId = this.props.container._id;
         const fileType = action;
 

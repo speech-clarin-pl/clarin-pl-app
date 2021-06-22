@@ -105,6 +105,9 @@ export const REMOVE_SEGMENTATION_ITEM = 'REMOVE_RECOGNITION_ITEM';
 // G2P
 export const START_G2P = 'START_G2P';
 
+//KWS
+export const START_KWS = 'START_KWS';
+
 
 // repo
 export const GET_REPO_STATS = 'GET_REPO_STATS';
