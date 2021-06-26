@@ -14,6 +14,8 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import SingleInputForm from '../../components/UI/SingleInputForm/SingleInputForm';
 import ConfirmationForm from '../../components/UI/ConfirmationForm/ConfirmationForm';
 
+import {injectIntl, FormattedMessage} from 'react-intl';
+
 const localActions = {
   CREATE_NEW_PROJECT: 'CREATE_NEW_PROJECT',
   EDIT_NAME_PROJECT: 'EDIT_NAME_PROJECT',
@@ -119,22 +121,8 @@ class ProjectsListPage extends Component {
     }
   }
 
-  // changeNameProjectHandler = (event) => {
-  //   event.preventDefault();
-    
-  //   let formIsValid = this.checkValidity(this.state.newProjectName);
-  //   if(formIsValid){
-  //     //console.log(this.state.newProjectName)
-  //     this.props.onNewNameProject(this.state.newProjectName);
-
-  //   } else {
-  //     console.log('FORM IS INVALID!');
-  //   }
-  // }
 
   newProjectNameChangeHandler = (event) => {
-    //console.log(event.target.value)
-    console.log('newProjectNameChangeHandler');
     event.preventDefault();
     this.setState({
       newProjectName: event.target.value,
@@ -174,22 +162,11 @@ class ProjectsListPage extends Component {
   }
 
   wyborProjektuOK = (projektId, projektName, projektOwner) => {
-    {
-      /*
-    <Link to={{
-      pathname: "/projects/" + encodeURIComponent(props.projektID),
-      state: {
-          projectTitle: props.title,
-          projectOwner: props.owner,
-      }
-      */
-    }
 
     this.props.onProjectChoice(projektId, projektName, projektOwner);
     this.props.onInitProjectHandler(projektId,projektName,projektOwner);
 
    
-
     this.props.history.push("/projects/"+projektId);
   }
 
@@ -205,9 +182,33 @@ class ProjectsListPage extends Component {
         <SingleInputForm
           onSubmitHandler={this.addNewProjectHandler}
           onChangeHandler={this.newProjectNameChangeHandler}
-          title="Stworz nowy projekt"
-          placeholder="Podaj nazwe projektu"
-          buttonLabel="Dodaj projekt"
+          title={
+            this.props.intl.formatMessage(
+                {
+                  id:"ProjectsListPage-AddProjectHeaderInput",
+                  description: 'Nagłówek w oknie do wpisywania nazwy projektu', 
+                  defaultMessage: 'Stwórz nowy projekt', 
+                }
+              )
+          }
+          placeholder={
+            this.props.intl.formatMessage(
+                {
+                  id:"ProjectsListPage-AddProjectFormPlaceholder",
+                  description: 'Placeholder w oknie do wpisywania nazwy projektu', 
+                  defaultMessage: 'Podaj nazwę projektu', 
+                }
+              )
+          }
+          buttonLabel={
+            this.props.intl.formatMessage(
+                {
+                  id:"ProjectsListPage-AddProjectButtonForm",
+                  description: 'Button w oknie do wpisywania nazwy projektu', 
+                  defaultMessage: 'Stwórz projekt', 
+                }
+              )
+          }
           value = {this.state.newProjectName}
           errorMessage = {this.props.errorMessage}
         />
@@ -234,7 +235,15 @@ class ProjectsListPage extends Component {
     const deleteProject = (
       <Aux>
         <ConfirmationForm
-          messageQuestion={"Czy na pewno chcesz usunac poniższy projekt? Wraz z nim zostaną usunięte wszystkie pliki audio oraz transkrypcje!"}
+          messageQuestion={
+            this.props.intl.formatMessage(
+                {
+                  id:"ProjectsListPage-RemoveProjectQuestion",
+                  description: 'Pytanie czy na pewno chcesz usunac projekt', 
+                  defaultMessage: 'Czy na pewno chcesz usunac poniższy projekt? Wraz z nim zostaną usunięte wszystkie pliki audio oraz transkrypcje!', 
+                }
+              )
+          }
           onCancel={this.closeModalHandler}
           onOk = {()=>this.props.onDelete(this.props.projectId, this.props.userId, this.props.token)}
 
@@ -264,11 +273,29 @@ class ProjectsListPage extends Component {
     //lewy sidebar
     const leftSiteBar = (
       <LeftSiteBar czyTopPart={false} 
-        desc="W tym miejscu można tworzyć własne korpusy które stanowią przestrzeń roboczą dla wgranych plików. UWAGA! w przypadku usunięcia korpusu, zostaną również usunięte wszystkie wgrane do niego pliki!"
+        desc={
+          this.props.intl.formatMessage(
+              {
+                id:"ProjectsListPage-description",
+                description: 'Opis widoku dodawania projektow', 
+                defaultMessage: 'W tym miejscu można tworzyć własne projekty które stanowią przestrzeń roboczą dla wgranych plików. UWAGA! w przypadku usunięcia projektu, zostaną usunięte wszystkie wgrane do niego pliki!', 
+              }
+            )
+        }
+        
+       
          >
         <ButtonLeftBar
           customeStyle={{ height: '50px' }}
-          napis="Dodaj korpus"
+          napis={
+            this.props.intl.formatMessage(
+                {
+                  id:"ProjectsListPage-addProjectBtn",
+                  description: 'Opis w przycisku do dodawania korpusu', 
+                  defaultMessage: 'Stwórz projekt', 
+                }
+              )
+          }
           iconType="fa-plus"
           whenClicked={(actionType)=>this.openModalHandler(localActions.CREATE_NEW_PROJECT,'','')} />
       </LeftSiteBar>
@@ -403,5 +430,5 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ProjectsListPage));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(injectIntl(ProjectsListPage)));
 

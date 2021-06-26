@@ -13,6 +13,7 @@ import * as projectListActions from '../../store/actions/projectsList';
 import * as homeActions from '../../store/actions/home';
 import Modal from '../../components/UI/Modal/Modal';
 import ContactToAdminFrom from '../../containers/ContactToAdminForm/ContactToAdminForm';
+import {injectIntl, FormattedMessage} from 'react-intl';
 
 class topBar extends Component {
 
@@ -60,6 +61,7 @@ class topBar extends Component {
        this.props.onChangeProjectName(this.props.projectID, text, this.props.userId, this.props.token);
     }
 
+
     render() {
 
         //czy poczatkowa wersja topbara czy rozbudowana....
@@ -79,18 +81,29 @@ class topBar extends Component {
                     rel="noopener noreferrer"
                     id="navbarDropdownMenuLinkpomoc"
                     className={["nav-link", "navLink"].join(' ')}>
-                    <FontAwesomeIcon icon={faFighterJet} className="faIcon" /> Szybki przewodnik</a>
+                    <FontAwesomeIcon icon={faFighterJet} className="faIcon" />
+                        <FormattedMessage
+                            id="TopBar-QuickTour"
+                            description="Ikona szybkiego przewodnika" 
+                            defaultMessage="Szybki przewodnik"
+                        />
+                    </a>
             </li>
             :
             null;
 
         const contactToAdminBtn = this.props.ifContactToAdmin ?
             <li className="nav-item">
-
                 <a href="#"
                     className={["nav-link", "navLink"].join(' ')}
                     onClick={this.openSendToAdminModal}>
-                    <FontAwesomeIcon icon={faEnvelope} className="faIcon" /> Zgłoś do Admina </a>
+                    <FontAwesomeIcon icon={faEnvelope} className="faIcon" /> 
+                        <FormattedMessage
+                            id="TopBar-QuickTour"
+                            description="Ikona zgłoś do admina" 
+                            defaultMessage="Zgłoś do admina"
+                        />
+                    </a>
             </li>
             :
             null;
@@ -105,7 +118,13 @@ class topBar extends Component {
                     aria-expanded="false"
                     onClick={this.logOut}>
 
-                    <FontAwesomeIcon icon={faUserCircle} className="faIcon" /> Wyloguj </a>
+                    <FontAwesomeIcon icon={faUserCircle} className="faIcon" />
+                        <FormattedMessage
+                            id="TopBar-LogOutIcon"
+                            description="Ikona wylogowania się" 
+                            defaultMessage="Wyloguj"
+                        />
+                    </a>
             </li> : null;
 
         const apiLink = this.props.ifAPI ?
@@ -125,7 +144,13 @@ class topBar extends Component {
                     rel="noopener noreferrer"
                     id="navbarDropdownMenuLinkpomoc"
                     className={["nav-link", "navLink"].join(' ')}>
-                    <FontAwesomeIcon icon={faQuestion} className="faIcon" /> Dokumentacja</a>
+                    <FontAwesomeIcon icon={faQuestion} className="faIcon" /> 
+                        <FormattedMessage
+                            id="TopBar-documentaionIcon"
+                            description="Ikona dokumentacji" 
+                            defaultMessage="Dokumentacja"
+                        />
+                    </a>
             </li>
         )
 
@@ -136,7 +161,14 @@ class topBar extends Component {
         }
 
         if(this.state.contactAdminModalOpened){
-            modalTitle = "Wyślij wiadomość do Administratora strony";
+            modalTitle = this.props.intl.formatMessage(
+                    {
+                      id:"TopBar-contactToAdminHeader",
+                      description: 'Nagłówek formularza do kontaktu z administratorem', 
+                      defaultMessage: 'Kontakt do administratora strony', 
+                    }
+                  )
+
         }
 
         return (
@@ -216,12 +248,13 @@ class topBar extends Component {
                                 data-toggle="dropdown" 
                                 aria-haspopup="true" 
                                 aria-expanded="false">
-                                <i className={["fas", "fa-globe-europe"].join(' ')}></i> PL
+
+                                <i className={["fas", "fa-globe-europe"].join(' ')}></i> {this.props.language}
                             </a>
-                          <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLinkjezyk">
-                              <a className="dropdown-item" onClick={()=> alert("PL")}>PL</a>
-                              <a className="dropdown-item" onClick={() => alert("EN")}>EN</a>
-                          </div>
+                                <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLinkjezyk">
+                                    <a className="dropdown-item" onClick={()=> this.props.onChangeLanguage("pl")}>PL</a>
+                                    <a className="dropdown-item" onClick={() => this.props.onChangeLanguage("en")}>EN</a>
+                                </div>
                           </li>
                          
                            
@@ -269,14 +302,16 @@ const mapStateToProps = state => {
         token: state.homeR.token,
         projectID: state.projectR.currentProjectID,
         userId: state.projectR.currentProjectOwner,
+        language:state.homeR.language,
 	}
 }
 
 const mapDispatchToProps = dispatch => {
 	return {
        onChangeProjectName: (projectId, newName, userId, token) => dispatch(projectListActions.editName(projectId, newName, userId, token)),
+       onChangeLanguage: (language) => dispatch(homeActions.changeLanguage(language)),
        onLogOut: () => dispatch(homeActions.logout()),
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(topBar));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(injectIntl(topBar)));

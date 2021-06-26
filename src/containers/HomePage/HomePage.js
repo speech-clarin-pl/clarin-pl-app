@@ -27,9 +27,9 @@ const homePage = (props) => {
 
              <LoginArea />
           
-           
+             <HomeText />
             <DecoIntro />
-            <HomeText />
+            
             <AppFooter />
         </Aux>
     );

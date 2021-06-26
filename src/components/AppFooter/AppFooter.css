@@ -1,7 +1,10 @@
 .AppFooter {
     padding: 1em;
+    background-color: #394b55;
+    color: rgb(207, 207, 207) !important;
 }
 
 .AppFooter .contactInfo {
     font-size: 0.8em;
+    
 }

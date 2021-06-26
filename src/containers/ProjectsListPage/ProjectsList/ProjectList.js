@@ -1,6 +1,7 @@
 import React from 'react';
 import Aux from '../../../hoc/Auxiliary';
 import './ProjectList.css';
+import {injectIntl, FormattedMessage} from 'react-intl';
 
 const projectsList = (props) => {
 
@@ -8,13 +9,34 @@ const projectsList = (props) => {
 
      const listHeader = (
             <tr className="thead-dark">
-                <td className="title">Tytuł</td>
-                {
-                    //<tSuperMpongoDBd >Właściciel</td>
-                }
-                <td> Identyfikator</td>
-                <td >Data utworzenia</td>
-                <td >Akcje</td>
+                <td className="title">
+                    <FormattedMessage
+                        id="ProjectList-nazwa"
+                        description="nazwa projektu" 
+                        defaultMessage="Nazwa" 
+                    />
+                </td>
+                <td>
+                    <FormattedMessage
+                        id="ProjectList-id"
+                        description="id projektu" 
+                        defaultMessage="Identyfikator" 
+                    />
+                </td>
+                <td>
+                    <FormattedMessage
+                        id="ProjectList-createDate"
+                        description="data utworzenia" 
+                        defaultMessage="Data utworzenia" 
+                    />
+                </td>
+                <td >
+                    <FormattedMessage
+                        id="ProjectList-akcje"
+                        description="akcje" 
+                        defaultMessage="Akcje" 
+                    />
+                </td>
             </tr>
         );
  
@@ -37,4 +59,4 @@ const projectsList = (props) => {
     );
 }
 
-export default projectsList;
+export default injectIntl(projectsList);

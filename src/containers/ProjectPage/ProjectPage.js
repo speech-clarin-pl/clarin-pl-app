@@ -21,8 +21,8 @@ import * as projectActions from '../../store/actions/index';
 import {DndProvider} from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
 import Tour from 'reactour';
+import {injectIntl, FormattedMessage} from 'react-intl';
 
-//import axios from '../../axios-speechtools';
 
 class ProjectPage extends Component {
 
@@ -35,22 +35,49 @@ class ProjectPage extends Component {
    steps = [
     {
       selector: '[data-tut="repoPanel"]',
-      content: `Repozytorium to miejsce w którym możesz wgrywać i przechowywać swoje pliki audio. Twoim celem jest ich opis (z pomocą naszych narzędzi automatycznych) oraz ostateczne wygenerowanie anotowanego korpusu.`
+      content: 
+        this.props.intl.formatMessage(
+            {
+              id:"ProjectPage-tour-repoPanel",
+              description: 'Tour-repoPanel', 
+              defaultMessage:  `Repozytorium to miejsce w którym możesz wgrywać i przechowywać swoje pliki audio. Twoim celem jest ich opis (z pomocą naszych narzędzi automatycznych) oraz ostateczne wygenerowanie anotowanego korpusu.`, 
+            }
+          )
     },
     {
       selector: '[data-tut="repoSession"]',
-      content: `Pliki możesz organizować w grupy zwane sesjami. Na początku stworzyliśmy dla Ciebie dwie przykładowe sesje: demo i sesję domyślną.`,
+      content: this.props.intl.formatMessage(
+        {
+          id:"ProjectPage-tour-repoSession",
+          description: 'Tour-repoSession', 
+          defaultMessage:  `Pliki możesz organizować w grupy zwane sesjami. Na początku stworzyliśmy dla Ciebie dwie przykładowe sesje: demo i sesję domyślną.`, 
+        }
+      ),
        action: () => {
         this.props.onOpenDemoSession();
       }
     },
     {
       selector: '[data-tut="ikonkiRepo"]',
-      content: `Każdy plik posiada ikonki obrazujące status wykonania narzędzia automatycznego, odpowiednio od lewej: detekcja mowy, diaryzacja, rozpoznawanie mowy oraz segmentacja. Klikając w ikonkę, przenosisz dany plik do kolejki danego narzędzia automatycznego.`
+      content: this.props.intl.formatMessage(
+        {
+          id:"ProjectPage-tour-ikonkiRepo",
+          description: 'Tour-ikonkiRepo', 
+          defaultMessage:  `Każdy plik posiada ikonki obrazujące status wykonania narzędzia automatycznego, odpowiednio od lewej: detekcja mowy, diaryzacja, rozpoznawanie mowy oraz segmentacja. Klikając w ikonkę, przenosisz dany plik do kolejki danego narzędzia automatycznego.`, 
+        }
+      ),      
     },
     {
       selector: '[data-tut="toolList"]',
-      content: `Dodaliśmy za Ciebie dwa pliki (opowiesci i kleska) do kolejki narzędzia służącego do automatycznego rozpoznawania mowy. Dzięki kolejkowaniu plików, możesz zdecydować którymi plikami chcesz się zajmować i wykonywać ich transkrypcje po koleii, plik po pliku.`,
+      content: this.props.intl.formatMessage(
+        {
+          id:"ProjectPage-tour-toolList",
+          description: 'Tour-toolList', 
+          defaultMessage:  `Dodaliśmy za Ciebie dwa pliki (opowiesci i kleska) do kolejki narzędzia służącego do automatycznego rozpoznawania mowy. Dzięki kolejkowaniu plików, możesz zdecydować którymi plikami chcesz się zajmować i wykonywać ich transkrypcje po koleii, plik po pliku.`,
+        }
+      ), 
+      
+      
       action: () => {
         //console.log(this.props.history)
         this.addDemoFilesToReco();
@@ -58,54 +85,129 @@ class ProjectPage extends Component {
     },
     {
       selector: '[data-tut="wlaczenieNarzedzia"]',
-      content: `Klikając ikonkę przy nazwie pliku, możesz uruchomić narzędzie automatyczne. Zielona ikonka oznacza, że dane narzędzie zostało już wykonane. Możesz podejrzeć rezultaty jego działania w oknie edytora i ewentualnie skorygować je ręcznie.`
+      content: this.props.intl.formatMessage(
+        {
+          id:"ProjectPage-tour-wlaczenieNarzedzia",
+          description: 'Tour-wlaczenieNarzedzia', 
+          defaultMessage:  `Klikając ikonkę przy nazwie pliku, możesz uruchomić narzędzie automatyczne. Zielona ikonka oznacza, że dane narzędzie zostało już wykonane. Możesz podejrzeć rezultaty jego działania w oknie edytora i ewentualnie skorygować je ręcznie.`
+        }
+      ), 
+      
     },
     {
       selector: '[data-tut="audioEdytor"]',
-      content: `Edytor umożliwia odsłuchanie oraz edycje rezultatów narzędzi automatycznych. W tym przypadku mamy otworzony plik "celnik" oraz transkrypcję która została wykonana automatycznie. Możesz ją poprawić ręcznie i zapisać korekty.`,
+      content: this.props.intl.formatMessage(
+        {
+          id:"ProjectPage-tour-audioEdytor",
+          description: 'Tour-audioEdytor', 
+          defaultMessage:  `Edytor umożliwia odsłuchanie oraz edycje rezultatów narzędzi automatycznych. W tym przypadku mamy otworzony plik "celnik" oraz transkrypcję która została wykonana automatycznie. Możesz ją poprawić ręcznie i zapisać korekty.`,
+        }
+      ),
     },
     {
       selector: '[data-tut="edytorControls"]',
-      content: `W tym miejscu możesz kontrolować różne aspekty odtwarzania pliku audio. Oznaczają one odpowiednio od lewej.
+      content: this.props.intl.formatMessage(
+        {
+          id:"ProjectPage-tour-edytorControls",
+          description: 'Tour-edytorControls', 
+          defaultMessage:  `W tym miejscu możesz kontrolować różne aspekty odtwarzania pliku audio. Oznaczają one odpowiednio od lewej.
         
-        - rozszerzenie widoku edytora do całej szerokości dostępnego okna
-        - Play/pausa [Alt+l]
-        - Odtworzenie ostatnich 3 sekund, począwszy od aktualnej pozycji głowicy [Alt+k]
-        - Odtworzenie ostatnich 5 sekund, począwszy od aktualnej pozycji głowicy [Alt+j]
-        - Przyśpieszenie odtwarzania [Alt+i]
-        - Spowolnienie odtwarzania [Alt+o]
-        - Orzybliżenie
-        - Oddalenie
-        - Dodanie segmentu
-      . Warto nauczyć się również skrótów klawiaturowych.`
+          - rozszerzenie widoku edytora do całej szerokości dostępnego okna
+          - Play/pausa [Alt+l]
+          - Odtworzenie ostatnich 3 sekund, począwszy od aktualnej pozycji głowicy [Alt+k]
+          - Odtworzenie ostatnich 5 sekund, począwszy od aktualnej pozycji głowicy [Alt+j]
+          - Przyśpieszenie odtwarzania [Alt+i]
+          - Spowolnienie odtwarzania [Alt+o]
+          - Orzybliżenie
+          - Oddalenie
+          - Dodanie segmentu
+        . Warto nauczyć się również skrótów klawiaturowych.`
+        }
+      ),
+      
+      
+      
     },
     {
       selector: '[data-tut="edytorNavigator"]',
-      content: `W tym miejscu widać podgląd całego pliku dźwiękowego. Dzięki temu możesz szybko nawigować do dowolnego jego fragmentu, bez względu na to jak długe jest nagranie.`
+      content: this.props.intl.formatMessage(
+        {
+          id:"ProjectPage-tour-edytorNavigator",
+          description: 'Tour-edytorNavigator', 
+          defaultMessage: `W tym miejscu widać podgląd całego pliku dźwiękowego. Dzięki temu możesz szybko nawigować do dowolnego jego fragmentu, bez względu na to jak długe jest nagranie.`
+        }
+      ),
+      
     },
     {
       selector: '[data-tut="edytorWaveform"]',
-      content: `W zależności od powiększenia, w tym miejscu widać fragment nagrania ze szczegółami. To tutaj możesz precyzyjnie ustawić głowicę odtwarzającą oraz granice segmentów.`
+      content: this.props.intl.formatMessage(
+        {
+          id:"ProjectPage-tour-edytorWaveform",
+          description: 'Tour-edytorWaveform', 
+          defaultMessage: `W zależności od powiększenia, w tym miejscu widać fragment nagrania ze szczegółami. To tutaj możesz precyzyjnie ustawić głowicę odtwarzającą oraz granice segmentów.`
+        }
+      ),
+      
+      
     },
     {
       selector: '[data-tut="edytorOtworzwEMU"]',
-      content: `Jeżeli na pliku jest wykonane narzędzie segmentacji (jak w tym przypadku), możesz otworzyć plik w zewnętrznej aplikacji EMU [Screen] `
+      content: this.props.intl.formatMessage(
+        {
+          id:"ProjectPage-tour-edytorOtworzwEMU",
+          description: 'Tour-edytorOtworzwEMU', 
+          defaultMessage: `Jeżeli na pliku jest wykonane narzędzie segmentacji (jak w tym przypadku), możesz otworzyć plik w zewnętrznej aplikacji EMU [Screen] `
+        }
+      ),
+      
+      
     },
     {
       selector: '[data-tut="edytorTextField"]',
-      content: `W tym miejscu dokonujesz korekty narzędzi automatycznych. W tym przypadku jest to transkrypcja. Zmiany możesz zapisać do systemu [Alt+m]. Po zakończeniu transkrypcji, możesz przejść do kolejnego pliku na liścien [Alt+n]`
+      content: this.props.intl.formatMessage(
+        {
+          id:"ProjectPage-tour-edytorTextField",
+          description: 'Tour-edytorTextField', 
+          defaultMessage: `W tym miejscu dokonujesz korekty narzędzi automatycznych. W tym przypadku jest to transkrypcja. Zmiany możesz zapisać do systemu [Alt+m]. Po zakończeniu transkrypcji, możesz przejść do kolejnego pliku na liścien [Alt+n]`
+        }
+      ),
+      
+      
     },
     {
       selector: '[data-tut="edytorUruchomDlaWszystkich"]',
-      content: `Zamiast uruchamiać narzędzia pojedynczo, możesz je uruchomić jednocześnie do wszystkich plików znajdujących się w kolejce. W tym celu należy kliknąć w tym miejscu.`
+      content: this.props.intl.formatMessage(
+        {
+          id:"ProjectPage-tour-edytorUruchomDlaWszystkich",
+          description: 'Tour-edytorUruchomDlaWszystkich', 
+          defaultMessage:  `Zamiast uruchamiać narzędzia pojedynczo, możesz je uruchomić jednocześnie do wszystkich plików znajdujących się w kolejce. W tym celu należy kliknąć w tym miejscu.`
+        }
+      ),
+      
+     
     },
     {
       selector: '[data-tut="EdytorPodpowiedzi"]',
-      content: `W tym miejscu znajdziesz wskazówki dotyczące zasady działania poszczególnych narzędzi oraz niezbędne skróty klawiaturowe.`
+      content: this.props.intl.formatMessage(
+        {
+          id:"ProjectPage-tour-EdytorPodpowiedzi",
+          description: 'Tour-EdytorPodpowiedzi', 
+          defaultMessage:   `W tym miejscu znajdziesz wskazówki dotyczące zasady działania poszczególnych narzędzi oraz niezbędne skróty klawiaturowe.`
+        }
+      ),
+      
+     
     },
     {
       selector: '[data-tut="edytorExportCorpus"]',
-      content: `Wszystkie pliki na których zostały wykonane wszystkie poziomy annotacji (i ewentualnie poprawione przez Ciebie), mogą zostać wyeksportowane do gotowego korpusu w formacie EMU-SDMS. Po odczekaniu, będziesz mógł go ściągnąć w formacie ZIP.`
+      content: this.props.intl.formatMessage(
+        {
+          id:"ProjectPage-tour-edytorExportCorpus",
+          description: 'Tour-edytorExportCorpus', 
+          defaultMessage:  `Wszystkie pliki na których zostały wykonane wszystkie poziomy annotacji (i ewentualnie poprawione przez Ciebie), mogą zostać wyeksportowane do gotowego korpusu w formacie EMU-SDMS. Po odczekaniu, będziesz mógł go ściągnąć w formacie ZIP.`
+        }
+      ),
     },
   ]
 
@@ -266,11 +368,52 @@ class ProjectPage extends Component {
  
               <ul className={["nav nav-tabs", "darkbg"].join(' ')} data-tut="zakladkiNarzedzi" >
 
-                  <Tab  title="Dashboard" iconType="DASH" whereToLink={'/dashboard'}/>
-                    <Tab  title="Detekcja mowy" iconType="VAD" whereToLink={'/vad'}/>
-                    <Tab  title="Diaryzacja" iconType="DIA" whereToLink={'/dia'}/>
-                    <Tab  title="Transkrypcje" iconType="REC" whereToLink={'/recognition'}/>
-                    <Tab  title="Segmentacja" iconType="SEG" whereToLink={'/segment'}/>        
+                  <Tab  title={
+                                  this.props.intl.formatMessage(
+                                      {
+                                        id:"ProjectPage-dashboard",
+                                        description: 'Zakładka dashboard', 
+                                        defaultMessage: 'Kokpit', 
+                                      }
+                                    )
+                              }
+                              iconType="DASH" whereToLink={'/dashboard'}/>
+                    <Tab  title={
+                                  this.props.intl.formatMessage(
+                                      {
+                                        id:"ProjectPage-detekcjamowy",
+                                        description: 'Zakładka detekcji movy', 
+                                        defaultMessage: 'Detekcja mowy', 
+                                      }
+                                    )
+                              } iconType="VAD" whereToLink={'/vad'}/>
+                    <Tab  title={
+                                  this.props.intl.formatMessage(
+                                      {
+                                        id:"ProjectPage-diaryzacja",
+                                        description: 'Zakładka diaryzacji', 
+                                        defaultMessage: 'Diaryzacja', 
+                                      }
+                                    )
+                              } iconType="DIA" whereToLink={'/dia'}/>
+                    <Tab  title={
+                                  this.props.intl.formatMessage(
+                                      {
+                                        id:"ProjectPage-transkrypcje",
+                                        description: 'Zakładka transkrypcje', 
+                                        defaultMessage: 'Transkrypcje', 
+                                      }
+                                    )
+                              } iconType="REC" whereToLink={'/recognition'}/>
+                    <Tab  title={
+                                  this.props.intl.formatMessage(
+                                      {
+                                        id:"ProjectPage-segmentacja",
+                                        description: 'Zakładka segmentacja', 
+                                        defaultMessage: 'Segmentacja', 
+                                      }
+                                    )
+                              } iconType="SEG" whereToLink={'/segment'}/>        
               </ul>
             
               <Switch>
@@ -336,4 +479,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectPage);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ProjectPage));

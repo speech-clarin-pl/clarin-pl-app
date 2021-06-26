@@ -1,6 +1,7 @@
 import React from 'react';
 import Aux from '../../../hoc/Auxiliary';
 import './Jumbotron.css';
+import {injectIntl, FormattedMessage} from 'react-intl';
 //import {FormattedMessage} from 'react-intl';
 //import {Link} from 'react-router-dom';
 
@@ -14,46 +15,24 @@ const jumbotron = (props) => {
                 <div className="container">
                     <h1 className="display-4">CLARIN-PL</h1>
                     <p className="lead">
-                        
-                        Platforma do tworzenia korpusów i analizy sygnałów mowy.
-                       
+                        <FormattedMessage
+                            id="Jumbotron-subTitle1"
+                            description="Pierwszy podpis pod logiem clarin" 
+                            defaultMessage="Platforma do tworzenia korpusów i analizy sygnałów mowy."
+                        />
                     </p>
                     <hr className="my-4" />
                     <p>
-                        Automatyczne rozpoznawanie mowy z plików dźwiękowych, segmentacja, tworzenie korpusów audio.
-                    </p>
-
-                   
-                   
-                {
-
-                  //  <div className="alert alert-info" role="alert">
-                  //  Portal w wersji beta.
-                  //  </div>
-
-                    // <Link to="/projectsList">
-                    //       <button className="btn btn-primary btn-lg btn-block gotoprojects">
-                    //           Przejdz do listy projektow
-                    //        </button>
-                    // </Link>
-                }
-
-                    {
-                    /*
-                    <a className="btn btn-primary btn-lg" href="#" role="button">
-                        
                         <FormattedMessage
-                                id="Jumbotron.register"
-                                defaultMessage="Zarejestruj się"
-                                />
-
-                    </a>
-                    */
-                    }
+                            id="Jumbotron-subTitle2"
+                            description="Drugi podpis pod logiem clarin" 
+                            defaultMessage="Automatyczne rozpoznawanie mowy z plików dźwiękowych, segmentacja, tworzenie korpusów audio."
+                        />
+                    </p>
                 </div>
             </div>
         </Aux>
     );
 }
 
-export default jumbotron;
+export default injectIntl(jumbotron);

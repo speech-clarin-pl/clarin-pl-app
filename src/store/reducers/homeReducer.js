@@ -1,4 +1,5 @@
 import * as actionTypes from '../actions/actionsTypes';
+import { registerUserAction } from '../actions/home';
 import {updateObject} from '../utility';
 //import {createNotification} from '../../index';
 
@@ -18,7 +19,7 @@ const initialState = {
 
     isLoading: false, //do pokazywania prelowadera
 
-    
+    language: 'pl',
 
     token: '',
     authLoading: false,
@@ -153,10 +154,18 @@ const stopLoading = (state,action) => {
     })
 }
 
+const changeLanguage = (state, action) => {
+    const lang = action.language
+    return updateObject(state,{
+        language: lang,
+    })
+}
+
 
 const homeReducer = (state = initialState, action) => {
 
     switch(action.type){
+        case actionTypes.CHANGE_LANGUAGE: return changeLanguage(state,action);
         case actionTypes.LOG_IN: return logIn(state, action);
         case actionTypes.LOG_OUT: return logOut(state, action);
         case actionTypes.LOG_IN_FAILED: return logInFailed(state, action);

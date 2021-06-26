@@ -1,0 +1,90 @@
+{
+  "LoginAreaForgotPassHeader": {
+    "defaultMessage": "Zresetowanie hasła",
+    "description": "Napisz w nagłówku przypomnienia hasła"
+  },
+  "LoginAreaForgotPassSendBtn": {
+    "defaultMessage": "Wyślij email z linkiem do zresetowania hasła",
+    "description": "Napisz na przycisku do resetowania hasła"
+  },
+  "LoginAreaGoToProjectList": {
+    "defaultMessage": "Przejdź do listy swoich projektów",
+    "description": "napisz na przycisku do listy projektow"
+  },
+  "LoginAreaGotoProjectLists": {
+    "defaultMessage": "Przejdź do listy swoich projektów",
+    "description": "napisz na przycisku do listy peojektow"
+  },
+  "LoginAreaInfoaboutToLogin": {
+    "defaultMessage": "Aby skorzystać z usług serwisu należy się zalogować. Zaloguj się lub załóż konto.",
+    "description": "Słowo wstępu dlaczego trzeba się zarejestrować"
+  },
+  "LoginAreaLogInHeader": {
+    "defaultMessage": "Zaloguj się",
+    "description": "napisz w nagłówku do formularza logowania sie "
+  },
+  "LoginAreaLogOutBtn": {
+    "defaultMessage": "Wyloguj się",
+    "description": "napisz na przycisku do wylogowania sie "
+  },
+  "LoginAreaLoginBtn": {
+    "defaultMessage": "Zaloguj się",
+    "description": "napisz na btn do formularza logowania sie "
+  },
+  "LoginAreaLoginBtnv2": {
+    "defaultMessage": "Zaloguj się",
+    "description": "Napisz na przycisku do logowania"
+  },
+  "LoginAreaLoginForgottPassBtn": {
+    "defaultMessage": "Zapomniałem hasła",
+    "description": "napisz na btn do przypomnienia hasła"
+  },
+  "LoginAreaLoginPasswordLabel": {
+    "defaultMessage": "Hasło",
+    "description": "Label na polu do podania hasła przy logowaniu"
+  },
+  "LoginAreaLoginPasswordPlaceholder": {
+    "defaultMessage": "Podaj hasło",
+    "description": "Placeholder na polu do podania hasła przy logowaniu"
+  },
+  "LoginAreaRegisterEmailLabel": {
+    "defaultMessage": "Email",
+    "description": "Label na polu do podania email przy rejestracji"
+  },
+  "LoginAreaRegisterEmailPlaceholder": {
+    "defaultMessage": "Podaj swój email",
+    "description": "Placeholder na polu do podania email przy rejestracji"
+  },
+  "LoginAreaRegisterHeader": {
+    "defaultMessage": "Rejestracja",
+    "description": "Napisz w nagłówku rejestracji"
+  },
+  "LoginAreaRegisterNameLabel": {
+    "defaultMessage": "imię",
+    "description": "Label na polu do podania imienia przy rejestracji"
+  },
+  "LoginAreaRegisterNamePlaceholder": {
+    "defaultMessage": "Podaj swoje imię",
+    "description": "Placeholder na polu do podania imienia przy rejestracji"
+  },
+  "LoginAreaRegisterPasswordLabel": {
+    "defaultMessage": "Hasło",
+    "description": "Label na polu do podania hasła przy rejestracji"
+  },
+  "LoginAreaRegisterPasswordPlaceholder": {
+    "defaultMessage": "Podaj hasło",
+    "description": "Placeholder na polu do podania hasła przy rejestracji"
+  },
+  "LoginAreaRegisterRegisterBtn": {
+    "defaultMessage": "Zarejestruj",
+    "description": "Napisz na przycisku rejestracji"
+  },
+  "LoginAreaWelcome": {
+    "defaultMessage": "Witaj {imie}",
+    "description": "Napis pojawiający się po zalogowaniu się witaj"
+  },
+  "LoginAreaWelcomev2": {
+    "defaultMessage": "Witaj {imie}",
+    "description": "Napis pojawiający się po zalogowaniu się witaj v2"
+  }
+}

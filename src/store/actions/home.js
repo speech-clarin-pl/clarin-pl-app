@@ -207,6 +207,15 @@ export const setLoggedIn = (userId, userName, email, token) => {
     return loginUserAction(true, token, false, userId, userName, email)
 }
 
+export const changeLanguage = (language) => {
+    return dispatch => {
+        dispatch({
+            type: actionTypes.CHANGE_LANGUAGE,
+            language: language,
+        })
+    }
+}
+
 
 
 export const loginUser = (userEmail, userPass) => {
@@ -218,8 +227,6 @@ export const loginUser = (userEmail, userPass) => {
                 email: userEmail,
                 password: userPass
             }).then(response => {
-
-               
 
                 dispatch(stopLoading());
 

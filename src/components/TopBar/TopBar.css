@@ -6,6 +6,10 @@
 
 }
 
+.TopBar .faIcon {
+    margin-right: 5px;
+}
+
 .TopBar .myLabelClass {
     color: white;
 }

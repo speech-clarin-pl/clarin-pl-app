@@ -16,7 +16,7 @@ const appfooter = (props) => {
                         CLARIN-PL {moment().format('YYYY')}
                     </div>
                     <div className="contactInfo">
-                        <div>Main developers: Danijel Korzinek (speech services): danijel@pjwstk.edu.pl, Mariusz Kleć (front-end and back-end of the web): mklec@pjwstk.edu.pl </div>
+                        <div>Main developers: Danijel Korzinek (speech services): danijel@pjwstk.edu.pl, Mariusz Kleć (front-end and back-end): mklec@pjwstk.edu.pl </div>
                     </div>
                 </div>
             </footer>

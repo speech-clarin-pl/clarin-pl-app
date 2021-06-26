@@ -8,7 +8,8 @@ import {connect} from 'react-redux';
 import Input from '../../../components/UI/Input/Input';
 import * as authActions from '../../../store/actions/index';
 import {loader} from '../../../index';
-import {FormattedMessage} from 'react-intl'
+import {injectIntl, FormattedMessage} from 'react-intl';
+
 
 class LoginArea extends Component {
 
@@ -115,6 +116,8 @@ class LoginArea extends Component {
         showRemindPassView: false,
 
     }
+
+    
 
 
     //simple validator....
@@ -338,105 +341,44 @@ class LoginArea extends Component {
 
         // ######### formatowanie informacji po zalogowaniu się ########
         //let messageForLogin = this.props.isAuth===false?'Zaloguj się':'Jesteś zalogowany jako:';
-
-
-        // ######### formatowanie informacji error Register ########
-        /*
-        let errorRegisterInfo;
-        if(this.props.resRegistrationStatus === 201 || this.props.resRegistrationStatus === 200){
-            errorRegisterInfo = (
-                <div className="alert alert-success" role="alert">
-                     {this.props.registrationMessage}
-                </div>
-            )
-        } else if(this.props.resRegistrationStatus !== 0){
-                 errorRegisterInfo = (
-                    <div className="alert alert-warning" role="alert">
-                         {this.props.registrationMessage}
-                    </div>
-                )
-        }
-        */
-
-
-        // ######### formatowanie informacji error Login ########
-        /*
-        let errorLoginInfo;
-        if(this.props.resLoginStatus === 201 || this.props.resLoginStatus === 200){
-            errorLoginInfo = (
-                <div className="alert alert-success" role="alert">
-                     {this.props.loginMessage}
-                </div>
-            )
-        } else if(this.props.resLoginStatus !== 0){
-
-            let message = this.props.loginMessage;
-
-            if(typeof message === 'undefined' || message === null){
-                errorLoginInfo = (
-                    <div className="alert alert-danger" role="alert">
-                         Wystąpił problem z serwerem
-                    </div>
-                )
-            } else {
-                errorLoginInfo = (
-                    <div className="alert alert-warning" role="alert">
-                         {message}
-                    </div>
-                )
-            }
-        }
-        */
-
-
-         // ######### formatowanie informacji forgot Pass########
-        //let errorForgotPassInfo;
-        /*
-        if(this.props.resForgotPassStatus === 201 || this.props.resForgotPassStatus === 200){
-            errorForgotPassInfo = (
-                <div className="alert alert-success" role="alert">
-                     {this.props.forgotPassMessage}
-                </div>
-            )
-        } else if(this.props.resForgotPassStatus !== 0){
-
-            let message = this.props.forgotPassMessage;
-
-            if(typeof message === 'undefined' || message === null){
-                errorForgotPassInfo = (
-                    <div className="alert alert-danger" role="alert">
-                         Wystąpił problem z serwerem
-                    </div>
-                )
-            } else {
-                errorForgotPassInfo = (
-                    <div className="alert alert-warning" role="alert">
-                         {message}
-                    </div>
-                )
-            }
-        }
-        */
-
         
 
         const registerArea = (
             <div className="col" key="a1">
                             
-                            <h3>Zarejestruj się</h3>
+                            <h3>
+                                <FormattedMessage
+                                    id="LoginAreaRegisterHeader"
+                                    description="Napisz w nagłówku rejestracji" 
+                                    defaultMessage="Rejestracja" 
+                                />
+                            </h3>
                            
-                            {
-                               // this.props.registrationMessage !== ''?
-                               // errorRegisterInfo : null
-                            }
+                           
                              
                             <form onSubmit={this.registerHandler}>  
                                 <div className="form-group">
                                     <Input 
                                         inputtype="input" 
                                         type="text"
-                                        label="Imie"
-                                        placeholder="Podaj swoje imie"
+                                        label={
+                                            this.props.intl.formatMessage(
+                                                {
+                                                  id:"LoginAreaRegisterNameLabel",
+                                                  description: 'Label na polu do podania imienia przy rejestracji', 
+                                                  defaultMessage: 'imię', 
+                                                }
+                                              )
+                                        }
+                                        placeholder={
+                                            this.props.intl.formatMessage(
+                                                {
+                                                  id:"LoginAreaRegisterNamePlaceholder",
+                                                  description: 'Placeholder na polu do podania imienia przy rejestracji', 
+                                                  defaultMessage: 'Podaj swoje imię', 
+                                                }
+                                              )
+                                        }
                                         name="registerName"
                                         touched = {this.state.registerform.registerName.touched}
                                         invalid={!this.state.registerform.registerName.valid}
@@ -446,8 +388,24 @@ class LoginArea extends Component {
                                     <Input 
                                         inputtype="input" 
                                         type="text"
-                                        label="Adres Email"
-                                        placeholder="Podaj adres email"
+                                        label={
+                                            this.props.intl.formatMessage(
+                                                {
+                                                  id:"LoginAreaRegisterEmailLabel",
+                                                  description: 'Label na polu do podania email przy rejestracji', 
+                                                  defaultMessage: 'Email', 
+                                                }
+                                              )
+                                        }
+                                        placeholder={
+                                            this.props.intl.formatMessage(
+                                                {
+                                                  id:"LoginAreaRegisterEmailPlaceholder",
+                                                  description: 'Placeholder na polu do podania email przy rejestracji', 
+                                                  defaultMessage: 'Podaj swój email', 
+                                                }
+                                              )
+                                        }
                                         name="registerEmail"
                                         touched = {this.state.registerform.registeremail.touched}
                                         invalid={!this.state.registerform.registeremail.valid}
@@ -457,8 +415,24 @@ class LoginArea extends Component {
                                     <Input 
                                         inputtype="input" 
                                         type="password"
-                                        label="Hasło"
-                                        placeholder="Podaj hasło"
+                                        label={
+                                            this.props.intl.formatMessage(
+                                                {
+                                                  id:"LoginAreaRegisterPasswordLabel",
+                                                  description: 'Label na polu do podania hasła przy rejestracji', 
+                                                  defaultMessage: 'Hasło', 
+                                                }
+                                              )
+                                        }
+                                        placeholder={
+                                            this.props.intl.formatMessage(
+                                                {
+                                                  id:"LoginAreaRegisterPasswordPlaceholder",
+                                                  description: 'Placeholder na polu do podania hasła przy rejestracji', 
+                                                  defaultMessage: 'Podaj hasło', 
+                                                }
+                                              )
+                                        }
                                         name="registerPass"
                                         touched = {this.state.registerform.registerpass.touched}
                                         invalid={!this.state.registerform.registerpass.valid}
@@ -466,7 +440,11 @@ class LoginArea extends Component {
                                 </div>
                                 
                                 <button disabled={!this.state.registerFormIsValid} className="btn btn-primary">
-                                    Zarejestruj się
+                                    <FormattedMessage
+                                        id="LoginAreaRegisterRegisterBtn"
+                                        description="Napisz na przycisku rejestracji" 
+                                        defaultMessage="Zarejestruj" 
+                                    />
                                 </button>
                             </form>
                                
@@ -481,19 +459,22 @@ class LoginArea extends Component {
                             
                             <form onSubmit={this.forgotPassHandler}> 
                               
-                                <h3>Przypomnienie hasła</h3>
+                                <h3>
+                                    <FormattedMessage
+                                        id="LoginAreaForgotPassHeader"
+                                        description="Napisz w nagłówku przypomnienia hasła" 
+                                        defaultMessage="Zresetowanie hasła" 
+                                    />
+                                </h3>
                                 
-                                {
-                                  //  this.props.forgotPassMessage !== ''?
-                                  //  errorForgotPassInfo: null 
-                                }
+                                
 
                                 <div className="form-group">
                                     <Input 
                                         inputtype="input" 
                                         type="text"
-                                        label="Adres Email"
-                                        placeholder="Wpisz adres email"
+                                        label="Email"
+                                        placeholder="Email"
                                         name="forgotPassEmail"
                                         touched = {this.state.forgotPassForm.forgotPassEmail.touched}
                                         invalid={!this.state.forgotPassForm.forgotPassEmail.valid}
@@ -501,15 +482,23 @@ class LoginArea extends Component {
                                 </div>
     
                                 <button disabled={!this.state.forgotPassFormIsValid} className="btn btn-primary" >
-
-                                    Wyślij email z linkiem do zresetowania hasła
-                                    
+                                    <FormattedMessage
+                                        id="LoginAreaForgotPassSendBtn"
+                                        description="Napisz na przycisku do resetowania hasła" 
+                                        defaultMessage="Wyślij email z linkiem do zresetowania hasła" 
+                                    />
                                 </button>
 
                                 <br></br>
                                 <br></br>
 
-                                <a onClick={this.showLoginAreaBack}>Zaloguj się</a>
+                                <a onClick={this.showLoginAreaBack}>
+                                    <FormattedMessage
+                                        id="LoginAreaLoginBtnv2"
+                                        description="Napisz na przycisku do logowania" 
+                                        defaultMessage="Zaloguj się" 
+                                    />
+                                </a>
 
                              
                             </form>   
@@ -518,18 +507,31 @@ class LoginArea extends Component {
                             
                             <div>
 
-                                <h4>Witaj: <span className="loggedAs">{this.props.userName}</span></h4>
+                                <h4>
+                              
+                                    <span className="loggedAs">
+                                        {
+                                            this.props.intl.formatMessage(
+                                                    {
+                                                        id:"LoginAreaWelcome",
+                                                        description: 'Napis pojawiający się po zalogowaniu się witaj', 
+                                                        defaultMessage: 'Witaj {imie}', 
+                                                    },
+                                                    {
+                                                        imie: this.props.userName,
+                                                    }
+                                                )
+                                        }
+                                    </span>
+                                </h4>
 
                                 <Link to="/projectsList">
                                     <button className="btn btn-primary btn-lg btn-block gotoprojects">
-
-                                        
-                                    <FormattedMessage
-                                        id="HomegotoProjectBtn"
-                                        description="napisz na przycisku do listy korpusów" // Description should be a string literal
-                                        defaultMessage="Przejdź do listy swoich korpusów" // Message should be a string literal
-                                    />
-
+                                        <FormattedMessage
+                                            id="LoginAreaGoToProjectList"
+                                            description="napisz na przycisku do listy projektow" 
+                                            defaultMessage="Przejdź do listy swoich projektów" 
+                                        />
                                     </button>
                                 </Link>
 
@@ -539,7 +541,11 @@ class LoginArea extends Component {
                                     className="btn btn-secondary"
                                     onClick={this.logOutHandler}>
 
-                                    Wyloguj się
+                                        <FormattedMessage
+                                            id="LoginAreaLogOutBtn"
+                                            description="napisz na przycisku do wylogowania sie " 
+                                            defaultMessage="Wyloguj się" 
+                                        />
                                 
                                 </button>
 
@@ -558,20 +564,21 @@ class LoginArea extends Component {
                             
                             <form onSubmit={this.loginHandler}> 
                               
-                                <h3>Zaloguj się</h3>
+                                <h3>
+                                    <FormattedMessage
+                                            id="LoginAreaLogInHeader"
+                                            description="napisz w nagłówku do formularza logowania sie " 
+                                            defaultMessage="Zaloguj się" 
+                                    />
+                                </h3>
                                 
-                                {
-                                    
-                                    //this.props.loginMessage !== ''? createNotification('warning', this.props.loginMessage) : null
-                                   // this.props.loginMessage != ''? errorLoginInfo: null
-                                   // errorLoginInfo: null 
-                                }
+                                
                                 <div className="form-group">
                                     <Input 
                                         inputtype="input" 
                                         type="text"
-                                        label="Adres Email"
-                                        placeholder="Wpisz adres email"
+                                        label="Email"
+                                        placeholder="email"
                                         name="loginEmail"
                                         touched = {this.state.loginform.loginemail.touched}
                                         invalid={!this.state.loginform.loginemail.valid}
@@ -582,8 +589,24 @@ class LoginArea extends Component {
                                     <Input 
                                         inputtype="input" 
                                         type="password"
-                                        label="Hasło"
-                                        placeholder="Podaj hasło"
+                                        label={
+                                            this.props.intl.formatMessage(
+                                                {
+                                                  id:"LoginAreaLoginPasswordLabel",
+                                                  description: 'Label na polu do podania hasła przy logowaniu', 
+                                                  defaultMessage: 'Hasło', 
+                                                }
+                                              )
+                                        }
+                                        placeholder={
+                                            this.props.intl.formatMessage(
+                                                {
+                                                  id:"LoginAreaLoginPasswordPlaceholder",
+                                                  description: 'Placeholder na polu do podania hasła przy logowaniu', 
+                                                  defaultMessage: 'Podaj hasło', 
+                                                }
+                                              )
+                                        }
                                         name="loginPass"
                                         touched = {this.state.loginform.loginpass.touched}
                                         invalid={!this.state.loginform.loginpass.valid}
@@ -593,21 +616,44 @@ class LoginArea extends Component {
                               
                                     <button disabled={!this.state.loginFormIsValid} className="btn btn-primary" >
 
-                                        Zaloguj się
+                                        <FormattedMessage
+                                            id="LoginAreaLoginBtn"
+                                            description="napisz na btn do formularza logowania sie " 
+                                            defaultMessage="Zaloguj się" 
+                                        />
                                        
                                     </button>
 
                                     <br></br>
                                     <br></br>
 
-                                    <a href="#" onClick={this.forgotPass}>Zapomniałem hasła</a>
+                                    <a href="#" onClick={this.forgotPass}>
+                                            <FormattedMessage
+                                                id="LoginAreaLoginForgottPassBtn"
+                                                description="napisz na btn do przypomnienia hasła" 
+                                                defaultMessage="Zapomniałem hasła" 
+                                            />
+                                    </a>
                             </form>   
                             
                             : 
                             
                             <div>
 
-                                <h4>Witaj: <span className="loggedAs">{this.props.userName}</span></h4>
+                                <h4>
+                                     {
+                                            this.props.intl.formatMessage(
+                                                    {
+                                                        id:"LoginAreaWelcomev2",
+                                                        description: 'Napis pojawiający się po zalogowaniu się witaj v2', 
+                                                        defaultMessage: 'Witaj {imie}', 
+                                                    },
+                                                    {
+                                                        imie: this.props.userName,
+                                                    }
+                                                )
+                                        }
+                                </h4>
                                 {
                                     /*
                                 <p>Jeżeli chcesz skorzystać z usług z lini poleceń, użyj poniższego klucza API (czytaj więcej <a href="/docs/api.html" target="_blank">TUTAJ</a>):</p>
@@ -620,9 +666,9 @@ class LoginArea extends Component {
                                 <Link to="/projectsList">
                                     <button className="btn btn-primary btn-lg btn-block gotoprojects">
                                         <FormattedMessage
-                                            id="HomegotoProjectBtn"
-                                            description="napisz na przycisku do listy korpusów" // Description should be a string literal
-                                            defaultMessage="Przejdź do listy swoich korpusów" // Message should be a string literal
+                                            id="LoginAreaGotoProjectLists"
+                                            description="napisz na przycisku do listy peojektow" 
+                                            defaultMessage="Przejdź do listy swoich projektów"
                                         />
 
                                     </button>
@@ -672,7 +718,15 @@ class LoginArea extends Component {
                         <div className="row">
 
                             <div className="col">
-                                {this.props.isAuth? null : <p style={{textAlign:'center'}}>Aby skorzystać z serwisu należy być zalogowanym. Załóż konto poniżej</p>
+                                {this.props.isAuth? null : <p style={{textAlign:'center'}}>
+                                    
+                                        <FormattedMessage
+                                            id="LoginAreaInfoaboutToLogin"
+                                            description="Słowo wstępu dlaczego trzeba się zarejestrować" 
+                                            defaultMessage="Aby skorzystać z usług serwisu należy się zalogować. Zaloguj się lub załóż konto."
+                                        />
+                                    
+                                </p>
                                 //  <div className="alert alert-info" role="alert">
                                 //      Aby skorzystać z serwisu należy się zarejestrować
                                 // </div>
@@ -725,4 +779,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(LoginArea));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(injectIntl(LoginArea)));

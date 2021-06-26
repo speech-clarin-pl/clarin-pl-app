@@ -25,7 +25,8 @@ const messages = {
   'en': messages_en
 };
 
-//const language = navigator.language.split(/[-_]/)[0];  // language without region code
+//do wywoływania ekstrakcji języka
+//npm run extract -- 'src/**/*.ts*' --out-file lang/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]'
 
 class App extends Component {
 
@@ -74,7 +75,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <IntlProvider locale={this.state.currln} defaultLocale="pl" messages={messages[this.state.currln]}>
+        <IntlProvider locale={this.props.language} defaultLocale="pl" messages={messages[this.props.language]}>
 
 
           <Switch>
@@ -124,7 +125,8 @@ class App extends Component {
 const mapStateToProps = state => {
   return {
     isAuth: state.homeR.isAuth,
-    chosenProjectID: state.prolistR.chosenProjectID
+    chosenProjectID: state.prolistR.chosenProjectID,
+    language: state.homeR.language,
   }
 }
 
