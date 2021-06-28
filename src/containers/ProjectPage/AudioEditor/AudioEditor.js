@@ -41,6 +41,7 @@ import SegmentEditor from './SegmentsEditor/SegmentsEditor';
 import Hotkeys from 'react-hot-keys';
 
 import {loader} from '../../../index';
+import {injectIntl, FormattedMessage} from 'react-intl';
 
 
 class AudioEditor extends Component {
@@ -212,13 +213,11 @@ class AudioEditor extends Component {
 		  Peaks.init(options, (err, peaksInstance) => {
 
 			if (err) {
-			  console.log("Problem with Peaks initialization")
+			  //console.log("Problem with Peaks initialization")
 			  reject(err);
 			}
 			else {
-			  console.log('Peaks instance ready');
-
-				  
+			 // console.log('Peaks instance ready');
 			  return resolve(peaksInstance);
 			}
 		  });
@@ -383,10 +382,6 @@ class AudioEditor extends Component {
 
 	//wydobywa ścieżkę do metadanych, pliku audio i segmentów
 	getDataFromContainer = (container) => {
-		//const userId = container.owner;
-		//const projectId = container.project;
-		//const sessionId = container.session;
-		//const fileName = container.fileName;
 		const containerId = container._id;
 		const token = this.props.token;
 
@@ -414,12 +409,10 @@ class AudioEditor extends Component {
 
 		//plik audio
 		//let audioPath = process.env.REACT_APP_API_URL+ "/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/audio?api_key="+token;
-		
 		let audioPath = process.env.REACT_APP_API_URL+ "/repoFiles/download/"+containerId+"/audio?api_key="+token;
 		
 		//meta data do renderingu waveform
 		//let datPath = process.env.REACT_APP_API_URL + "/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/dat?api_key="+token;
-		
 		let datPath = process.env.REACT_APP_API_URL + "/repoFiles/download/"+containerId+"/dat?api_key="+token;
 
 
@@ -434,15 +427,9 @@ class AudioEditor extends Component {
 
 	// ładuje nowy plik do edytora
 	loadNewAudioToEditor = (container) => {
-
 		if(container !== undefined){
-
 			let data = this.getDataFromContainer(container);
-			console.log(data.audioPath);
-			console.log(data.datPath);
-			console.log(data.segments);
 			this.startPeaksLeaving(data.audioPath, data.datPath, data.segments)
-
 		}
 	}
 
@@ -542,7 +529,7 @@ class AudioEditor extends Component {
 					console.log('SEG')
 					break;
 				default:
-					console.error("wrotn tool type")
+					console.error("wrong tool type")
 			}
 
 		}
@@ -707,7 +694,7 @@ class AudioEditor extends Component {
 		})
 
 
-		console.log("update Segment Label " + id + " " + label);
+		//console.log("update Segment Label " + id + " " + label);
 	}
 
 	updateSegmentStartTime = (id, newValue) => {
@@ -719,7 +706,7 @@ class AudioEditor extends Component {
 		})
 
 
-		console.log("update Segment Start Time  " + id + " " + newValue);
+		//console.log("update Segment Start Time  " + id + " " + newValue);
 	}
 
 	updateSegmentEndTime = (id, newValue) => {
@@ -730,7 +717,7 @@ class AudioEditor extends Component {
 			czyZmienionoSegmenty: true,
 		})
 
-		console.log("update Segment End Time " + id + " " + newValue);
+	//	console.log("update Segment End Time " + id + " " + newValue);
 	}
 
 
@@ -794,8 +781,7 @@ class AudioEditor extends Component {
 	}
 
 	textChanged = (evt) => {
-		// console.log(evt.target.value)
-	   // console.log(this.state.transcriptionData)
+
 		 this.setState({
 			 text: evt.target.value,
 			 transcriptHasChanged: true,
@@ -856,7 +842,15 @@ class AudioEditor extends Component {
 		let previewInEMUBtn = null;
 		if(this.props.containerForPreview.ifSEG){
 			previewInEMUBtn = <ButtonLeftBar 
-                        napis={"Otwórz w EMU"}
+                        napis={
+							this.props.intl.formatMessage(
+								{
+								  id:"AudioEditor-otworzWEMUBtn",
+								  description: 'Napis na przycisku otworz w EMU', 
+								  defaultMessage: 'Otwórz w EMU', 
+								}
+							  )
+						}
                         iconType="file"
                         icon={null}
                         customeStyle={{textAlign:'center', marginBottom: '20px'}}
@@ -935,41 +929,84 @@ class AudioEditor extends Component {
 
 										<button data-tip data-for='rewind3' data-action="back-3" onClick={this.rewind3secBack}><FontAwesomeIcon icon={faHistory} className="faIcon" /> 3 sec.</button>
 										<ReactTooltip id="rewind3" delayShow={500}>
-											<span>Powtórz ostatnie 3 sek. (Alt+k)</span>
+											<span>
+												<FormattedMessage
+													id="AudioEditor-powtorzOstatnie3sek"
+													description="Powtorz ostatnie 3 sek nagrania" 
+													defaultMessage="Powtórz ostatnie 3 sek. (Alt+k)" 
+												/>
+											</span>
 										</ReactTooltip>
 
 										
 										<button data-tip data-for='rewind5' data-action="back-5" onClick={this.rewind5secBack}><FontAwesomeIcon icon={faHistory} className="faIcon" /> 5 sec.</button>
 										<ReactTooltip id="rewind5" delayShow={500}>
-											<span>Powtórz ostatnie 5 sek. (Alt+j)</span>
+											<span>
+												<FormattedMessage
+													id="AudioEditor-powtorzOstatnie5sek"
+													description="Powtorz ostatnie 5 sek nagrania" 
+													defaultMessage="Powtórz ostatnie 5 sek. (Alt+j)" 
+												/>
+											</span>
 										</ReactTooltip>
 										
 										
 										<button data-tip data-for='increaseSpeed' data-action="speed-up" onClick={this.increasePlaybackSpeed}><FontAwesomeIcon icon={faClock} className="faIcon" /> <FontAwesomeIcon icon={faLongArrowAltUp} className="faIcon" /> <span style={{fontSize:'0.7em', width:'25px', display: 'inline-block'}}>x {this.state.speedFactor}</span></button>
 										<ReactTooltip id="increaseSpeed" delayShow={500}>
-											<span>Szybciej (Alt+i)</span>
+											<span>
+												<FormattedMessage
+													id="AudioEditor-powtorzOstatnie5sek"
+													description="Powtorz ostatnie 5 sek nagrania" 
+													defaultMessage="Szybciej (Alt+i)" 
+												/>
+												
+											</span>
 										</ReactTooltip>
 										
 									
 										<button data-tip data-for='decreaseSpeed' data-action="slow-down" onClick={this.decreasePlaybackSpeed}><FontAwesomeIcon icon={faClock} className="faIcon" /> <FontAwesomeIcon icon={faLongArrowAltDown} className="faIcon" /><span style={{fontSize:'0.7em', width:'25px', display: 'inline-block'}}> x {this.state.speedFactor}</span></button>
 										<ReactTooltip id="decreaseSpeed" delayShow={500}>
-											<span>Wolniej (Alt+o)</span>
+											<span>
+												<FormattedMessage
+													id="AudioEditor-wolnieOdtwarzanie"
+													description="wolniej odtwarzanie" 
+													defaultMessage="Wolniej (Alt+o)" 
+												/>
+											</span>
 										</ReactTooltip>
 
 										<button data-tip data-for='zoomin' data-action="zoom-in"><FontAwesomeIcon icon={faSearchPlus} className="faIcon" /> </button>
 										<ReactTooltip id="zoomin" delayShow={500}>
-											<span>Przybliż</span>
+											<span>
+												<FormattedMessage
+													id="AudioEditor-przybliz"
+													description="Przybliżenie waveform" 
+													defaultMessage="Przybliż" 
+												/>
+											</span>
 										</ReactTooltip>
 
 									
 										<button data-tip data-for='zoomout' data-action="zoom-out"><FontAwesomeIcon icon={faSearchMinus} className="faIcon" /> </button>
 										<ReactTooltip id="zoomout" delayShow={500}>
-											<span>Oddal</span>
+											<span>
+												<FormattedMessage
+													id="AudioEditor-oddal"
+													description="Oddalanie waveform" 
+													defaultMessage="Oddal" 
+												/>
+											</span>
 										</ReactTooltip>
 
 										<button data-tip data-for='addSegment' data-action="add-segment" onClick={this.addSegment}><FontAwesomeIcon icon={faGripLinesVertical} className="faIcon" /></button>
 										<ReactTooltip id="addSegment" delayShow={500}>
-											<span>Dodaj segment</span>
+											<span>
+												<FormattedMessage
+													id="AudioEditor-dodajSegment"
+													description="Dodaj segment" 
+													defaultMessage="Dodaj segment" 
+												/>
+											</span>
 										</ReactTooltip>
 										
 										
@@ -1075,4 +1112,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AudioEditor));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(injectIntl(AudioEditor)));

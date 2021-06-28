@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import Segment from "./Segment/Segment";
 import ButtonLeftBar from '../../../../components/UI/ButtonLeftBar/ButtonLeftBar';
-
+import {injectIntl, FormattedMessage} from 'react-intl';
 
 class SegmentsEditor extends Component {
     
@@ -76,13 +76,37 @@ class SegmentsEditor extends Component {
                 <div className="SegmentsEditor">
                     <div className="log">
                         <div id="segments">
-                            <h3>Segmenty</h3>
+                            <h3>
+                                <FormattedMessage
+                                    id="SegmentsEditor-segmentyLabel"
+                                    description="Etykieta Segmenty" 
+                                    defaultMessage="Segmenty" 
+                                />
+                            </h3>
                             <table>
                             <thead>
                                 <tr>
-                                <th>Etykieta</th>
-                                <th>Początek</th>
-                                <th>Koniec</th>
+                                <th>
+                                    <FormattedMessage
+                                        id="SegmentsEditor-etykietaLabel"
+                                        description="Etykieta Etykieta" 
+                                        defaultMessage="Etykieta" 
+                                    />
+                                </th>
+                                <th>
+                                    <FormattedMessage
+                                        id="SegmentsEditor-poczatekLabel"
+                                        description="Etykieta początek" 
+                                        defaultMessage="Początek" 
+                                    />
+                                </th>
+                                <th>
+                                    <FormattedMessage
+                                        id="SegmentsEditor-koniecLabel"
+                                        description="Etykieta koniec" 
+                                        defaultMessage="Koniec" 
+                                    />
+                                </th>
                                 <th></th>
                                 </tr>
                             </thead>
@@ -95,7 +119,15 @@ class SegmentsEditor extends Component {
 
                     {
                         this.props.czyZmieniono? <ButtonLeftBar 
-                        napis={"Zapisz zmiany segmentów"}
+                        napis={
+                            this.props.intl.formatMessage(
+                                {
+                                    id:"SegmentEditor-zapiszZmiany",
+                                    description: 'Przycisk o zapisanie zmian segmentów', 
+                                    defaultMessage:"Zapisz zmiany segmentów",
+                                }
+                            )
+                        }
                         iconType="file"
                         icon={null}
                         customeStyle={{textAlign:'center', marginBottom: '20px'}}
@@ -126,4 +158,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(SegmentsEditor);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(SegmentsEditor));

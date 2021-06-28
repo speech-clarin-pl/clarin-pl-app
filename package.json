@@ -25,6 +25,7 @@
     "react-dom": "^16.8.6",
     "react-file-drop": "^0.2.8",
     "react-hot-keys": "^2.6.0",
+    "react-html-parser": "^2.0.2",
     "react-inline-editing": "^1.0.10",
     "react-intl": "^2.9.0",
     "react-keyed-file-browser": "^1.5.2",

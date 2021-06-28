@@ -20,7 +20,11 @@ import ToolItem from '../ToolItem/ToolItem';
 //import TextareaAutosize from 'react-textarea-autosize';
 import * as diaActions from '../../../store/actions/index';
 
+import {injectIntl, FormattedMessage} from 'react-intl';
+
 import AudioEditor from '../AudioEditor/AudioEditor';
+
+import ReactHtmlParser from "react-html-parser";
 
 class DIATool extends Component {
 
@@ -122,6 +126,16 @@ class DIATool extends Component {
 			
 		})
 
+		const test = <FormattedMessage
+			id="app.greeting"
+			description="Greeting to welcome the user to the app"
+			defaultMessage="Hello, <b>Eric</b> {icon}"
+			values={{
+				b: chunks => <b>{chunks}</b>,
+				icon:"lall",
+			}}
+			/>
+
 		return (
 			<Aux>
 
@@ -138,20 +152,31 @@ class DIATool extends Component {
                 </Modal> */}
 
 
+
 				<LeftSiteBar
 					czyTopPart="true"
-					desc={(<div>
-                        <div>Przydatne skróty klawiaturowe: </div>
-                        <div> <b>[Alt+l]</b> - play/pausa </div>
-                        <div> <b>[Alt+k]</b> - powtórz 3 sek.</div>
-                        <div> <b>[Alt+j]</b> - powtórz 5 sek.</div>
-                        <div> <b>[Alt+i]</b> - przyśpiesz.</div>
-                        <div> <b>[Alt+o]</b> - zwolnij.</div>
-                        <div> <b>[Alt+n]</b> - załaduj kolejny plik.</div>
-                        </div>)
+					desc={
+						
+						ReactHtmlParser(
+							this.props.intl.formatMessage(
+								{
+									id:"DIATool-leftSiteBarDesc",
+									description: 'przydatne skróty klawiaturowe', 
+									defaultMessage: '<div><div>Przydatne skróty klawiaturowe: </div><div> <b>[Alt+l]</b> - play/pausa </div><div> <b>[Alt+k]</b> - powtórz 3 sek.</div><div> <b>[Alt+j]</b> - powtórz 5 sek.</div><div> <b>[Alt+i]</b> - przyśpiesz.</div><div> <b>[Alt+o]</b> - zwolnij.</div><div> <b>[Alt+n]</b> - załaduj kolejny plik.</div></div>',
+								},
+							)
+						)
                     } >
 						 <ButtonLeftBar 
-							napis="Uruchom diaryzację dla wszystkich"
+							napis={
+								this.props.intl.formatMessage(
+									{
+										id:"DIATool-runDiaForAll",
+										description: 'uruchom dia dla wszystkich', 
+										defaultMessage: 'Uruchom diaryzację dla wszystkich',
+									},
+								)
+							}
 							icon={diaIcon}
 							customeStyle={null}
 							disabled={false}
@@ -165,8 +190,20 @@ class DIATool extends Component {
 					<div className={["container-fluid", "SegmentTool"].join(' ')}>
 						<div className="tool-desc">
 
-							<h2>Diaryzacja</h2>
-							<p>Narzędzie dzieli sygnał na segmenty mówione przez poszczególnych mówców. Mówcy nie są identyfikowani, jedynie numerowani po kolei.</p>
+							<h2>
+								<FormattedMessage
+									id="DIATool-header"
+									description="Nagłówek narzedzia" 
+									defaultMessage="Diaryzacja" 
+								/>
+							</h2>
+							<p>
+								<FormattedMessage
+									id="DIATool-description"
+									description="Opis narzedzia dia" 
+									defaultMessage="Narzędzie dzieli sygnał na segmenty mówione przez poszczególnych mówców. Mówcy nie są identyfikowani, jedynie numerowani." 
+								/>
+							</p>
 							{
 								//<div className="alert alert-info" role="alert">
 								//	<p>W przypadku wgrania większej ilości plików, pliki audio należy dopasować z plikami tekstowymi</p>
@@ -187,7 +224,11 @@ class DIATool extends Component {
 										{
                                             filelist.length == 0?
                                             <div className="alert alert-primary" role="alert">
-                                                Dodaj pliki z repozytorium do listy diaryzacji
+												<FormattedMessage
+													id="DIATool-addFromRepoToDIA"
+													description="Dodaj pliki z repozytorium do listy diaryzacji" 
+													defaultMessage="Dodaj pliki z repozytorium do listy diaryzacji" 
+												/>
                                             </div>
                                             :filelist
                                         }
@@ -247,4 +288,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(DIATool);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(DIATool));

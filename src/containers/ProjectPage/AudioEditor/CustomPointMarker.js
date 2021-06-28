@@ -4,7 +4,6 @@ import Konva from 'konva';
 class CustomPointMarker{
 
     constructor(options) {
-        console.log('[CustomPointMarker] construction')
         this._options = options;
     }
   
@@ -39,7 +38,6 @@ class CustomPointMarker{
       const layer = this._options.layer;
 
       this._handle.on('mouseenter', function(){
-        console.log("mouseover")
         const highlightColor = '#ff0000';
         this._handle.fill(highlightColor);
         this._line.stroke(highlightColor);
@@ -47,7 +45,6 @@ class CustomPointMarker{
       });
       
       this._handle.on('mouseleave', function(){
-        console.log("mouseleave")
         const defaultColor = this._options.color;
         this._handle.fill(defaultColor);
         this._line.stroke(defaultColor);
@@ -66,11 +63,11 @@ class CustomPointMarker{
     }
   
     timeUpdated(time) {
-        console.log('Marker time', time);
+       // console.log('Marker time', time);
     }
   
     destroy() {
-        console.log('Marker destroyed');
+       // console.log('Marker destroyed');
     }
 };
   

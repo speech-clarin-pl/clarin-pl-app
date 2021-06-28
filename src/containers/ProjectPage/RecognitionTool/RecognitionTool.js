@@ -10,7 +10,7 @@ import * as recognitionActions from '../../../store/actions/index';
 import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ToolItem from '../ToolItem/ToolItem';
-
+import {injectIntl, FormattedMessage} from 'react-intl';
 
 import AudioEditor from '../AudioEditor/AudioEditor';
 
@@ -264,4 +264,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RecognitionTool);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(RecognitionTool));

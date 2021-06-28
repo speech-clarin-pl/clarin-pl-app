@@ -11,6 +11,8 @@ import {bytesToSize} from '../../../utils/utils';
 import G2PTool from '../G2PTool/G2PTool';
 import KWSTool from '../KWSTool/KWSTool';
 //import {bytesToSize} from '../../../utils/utils';
+import {injectIntl, FormattedMessage} from 'react-intl';
+
 
 class Dashboard extends Component {
 
@@ -26,7 +28,16 @@ class Dashboard extends Component {
     
                 <LeftSiteBar 
                     czyTopPart="true"
-                    desc="W tym miejscu znajdują się statystyki przestrzeni zajmowanej przez wgrane pliki do repozytorium oraz pomocne skróty." />
+                    desc={
+                        this.props.intl.formatMessage(
+                            {
+                                id:"Dashboard-leftSiteBarDesc",
+                                description: 'Napis w left side bar', 
+                                defaultMessage: "W tym miejscu znajdują się statystyki przestrzeni zajmowanej przez wgrane pliki do repozytorium oraz pomocne dodatkowe narzędzia i informacje.", 
+                            }
+                        )
+                    }
+                    />
     
                 <SettingBar />
     
@@ -46,16 +57,33 @@ class Dashboard extends Component {
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="card mb-3">
-                                    <div className={["card-header", "cardHeader"].join(' ')}>Aktualności</div>
+                                    <div className={["card-header", "cardHeader"].join(' ')}>
+                                            <FormattedMessage
+                                                id="Dashboard-aktualnosciNewsBoxTitle"
+                                                description="Nagłówek sekcji aktualności Dashboard" 
+                                                defaultMessage="Aktualności" 
+                                            />
+                                    </div>
                                     <div className="card-body text-dark">
-                                    <h5 className="news-title">Wersja beta nowego serwisu </h5>
+                                    <h5 className="news-title">
+                                            <FormattedMessage
+                                                id="Dashboard-aktualnosciNewsTitle"
+                                                description="Tytuł aktualności Dashboard" 
+                                                defaultMessage="Witaj" 
+                                            />
+                                    </h5>
                                     <div className="news-date">01.07.2021</div>
                                     <p className="news-body">
-                                        Miło nam przywitać Cię w panelu nowego serwisu. <b>Wszelkie uwagi na temat jego funkcjonowania </b> są mile widziane. Skontaktuj się z nami jeżeli masz jakiekolwiek pytania:
+                                            <FormattedMessage
+                                                id="Dashboard-aktualnosciNewsBody"
+                                                description="Treść aktualności Dashboard" 
+                                                defaultMessage="Miło nam przywitać Cię w panelu nowego serwisu. Wszelkie uwagi na temat jego funkcjonowania są mile widziane. Skontaktuj się z nami jeżeli masz jakiekolwiek pytania:" 
+                                            />
+                                        
                                     </p>
                                     <p>
-                                    Danijel Korzinek: danijel@pjwstk.edu.pl <br></br>
-                                    Mariusz Kleć: mklec@pjwstk.edu.pl
+                                        Danijel Korzinek: danijel@pjwstk.edu.pl <br></br>
+                                        Mariusz Kleć: mklec@pjwstk.edu.pl
                                     </p>
                                     </div>
                                 </div>
@@ -109,18 +137,51 @@ class Dashboard extends Component {
 
                             <div className="col-md-6">
                                 <div className="card mb-3">
-                                    <div className={["card-header", "cardHeader"].join(' ')}>Użycie repozytorium</div>
+                                    <div className={["card-header", "cardHeader"].join(' ')}>
+                                        <FormattedMessage
+                                                id="Dashboard-repoBoxTitle"
+                                                description="Nagłówek sekcji użycia repozytorium w Dashboard" 
+                                                defaultMessage="Użycie repozytorium" 
+                                        />
+                                    </div>
                                     <div className="card-body text-dark">
-                                        <p> Liczba kontenerów w repozytorium: {this.props.repoStats? this.props.repoStats.containersNumber: null}</p>
-                                        <p> Zajmowana pamiec przez wgrane pliki: {this.props.repoStats? bytesToSize(this.props.repoStats.weightOfOryginal): null}</p>
-                                        <p> Zajmowana pamiec przez przekonwertowane pliki: {this.props.repoStats? bytesToSize(this.props.repoStats.weightOfConverted): null}</p>
-                                        <p> Całkowieta zajmowana pamięć repozytorium: {this.props.repoStats? bytesToSize(this.props.repoStats.totalWeight): null}</p>
+                                        <p> 
+                                            <FormattedMessage
+                                                    id="Dashboard-repoBoxliczbakontenerow"
+                                                    description="liczba kontenerow w repo" 
+                                                    defaultMessage="Liczba kontenerów w repozytorium" 
+                                            />: {this.props.repoStats? this.props.repoStats.containersNumber: null}</p>
+                                        <p> 
+                                            <FormattedMessage
+                                                    id="Dashboard-repoBoxPamiecprzezpliki"
+                                                    description="Zajmowana pamiec przez wgrane pliki" 
+                                                    defaultMessage="Zajmowana pamiec przez wgrane pliki" 
+                                            />: {this.props.repoStats? bytesToSize(this.props.repoStats.weightOfOryginal): null}</p>
+                                        <p> 
+                                            <FormattedMessage
+                                                    id="Dashboard-repoBoxzPamiecPrzekonwertowanepliki"
+                                                    description="Zajmowana pamiec przez przekonwertowane pliki" 
+                                                    defaultMessage="Zajmowana pamiec przez przekonwertowane pliki" 
+                                            />: {this.props.repoStats? bytesToSize(this.props.repoStats.weightOfConverted): null}</p>
+                                        <p> 
+                                            <FormattedMessage
+                                                    id="Dashboard-repoBoxzPamiecAllpliki"
+                                                    description="Całkowieta zajmowana pamięć repozytorium" 
+                                                    defaultMessage="Całkowieta zajmowana pamięć repozytorium" 
+                                            />
+                                            : {this.props.repoStats? bytesToSize(this.props.repoStats.totalWeight): null}</p>
                                     </div>
                                 </div>
                             </div>
                             <div className="col-md-6">
                                 <div className="card mb-3">
-                                    <div className={["card-header", "cardHeader"].join(' ')}>Transkrypcja Wyrazów</div>
+                                    <div className={["card-header", "cardHeader"].join(' ')}>
+                                        <FormattedMessage
+                                                id="Dashboard-transkrypcjaBoxTitle"
+                                                description="Tytuł boxu do transkrypcji wyrazów" 
+                                                defaultMessage="Transkrypcja wyrazów" 
+                                        />
+                                    </div>
                                     <div className="card-body text-dark">
                                         <G2PTool />
                                     </div>
@@ -129,7 +190,13 @@ class Dashboard extends Component {
 
                             <div className="col-md-6">
                                 <div className="card mb-3">
-                                    <div className={["card-header", "cardHeader"].join(' ')}>Detekcja Słów Kluczowych</div>
+                                    <div className={["card-header", "cardHeader"].join(' ')}>
+                                        <FormattedMessage
+                                                id="Dashboard-detekcjaSlowBoxTitle"
+                                                description="Tytuł boxu do detekcji słów kluczowych" 
+                                                defaultMessage="DetekcjaSłówKluczowych" 
+                                        />
+                                    </div>
                                     <div className="card-body text-dark">
                                         <KWSTool />
                                     </div>
@@ -173,5 +240,5 @@ const mapStateToProps = (state) => {
     }
   }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Dashboard));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(injectIntl(Dashboard)));
 

@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TextareaAutosize from 'react-textarea-autosize';
 import ButtonLeftBar from '../../../../components/UI/ButtonLeftBar/ButtonLeftBar';
+import {injectIntl, FormattedMessage} from 'react-intl';
 //import * as audioEditorActions from '../../../../store/actions/index';
 //import EditorJs from 'react-editor-js';
 
@@ -42,37 +43,15 @@ class TextEditor extends Component {
             editorisready: false,
             transcriptHasChanged: false,
         }
-
-       
-        
-        //this.state = {
-        //    data: "",
-        //};
-        
-        //let editor = null;  //text editor instance
-        //let container = null;
-    }
-
- 
-
-
-    componentDidUpdate = (prevProps, prevState) => {
-
-  
- 
-      
     }
 
        
     componentDidMount = () => {
-
         this.setState({
             editorisready: true,
         })
 
         this.props.onLoadTranscription();
-
-
     }
 
 
@@ -81,23 +60,49 @@ class TextEditor extends Component {
     }
        
 	render() {
+        
 
         let loadTranscriptBtnDisabled = false;
-        let loadTranscriptBtnText = "Załaduj transkrypcje z serwera";
+        let loadTranscriptBtnText = this.props.intl.formatMessage(
+            {
+                id:"TextEditor-zaladujTranskrypcjeZSerwera",
+                description: 'Napis na przycisku ladowania transkrypcji z serwera', 
+                defaultMessage: 'Załaduj transkrypcje z serwera', 
+            }
+        );
+
         let loadTranscriptBtnStyle = {backgroundColor: '#3498db'};
 
         let saveTranscriptBtnDisabled = false;
-        let saveTranscriptBtnText = "Zapisz transkrypcję na serwerze";
+        let saveTranscriptBtnText = this.props.intl.formatMessage(
+            {
+                id:"TextEditor-zapiszTranskrypcjeZSerwera",
+                description: 'Napis na przycisku zapisywania transkrypcji na serwerze', 
+                defaultMessage: "Zapisz transkrypcję na serwerze", 
+            }
+        );
         let saveTranscriptBtnStyle = {backgroundColor: '#3498db'};
 
         //jeżeli element nie miał zrobionej jeszcze transkrypcji to
         if(!this.props.container.ifREC){
             loadTranscriptBtnDisabled = true;
-            loadTranscriptBtnText = "Rozpocznij transkrypcje";
+            loadTranscriptBtnText = this.props.intl.formatMessage(
+                {
+                    id:"TextEditor-rozpocznijTranskrypcje",
+                    description: 'Napis na przycisku rozpoczynajacym transkrypcje', 
+                    defaultMessage: "Rozpocznij transkrypcje", 
+                }
+            );
             loadTranscriptBtnStyle = {backgroundColor: '#3498db', textAlign: 'center'};
 
             saveTranscriptBtnDisabled = false;
-            saveTranscriptBtnText = "Plik niezmieniony";
+            saveTranscriptBtnText = this.props.intl.formatMessage(
+                {
+                    id:"TextEditor-plikNiezmieniony",
+                    description: 'Napis na przycisku informujący że plik nie jest zmieniony', 
+                    defaultMessage: "Plik niezmieniony", 
+                }
+            );
             saveTranscriptBtnStyle = {backgroundColor: '#c7d5da', textAlign: 'center'};
         }
 
@@ -105,40 +110,82 @@ class TextEditor extends Component {
         if(!this.props.container.ifREC && this.props.transcriptHasChanged){
 
             saveTranscriptBtnDisabled = false;
-            saveTranscriptBtnText = "Zapisz zmiany na serwerze";
+            saveTranscriptBtnText = this.props.intl.formatMessage(
+                {
+                    id:"TextEditor-zapiszZmianyNaSerwerze",
+                    description: 'Napis na przycisku zapisującym zmiany na serwerze', 
+                    defaultMessage: "Zapisz zmiany na serwerze", 
+                }
+            );
             saveTranscriptBtnStyle = {backgroundColor: '#3498db', textAlign: 'center'};
         }
 
         //jeżeli jest transkrypcja i jest świeżo załadowana z serwera to przycisk jest nieaktywny
         if(this.props.container.ifREC && !this.props.transcriptHasChanged){
             loadTranscriptBtnDisabled = true;
-            loadTranscriptBtnText = "Transkrypcja załadowana pomyślnie";
+            loadTranscriptBtnText = this.props.intl.formatMessage(
+                {
+                    id:"TextEditor-transkrypcjaZaladowanaOK",
+                    description: 'Napis informujący że transkrypcja załadowana została pomyślnie', 
+                    defaultMessage: "Transkrypcja załadowana pomyślnie", 
+                }
+            );
             loadTranscriptBtnStyle = {backgroundColor: '#46d363', textAlign: 'center'};
 
             saveTranscriptBtnDisabled = true;
-            saveTranscriptBtnText = "Plik niezmieniony";
+            saveTranscriptBtnText = this.props.intl.formatMessage(
+                {
+                    id:"TextEditor-fileHasNotChanged",
+                    description: 'Napis informujący że plik nie został zmieniony', 
+                    defaultMessage: "Plik niezmieniony", 
+                }
+            );
             saveTranscriptBtnStyle = {backgroundColor: '#c7d5da', textAlign: 'center'};
         }
 
         // jeżeli coś user zmienił i jeszcze nie zapisał
         if(this.props.container.ifREC && this.props.transcriptHasChanged){
             loadTranscriptBtnDisabled = false;
-            loadTranscriptBtnText = "Załaduj poprzednią wersję z serwera";
+            loadTranscriptBtnText = this.props.intl.formatMessage(
+                {
+                    id:"TextEditor-zaladujPoprzedniaWersje",
+                    description: 'Napis na przycisku do zaladowania poprzedniej wersji z serwera', 
+                    defaultMessage: "Załaduj poprzednią wersję z serwera", 
+                }
+            );
             loadTranscriptBtnStyle = {backgroundColor: '#efb710', textAlign: 'center'};
 
             saveTranscriptBtnDisabled = false;
-            saveTranscriptBtnText = "Zapisz zmiany na serwerze";
+            saveTranscriptBtnText = this.props.intl.formatMessage(
+                {
+                    id:"TextEditor-zapiszZmianyNaSerwerzev2",
+                    description: 'Napis na przycisku do zapisywania zmian na serwerze', 
+                    defaultMessage: "Zapisz zmiany na serwerze", 
+                }
+            );
             saveTranscriptBtnStyle = {backgroundColor: '#3498db', textAlign: 'center'};
         }
 
         // jeżeli user po zmianach zapisał
         if(this.props.transcriptionSaved && this.props.text !== ''){
             loadTranscriptBtnDisabled = true;
-            loadTranscriptBtnText = "Transkrypcja została zapisana pomyślnie";
+            loadTranscriptBtnText = this.props.intl.formatMessage(
+                {
+                    id:"TextEditor-transkrypcjaZapisanaPomyslnie",
+                    description: 'Informacja że transkrypcja zostałą zapisana pomyślnie', 
+                    defaultMessage:"Transkrypcja została zapisana pomyślnie",
+                }
+            );
             loadTranscriptBtnStyle = {backgroundColor: '#46d363', textAlign: 'center'};
 
             saveTranscriptBtnDisabled = true;
-            saveTranscriptBtnText = "Plik niezmieniony";
+            saveTranscriptBtnText = this.props.intl.formatMessage(
+                {
+                    id:"TextEditor-plikNiezmienionyInfo",
+                    description: 'Informacja że plik nie został zmieniony', 
+                    defaultMessage:"Plik niezmieniony",
+                }
+            );
             saveTranscriptBtnStyle = {backgroundColor: '#c7d5da', textAlign: 'center'};
         }
 
@@ -197,7 +244,15 @@ class TextEditor extends Component {
                         whenClicked={this.props.onSaveChanges}/>
 
                     <ButtonLeftBar 
-                        napis={"Załaduj kolejny na liście"}
+                        napis={
+                            this.props.intl.formatMessage(
+                                {
+                                    id:"TextEditor-zaladujKolejnyNaLiscie",
+                                    description: 'Informacja o załadowaniu kolejnego na liście', 
+                                    defaultMessage:"Załaduj kolejny na liście",
+                                }
+                            )
+                        }
                         iconType="file"
                         icon={null}
                         customeStyle={{backgroundColor: '#3498db', textAlign: 'center'}}
@@ -234,4 +289,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(TextEditor);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(TextEditor));

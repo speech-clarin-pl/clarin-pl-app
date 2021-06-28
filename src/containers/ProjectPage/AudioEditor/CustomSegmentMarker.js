@@ -4,7 +4,6 @@ import Konva from 'konva';
 class CustomSegmentMarker{
 
     constructor(options) {
-        console.log('[CustomSegmentMarker] constructor')
         this._options = options;
     }
   
@@ -66,12 +65,10 @@ class CustomSegmentMarker{
         var container = document.getElementById('zoomview-container');
 
         this._group.on('mouseenter', () => {
-          console.log("MOUSE ENTER")
           container.style.cursor = 'move';
         });
 
         this._group.on('mouseleave', () => {
-          console.log("MOUSE LEAVE")
           container.style.cursor = 'default';
         });
 
@@ -91,11 +88,11 @@ class CustomSegmentMarker{
     }
   
     timeUpdated(time) {
-        console.log('Marker time', time);
+       // console.log('Marker time', time);
     }
   
     destroy() {
-        console.log('Marker destroyed');
+       // console.log('Marker destroyed');
     }
 };
   
