@@ -955,8 +955,8 @@ class AudioEditor extends Component {
 										<ReactTooltip id="increaseSpeed" delayShow={500}>
 											<span>
 												<FormattedMessage
-													id="AudioEditor-powtorzOstatnie5sek"
-													description="Powtorz ostatnie 5 sek nagrania" 
+													id="AudioEditor-odtwarzajSzybciej"
+													description="Odtwarzaj szybciej" 
 													defaultMessage="Szybciej (Alt+i)" 
 												/>
 												

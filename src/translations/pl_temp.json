@@ -1,4 +1,236 @@
 {
+  "AudioEditor-dodajSegment": {
+    "defaultMessage": "Dodaj segment",
+    "description": "Dodaj segment"
+  },
+  "AudioEditor-oddal": {
+    "defaultMessage": "Oddal",
+    "description": "Oddalanie waveform"
+  },
+  "AudioEditor-odtwarzajSzybciej": {
+    "defaultMessage": "Szybciej (Alt+i)",
+    "description": "Odtwarzaj szybciej"
+  },
+  "AudioEditor-otworzWEMUBtn": {
+    "defaultMessage": "Otwórz w EMU",
+    "description": "Napis na przycisku otworz w EMU"
+  },
+  "AudioEditor-powtorzOstatnie3sek": {
+    "defaultMessage": "Powtórz ostatnie 3 sek. (Alt+k)",
+    "description": "Powtorz ostatnie 3 sek nagrania"
+  },
+  "AudioEditor-powtorzOstatnie5sek": {
+    "defaultMessage": "Powtórz ostatnie 5 sek. (Alt+j)",
+    "description": "Powtorz ostatnie 5 sek nagrania"
+  },
+  "AudioEditor-przybliz": {
+    "defaultMessage": "Przybliż",
+    "description": "Przybliżenie waveform"
+  },
+  "AudioEditor-wolnieOdtwarzanie": {
+    "defaultMessage": "Wolniej (Alt+o)",
+    "description": "wolniej odtwarzanie"
+  },
+  "DIATool-addFromRepoToDIA": {
+    "defaultMessage": "Dodaj pliki z repozytorium do listy diaryzacji",
+    "description": "Dodaj pliki z repozytorium do listy diaryzacji"
+  },
+  "DIATool-description": {
+    "defaultMessage": "Narzędzie dzieli sygnał na segmenty mówione przez poszczególnych mówców. Mówcy nie są identyfikowani, jedynie numerowani.",
+    "description": "Opis narzedzia dia"
+  },
+  "DIATool-header": {
+    "defaultMessage": "Diaryzacja",
+    "description": "Nagłówek narzedzia"
+  },
+  "DIATool-leftSiteBarDesc": {
+    "defaultMessage": "<div><div>Przydatne skróty klawiaturowe: </div><div> <b>[Alt+l]</b> - play/pausa </div><div> <b>[Alt+k]</b> - powtórz 3 sek.</div><div> <b>[Alt+j]</b> - powtórz 5 sek.</div><div> <b>[Alt+i]</b> - przyśpiesz.</div><div> <b>[Alt+o]</b> - zwolnij.</div><div> <b>[Alt+n]</b> - załaduj kolejny plik.</div></div>",
+    "description": "przydatne skróty klawiaturowe"
+  },
+  "DIATool-runDiaForAll": {
+    "defaultMessage": "Uruchom diaryzację dla wszystkich",
+    "description": "uruchom dia dla wszystkich"
+  },
+  "Dashboard-aktualnosciNewsBody": {
+    "defaultMessage": "Miło nam przywitać Cię w panelu nowego serwisu. Wszelkie uwagi na temat jego funkcjonowania są mile widziane. Skontaktuj się z nami jeżeli masz jakiekolwiek pytania:",
+    "description": "Treść aktualności Dashboard"
+  },
+  "Dashboard-aktualnosciNewsBoxTitle": {
+    "defaultMessage": "Aktualności",
+    "description": "Nagłówek sekcji aktualności Dashboard"
+  },
+  "Dashboard-aktualnosciNewsTitle": {
+    "defaultMessage": "Witaj",
+    "description": "Tytuł aktualności Dashboard"
+  },
+  "Dashboard-detekcjaSlowBoxTitle": {
+    "defaultMessage": "DetekcjaSłówKluczowych",
+    "description": "Tytuł boxu do detekcji słów kluczowych"
+  },
+  "Dashboard-leftSiteBarDesc": {
+    "defaultMessage": "W tym miejscu znajdują się statystyki przestrzeni zajmowanej przez wgrane pliki do repozytorium oraz pomocne dodatkowe narzędzia i informacje.",
+    "description": "Napis w left side bar"
+  },
+  "Dashboard-repoBoxPamiecprzezpliki": {
+    "defaultMessage": "Zajmowana pamiec przez wgrane pliki",
+    "description": "Zajmowana pamiec przez wgrane pliki"
+  },
+  "Dashboard-repoBoxTitle": {
+    "defaultMessage": "Użycie repozytorium",
+    "description": "Nagłówek sekcji użycia repozytorium w Dashboard"
+  },
+  "Dashboard-repoBoxliczbakontenerow": {
+    "defaultMessage": "Liczba kontenerów w repozytorium",
+    "description": "liczba kontenerow w repo"
+  },
+  "Dashboard-repoBoxzPamiecAllpliki": {
+    "defaultMessage": "Całkowieta zajmowana pamięć repozytorium",
+    "description": "Całkowieta zajmowana pamięć repozytorium"
+  },
+  "Dashboard-repoBoxzPamiecPrzekonwertowanepliki": {
+    "defaultMessage": "Zajmowana pamiec przez przekonwertowane pliki",
+    "description": "Zajmowana pamiec przez przekonwertowane pliki"
+  },
+  "Dashboard-transkrypcjaBoxTitle": {
+    "defaultMessage": "Transkrypcja wyrazów",
+    "description": "Tytuł boxu do transkrypcji wyrazów"
+  },
+  "FileContainer-contextKopijID": {
+    "defaultMessage": "Kopiuj ID",
+    "description": "context menu kopiuj id"
+  },
+  "FileContainer-contextPobierzConverted": {
+    "defaultMessage": "Pobierz plik audio WAV 16000Hz, 16bit",
+    "description": "context pobierz przekonwertowany"
+  },
+  "FileContainer-contextPobierzDIAwCTM": {
+    "defaultMessage": "Pobierz plik diaryzacji w formacie CTM",
+    "description": "context pobierz DIA w CTM"
+  },
+  "FileContainer-contextPobierzDIAwTextGrid": {
+    "defaultMessage": "Pobierz plik diaryzacji mowy w formacie TextGrid",
+    "description": "context pobierz DIA w TextGrid"
+  },
+  "FileContainer-contextPobierzOryginalny": {
+    "defaultMessage": "Pobierz oryginalny plik audio",
+    "description": "context pobierz oryginalny"
+  },
+  "FileContainer-contextPobierzRECwJSON": {
+    "defaultMessage": "Pobierz transkrypcje w formacie json",
+    "description": "context pobierz REC w JSON"
+  },
+  "FileContainer-contextPobierzRECwTXT": {
+    "defaultMessage": "Pobierz transkrypcje w formacie txt",
+    "description": "context pobierz REC w txt"
+  },
+  "FileContainer-contextPobierzSEGwCTM": {
+    "defaultMessage": "Pobierz segmentacje w formacie ctm",
+    "description": "context pobierz SEG w CTM"
+  },
+  "FileContainer-contextPobierzSEGwTextGrid": {
+    "defaultMessage": "Pobierz segmentacje w formacie TextGrid",
+    "description": "context pobierz SEG w TextGrid"
+  },
+  "FileContainer-contextPobierzSEGwTextjson": {
+    "defaultMessage": "Pobierz segmentacje w formacie json",
+    "description": "context pobierz SEG w json"
+  },
+  "FileContainer-contextPobierzVADwCTM": {
+    "defaultMessage": "Pobierz plik detekcji mowy w formacie CTM",
+    "description": "context pobierz VAD w CTM"
+  },
+  "FileContainer-contextPobierzVADwTextGrid": {
+    "defaultMessage": "Pobierz plik detekcji mowy w formacie TextGrid",
+    "description": "context pobierz VAD w TextGrid"
+  },
+  "FileContainer-contextUsunZRepo": {
+    "defaultMessage": "Usuń z repozytorium",
+    "description": "context menu usun z repo"
+  },
+  "FileContainer-tooTipDIA": {
+    "defaultMessage": "Diaryzacja (DIA)",
+    "description": "tool tip DIA"
+  },
+  "FileContainer-tooTipREC": {
+    "defaultMessage": "Rozpoznawanie mowy (REC)",
+    "description": "tool tip REC"
+  },
+  "FileContainer-tooTipSEG": {
+    "defaultMessage": "Segmentacja (SEG)",
+    "description": "tool tip SEG"
+  },
+  "FileContainer-tooTipvad": {
+    "defaultMessage": "Detekcja mowy (VAD)",
+    "description": "tool tip VAD"
+  },
+  "G2PTool-inputWords": {
+    "defaultMessage": "Słowa wejściowe oddzielone enterem",
+    "description": "Placeholder na polu do wpisywania słów"
+  },
+  "G2PTool-step1": {
+    "defaultMessage": "Wpisz wyrazy jeden po drugim, każdy w nowej linii po znaku enter.",
+    "description": "instrukcja aby wpisać wyrazy jedem po drugim w G2P"
+  },
+  "G2PTool-transkrybujBtn": {
+    "defaultMessage": "Transkrybuj",
+    "description": "Transkrybuj btn"
+  },
+  "G2PTool-wybierzAlfabetInfo": {
+    "defaultMessage": "Wybierz alfabet",
+    "description": "instrukcja aby wybrać alfabet"
+  },
+  "HomeText-EasyUXHeaderBody": {
+    "defaultMessage": "Serwis został tak zaprojektowany aby w maksymalny sposób ułatwić jego obsługę. Interfejs użytkownika przewiduje dostępność wszystkich funkcjonalności w jednym miejscu, bez konieczności nawigowania w strukturze serwisu.",
+    "description": "Łatwość obslugi body"
+  },
+  "HomeText-EasyUXHeaderHeader": {
+    "defaultMessage": "Łatwość obsługi",
+    "description": "Łatwość obslugi header"
+  },
+  "HomeText-InneNarzedziaBody": {
+    "defaultMessage": "Poza flagowym systemem automatycznego rozpoznawania mowy, serwis udostępnia usługi automatycznego dopasowania tekstu do audio, oddzielenie fragmentów nagrania zawierających mowę od innych, rozpoznawanie mówców, wykrywanie słów kluczowych czy konwersja zapisu ortograficznego na zapis fonetyczny. Narzędzia te mogą być wykorzystywane osobno bądź jako część większego procesu którego celem jest stworzenie korpusów audio na potrzeby badań naukowych.",
+    "description": "Inne narzędzia treść"
+  },
+  "HomeText-InneNarzedziaHeader": {
+    "defaultMessage": "Pozostałe usługi mowy",
+    "description": "Inne narzędzia nagłówek"
+  },
+  "HomeText-automaticTranscriptionBody": {
+    "defaultMessage": "Serwis udostępnia narzędzia do automatycznej konwersji nagrań zawierających mowę na tekst. Użytkownik posiada możliwość dokonywania ręcznych korekt transkrypcji automatycznych bądź tworzenia transkrypcji zupełnie od początku w sposób zoptymalizowany i bez potrzeby odrywania rąk od klawiatury!",
+    "description": "Automatycza transkrypcja nagrań treść"
+  },
+  "HomeText-automaticTranscriptionHeader": {
+    "defaultMessage": "Automatyczne rozpoznawanie mowy",
+    "description": "Automatycza transkrypcja nagrań nagłówek"
+  },
+  "HomeText-corpusCreationBody": {
+    "defaultMessage": "Centralne repozytorium plików umożliwia przechowywanie Twoich danych, dostępnych tylko dla Ciebie po zalogowaniu. Witryna umożliwia tworzenie korpusów, gotowych do dalszej analizy w środowisku EMU-SDMD do badań naukowych.",
+    "description": "Tworzenie korpusów nagłówek opis"
+  },
+  "HomeText-corpusCreationHeader": {
+    "defaultMessage": "Tworzenie korpusów audio",
+    "description": "Tworzenie korpusów nagłówek nagłówek"
+  },
+  "Jumbotron-subTitle1": {
+    "defaultMessage": "Platforma do tworzenia korpusów i analizy sygnałów mowy.",
+    "description": "Pierwszy podpis pod logiem clarin"
+  },
+  "Jumbotron-subTitle2": {
+    "defaultMessage": "Automatyczne rozpoznawanie mowy z plików dźwiękowych, segmentacja, tworzenie korpusów audio.",
+    "description": "Drugi podpis pod logiem clarin"
+  },
+  "KWSTool-buttonmsg": {
+    "defaultMessage": "Uruchom detekcję słów kluczowych",
+    "description": "Napis na przycisku kws"
+  },
+  "KWSTool-step1": {
+    "defaultMessage": "Wpisz słowa kluczowe jeden po drugim, każdy w nowej linii po znaku enter.",
+    "description": "instrukcja aby wpisać wyrazy jedem po drugim w KWS"
+  },
+  "KWSTool-step2": {
+    "defaultMessage": "Wklej identyfikator wybranego kontenera z repozytorium",
+    "description": "Instrukcja Wklej identyfikator wybranego kontenera z repozytorium"
+  },
   "LoginAreaForgotPassHeader": {
     "defaultMessage": "Zresetowanie hasła",
     "description": "Napisz w nagłówku przypomnienia hasła"
@@ -86,5 +318,409 @@
   "LoginAreaWelcomev2": {
     "defaultMessage": "Witaj {imie}",
     "description": "Napis pojawiający się po zalogowaniu się witaj v2"
+  },
+  "ProjectList-akcje": {
+    "defaultMessage": "Akcje",
+    "description": "akcje"
+  },
+  "ProjectList-createDate": {
+    "defaultMessage": "Data utworzenia",
+    "description": "data utworzenia"
+  },
+  "ProjectList-id": {
+    "defaultMessage": "Identyfikator",
+    "description": "id projektu"
+  },
+  "ProjectList-nazwa": {
+    "defaultMessage": "Nazwa",
+    "description": "nazwa projektu"
+  },
+  "ProjectPage-dashboard": {
+    "defaultMessage": "Kokpit",
+    "description": "Zakładka dashboard"
+  },
+  "ProjectPage-detekcjamowy": {
+    "defaultMessage": "Detekcja mowy",
+    "description": "Zakładka detekcji movy"
+  },
+  "ProjectPage-diaryzacja": {
+    "defaultMessage": "Diaryzacja",
+    "description": "Zakładka diaryzacji"
+  },
+  "ProjectPage-segmentacja": {
+    "defaultMessage": "Segmentacja",
+    "description": "Zakładka segmentacja"
+  },
+  "ProjectPage-tour-EdytorPodpowiedzi": {
+    "defaultMessage": "W tym miejscu znajdziesz wskazówki dotyczące zasady działania poszczególnych narzędzi oraz niezbędne skróty klawiaturowe.",
+    "description": "Tour-EdytorPodpowiedzi"
+  },
+  "ProjectPage-tour-audioEdytor": {
+    "defaultMessage": "Edytor umożliwia odsłuchanie oraz edycje rezultatów narzędzi automatycznych. W tym przypadku mamy otworzony plik \"celnik\" oraz transkrypcję która została wykonana automatycznie. Możesz ją poprawić ręcznie i zapisać korekty.",
+    "description": "Tour-audioEdytor"
+  },
+  "ProjectPage-tour-edytorControls": {
+    "defaultMessage": "W tym miejscu możesz kontrolować różne aspekty odtwarzania pliku audio. Oznaczają one odpowiednio od lewej. - rozszerzenie widoku edytora do całej szerokości dostępnego okna - Play/pausa [Alt+l] - Odtworzenie ostatnich 3 sekund, począwszy od aktualnej pozycji głowicy [Alt+k] - Odtworzenie ostatnich 5 sekund, począwszy od aktualnej pozycji głowicy [Alt+j] - Przyśpieszenie odtwarzania [Alt+i] - Spowolnienie odtwarzania [Alt+o] - Orzybliżenie - Oddalenie - Dodanie segmentu . Warto nauczyć się również skrótów klawiaturowych.",
+    "description": "Tour-edytorControls"
+  },
+  "ProjectPage-tour-edytorExportCorpus": {
+    "defaultMessage": "Wszystkie pliki na których zostały wykonane wszystkie poziomy annotacji (i ewentualnie poprawione przez Ciebie), mogą zostać wyeksportowane do gotowego korpusu w formacie EMU-SDMS. Po odczekaniu, będziesz mógł go ściągnąć w formacie ZIP.",
+    "description": "Tour-edytorExportCorpus"
+  },
+  "ProjectPage-tour-edytorNavigator": {
+    "defaultMessage": "W tym miejscu widać podgląd całego pliku dźwiękowego. Dzięki temu możesz szybko nawigować do dowolnego jego fragmentu, bez względu na to jak długe jest nagranie.",
+    "description": "Tour-edytorNavigator"
+  },
+  "ProjectPage-tour-edytorOtworzwEMU": {
+    "defaultMessage": "Jeżeli na pliku jest wykonane narzędzie segmentacji (jak w tym przypadku), możesz otworzyć plik w zewnętrznej aplikacji EMU [Screen]",
+    "description": "Tour-edytorOtworzwEMU"
+  },
+  "ProjectPage-tour-edytorTextField": {
+    "defaultMessage": "W tym miejscu dokonujesz korekty narzędzi automatycznych. W tym przypadku jest to transkrypcja. Zmiany możesz zapisać do systemu [Alt+m]. Po zakończeniu transkrypcji, możesz przejść do kolejnego pliku na liścien [Alt+n]",
+    "description": "Tour-edytorTextField"
+  },
+  "ProjectPage-tour-edytorUruchomDlaWszystkich": {
+    "defaultMessage": "Zamiast uruchamiać narzędzia pojedynczo, możesz je uruchomić jednocześnie do wszystkich plików znajdujących się w kolejce. W tym celu należy kliknąć w tym miejscu.",
+    "description": "Tour-edytorUruchomDlaWszystkich"
+  },
+  "ProjectPage-tour-edytorWaveform": {
+    "defaultMessage": "W zależności od powiększenia, w tym miejscu widać fragment nagrania ze szczegółami. To tutaj możesz precyzyjnie ustawić głowicę odtwarzającą oraz granice segmentów.",
+    "description": "Tour-edytorWaveform"
+  },
+  "ProjectPage-tour-ikonkiRepo": {
+    "defaultMessage": "Każdy plik posiada ikonki obrazujące status wykonania narzędzia automatycznego, odpowiednio od lewej: detekcja mowy, diaryzacja, rozpoznawanie mowy oraz segmentacja. Klikając w ikonkę, przenosisz dany plik do kolejki danego narzędzia automatycznego.",
+    "description": "Tour-ikonkiRepo"
+  },
+  "ProjectPage-tour-repoPanel": {
+    "defaultMessage": "Repozytorium to miejsce w którym możesz wgrywać i przechowywać swoje pliki audio. Twoim celem jest ich opis (z pomocą naszych narzędzi automatycznych) oraz ostateczne wygenerowanie anotowanego korpusu.",
+    "description": "Tour-repoPanel"
+  },
+  "ProjectPage-tour-repoSession": {
+    "defaultMessage": "Pliki możesz organizować w grupy zwane sesjami. Na początku stworzyliśmy dla Ciebie dwie przykładowe sesje: demo i sesję domyślną.",
+    "description": "Tour-repoSession"
+  },
+  "ProjectPage-tour-toolList": {
+    "defaultMessage": "Dodaliśmy za Ciebie dwa pliki (opowiesci i kleska) do kolejki narzędzia służącego do automatycznego rozpoznawania mowy. Dzięki kolejkowaniu plików, możesz zdecydować którymi plikami chcesz się zajmować i wykonywać ich transkrypcje po koleii, plik po pliku.",
+    "description": "Tour-toolList"
+  },
+  "ProjectPage-tour-wlaczenieNarzedzia": {
+    "defaultMessage": "Klikając ikonkę przy nazwie pliku, możesz uruchomić narzędzie automatyczne. Zielona ikonka oznacza, że dane narzędzie zostało już wykonane. Możesz podejrzeć rezultaty jego działania w oknie edytora i ewentualnie skorygować je ręcznie.",
+    "description": "Tour-wlaczenieNarzedzia"
+  },
+  "ProjectPage-transkrypcje": {
+    "defaultMessage": "Transkrypcje",
+    "description": "Zakładka transkrypcje"
+  },
+  "ProjectsListPage-AddProjectButtonForm": {
+    "defaultMessage": "Stwórz projekt",
+    "description": "Button w oknie do wpisywania nazwy projektu"
+  },
+  "ProjectsListPage-AddProjectFormPlaceholder": {
+    "defaultMessage": "Podaj nazwę projektu",
+    "description": "Placeholder w oknie do wpisywania nazwy projektu"
+  },
+  "ProjectsListPage-AddProjectHeaderInput": {
+    "defaultMessage": "Stwórz nowy projekt",
+    "description": "Nagłówek w oknie do wpisywania nazwy projektu"
+  },
+  "ProjectsListPage-RemoveProjectQuestion": {
+    "defaultMessage": "Czy na pewno chcesz usunac poniższy projekt? Wraz z nim zostaną usunięte wszystkie pliki audio oraz transkrypcje!",
+    "description": "Pytanie czy na pewno chcesz usunac projekt"
+  },
+  "ProjectsListPage-addProjectBtn": {
+    "defaultMessage": "Stwórz projekt",
+    "description": "Opis w przycisku do dodawania korpusu"
+  },
+  "ProjectsListPage-description": {
+    "defaultMessage": "W tym miejscu można tworzyć własne projekty które stanowią przestrzeń roboczą dla wgranych plików. UWAGA! w przypadku usunięcia projektu, zostaną usunięte wszystkie wgrane do niego pliki!",
+    "description": "Opis widoku dodawania projektow"
+  },
+  "RecoTool-dodajPlikiZRepo": {
+    "defaultMessage": "Dodaj pliki z repozytorium do listy transkrypcji.",
+    "description": "komunikat o dodaniu plikow z repo"
+  },
+  "RecoTool-header": {
+    "defaultMessage": "Transkrypcje",
+    "description": "Nagłówek narzedzia"
+  },
+  "RecoTool-opisNarzedzia": {
+    "defaultMessage": "Zamiana nagrania mowy na zapis ortograficzny.",
+    "description": "opis narzedzia"
+  },
+  "RecoTool-runForAll": {
+    "defaultMessage": "Uruchom rozpoznawanie dla wszystkich",
+    "description": "Reco uruchom dla wszystkich przycisk"
+  },
+  "RecoTool-toolDesc": {
+    "defaultMessage": "<div><div>Przydatne skróty klawiaturowe podczas tworzenia transkrypcji to: </div><div> <b>[Alt+l]</b> - play/pausa </div><div> <b>[Alt+k]</b> - powtórz 3 sek.</div><div> <b>[Alt+j]</b> - powtórz 5 sek.</div><div> <b>[Alt+i]</b> - przyśpiesz.</div> <div> <b>[Alt+o]</b> - zwolnij.</div><div> <b>[Alt+m]</b> - zapisz transkrypcje.</div><div> <b>[Alt+n]</b> - załaduj kolejny plik.</div><div>Możesz transkrybować nie odrywając rąk od pola tekstowego!</div></div>",
+    "description": "Reco opis skrótów"
+  },
+  "RepoPanel-EMUexport": {
+    "defaultMessage": "Czy jesteś pewien że chcesz eksportować korpus do EMU?",
+    "description": "potwierdzenie exportu do EMU"
+  },
+  "RepoPanel-KomunikatEksportuEMU": {
+    "defaultMessage": "Zostaną wyeksportowane tylko te pliki dla których zostały wykonane wszystkie poziomy annotacji. Podcas tego procesu nie wykonuj żadnych czynności,",
+    "description": "komunikat o eksportcie do EMU"
+  },
+  "RepoPanel-addSession": {
+    "defaultMessage": "Tworzenie nowej sesji",
+    "description": "naglowej o tworzenie nowej sesji"
+  },
+  "RepoPanel-exportDoEMUSDMSBtn": {
+    "defaultMessage": "Eksportuj korpus do EMU-SDMS",
+    "description": "napisNaPrzycisku eksportujacym korpus"
+  },
+  "RepoPanel-header": {
+    "defaultMessage": "Repozytorium",
+    "description": "Nagłówek"
+  },
+  "RepoPanel-moveContainer": {
+    "defaultMessage": "Wybierz sesje do której chcesz przenieść kontenery",
+    "description": "zapytanie o wyborze sesji do ktorej przenosimy kontenery"
+  },
+  "RepoPanel-przenoszenieKontenerowDoSessji": {
+    "defaultMessage": "Następujące kontenery",
+    "description": "komunikat o przenoszeniu do kontenerow do innej sesji Header"
+  },
+  "RepoPanel-przenoszenieKontenerowDoSessjiv2": {
+    "defaultMessage": "Zostaną przeniesione do sesji",
+    "description": "komunikat o przenoszeniu do kontenerow do innej sesji"
+  },
+  "RepoPanel-przenoszenieKontenerowDoSessjiv3": {
+    "defaultMessage": "Wybierz sesje",
+    "description": "Wybierz sesje select"
+  },
+  "RepoPanel-removeContainer": {
+    "defaultMessage": "Czy jesteś pewien że chcesz usunąć następujące kontenery ?",
+    "description": "potwierdzenie o usunięciu kontenerow"
+  },
+  "RepoPanel-removeSession": {
+    "defaultMessage": "Czy jesteś pewien że chcesz usunąć całą sesję wraz z zawartością?",
+    "description": "zapytanie czy chcemy usunac cala sesje wraz z zawartości"
+  },
+  "RepoPanel-tooTipDodajSesje": {
+    "defaultMessage": "Dodaj sesje",
+    "description": "tool tip dodajacy sesje"
+  },
+  "RepoPanel-tooTipMoveContainerToSession": {
+    "defaultMessage": "Przesuń zaznaczone kontenery do innej sesji",
+    "description": "tool tip przesuwajacy kontenery do innej sesji"
+  },
+  "RepoPanel-tooTipRemoveContainers": {
+    "defaultMessage": "Usuń zaznaczone kontenery",
+    "description": "tool tip usun zaznaczone kontenery"
+  },
+  "RepoPanel-tooTipRemoveSessions": {
+    "defaultMessage": "Usuń zaznaczone sesje",
+    "description": "tool tip usun zaznaczone sesje"
+  },
+  "RepoSession-kopijID": {
+    "defaultMessage": "Kopiuj ID sesji",
+    "description": "context menu kopiuj id"
+  },
+  "RepoSession-usunSesje": {
+    "defaultMessage": "Usuń sesje wraz z zawartością",
+    "description": "context menu usun sesje"
+  },
+  "SegmentEditor-zapiszZmiany": {
+    "defaultMessage": "Zapisz zmiany segmentów",
+    "description": "Przycisk o zapisanie zmian segmentów"
+  },
+  "SegmentTool-dodajPliki": {
+    "defaultMessage": "Dodaj pliki z repozytorium do listy segmentacji.",
+    "description": "dodaj pliki do segmentacji"
+  },
+  "SegmentTool-header": {
+    "defaultMessage": "Segmentacja",
+    "description": "Nagłówek narzedzia"
+  },
+  "SegmentTool-opisNarzedzia": {
+    "defaultMessage": "Dopasowanie czasowe tekstu do nagrania. Podział nagrania na segmenty (wyrazy i fonemy).",
+    "description": "opis narzedzia"
+  },
+  "SegmentTool-runForAllBtn": {
+    "defaultMessage": "Uruchom segmentacje dla wszystkich",
+    "description": "Segmentacja uruchomienie dla wszystkich "
+  },
+  "SegmentTool-toolDesc": {
+    "defaultMessage": "Segmentacja dopasowywuje fragmenty nagrania do tekstu na poziomie wyrazów",
+    "description": "Segmentacja opis "
+  },
+  "SegmentsEditor-etykietaLabel": {
+    "defaultMessage": "Etykieta",
+    "description": "Etykieta Etykieta"
+  },
+  "SegmentsEditor-koniecLabel": {
+    "defaultMessage": "Koniec",
+    "description": "Etykieta koniec"
+  },
+  "SegmentsEditor-poczatekLabel": {
+    "defaultMessage": "Początek",
+    "description": "Etykieta początek"
+  },
+  "SegmentsEditor-segmentyLabel": {
+    "defaultMessage": "Segmenty",
+    "description": "Etykieta Segmenty"
+  },
+  "TextEditor-fileHasNotChanged": {
+    "defaultMessage": "Plik niezmieniony",
+    "description": "Napis informujący że plik nie został zmieniony"
+  },
+  "TextEditor-plikNiezmieniony": {
+    "defaultMessage": "Plik niezmieniony",
+    "description": "Napis na przycisku informujący że plik nie jest zmieniony"
+  },
+  "TextEditor-plikNiezmienionyInfo": {
+    "defaultMessage": "Plik niezmieniony",
+    "description": "Informacja że plik nie został zmieniony"
+  },
+  "TextEditor-rozpocznijTranskrypcje": {
+    "defaultMessage": "Rozpocznij transkrypcje",
+    "description": "Napis na przycisku rozpoczynajacym transkrypcje"
+  },
+  "TextEditor-transkrypcjaZaladowanaOK": {
+    "defaultMessage": "Transkrypcja załadowana pomyślnie",
+    "description": "Napis informujący że transkrypcja załadowana została pomyślnie"
+  },
+  "TextEditor-transkrypcjaZapisanaPomyslnie": {
+    "defaultMessage": "Transkrypcja została zapisana pomyślnie",
+    "description": "Informacja że transkrypcja zostałą zapisana pomyślnie"
+  },
+  "TextEditor-zaladujKolejnyNaLiscie": {
+    "defaultMessage": "Załaduj kolejny na liście",
+    "description": "Informacja o załadowaniu kolejnego na liście"
+  },
+  "TextEditor-zaladujPoprzedniaWersje": {
+    "defaultMessage": "Załaduj poprzednią wersję z serwera",
+    "description": "Napis na przycisku do zaladowania poprzedniej wersji z serwera"
+  },
+  "TextEditor-zaladujTranskrypcjeZSerwera": {
+    "defaultMessage": "Załaduj transkrypcje z serwera",
+    "description": "Napis na przycisku ladowania transkrypcji z serwera"
+  },
+  "TextEditor-zapiszTranskrypcjeZSerwera": {
+    "defaultMessage": "Zapisz transkrypcję na serwerze",
+    "description": "Napis na przycisku zapisywania transkrypcji na serwerze"
+  },
+  "TextEditor-zapiszZmianyNaSerwerze": {
+    "defaultMessage": "Zapisz zmiany na serwerze",
+    "description": "Napis na przycisku zapisującym zmiany na serwerze"
+  },
+  "TextEditor-zapiszZmianyNaSerwerzev2": {
+    "defaultMessage": "Zapisz zmiany na serwerze",
+    "description": "Napis na przycisku do zapisywania zmian na serwerze"
+  },
+  "ToolItem-contextKopijID": {
+    "defaultMessage": "Kopiuj ID",
+    "description": "context menu kopiuj id"
+  },
+  "ToolItem-contextPobierzDIAwCTM": {
+    "defaultMessage": "Pobierz plik diaryzacji w formacie CTM",
+    "description": "context pobierz DIA w CTM"
+  },
+  "ToolItem-contextPobierzDIAwTextGrid": {
+    "defaultMessage": "Pobierz plik diaryzacji mowy w formacie TextGrid",
+    "description": "context pobierz DIA w TextGrid"
+  },
+  "ToolItem-contextPobierzOryginalny": {
+    "defaultMessage": "Pobierz oryginalny plik audio",
+    "description": "context pobierz oryginalny"
+  },
+  "ToolItem-contextPobierzPrzekonwertowany": {
+    "defaultMessage": "Pobierz plik audio WAV 16000Hz, 16bit",
+    "description": "context pobierz przekonwertowany"
+  },
+  "ToolItem-contextPobierzRECwJson": {
+    "defaultMessage": "Pobierz transkrypcje w formacie json",
+    "description": "context pobierz REC w json"
+  },
+  "ToolItem-contextPobierzRECwTXT": {
+    "defaultMessage": "Pobierz transkrypcje w formacie txt",
+    "description": "context pobierz REC w text"
+  },
+  "ToolItem-contextPobierzSEGwCTM": {
+    "defaultMessage": "Pobierz segmentacje w formacie ctm",
+    "description": "context pobierz SEGwCTM"
+  },
+  "ToolItem-contextPobierzSEGwTextGrid": {
+    "defaultMessage": "Pobierz segmentacje w formacie TextGrid",
+    "description": "context pobierz SEGwTextGrid"
+  },
+  "ToolItem-contextPobierzSEGwjson": {
+    "defaultMessage": "Pobierz segmentacje w formacie json",
+    "description": "context pobierz SEGwTextjson"
+  },
+  "ToolItem-contextPobierzVADwCTM": {
+    "defaultMessage": "Pobierz plik detekcji mowy w formacie CTM",
+    "description": "context pobierz VADwCTM"
+  },
+  "ToolItem-contextPobierzVADwTextGrid": {
+    "defaultMessage": "Pobierz plik detekcji mowy w formacie TextGrid",
+    "description": "context pobierz VADwTextGrid"
+  },
+  "ToolItem-contextUsunZListy": {
+    "defaultMessage": "Usuń element z listy",
+    "description": "context usun z listy"
+  },
+  "ToolItem-nadpisanieZmian": {
+    "defaultMessage": "Wszystkie Twoje ręczne korekty zostaną nadpisane",
+    "description": "modal informacja"
+  },
+  "ToolItem-nadpisanieZmianNie": {
+    "defaultMessage": "Anuluj",
+    "description": "modal informacja nie"
+  },
+  "ToolItem-nadpisanieZmianTak": {
+    "defaultMessage": "Tak",
+    "description": "modal informacja tak"
+  },
+  "ToolItem-uruchom": {
+    "defaultMessage": "Uruchom",
+    "description": "Uruchom narzedzie..."
+  },
+  "ToolItem-uruchomv2": {
+    "defaultMessage": "Uruchom",
+    "description": "Uruchom narzedzie..."
+  },
+  "TopBar-LogOutIcon": {
+    "defaultMessage": "Wyloguj",
+    "description": "Ikona wylogowania się"
+  },
+  "TopBar-QuickTour": {
+    "defaultMessage": "Szybki przewodnik",
+    "description": "Ikona szybkiego przewodnika"
+  },
+  "TopBar-ZglosToAdminIcon": {
+    "defaultMessage": "Zgłoś do admina",
+    "description": "Ikona zgłoś do admina"
+  },
+  "TopBar-contactToAdminHeader": {
+    "defaultMessage": "Kontakt do administratora strony",
+    "description": "Nagłówek formularza do kontaktu z administratorem"
+  },
+  "TopBar-documentaionIcon": {
+    "defaultMessage": "Dokumentacja",
+    "description": "Ikona dokumentacji"
+  },
+  "VADTool-dodajZRepo": {
+    "defaultMessage": "Dodaj pliki z repozytorium do listy detekcji mowy.",
+    "description": "Opis dodaj z repo"
+  },
+  "VADTool-header": {
+    "defaultMessage": "Detekcja mowy",
+    "description": "Nagłówek narzedzia"
+  },
+  "VADTool-opisNarzedziaGlowny": {
+    "defaultMessage": "Narzędzie zaznacza w sygnale segmenty zawierające mowę.",
+    "description": "Opis narzedzia"
+  },
+  "VADTool-runForAll": {
+    "defaultMessage": "Uruchom detekcje mowy dla wszystkich",
+    "description": "VAD uruchom dla wszystkich btn "
+  },
+  "VADTool-toolDesc": {
+    "defaultMessage": "Narzędzie zaznacza w sygnale segmenty zawierające mowę.",
+    "description": "VAD opis "
   }
 }

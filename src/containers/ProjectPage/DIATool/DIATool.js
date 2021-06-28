@@ -126,15 +126,6 @@ class DIATool extends Component {
 			
 		})
 
-		const test = <FormattedMessage
-			id="app.greeting"
-			description="Greeting to welcome the user to the app"
-			defaultMessage="Hello, <b>Eric</b> {icon}"
-			values={{
-				b: chunks => <b>{chunks}</b>,
-				icon:"lall",
-			}}
-			/>
 
 		return (
 			<Aux>

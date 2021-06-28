@@ -99,7 +99,7 @@ class topBar extends Component {
                     onClick={this.openSendToAdminModal}>
                     <FontAwesomeIcon icon={faEnvelope} className="faIcon" /> 
                         <FormattedMessage
-                            id="TopBar-QuickTour"
+                            id="TopBar-ZglosToAdminIcon"
                             description="Ikona zgłoś do admina" 
                             defaultMessage="Zgłoś do admina"
                         />

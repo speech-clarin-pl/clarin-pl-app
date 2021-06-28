@@ -26,7 +26,7 @@ const messages = {
 };
 
 //do wywoływania ekstrakcji języka
-//npm run extract -- 'src/**/*.ts*' --out-file lang/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]'
+//npm run extract -- 'src/**/*.js' --out-file src/translations/pl_temp.json --id-interpolation-pattern '[sha512:contenthash:base64:6]'
 
 class App extends Component {
 
