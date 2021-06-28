@@ -15,6 +15,8 @@ import DropFilesArea from '../../../components/UI/DropFilesArea/DropFilesArea';
 import uuid from 'uuid';
 import { extensionMapping } from '../../../utils/fileTypes';
 import {Alert, Progress} from 'reactstrap';
+import {injectIntl, FormattedMessage} from 'react-intl';
+import ReactHtmlParser from "react-html-parser";
   
 class repoBar extends Component {
 
@@ -44,7 +46,6 @@ class repoBar extends Component {
 
         //checking if the file/s is from local env
         if (files instanceof FileList) {
-            console.log("rozpoznalem FILELIST")
             for (var i = 0; i < files.length; i++) {
                 let file = files[i];
                 let fileExtention = getExt(file.name)[0];
@@ -60,7 +61,6 @@ class repoBar extends Component {
 
            
         }  else if ( files.currentTarget != null && files.currentTarget instanceof Element){
-            console.log("rozpoznalem Element")
             
             const inputControl = files.currentTarget;
             
@@ -116,8 +116,6 @@ class repoBar extends Component {
 		//wysylam zadanie aby pobrac aktualne pliki w katalogu uzytkownika
 		const currentProjectID = this.props.currentProjectID;
 		const currentProjectOwner = this.props.currentProjectOwner; //Owner id
-		//console.log(currentProjectID)
-		//console.log(currentProjectOwner)
 		this.props.onGetProjectFilesForUser(currentProjectOwner, currentProjectID, this.props.token);
 	}
 
@@ -156,20 +154,18 @@ class repoBar extends Component {
 	}
 
 	handleSelect = (key) => {
-		console.log("handleSelect")
-		console.log(key)
+		//console.log(key)
 	}
 
 	// Called after onSelect, only on file selection
 	handleSelectFile = (file) => {
-		console.log("handleSelectFile")
-		console.log(file)
+		//console.log(file)
 	}
 
 	// Called after onSelect, only on folder selection
 	handleSelectFolder = (folder) => {
-		console.log("handleSelectFolder")
-		console.log(folder)
+		//console.log("handleSelectFolder")
+		//console.log(folder)
 	}
 
 	//dwukrotne klikniecie powoduje uruchomienie w podgladzie
@@ -212,8 +208,8 @@ class repoBar extends Component {
 	}
 
 	handlePreviewClose = (file) => {
-		console.log("handlePreviewClose")
-		console.log(file)
+		//console.log("handlePreviewClose")
+		//console.log(file)
 	}
 
 	handleRightClickOnFile = (e, data, target) => {
@@ -550,4 +546,4 @@ const mapDispatchToProps = dispatch => {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(repoBar));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(injectIntl(repoBar)));

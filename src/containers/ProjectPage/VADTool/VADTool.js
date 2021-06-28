@@ -21,6 +21,8 @@ import ToolItem from '../ToolItem/ToolItem';
 import { faSurprise } from '@fortawesome/free-solid-svg-icons';
 import * as vadActions from '../../../store/actions/index';
 import AudioEditor from '../AudioEditor/AudioEditor';
+import {injectIntl, FormattedMessage} from 'react-intl';
+import ReactHtmlParser from "react-html-parser";
 
 class VADTool extends Component {
 
@@ -146,18 +148,28 @@ class VADTool extends Component {
 
 				<LeftSiteBar
 					czyTopPart="true"
-					desc={(<div>
-                        <div>Przydatne skróty klawiaturowe: </div>
-                        <div> <b>[Alt+l]</b> - play/pausa </div>
-                        <div> <b>[Alt+k]</b> - powtórz 3 sek.</div>
-                        <div> <b>[Alt+j]</b> - powtórz 5 sek.</div>
-                        <div> <b>[Alt+i]</b> - przyśpiesz.</div>
-                        <div> <b>[Alt+o]</b> - zwolnij.</div>
-                        <div> <b>[Alt+n]</b> - załaduj kolejny plik.</div>
-                        </div>)
+					desc={
+						
+						ReactHtmlParser(
+							this.props.intl.formatMessage(
+								{
+									id:"VADTool-toolDesc",
+									description: 'VAD opis ', 
+									defaultMessage: 'Narzędzie zaznacza w sygnale segmenty zawierające mowę.',
+								},
+							)
+						)
                     } >
 						 <ButtonLeftBar 
-							napis="Uruchom detekcje mowy dla wszystkich"
+							napis={
+								this.props.intl.formatMessage(
+									{
+										id:"VADTool-runForAll",
+										description: 'VAD uruchom dla wszystkich btn ', 
+										defaultMessage: "Uruchom detekcje mowy dla wszystkich",
+									},
+								)
+							}
 							icon={vadIcon}
 							customeStyle={null}
 							disabled={false}
@@ -171,13 +183,20 @@ class VADTool extends Component {
 					<div className={["container-fluid", "SegmentTool"].join(' ')}>
 						<div className="tool-desc">
 
-							<h2>Detekcja mowy</h2>
-							<p>Narzędzie zaznacza w sygnale segmenty zawierające mowę.</p>
-							{
-								//<div className="alert alert-info" role="alert">
-								//	<p>Narzędzie zaznacza w sygnale segmenty zawierające mowę.</p>
-								//</div>
-							}
+							<h2>
+								<FormattedMessage
+									id="VADTool-header"
+									description="Nagłówek narzedzia" 
+									defaultMessage="Detekcja mowy" 
+								/>
+							</h2>
+							<p>
+								<FormattedMessage
+									id="VADTool-opisNarzedziaGlowny"
+									description="Opis narzedzia" 
+									defaultMessage="Narzędzie zaznacza w sygnale segmenty zawierające mowę." 
+								/>
+							</p>
 							
 						</div>
 
@@ -185,14 +204,15 @@ class VADTool extends Component {
 
 							<div className="row">
                                 <div className={"col-md-"+szer1col}>
-                                   {
-									//<h3>Lista plików do przetworzenia</h3>
-								   } 
                                     <div className="file-list">
 										{
                                             filelist.length == 0?
                                             <div className="alert alert-primary" role="alert">
-                                                Dodaj pliki z repozytorium do listy detekcji mowy
+												<FormattedMessage
+													id="VADTool-dodajZRepo"
+													description="Opis dodaj z repo" 
+													defaultMessage="Dodaj pliki z repozytorium do listy detekcji mowy." 
+												/>
                                             </div>
                                             :filelist
                                         }
@@ -253,4 +273,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(VADTool);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(VADTool));

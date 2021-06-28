@@ -11,8 +11,9 @@ import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ToolItem from '../ToolItem/ToolItem';
 import {injectIntl, FormattedMessage} from 'react-intl';
-
+import ReactHtmlParser from "react-html-parser";
 import AudioEditor from '../AudioEditor/AudioEditor';
+
 
 class RecognitionTool extends Component {
 
@@ -150,22 +151,31 @@ class RecognitionTool extends Component {
 
                 <LeftSiteBar
                     czyTopPart="true"
-                    desc={(<div>
-                        <div>Przydatne skróty klawiaturowe podczas tworzenia transkrypcji to: </div>
-                        <div> <b>[Alt+l]</b> - play/pausa </div>
-                        <div> <b>[Alt+k]</b> - powtórz 3 sek.</div>
-                        <div> <b>[Alt+j]</b> - powtórz 5 sek.</div>
-                        <div> <b>[Alt+i]</b> - przyśpiesz.</div>
-                        <div> <b>[Alt+o]</b> - zwolnij.</div>
-                        <div> <b>[Alt+m]</b> - zapisz transkrypcje.</div>
-                        <div> <b>[Alt+n]</b> - załaduj kolejny plik.</div>
-                        <div>Możesz transkrybować nie odrywając rąk od pola tekstowego!</div>
-                        </div>)
-                    } >
+                    desc={
+						
+						ReactHtmlParser(
+							this.props.intl.formatMessage(
+								{
+									id:"RecoTool-toolDesc",
+									description: 'Reco opis skrótów', 
+									defaultMessage: '<div><div>Przydatne skróty klawiaturowe podczas tworzenia transkrypcji to: </div><div> <b>[Alt+l]</b> - play/pausa </div><div> <b>[Alt+k]</b> - powtórz 3 sek.</div><div> <b>[Alt+j]</b> - powtórz 5 sek.</div><div> <b>[Alt+i]</b> - przyśpiesz.</div> <div> <b>[Alt+o]</b> - zwolnij.</div><div> <b>[Alt+m]</b> - zapisz transkrypcje.</div><div> <b>[Alt+n]</b> - załaduj kolejny plik.</div><div>Możesz transkrybować nie odrywając rąk od pola tekstowego!</div></div>',
+								},
+							)
+						)
+                    }
+                     >
 
                     
                     <ButtonLeftBar 
-                        napis="Uruchom rozpoznawanie dla wszystkich"
+                        napis={
+                            this.props.intl.formatMessage(
+								{
+									id:"RecoTool-runForAll",
+									description: 'Reco uruchom dla wszystkich przycisk', 
+									defaultMessage: 'Uruchom rozpoznawanie dla wszystkich',
+								},
+							)
+                        }
                         iconType="file"
                         icon={recoIcon}
                         customeStyle={null}
@@ -181,8 +191,20 @@ class RecognitionTool extends Component {
 
                     <div className={["container-fluid", "RecognitionTool"].join(' ')}>
                         <div className="tool-desc">
-                            <h2>Transkrypcje</h2>
-                            <p>Zamiana nagrania mowy na zapis ortograficzny.</p>
+                            <h2>
+                                <FormattedMessage
+									id="RecoTool-header"
+									description="Nagłówek narzedzia" 
+									defaultMessage="Transkrypcje" 
+								/>
+                            </h2>
+                            <p>
+                                <FormattedMessage
+									id="RecoTool-opisNarzedzia"
+									description="opis narzedzia" 
+									defaultMessage="Zamiana nagrania mowy na zapis ortograficzny." 
+								/>
+                            </p>
                             
 
                         </div>
@@ -201,7 +223,12 @@ class RecognitionTool extends Component {
                                         {
                                             filelist.length === 0?
                                             <div className="alert alert-primary" role="alert">
-                                                Dodaj pliki z repozytorium do listy transkrypcji
+                                                <FormattedMessage
+                                                    id="RecoTool-dodajPlikiZRepo"
+                                                    description="komunikat o dodaniu plikow z repo" 
+                                                    defaultMessage="Dodaj pliki z repozytorium do listy transkrypcji." 
+                                                />
+                                                
                                             </div>
                                             :filelist
                                         }

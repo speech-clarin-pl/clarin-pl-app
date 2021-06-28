@@ -20,7 +20,8 @@ import ButtonLeftBar from '../../../components/UI/ButtonLeftBar/ButtonLeftBar';
 import { RingLoader } from "react-spinners";
 import { css } from "@emotion/core";
 
-
+import {injectIntl, FormattedMessage} from 'react-intl';
+import ReactHtmlParser from "react-html-parser";
 
 //import ContainerFile from './ContainerFile/ContainerFile';
 
@@ -336,12 +337,16 @@ class repoPanel extends Component {
 
         content = (
             <div>
-                <p>Zostaną wyeksportowane tylko te pliki dla których zostały wykonane wszystkie poziomy annotacji.</p>
-                <p>Podcas tego procesu nie wykonuj żadnych czynności</p>
-                {
+                <p>
+                    <FormattedMessage
+                        id="RepoPanel-KomunikatEksportuEMU"
+                        description="komunikat o eksportcie do EMU" 
+                        defaultMessage="Zostaną wyeksportowane tylko te pliki dla których zostały wykonane wszystkie poziomy annotacji. Podcas tego procesu nie wykonuj żadnych czynności," 
+                    />
+                    {
                     akcjaKorpus
-                }                   
-                
+                    }   
+                </p>                
             </div>
             
         );
@@ -378,14 +383,32 @@ class repoPanel extends Component {
 
         let content = (
             <div>
-                <h5>Następujące kontenery:</h5>
+                <h5>
+                    <FormattedMessage
+                        id="RepoPanel-przenoszenieKontenerowDoSessji"
+                        description="komunikat o przenoszeniu do kontenerow do innej sesji Header" 
+                        defaultMessage="Następujące kontenery" 
+                    />
+                </h5>
                 <span style={{marginRight: '8px'}}> {containerNames} </span>
 
-                <h5>Zostaną przeniesione do sesji...</h5>
+                <h5>
+                    <FormattedMessage
+                        id="RepoPanel-przenoszenieKontenerowDoSessjiv2"
+                        description="komunikat o przenoszeniu do kontenerow do innej sesji" 
+                        defaultMessage="Zostaną przeniesione do sesji" 
+                    />
+                </h5>
 
                 <div>
                     <select name="session"  onChange={this.changeSessionToMove} value={this.state.chosenSessionToMove}>
-                        <option>Wybierz sesje</option>
+                        <option>
+                        <FormattedMessage
+                            id="RepoPanel-przenoszenieKontenerowDoSessjiv3"
+                            description="Wybierz sesje select" 
+                            defaultMessage="Wybierz sesje" 
+                        />
+                        </option>
                     {
                         allSessionList
                     }
@@ -479,23 +502,54 @@ class repoPanel extends Component {
 
         switch(this.state.whatClicked){
             case 'EMUexport':
-                modalTitle = "Czy jesteś pewien że chcesz eksportować korpus do EMU?";
+                modalTitle = this.props.intl.formatMessage(
+                        {
+                            id:"RepoPanel-EMUexport",
+                            description: 'potwierdzenie exportu do EMU', 
+                            defaultMessage: "Czy jesteś pewien że chcesz eksportować korpus do EMU?",
+                        },
+                    )
+ 
                 modalContent = this.modalContentEMUExport();
                 break;
             case 'removeContainer':
-                modalTitle = "Czy jesteś pewien że chcesz usunąć następujące kontenery ?";
+                modalTitle = this.props.intl.formatMessage(
+                    {
+                        id:"RepoPanel-removeContainer",
+                        description: 'potwierdzenie o usunięciu kontenerow', 
+                        defaultMessage: "Czy jesteś pewien że chcesz usunąć następujące kontenery ?",
+                    },
+                )
                 modalContent = this.modalContentRemoveContainer();
                 break;
             case 'moveContainer':
-                modalTitle = "Wybierz sesje do której chcesz przenieść kontenery";
+                modalTitle = this.props.intl.formatMessage(
+                    {
+                        id:"RepoPanel-moveContainer",
+                        description: 'zapytanie o wyborze sesji do ktorej przenosimy kontenery', 
+                        defaultMessage: "Wybierz sesje do której chcesz przenieść kontenery",
+                    },
+                )
                 modalContent = this.modalContentMoveContainer();
                 break;
             case 'removeSession':
-                modalTitle = "Czy jesteś pewien że chcesz usunąć całą sesję wraz z zawartością?";
+                modalTitle = this.props.intl.formatMessage(
+                    {
+                        id:"RepoPanel-removeSession",
+                        description: 'zapytanie czy chcemy usunac cala sesje wraz z zawartości', 
+                        defaultMessage: "Czy jesteś pewien że chcesz usunąć całą sesję wraz z zawartością?",
+                    },
+                )
                 modalContent = this.modalContentRemoveSession();
                 break;
             case 'addSession':
-                modalTitle = "Tworzenie nowej sesji";
+                modalTitle = this.props.intl.formatMessage(
+                    {
+                        id:"RepoPanel-addSession",
+                        description: 'naglowej o tworzenie nowej sesji', 
+                        defaultMessage: "Tworzenie nowej sesji",
+                    },
+                )
                 modalContent = this.modalContentAddSession();
                 break;
             default:
@@ -544,19 +598,37 @@ class repoPanel extends Component {
                                 onAddContainerToAlign = {(container) => this.addContainerToAlignList(container)}/>
         })
 
-        const trachIcon = <Tooltip title="Usuń zaznaczone kontenery">
+        const trachIcon = <Tooltip title={this.props.intl.formatMessage(
+                                                {
+                                                    id:"RepoPanel-tooTipRemoveContainers",
+                                                    description: 'tool tip usun zaznaczone kontenery', 
+                                                    defaultMessage: "Usuń zaznaczone kontenery",
+                                                },
+                                            )}>
                                         <a href="#" role="button" >
                                             <FontAwesomeIcon icon={faTrash} onClick={this.removeContainers}/> 
                                         </a>
                                     </Tooltip>
 
-        const removeSessionIcon = <Tooltip title="Usuń zaznaczone sesje">
+        const removeSessionIcon = <Tooltip title={this.props.intl.formatMessage(
+                                                        {
+                                                            id:"RepoPanel-tooTipRemoveSessions",
+                                                            description: 'tool tip usun zaznaczone sesje', 
+                                                            defaultMessage: "Usuń zaznaczone sesje",
+                                                        },
+                                                    )}>
                                     <a href="#" role="button" >
                                         <FontAwesomeIcon icon={faFolderMinus} onClick={this.removeSessions}/> 
                                     </a>
                                  </Tooltip>
         
-        const moveContainersToSession = <Tooltip title="Przesuń zaznaczone kontenery do innej sesji">
+        const moveContainersToSession = <Tooltip title={this.props.intl.formatMessage(
+                                                    {
+                                                        id:"RepoPanel-tooTipMoveContainerToSession",
+                                                        description: 'tool tip przesuwajacy kontenery do innej sesji', 
+                                                        defaultMessage: "Przesuń zaznaczone kontenery do innej sesji",
+                                                    },
+                                                )}>
                                             <a href="#" role="button" >
                                                 <FontAwesomeIcon icon={faAngleDoubleRight} onClick={this.moveContainers}/> 
                                             </a>
@@ -591,7 +663,11 @@ class repoPanel extends Component {
 				<div className="RepoPanel" id="RepoPanel" data-tut="repoPanel">
 					<div className="topPart">
 						<div className="repoTab" >
-							Repozytorium
+                                <FormattedMessage
+									id="RepoPanel-header"
+									description="Nagłówek" 
+									defaultMessage="Repozytorium" 
+								/>
 					    </div>
 					</div>
 
@@ -607,7 +683,13 @@ class repoPanel extends Component {
 
                         <div className="operatingIcons">
 
-                            <Tooltip title="Dodaj sesję">
+                            <Tooltip title={this.props.intl.formatMessage(
+                                                    {
+                                                        id:"RepoPanel-tooTipDodajSesje",
+                                                        description: 'tool tip dodajacy sesje', 
+                                                        defaultMessage: "Dodaj sesje",
+                                                    },
+                                                )}>
                                 <a href="#" role="button">
                                         <FontAwesomeIcon icon={faFolderPlus} onClick={this.addSession} /> 
                                 </a> 
@@ -634,7 +716,13 @@ class repoPanel extends Component {
 
                         <div className="exportToEmu" data-tut="edytorExportCorpus">
                             <ButtonLeftBar 
-                                    napis="Eksportuj korpus do EMU-SDMS"
+                                    napis={this.props.intl.formatMessage(
+                                        {
+                                            id:"RepoPanel-exportDoEMUSDMSBtn",
+                                            description: 'napisNaPrzycisku eksportujacym korpus', 
+                                            defaultMessage: "Eksportuj korpus do EMU-SDMS",
+                                        },
+                                    )}
                                     icon={null}
                                     customeStyle={{height:'50px'}}
                                     disabled={false}
@@ -685,4 +773,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(repoPanel));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(injectIntl(repoPanel)));

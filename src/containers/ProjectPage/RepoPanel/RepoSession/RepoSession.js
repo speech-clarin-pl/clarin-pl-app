@@ -16,6 +16,9 @@ import {ContextMenu, MenuItem, ContextMenuTrigger} from 'react-contextmenu';
 import EditableLabel from 'react-inline-editing';
 import * as repoActions from '../../../../store/actions/index';
 
+import {injectIntl, FormattedMessage} from 'react-intl';
+import ReactHtmlParser from "react-html-parser";
+
 class RepoSession extends Component {
 
     
@@ -179,10 +182,20 @@ class RepoSession extends Component {
 
                 <ContextMenu id={"ToolItemSESSIONId"+this.props.sessionId}>
                     <MenuItem disabled={false} data={{action: 'kopiujID'}} onClick={this.handleClick}>
-                         Kopiuj ID sesji: {this.props.sessionId}
+                                <FormattedMessage
+									id="RepoSession-kopijID"
+									description="context menu kopiuj id" 
+									defaultMessage="Kopiuj ID sesji" 
+								/>
+                         : {this.props.sessionId}
                     </MenuItem>
                     <MenuItem disabled={false} data={{action: 'usun'}} onClick={this.handleClick}>
-                         Usuń sesje wraz z zawartością
+                                <FormattedMessage
+									id="RepoSession-usunSesje"
+									description="context menu usun sesje" 
+									defaultMessage="Usuń sesje wraz z zawartością" 
+								/>
+                         
                     </MenuItem>
                 </ContextMenu>
 
@@ -211,7 +224,7 @@ const mapDispatchToProps = dispatch => {
 }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(RepoSession));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(injectIntl(RepoSession)));
 
 
 

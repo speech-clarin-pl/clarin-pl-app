@@ -19,7 +19,7 @@ import { faClock } from '@fortawesome/free-solid-svg-icons';
 import { Tooltip } from '@material-ui/core';
 
 import {withRouter } from 'react-router-dom';
-
+import {injectIntl, FormattedMessage} from 'react-intl';
 
 
 class FileContainer extends Component {
@@ -243,26 +243,50 @@ class FileContainer extends Component {
                                 }
                                
 
-                                <Tooltip title="Detekcja mowy (VAD)">
+                                <Tooltip title={this.props.intl.formatMessage(
+                                                    {
+                                                        id:"FileContainer-tooTipvad",
+                                                        description: 'tool tip VAD', 
+                                                        defaultMessage: "Detekcja mowy (VAD)",
+                                                    },
+                                                )}>
                                     <a role="button"  onClick={this.runVAD} >
                                         
                                         <FontAwesomeIcon icon={faSurprise} className={["repoIcon",VADerrorClass, this.props.container.ifVAD? "on": ""].join(" ")}/> 
                                     </a>
                                 </Tooltip>
 
-                                <Tooltip title="Diaryzacja (DIA)">
+                                <Tooltip title={this.props.intl.formatMessage(
+                                                    {
+                                                        id:"FileContainer-tooTipDIA",
+                                                        description: 'tool tip DIA', 
+                                                        defaultMessage: "Diaryzacja (DIA)",
+                                                    },
+                                                )}>
                                     <a role="button" onClick={this.runDIA} >
                                         <FontAwesomeIcon icon={faComment} className={["repoIcon",DIAerrorClass, this.props.container.ifDIA? "on": ""].join(" ")}/> 
                                     </a>
                                 </Tooltip>
 
-                                <Tooltip title="Rozpoznawanie mowy (REC)" data-tut={addODoTranskrypcji+""}>
+                                <Tooltip title={this.props.intl.formatMessage(
+                                                    {
+                                                        id:"FileContainer-tooTipREC",
+                                                        description: 'tool tip REC', 
+                                                        defaultMessage: "Rozpoznawanie mowy (REC)",
+                                                    },
+                                                )} data-tut={addODoTranskrypcji+""}>
                                     <a role="button" onClick={this.runRECO} >
                                         <FontAwesomeIcon icon={faFileAlt} className={["repoIcon",RECerrorClass, this.props.container.ifREC? "on": ""].join(" ")}/> 
                                     </a>
                                 </Tooltip>
 
-                                <Tooltip title="Segmentacja (SEG)">
+                                <Tooltip title={this.props.intl.formatMessage(
+                                                    {
+                                                        id:"FileContainer-tooTipSEG",
+                                                        description: 'tool tip SEG', 
+                                                        defaultMessage: "Segmentacja (SEG)",
+                                                    },
+                                                )}>
                                     <a role="button"  onClick={this.runALIGN}>
                                         <FontAwesomeIcon icon={faClock} className={["repoIcon",SEGerrorClass, this.props.container.ifSEG? "on": ""].join(" ")}/> 
                                     </a>
@@ -277,46 +301,104 @@ class FileContainer extends Component {
 
                 <ContextMenu id={"ToolItemREPOId"+this.props.container._id}>
                     <MenuItem disabled={false} data={{toolType: this.props.type, action: 'copyId'}} onClick={this.handleClick}>
-                         Kopiuj ID: {this.props.container._id}
+                                <FormattedMessage
+									id="FileContainer-contextKopijID"
+									description="context menu kopiuj id" 
+									defaultMessage="Kopiuj ID" 
+								/>: {this.props.container._id}
                     </MenuItem>
                     <MenuItem divider />
                     <MenuItem disabled={false} data={{toolType: this.props.type, action: 'usun'}} onClick={this.handleClick}>
-                         Usuń z repozytorium
+                                <FormattedMessage
+									id="FileContainer-contextUsunZRepo"
+									description="context menu usun z repo" 
+									defaultMessage="Usuń z repozytorium" 
+								/>
                     </MenuItem>
                     <MenuItem divider />
                     <MenuItem disabled={false} data={{toolType: this.props.type, action: 'audio'}} onClick={this.handleClick}>
-                         Pobierz plik audio WAV 16000Hz, 16bit
+                                <FormattedMessage
+									id="FileContainer-contextPobierzConverted"
+									description="context pobierz przekonwertowany" 
+									defaultMessage="Pobierz plik audio WAV 16000Hz, 16bit" 
+								/>
                     </MenuItem>
                     <MenuItem disabled={false} data={{toolType: this.props.type, action: 'oryginalAudio'}} onClick={this.handleClick}>
-                         Pobierz oryginalny plik audio
+                                <FormattedMessage
+                                        id="FileContainer-contextPobierzOryginalny"
+                                        description="context pobierz oryginalny" 
+                                        defaultMessage="Pobierz oryginalny plik audio" 
+                                />
                     </MenuItem>
                     <MenuItem divider />
                     <MenuItem disabled={this.props.container.ifVAD? false: true} data={{toolType: this.props.type, action: 'VADctm'}} onClick={this.handleClick}>
-                         Pobierz plik detekcji mowy w formacie CTM
+                                <FormattedMessage
+                                        id="FileContainer-contextPobierzVADwCTM"
+                                        description="context pobierz VAD w CTM" 
+                                        defaultMessage="Pobierz plik detekcji mowy w formacie CTM" 
+                                />
+                         
                     </MenuItem>
                     <MenuItem disabled={this.props.container.ifVAD? false: true} data={{toolType: this.props.type, action: 'VADtextGrid'}} onClick={this.handleClick}>
-                         Pobierz plik detekcji mowy w formacie TextGrid
+                                <FormattedMessage
+                                        id="FileContainer-contextPobierzVADwTextGrid"
+                                        description="context pobierz VAD w TextGrid" 
+                                        defaultMessage="Pobierz plik detekcji mowy w formacie TextGrid" 
+                                />
                     </MenuItem>
                     <MenuItem disabled={this.props.container.ifDIA? false: true} data={{toolType: this.props.type, action: 'DIActm'}} onClick={this.handleClick}>
-                         Pobierz plik diaryzacji w formacie CTM
+                                <FormattedMessage
+                                        id="FileContainer-contextPobierzDIAwCTM"
+                                        description="context pobierz DIA w CTM" 
+                                        defaultMessage="Pobierz plik diaryzacji w formacie CTM" 
+                                />
+                        
                     </MenuItem>
                     <MenuItem disabled={this.props.container.ifDIA? false: true} data={{toolType: this.props.type, action: 'DIAtextGrid'}} onClick={this.handleClick}>
-                         Pobierz plik diaryzacji mowy w formacie TextGrid
+                                <FormattedMessage
+                                        id="FileContainer-contextPobierzDIAwTextGrid"
+                                        description="context pobierz DIA w TextGrid" 
+                                        defaultMessage="Pobierz plik diaryzacji mowy w formacie TextGrid" 
+                                />
+                         
                     </MenuItem>
                     <MenuItem disabled={this.props.container.ifREC? false: true} data={{toolType: this.props.type, action: 'TXTTranscript'}} onClick={this.handleClick}>
-                         Pobierz transkrypcje w formacie txt
+                                <FormattedMessage
+                                        id="FileContainer-contextPobierzRECwTXT"
+                                        description="context pobierz REC w txt" 
+                                        defaultMessage="Pobierz transkrypcje w formacie txt" 
+                                />
+                         
                     </MenuItem>
                     <MenuItem disabled={this.props.container.ifREC? false: true} data={{toolType: this.props.type, action: 'JSONTranscript'}} onClick={this.handleClick}>
-                          Pobierz transkrypcje w formacie json
+                                <FormattedMessage
+                                        id="FileContainer-contextPobierzRECwJSON"
+                                        description="context pobierz REC w JSON" 
+                                        defaultMessage="Pobierz transkrypcje w formacie json" 
+                                />
                     </MenuItem>
                     <MenuItem disabled={this.props.container.ifSEG? false: true} data={{toolType: this.props.type, action: 'SEGctm'}} onClick={this.handleClick}>
-                         Pobierz segmentacje w formacie ctm
+                                <FormattedMessage
+                                        id="FileContainer-contextPobierzSEGwCTM"
+                                        description="context pobierz SEG w CTM" 
+                                        defaultMessage="Pobierz segmentacje w formacie ctm" 
+                                />
+                         
                     </MenuItem>
                     <MenuItem disabled={this.props.container.ifSEG? false: true} data={{toolType: this.props.type, action: 'SEGtextGrid'}} onClick={this.handleClick}>
-                         Pobierz segmentacje w formacie TextGrid
+                                <FormattedMessage
+                                        id="FileContainer-contextPobierzSEGwTextGrid"
+                                        description="context pobierz SEG w TextGrid" 
+                                        defaultMessage=" Pobierz segmentacje w formacie TextGrid" 
+                                />
                     </MenuItem>
                     <MenuItem disabled={this.props.container.ifSEG? false: true} data={{toolType: this.props.type, action: 'EMUJSON'}} onClick={this.handleClick}>
-                        Pobierz segmentacje w formacie json
+                            <FormattedMessage
+                                        id="FileContainer-contextPobierzSEGwTextjson"
+                                        description="context pobierz SEG w json" 
+                                        defaultMessage="Pobierz segmentacje w formacie json" 
+                                />
+                        
                     </MenuItem>
                 </ContextMenu>
 
@@ -328,4 +410,4 @@ class FileContainer extends Component {
     }
 }
 
-export default withRouter(FileContainer);
+export default withRouter(injectIntl(FileContainer));

@@ -23,6 +23,7 @@ import { faClock } from '@fortawesome/free-solid-svg-icons';
 import { RingLoader } from "react-spinners";
 import { css } from "@emotion/core";
 import Modal from '../../../components/UI/Modal/Modal';
+import {injectIntl, FormattedMessage} from 'react-intl';
 
 
 const override = css`
@@ -48,36 +49,8 @@ class ToolItem extends Component {
 
     runProcess = (e) => {
         e.preventDefault();
-
-        //this.props.setToolItemStatus(this.props.container._id, this.props.type, 'progress');
-        //this.setState({innerStatus: 'progress'});
-
-        //this.props.setContainerStatus(this.props.container._id, this.props.type, 'progress');
-
         this.closeModalHandler();
-
         this.props.runTool(this.props.container, this.props.type, this.props.token)
-
-        /*
-        switch(this.props.type){
-            case "DIA":
-                //this.props.runSpeechDiarization(this.props.container._id, this.props.type, this.props.token); 
-                break;
-            case "VAD":
-                //this.props.runSpeechVoiceActivityDetection(this.props.container._id, this.props.type, this.props.token); 
-                this.props.runTool(this.props.container, this.props.type, this.props.token)
-                break;
-            case "REC":
-                this.props.runSpeechRecognition(this.props.container._id, this.props.type, this.props.token); 
-                break;
-            case "SEG":
-                this.props.runSpeechSegmentation(this.props.container._id, this.props.type, this.props.token); 
-                break;
-            default:
-                console.log("Default"); //to do
-        }
-        */
-
 
        
     }
@@ -89,10 +62,8 @@ class ToolItem extends Component {
 
         let linkToDownload = process.env.REACT_APP_API_URL+ "/repoFiles/download/"+containerId+"/"+fileType+"/?api_key="+this.props.token;
       
-
         window.open(linkToDownload,"_self");
 
-       
     }
 
 
@@ -226,7 +197,13 @@ class ToolItem extends Component {
         let statusIcon = null;
         let progressBar = null;
         let runProcessIcon = (
-            <Tooltip title={"Uruchom " + this.props.type}>
+            <Tooltip title={this.props.intl.formatMessage(
+                {
+                    id:"ToolItem-uruchom",
+                    description: 'Uruchom narzedzie...', 
+                    defaultMessage: 'Uruchom ',
+                },
+            ) + this.props.type}>
                 <button onClick={this.runProcess}>
                     <FontAwesomeIcon icon={iconType} className="faIcon uruchomProcess"/>
                 </button>
@@ -277,19 +254,39 @@ class ToolItem extends Component {
                 modalTitle = 'Czy na pewno chcesz ponownie uruchomić usługę automatyczną?';
                 modalContent = (
                     <div>
-                        <p>Wszystkie Twoje ręczne korekty zostaną nadpisane</p>
-                        <button type="button" className="btn btn-primary" onClick={this.runProcess}>TAK</button>
-                        <button type="button" className="btn btn-outline-primary" onClick={this.closeModalHandler}>NIE</button>
+                        <p>
+                                <FormattedMessage
+									id="ToolItem-nadpisanieZmian"
+									description="modal informacja" 
+									defaultMessage="Wszystkie Twoje ręczne korekty zostaną nadpisane" 
+								/>
+                        </p>
+                        <button type="button" className="btn btn-primary" onClick={this.runProcess}>
+                            <FormattedMessage
+									id="ToolItem-nadpisanieZmianTak"
+									description="modal informacja tak" 
+									defaultMessage="Tak" 
+							/>
+                        </button>
+                        <button type="button" className="btn btn-outline-primary" onClick={this.closeModalHandler}>
+                            <FormattedMessage
+									id="ToolItem-nadpisanieZmianNie"
+									description="modal informacja nie" 
+									defaultMessage="Anuluj" 
+							/>
+                        </button>
                     </div>
 
                     );
 
-                
-
-                
-
                 runProcessIcon = (
-                    <Tooltip title={"Uruchom " + this.props.type}>
+                    <Tooltip title={this.props.intl.formatMessage(
+                        {
+                            id:"ToolItem-uruchomv2",
+                            description: 'Uruchom narzedzie...', 
+                            defaultMessage: 'Uruchom ',
+                        },
+                    ) + this.props.type}>
                         <button onClick={this.runProcessAgain}>
                               <FontAwesomeIcon icon={iconType} className="faIcon" style={{opacity: 1, color: '#1cce44'}}/>
                         </button>
@@ -357,46 +354,109 @@ class ToolItem extends Component {
 
                 <ContextMenu id={"ToolItemId"+this.props.container._id}>
                     <MenuItem disabled={false} data={{toolType: this.props.type, action: 'copyId'}} onClick={this.handleClick}>
-                         Kopiuj ID: {this.props.container._id}
+                            <FormattedMessage
+                                id="ToolItem-contextKopijID"
+                                description="context menu kopiuj id" 
+                                defaultMessage="Kopiuj ID" 
+                            />: {this.props.container._id}
                     </MenuItem>
                     <MenuItem divider />
                     <MenuItem disabled={false} data={{toolType: this.props.type, action: 'usun'}} onClick={this.handleClick}>
-                         Usuń element z listy
+                            <FormattedMessage
+                                id="ToolItem-contextUsunZListy"
+                                description="context usun z listy" 
+                                defaultMessage="Usuń element z listy" 
+                            />
                     </MenuItem>
                     <MenuItem divider />
                     <MenuItem disabled={false} data={{toolType: this.props.type, action: 'audio'}} onClick={this.handleClick}>
-                         Pobierz plik audio WAV 16000Hz, 16bit
+                            <FormattedMessage
+                                id="ToolItem-contextPobierzPrzekonwertowany"
+                                description="context pobierz przekonwertowany" 
+                                defaultMessage=" Pobierz plik audio WAV 16000Hz, 16bit" 
+                            />
+                        
                     </MenuItem>
                     <MenuItem disabled={false} data={{toolType: this.props.type, action: 'oryginalAudio'}} onClick={this.handleClick}>
-                         Pobierz oryginalny plik audio
+                            <FormattedMessage
+                                id="ToolItem-contextPobierzOryginalny"
+                                description="context pobierz oryginalny" 
+                                defaultMessage=" Pobierz oryginalny plik audio" 
+                            />
+                        
                     </MenuItem>
                     <MenuItem divider />
                     <MenuItem disabled={this.props.container.ifVAD? false: true} data={{toolType: this.props.type, action: 'VADctm'}} onClick={this.handleClick}>
-                         Pobierz plik detekcji mowy w formacie CTM
+                            <FormattedMessage
+                                id="ToolItem-contextPobierzVADwCTM"
+                                description="context pobierz VADwCTM" 
+                                defaultMessage="Pobierz plik detekcji mowy w formacie CTM" 
+                            />
+                         
                     </MenuItem>
                     <MenuItem disabled={this.props.container.ifVAD? false: true} data={{toolType: this.props.type, action: 'VADtextGrid'}} onClick={this.handleClick}>
-                         Pobierz plik detekcji mowy w formacie TextGrid
+                            <FormattedMessage
+                                id="ToolItem-contextPobierzVADwTextGrid"
+                                description="context pobierz VADwTextGrid" 
+                                defaultMessage="Pobierz plik detekcji mowy w formacie TextGrid" 
+                            />
+                         
                     </MenuItem>
                     <MenuItem disabled={this.props.container.ifDIA? false: true} data={{toolType: this.props.type, action: 'DIActm'}} onClick={this.handleClick}>
-                         Pobierz plik diaryzacji w formacie CTM
+                            <FormattedMessage
+                                id="ToolItem-contextPobierzDIAwCTM"
+                                description="context pobierz DIA w CTM" 
+                                defaultMessage=" Pobierz plik diaryzacji w formacie CTM" 
+                            />
+                        
                     </MenuItem>
                     <MenuItem disabled={this.props.container.ifDIA? false: true} data={{toolType: this.props.type, action: 'DIAtextGrid'}} onClick={this.handleClick}>
-                         Pobierz plik diaryzacji mowy w formacie TextGrid
+                            <FormattedMessage
+                                id="ToolItem-contextPobierzDIAwTextGrid"
+                                description="context pobierz DIA w TextGrid" 
+                                defaultMessage="Pobierz plik diaryzacji mowy w formacie TextGrid" 
+                            />
+                         
                     </MenuItem>
                     <MenuItem disabled={this.props.container.ifREC? false: true} data={{toolType: this.props.type, action: 'TXTTranscript'}} onClick={this.handleClick}>
-                         Pobierz transkrypcje w formacie txt
+                            <FormattedMessage
+                                id="ToolItem-contextPobierzRECwTXT"
+                                description="context pobierz REC w text" 
+                                defaultMessage="Pobierz transkrypcje w formacie txt" 
+                            />
+                         
                     </MenuItem>
                     <MenuItem disabled={this.props.container.ifREC? false: true} data={{toolType: this.props.type, action: 'JSONTranscript'}} onClick={this.handleClick}>
-                          Pobierz transkrypcje w formacie json
+                            <FormattedMessage
+                                id="ToolItem-contextPobierzRECwJson"
+                                description="context pobierz REC w json" 
+                                defaultMessage=" Pobierz transkrypcje w formacie json" 
+                            />
+                         
                     </MenuItem>
                     <MenuItem disabled={this.props.container.ifSEG? false: true} data={{toolType: this.props.type, action: 'SEGctm'}} onClick={this.handleClick}>
-                         Pobierz segmentacje w formacie ctm
+                            <FormattedMessage
+                                id="ToolItem-contextPobierzSEGwCTM"
+                                description="context pobierz SEGwCTM" 
+                                defaultMessage="Pobierz segmentacje w formacie ctm" 
+                            />
+                         
                     </MenuItem>
                     <MenuItem disabled={this.props.container.ifSEG? false: true} data={{toolType: this.props.type, action: 'SEGtextGrid'}} onClick={this.handleClick}>
-                         Pobierz segmentacje w formacie TextGrid
+                            <FormattedMessage
+                                id="ToolItem-contextPobierzSEGwTextGrid"
+                                description="context pobierz SEGwTextGrid" 
+                                defaultMessage=" Pobierz segmentacje w formacie TextGrid" 
+                            />
+                        
                     </MenuItem>
                     <MenuItem disabled={this.props.container.ifSEG? false: true} data={{toolType: this.props.type, action: 'EMUJSON'}} onClick={this.handleClick}>
-                        Pobierz segmentacje w formacie json
+                            <FormattedMessage
+                                id="ToolItem-contextPobierzSEGwjson"
+                                description="context pobierz SEGwTextjson" 
+                                defaultMessage="Pobierz segmentacje w formacie json" 
+                            />
+                        
                     </MenuItem>
                 </ContextMenu>
 
@@ -428,4 +488,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ToolItem));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(injectIntl(ToolItem)));

@@ -11,6 +11,8 @@ import { faClock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ToolItem from '../ToolItem/ToolItem';
 import AudioEditor from '../AudioEditor/AudioEditor';
+import {injectIntl, FormattedMessage} from 'react-intl';
+import ReactHtmlParser from "react-html-parser";
 
 class SegmentTool extends Component {
 
@@ -116,18 +118,27 @@ class SegmentTool extends Component {
 
 				<LeftSiteBar
 					czyTopPart="true"
-					desc={(<div>
-                        <div>Przydatne skróty klawiaturowe: </div>
-                        <div> <b>[Alt+l]</b> - play/pausa </div>
-                        <div> <b>[Alt+k]</b> - powtórz 3 sek.</div>
-                        <div> <b>[Alt+j]</b> - powtórz 5 sek.</div>
-                        <div> <b>[Alt+i]</b> - przyśpiesz.</div>
-                        <div> <b>[Alt+o]</b> - zwolnij.</div>
-                        <div> <b>[Alt+n]</b> - załaduj kolejny plik.</div>
-                        </div>)
-                    } >
+					desc={
+						
+						ReactHtmlParser(
+							this.props.intl.formatMessage(
+								{
+									id:"SegmentTool-toolDesc",
+									description: 'Segmentacja opis ', 
+									defaultMessage: 'Segmentacja dopasowywuje fragmenty nagrania do tekstu na poziomie wyrazów',
+								},
+							)
+						)
+                    }
+					 >
 						 <ButtonLeftBar 
-							napis="Uruchom segmentacje dla wszystkich"
+							napis={this.props.intl.formatMessage(
+								{
+									id:"SegmentTool-runForAllBtn",
+									description: 'Segmentacja uruchomienie dla wszystkich ', 
+									defaultMessage: "Uruchom segmentacje dla wszystkich",
+								},
+							)}
 							icon={alignIcon}
 							customeStyle={null}
 							disabled={false}
@@ -141,8 +152,21 @@ class SegmentTool extends Component {
 					<div className={["container-fluid", "SegmentTool"].join(' ')}>
 						<div className="tool-desc">
 
-							<h2>Segmentacja plików audio</h2>
-							<p>Dopasowanie czasowe tekstu do nagrania. Podział nagrania na segmenty (wyrazy i fonemy).</p>
+							<h2>
+								<FormattedMessage
+									id="SegmentTool-header"
+									description="Nagłówek narzedzia" 
+									defaultMessage="Segmentacja" 
+								/>
+								</h2>
+							<p>
+								<FormattedMessage
+									id="SegmentTool-opisNarzedzia"
+									description="opis narzedzia" 
+									defaultMessage="Dopasowanie czasowe tekstu do nagrania. Podział nagrania na segmenty (wyrazy i fonemy)." 
+								/>
+								
+							</p>
 						
 						</div>
 
@@ -154,7 +178,12 @@ class SegmentTool extends Component {
 									    {
                                             filelist.length == 0?
                                             <div className="alert alert-primary" role="alert">
-                                                Dodaj pliki z repozytorium do listy segmentacji
+												<FormattedMessage
+													id="SegmentTool-dodajPliki"
+													description="dodaj pliki do segmentacji" 
+													defaultMessage="Dodaj pliki z repozytorium do listy segmentacji." 
+												/>
+                                                
                                             </div>
                                             :filelist
                                         }
@@ -210,4 +239,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(SegmentTool);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(SegmentTool));
