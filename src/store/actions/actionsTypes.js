@@ -107,7 +107,9 @@ export const REMOVE_SEGMENTATION_ITEM = 'REMOVE_RECOGNITION_ITEM';
 export const START_G2P = 'START_G2P';
 
 //KWS
-export const START_KWS = 'START_KWS';
+export const KWS_DONE_SUCCESS = 'KWS_DONE_SUCCESS';
+export const KWS_INIT = 'KWS_INIT';
+export const KWS_ERROR = 'KWS_ERROR';
 
 
 // repo

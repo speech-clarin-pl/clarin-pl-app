@@ -182,6 +182,44 @@ export const runSpeechSegmentation = (container, token) => {
 
 
 // ############################################################
+// ############## Wykonuje KWS #################
+// ###########################################################
+
+export const runKWS = (containerId, setOfWords,token) => {
+    
+    return dispatch => {
+
+        dispatch({
+            type: actionTypes.KWS_INIT,
+        });
+
+        axios.put(('/repoFiles/runKWS/'+containerId), 
+        {
+            keywords: setOfWords,
+        }, 
+        {
+            headers: {
+                Authorization: 'Bearer ' + token
+            },
+        })
+        .then(response => {
+            dispatch({
+                type: actionTypes.KWS_DONE_SUCCESS,
+                containerId: response.data.containerId,
+                kwsResults: response.data.kwsResults,
+            });
+        })
+        .catch(error => {
+            dispatch({
+                type: actionTypes.KWS_ERROR,
+            });
+            console.log("Coś poszło nie tak z KWS")
+        }); 
+
+    }
+}
+
+// ############################################################
 // ############## Ukończenie wykonywania speech recognition #################
 // ###########################################################
 

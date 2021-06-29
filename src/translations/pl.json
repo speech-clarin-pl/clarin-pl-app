@@ -57,6 +57,8 @@
   "KWSTool-buttonmsg": "Uruchom detekcję słów kluczowych",
   "KWSTool-step1":  "Wpisz słowa kluczowe jeden po drugim, każdy w nowej linii po znaku enter.",
   "KWSTool-step2":"Wklej identyfikator wybranego kontenera z repozytorium",
+  "KWSTool-wklejIdKonteneraKWS": "Tutaj wklej ID kontenera",
+  "KWSTool-proszeczekac": "Proszę czekać...",
   "LoginAreaForgotPassHeader": "Zresetowanie hasła",
   "LoginAreaForgotPassSendBtn":  "Wyślij email z linkiem do zresetowania hasła",
   "LoginAreaGoToProjectList": "Przejdź do listy swoich projektów",

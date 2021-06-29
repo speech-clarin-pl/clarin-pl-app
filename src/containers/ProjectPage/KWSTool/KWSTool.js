@@ -12,19 +12,51 @@ class KWSTool extends Component {
 	constructor(){
         super();
         this.state = {
-           
+           containerId: null,
+           keywords:null
         }
     }
 
-
-
     makeKWS = (event) => {
         event.preventDefault();
-        this.props.onStartKWS("jakisKontainerID", ["SłowoKluczowe1", "SłowoKluczowe2"])
+        this.props.onStartKWS(this.state.containerId, this.state.keywords,this.props.token);
+    }
+
+    kwsContainerIDChange = (event) => {
+        this.setState({containerId: event.target.value});
     }
 	
+    kwsKeywordsChanged = (event) => {
+        this.setState({keywords: event.target.value});
+    }
 
 	render() {
+
+        let outputfield = "Here the output will show up";
+        if(this.props.kwsInProgress){
+            outputfield = this.props.intl.formatMessage(
+                {
+                    id:"KWSTool-proszeczekac",
+                    description: 'informacja ze prosze czekac', 
+                    defaultMessage: "Proszę czekać ...", 
+                }
+            )
+        } else {
+            if(this.props.ifKwsError){
+                outputfield = "Error occurs";
+            } else {
+                outputfield = <textarea 
+                                id="g2p" 
+                                name="g2pinput" 
+                                rows="10" 
+                                style={{width: '100%'}} 
+                                placeholder="Here the output will show up"
+                                value={this.props.kwsResults}
+                                >
+                            </textarea>
+            }
+        }
+
 
 		return (
 			<Aux>
@@ -45,14 +77,21 @@ class KWSTool extends Component {
                 </div>
                 <div className="row">
                     <div className="col-md-6">
-                        <textarea id="g2p" name="g2pinput" rows="10" style={{width: '100%'}} placeholder="Słowa kluczowe" >
+                        <textarea 
+                            id="g2p" 
+                            name="g2pinput" 
+                            rows="10" 
+                            style={{width: '100%'}} 
+                            placeholder="Słowa kluczowe" 
+                            onChange={this.kwsKeywordsChanged}
+                            value={this.state.keywords}>
                     
                         </textarea>
                     </div>
                     <div className="col-md-6">
-                        <textarea id="g2p" name="g2pinput" rows="10" style={{width: '100%'}} placeholder="Here the output will show up">
-                        
-                        </textarea>
+                        {
+                            outputfield
+                        }
                     </div>
                 </div>
                 <div className="row">
@@ -64,9 +103,19 @@ class KWSTool extends Component {
                                     description="Instrukcja Wklej identyfikator wybranego kontenera z repozytorium" 
                                     defaultMessage="Wklej identyfikator wybranego kontenera z repozytorium" 
                                 />
+
+                                <input id="kwsContainerId" type="text" value={this.state.containerId} style={{width: '100%'}} placeholder={
+                                    this.props.intl.formatMessage(
+                                        {
+                                            id:"KWSTool-wklejIdKonteneraKWS",
+                                            description: 'placeholder do id kontenera', 
+                                            defaultMessage: "Wklej tutaj id kontenera", 
+                                        }
+                                    )
+                                } onChange={this.kwsContainerIDChange}/>
                             </p>
  
-                            <button type="button" className="btn btn-primary btn-block op-btn" onClick={this.makeKWS}>
+                            <button type="button" className="btn btn-primary btn-block op-btn" disabled={(!this.state.keywords) || this.props.kwsInProgress} onClick={this.makeKWS}>
                                 <FormattedMessage
                                     id="KWSTool-buttonmsg"
                                     description="Napis na przycisku kws" 
@@ -77,8 +126,6 @@ class KWSTool extends Component {
                         
                     </div>
                 </div>
-
-                
 			</Aux>
 		);
 	}
@@ -87,12 +134,15 @@ class KWSTool extends Component {
 const mapStateToProps = state => {
 	return {
 		token: state.homeR.token,
+        kwsResults: state.KWSR.kwsResults,
+        kwsInProgress: state.KWSR.kwsInProgress,
+        ifKwsError: state.KWSR.iferror,
 	}
 }
 
 const mapDispatchToProps = dispatch => {
 	return {
-          onStartKWS: (containerId, setOfWords) => dispatch(KWSActions.startKWS(containerId, setOfWords)),
+          onStartKWS: (containerId, setOfWords, token) => dispatch(KWSActions.runKWS(containerId, setOfWords, token)),
 		//onOpenModalHandler: () => dispatch(segmentActions.openModalProject()),
        // onCloseModalHandler: () => dispatch(segmentActions.closeModalProject()),
 	}

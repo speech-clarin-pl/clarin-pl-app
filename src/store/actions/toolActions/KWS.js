@@ -6,6 +6,7 @@ import axios from 'axios';
 // ######## rozpczyna G2P ##########
 // ###################################################################
 
+/*
 export const startKWS = (containerId, setOfWords) => {
     return dispatch => {
 
@@ -16,7 +17,7 @@ export const startKWS = (containerId, setOfWords) => {
         })
         .then(response => {
             dispatch({
-                type: actionTypes.START_KWS,
+                type: actionTypes.KWS_DONE_SUCCESS,
                 containerId: response.containerId,
                 kwsResults: response.kwsResults,
             });
@@ -27,3 +28,4 @@ export const startKWS = (containerId, setOfWords) => {
       
     }
 }
+*/

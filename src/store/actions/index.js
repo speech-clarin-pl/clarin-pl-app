@@ -20,6 +20,7 @@ export {
     runSpeechRecognition,
     runSpeechSegmentation,
     runSpeechDiarization,
+    runKWS,
     runSpeechVoiceActivityDetection,
     setContainerStatus,
     exportToEMU,
@@ -48,9 +49,9 @@ export {
     startG2P,
 } from './toolActions/G2P'
 
-export {
-    startKWS,
-} from './toolActions/KWS'
+//export {
+//    startKWS,
+//} from './toolActions/KWS'
 
 export {
     projectChoice,
