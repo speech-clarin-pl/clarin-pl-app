@@ -5,9 +5,13 @@ import axios from 'axios';
 // ###################################################################
 // ######## rozpczyna G2P ##########
 // ###################################################################
-
+/*
 export const startG2P = (alphabet, setOfWords) => {
     return dispatch => {
+
+        dispatch({
+            type: actionTypes.G2P_INIT,
+        });
 
         axios.put(('/G2P/makeG2P'), 
         {
@@ -16,14 +20,17 @@ export const startG2P = (alphabet, setOfWords) => {
         })
         .then(response => {
             dispatch({
-                type: actionTypes.START_G2P,
+                type: actionTypes.G2P_DONE_SUCCESS,
                 alphabet: response.alphabet,
                 transcribedWords: response.transcribedWords,
             });
         })
         .catch(error => {
-            console.log("Coś poszło nie tak")
+            dispatch({
+                type: actionTypes.G2P_ERROR,
+            });
         }); 
       
     }
 }
+*/

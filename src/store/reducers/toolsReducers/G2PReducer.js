@@ -7,28 +7,50 @@ import produce from "immer";
 
 
 const initialState = {
-    setOfWords: [],
-    transcribedWords: [],
+    g2pResults: null,
+    g2pInProgress: false,
+    ifError: false,
 }
 
 
-const startG2P = (state, action)=>{
+const G2PSuccess = (state, action)=>{
 
-    const transcribedWords = action.transcribedWords;
-
+    const g2pResults = action.g2pResults;
     const nextState = produce(state, draftState => {
-        draftState.transcribedWords = transcribedWords;
+        draftState.g2pResults = g2pResults;
+        draftState.g2pInProgress = false;
+        draftState.ifError = false;
      })
 
    return nextState;
+}
 
+const G2PInit = (state, action)=>{
+    const nextState = produce(state, draftState => {
+        draftState.g2pResults = null;
+        draftState.g2pInProgress = true;
+        draftState.ifError = false;
+     })
+
+   return nextState;
+}
+
+const G2PError = (state, action)=>{
+    const nextState = produce(state, draftState => {
+        draftState.g2pResults = null;
+        draftState.g2pInProgress = false;
+        draftState.ifError = true;
+     })
+   return nextState;
 }
 
 
 const diaReducer = (state = initialState, action) => {
     switch(action.type){
 
-        case actionTypes.START_G2P: return startG2P(state,action);
+        case actionTypes.G2P_DONE_SUCCESS: return G2PSuccess(state,action);
+        case actionTypes.G2P_INIT: return G2PInit(state,action);
+        case actionTypes.G2P_ERROR: return G2PError(state,action);
         default: return state;
     }
 

@@ -180,6 +180,41 @@ export const runSpeechSegmentation = (container, token) => {
     }
 }
 
+// ############################################################
+// ############## Wykonuje G2P #################
+// ###########################################################
+export const runG2P = (alphabet, setOfWords,token) => {
+    return dispatch => {
+
+        dispatch({
+            type: actionTypes.G2P_INIT,
+        });
+
+        axios.put(('/repoFiles/runG2P'), 
+        {
+            words: setOfWords,
+            alphabet: alphabet
+        },
+        {
+            headers: {
+                Authorization: 'Bearer ' + token
+            },
+        })
+        .then(response => {
+            dispatch({
+                type: actionTypes.G2P_DONE_SUCCESS,
+                alphabet: response.body.alphabet,
+                g2pResults: response.body.g2pResults,
+            });
+        })
+        .catch(error => {
+            dispatch({
+                type: actionTypes.G2P_ERROR,
+            });
+        }); 
+      
+    }
+}
 
 // ############################################################
 // ############## Wykonuje KWS #################

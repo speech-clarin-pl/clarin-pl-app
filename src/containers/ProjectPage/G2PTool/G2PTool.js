@@ -12,6 +12,7 @@ class G2PTool extends Component {
         super();
         this.state = {
             radioSelection: 'alpha',
+            words: null,
         }
     }
 
@@ -23,11 +24,48 @@ class G2PTool extends Component {
 
     makeTranscript = (event) => {
         event.preventDefault();
-        this.props.onTranscribe(this.state.radioSelection, ["do przetranskrybowania jeden", "do przetranskrybowania dwa"])
+        this.props.onTranscribe(this.state.radioSelection, this.state.words, this.props.token)
+    }
+
+    inputChangedHandler = (event) => {
+        this.setState({words: event.target.value})
     }
 	
 
 	render() {
+
+
+        let outputfield = this.props.intl.formatMessage(
+            {
+                id:"G2PTool-tutajRezultaty",
+                description: 'informacja ze tutaj rezultaty', 
+                defaultMessage: "Tutaj pokażą się rezultaty", 
+            }
+        );;
+        
+        if(this.props.g2pInProgress){
+            outputfield = this.props.intl.formatMessage(
+                {
+                    id:"G2PTool-proszeczekac",
+                    description: 'informacja ze prosze czekac', 
+                    defaultMessage: "Proszę czekać ...", 
+                }
+            )
+        } else {
+            if(this.props.ifg2pError){
+                outputfield = "Error";
+            } else {
+                if(this.props.g2pResults){
+                    outputfield = <textarea id="g2p" 
+                                        value={this.props.g2pResults} 
+                                        name="g2pinput" 
+                                        rows="10" 
+                                        style={{width: '100%'}} 
+                                        placeholder="Here the output will show up"></textarea>;
+                }
+            }
+        }
+
 
 		return (
 			<Aux>
@@ -47,7 +85,11 @@ class G2PTool extends Component {
                 </div>
                 <div className="row">
                     <div className="col-md-6">
-                        <textarea id="g2p" name="g2pinput" rows="10" style={{width: '100%'}} placeholder={
+                        <textarea id="g2p" 
+                            name="g2pinput" 
+                            rows="10" 
+                            style={{width: '100%'}} 
+                            placeholder={
                              this.props.intl.formatMessage(
                                 {
                                   id:"G2PTool-inputWords",
@@ -55,14 +97,16 @@ class G2PTool extends Component {
                                   defaultMessage: 'Słowa wejściowe oddzielone enterem', 
                                 }
                               )
-                        } >
+                            }
+                            onChange={this.inputChangedHandler} 
+                            value={this.state.words}>
                     
                         </textarea>
                     </div>
                     <div className="col-md-6">
-                        <textarea id="g2p" name="g2pinput" rows="10" style={{width: '100%'}} placeholder="Here the output will show up">
-                        
-                        </textarea>
+                        {
+                            outputfield
+                        }
                     </div>
                 </div>
 
@@ -88,12 +132,15 @@ class G2PTool extends Component {
                                     <label for="ipa">IPA</label>
                                 </span>
                             </div>
-                            <button type="button" className="btn btn-primary btn-block op-btn" onClick={this.makeTranscript}>
-                                <FormattedMessage
-                                    id="G2PTool-transkrybujBtn"
-                                    description="Transkrybuj btn" 
-                                    defaultMessage="Transkrybuj" 
-                                />
+                            <button type="button" 
+                                className="btn btn-primary btn-block op-btn" 
+                                onClick={this.makeTranscript}
+                                disabled={!this.state.words}>
+                                    <FormattedMessage
+                                        id="G2PTool-transkrybujBtn"
+                                        description="Transkrybuj btn" 
+                                        defaultMessage="Transkrybuj" 
+                                    />
                             </button>
                         </div>
                         
@@ -109,12 +156,15 @@ class G2PTool extends Component {
 const mapStateToProps = state => {
 	return {
 		token: state.homeR.token,
+        g2pInProgress: state.G2PR.g2pInProgress,
+        ifg2pError: state.G2PR.ifError,
+        g2pResults: state.G2PR.g2pResults,
 	}
 }
 
 const mapDispatchToProps = dispatch => {
 	return {
-          onTranscribe: (alphabet, setOfWords) => dispatch(G2PActions.startG2P(alphabet, setOfWords)),
+          onTranscribe: (alphabet, setOfWords,token) => dispatch(G2PActions.runG2P(alphabet, setOfWords,token)),
 		//onOpenModalHandler: () => dispatch(segmentActions.openModalProject()),
        // onCloseModalHandler: () => dispatch(segmentActions.closeModalProject()),
 	}

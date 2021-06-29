@@ -32,7 +32,13 @@ class KWSTool extends Component {
 
 	render() {
 
-        let outputfield = "Here the output will show up";
+        let outputfield = this.props.intl.formatMessage(
+            {
+                id:"KWSTool-tutajRezultaty",
+                description: 'informacja ze tutaj rezultaty', 
+                defaultMessage: "Tutaj pokażą się rezultaty", 
+            }
+        );
         if(this.props.kwsInProgress){
             outputfield = this.props.intl.formatMessage(
                 {
@@ -43,17 +49,19 @@ class KWSTool extends Component {
             )
         } else {
             if(this.props.ifKwsError){
-                outputfield = "Error occurs";
+                outputfield = "Error";
             } else {
-                outputfield = <textarea 
-                                id="g2p" 
-                                name="g2pinput" 
-                                rows="10" 
-                                style={{width: '100%'}} 
-                                placeholder="Here the output will show up"
-                                value={this.props.kwsResults}
-                                >
-                            </textarea>
+                if(this.props.kwsResults){
+                    outputfield = <textarea 
+                                    id="g2p" 
+                                    name="g2pinput" 
+                                    rows="10" 
+                                    style={{width: '100%'}} 
+                                    placeholder="Here the output will show up"
+                                    value={this.props.kwsResults}
+                                    >
+                                    </textarea>
+                }
             }
         }
 

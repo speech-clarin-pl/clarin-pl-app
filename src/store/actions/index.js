@@ -21,6 +21,7 @@ export {
     runSpeechSegmentation,
     runSpeechDiarization,
     runKWS,
+    runG2P,
     runSpeechVoiceActivityDetection,
     setContainerStatus,
     exportToEMU,
@@ -45,9 +46,11 @@ export {
     openContainerInEMU,
 } from './toolActions/audioEditor';
 
+/*
 export {
     startG2P,
 } from './toolActions/G2P'
+*/
 
 //export {
 //    startKWS,
