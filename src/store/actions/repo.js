@@ -655,11 +655,12 @@ export const selectContainer = (containerId,ifCtrl) => {
 //############## get user project files ######################
 //####################################################
 
-export const getProjectFilesForUserAction = (userId, sessions, containers) => {
+export const getProjectFilesForUserAction = (userId, sessions, containers, corpusCreatedAt) => {
     return {
         type: actionTypes.REPO_GET_USER_PROJECT_FILES,
         sessions: sessions,
         containers: containers,
+        corpusCreatedAt: corpusCreatedAt,
     }
 }
 
@@ -680,7 +681,7 @@ export const getProjectFilesForUser = (userId, projectId, token) => {
             },
         })
             .then(response => {
-                dispatch(getProjectFilesForUserAction(userId, response.data.sessions, response.data.containers));
+                dispatch(getProjectFilesForUserAction(userId, response.data.sessions, response.data.containers, response.data.corpusCreatedAt));
             })
             .catch(error => {
                 dispatch(getProjectFilesForUserActionFailed(error));
@@ -701,10 +702,11 @@ export const exportToEMUFailed = (message) => {
     }
 }
 
-export const exportToEMUSuccess = (message) => {
+export const exportToEMUSuccess = (message, corpusCreatedAt) => {
     return {
         type: actionTypes.EXPORT_TO_EMU_DONE_SUCCESS,
         message: message,
+        corpusCreatedAt: corpusCreatedAt,
     }
 }
 
@@ -722,7 +724,7 @@ export const exportToEMU = (projectId, userId, token) => {
             //jak jest gotowy to go ściągam
            // this.downloadCorpus(projectId, userId, token);
 
-            dispatch(exportToEMUSuccess(response.data.message));
+            dispatch(exportToEMUSuccess(response.data.message, response.data.corpusCreatedAt));
         })
         .catch(error => {
             console.log(error)

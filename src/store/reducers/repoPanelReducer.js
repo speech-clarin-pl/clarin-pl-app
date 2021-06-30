@@ -136,6 +136,7 @@ const initialState = {
     containerAudioFileSEG: null,
 
     exportToEmuReady: false,
+    corpusCreatedAt: null,
 
     reactTourOpenDemoSession: false,
 
@@ -617,6 +618,13 @@ const repoGetUserProjectFiles = (state, action) => {
     const sessions = action.sessions;
     const containers = action.containers;
 
+    let corpusCreatedAt = null;
+    if(action.corpusCreatedAt){
+        corpusCreatedAt = action.corpusCreatedAt;
+    }
+
+
+
     const nextState = produce(state, draftState => {
 
             draftState.sessions.byId = convertArrayToObject(sessions,'id');
@@ -624,6 +632,8 @@ const repoGetUserProjectFiles = (state, action) => {
 
             draftState.containers.byId = convertArrayToObject(containers,'_id');
             draftState.containers.allIds = getIdsArray(containers);
+
+            draftState.corpusCreatedAt = corpusCreatedAt;
 
     })
 
@@ -872,6 +882,7 @@ const exportToEmuDone = (state, action) => {
 
     const nextState = produce(state, draftState => {
         draftState.exportToEmuReady = true;
+        draftState.corpusCreatedAt = action.corpusCreatedAt;
    })
 
    return nextState; 

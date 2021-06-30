@@ -139,7 +139,7 @@ class topBar extends Component {
 
         const dokumentacjaLink = (
             <li className="nav-item">
-                <a href={process.env.PUBLIC_URL + '/docs/doc.html'}
+                <a href={process.env.PUBLIC_URL + '/docs/manual_CLARIN-PL.pdf'}
                     target="_blank"
                     rel="noopener noreferrer"
                     id="navbarDropdownMenuLinkpomoc"

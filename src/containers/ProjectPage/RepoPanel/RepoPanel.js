@@ -19,6 +19,7 @@ import SingleInputForm from '../../../components/UI/SingleInputForm/SingleInputF
 import ButtonLeftBar from '../../../components/UI/ButtonLeftBar/ButtonLeftBar';
 import { RingLoader } from "react-spinners";
 import { css } from "@emotion/core";
+import LastCorpus from './LastCorpus/LastCorpus';
 
 import {injectIntl, FormattedMessage} from 'react-intl';
 import ReactHtmlParser from "react-html-parser";
@@ -344,7 +345,7 @@ class repoPanel extends Component {
                         defaultMessage="Zostaną wyeksportowane tylko te pliki dla których zostały wykonane wszystkie poziomy annotacji. Podcas tego procesu nie wykonuj żadnych czynności," 
                     />
                     {
-                    akcjaKorpus
+                        akcjaKorpus
                     }   
                 </p>                
             </div>
@@ -715,6 +716,8 @@ class repoPanel extends Component {
                         </div>
 
                         <div className="exportToEmu" data-tut="edytorExportCorpus">
+                            <LastCorpus />
+                            
                             <ButtonLeftBar 
                                     napis={this.props.intl.formatMessage(
                                         {
@@ -745,6 +748,7 @@ const mapStateToProps = (state) => {
         currentProjectID: state.projectR.currentProjectID,
         currentProjectName: state.projectR.currentProjectName,
         currentProjectOwner: state.projectR.currentProjectOwner,
+        
         token: state.homeR.token,
         modal: state.projectR.modal,
         exportToEmuReady: state.repoR.exportToEmuReady,

@@ -103,7 +103,7 @@ class Dashboard extends Component {
                                         </p>
                                         
                                         <p> 
-                                            <a href="/docs/doc.html" target="_blank">
+                                            <a href="/docs/manual_CLARIN-PL.pdf" target="_blank">
                                                 <button type="button" className="btn btn-primary btn-block op-btn">
                                                     <i className="fas fa-comments"></i> Instrukcja obsługi
                                                 </button>
