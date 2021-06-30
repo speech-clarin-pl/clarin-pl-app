@@ -111,14 +111,11 @@ class ProjectsListPage extends Component {
     event.preventDefault();
     // dodaje nowy projekt tutaj TO DO
     let formIsValid = this.checkValidity(this.state.newProjectName);
-    //console.log(formIsValid);
+
     
     if(formIsValid){
       this.props.onNewProject(this.state.newProjectName, this.props.userId, this.props.token);
-
-    } else {
-      console.log('FORM IS INVALID!');
-    }
+    } 
   }
 
 

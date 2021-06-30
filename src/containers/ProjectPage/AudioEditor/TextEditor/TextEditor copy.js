@@ -66,8 +66,6 @@ class TextEditor extends Component {
     }
 
     textChanged = (evt) => {
-       // console.log(evt.target.value)
-      // console.log(this.state.transcriptionData)
         this.setState({
             text: evt.target.value,
             transcriptHasChanged: true,

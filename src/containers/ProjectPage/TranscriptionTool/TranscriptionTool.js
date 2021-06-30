@@ -34,7 +34,6 @@ class TranscriptionTool extends Component {
     }
 
     txtAreaChangedHandler = (e) => {
-        // console.log(e.currentTarget.value);
         this.props.onUpdateTxtArea(e.currentTarget.value, null);
     }
 

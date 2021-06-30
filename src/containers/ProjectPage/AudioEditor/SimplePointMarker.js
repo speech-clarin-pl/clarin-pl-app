@@ -3,7 +3,7 @@ import Konva from 'konva';
 
 class SimplePointMarker {
 	constructor(options) {
-		console.log('[SimplePointMarker] constructor')
+
 		this._options = options;
 	}
 

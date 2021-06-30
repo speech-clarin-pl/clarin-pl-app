@@ -37,8 +37,7 @@ class repoBar extends Component {
 	}
 
 	handleDrop = (files) => {
-        console.log("HANDLE DROP")
-       // console.log(files)
+
 
         let extFiles = [];
         let fileList = [];
@@ -96,7 +95,6 @@ class repoBar extends Component {
             extFiles.push(newFile);
 		});
 		
-		console.log(fileList);
 
 		this.setState({
 			filesToUpload: fileList,
@@ -216,8 +214,7 @@ class repoBar extends Component {
 		let fileURL = target.getElementsByTagName("a")[0].href;
 
         if (data.action === 'Preview') {
-            console.log("Preview file: ")
-			console.log(fileURL)
+
 			this.props.onOpenModalHandler();
             this.setState({
 				actionType: "Preview",
@@ -227,8 +224,7 @@ class repoBar extends Component {
         }
 
         if (data.action === 'Remove') {
-            console.log("Remove file: ")
-			console.log(fileURL)
+
 			this.setState({
 				actionType: "Remove",
             });
@@ -238,13 +234,11 @@ class repoBar extends Component {
 	
 
 	handleFolderOpen = (folder) => {
-		console.log("handleFolderOpen")
-		console.log(folder)
+
 	}
 
 	handleFolderClose = (folder) => {
-		console.log("handleFolderClose")
-		console.log(folder)
+
 	}
 
 

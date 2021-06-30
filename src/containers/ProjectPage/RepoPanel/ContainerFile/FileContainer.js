@@ -35,11 +35,7 @@ class FileContainer extends Component {
         
     }
 
-    /*
-    handleClick = (e, data) => {
-        console.log(data.foo);
-    }
-    */
+
 
     componentDidMount = () =>{
        // console.log("ready")

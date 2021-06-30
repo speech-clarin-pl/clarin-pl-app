@@ -59,7 +59,7 @@ export const openTxtFileToPreview = (file) => {
                 })
             })
             .catch(error => {
-                console.log(error)
+                //console.log(error)
             })
     }
 }

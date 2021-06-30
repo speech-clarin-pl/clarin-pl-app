@@ -137,11 +137,11 @@ class UploadAudio extends Component {
  
         Promise.all(promises)
         .then(()=>{
-          console.log("TAK")
+
           this.setState({ successfullUploaded: true, uploading: false });
         })
         .catch(()=>{
-          console.log("NIE")
+  
           this.setState({ successfullUploaded: false, uploading: false });
         })
     

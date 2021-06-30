@@ -61,18 +61,15 @@ const speechDiarizationSuccess = (state, action) => {
     //const toolType = action.toolType; 
     const DIAsegments = action.DIAsegments;
 
-   // console.log("TUTAJ TEZ POWINIENEM ")
-    console.log(containerId)
 
     const nextState = produce(state, draftState => {
 
         let foundFileIdx = draftState.containersForDIA.findIndex(file => {
-            console.log(file._id)
-            console.log(containerId)
+
             return file._id === containerId;
         })
 
-        console.log(foundFileIdx)
+
 
         draftState.containersForDIA[foundFileIdx].ifDIA = true;
         draftState.containersForDIA[foundFileIdx].statusDIA = 'done';
@@ -95,15 +92,12 @@ const speechDiarizationFailed = (state, action) => {
     const containerId = action.containerId;
     //const toolType = action.toolType; 
 
-    console.log(containerId)
 
     let foundFileIdx = state.containersForDIA.findIndex(file => {
-        console.log(file._id)
-        console.log(containerId)
+
         return file._id === containerId;
     })
 
-    console.log(foundFileIdx)
     //createNotification('error', 'Wystąpił błąd diaryzacji pliku ' + state.containersForDIA[foundFileIdx].containerName);
 
     const nextState = produce(state, draftState => {

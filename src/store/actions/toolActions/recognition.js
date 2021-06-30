@@ -75,8 +75,6 @@ export const initFileRecognition = (file, entryId, userId, projectId, audioFrom)
 
         const data = new FormData();
 
-        console.log(file)
-
         data.append('audioFiles', file);
         data.append('audioFilesIds', entryId);
         data.append('projectId', projectId);
@@ -97,9 +95,7 @@ export const initFileRecognition = (file, entryId, userId, projectId, audioFrom)
                 },
                 onUploadProgress: ProgressEvent => {
                     let percent = ProgressEvent.loaded / ProgressEvent.total*100;
-    
-                    console.log('wysłano: ' + percent + '%');
-                    
+
                     //dispatch(changeUploadProgress(percent));
     
                     if(percent===100){
@@ -159,7 +155,7 @@ export const initBatchRecognition = (audioFilesArray, audioFilesIds) => {
                 // console.log(response);
             })
             .catch(error => {
-                console.log(error);
+               // console.log(error);
             })
     }
 }

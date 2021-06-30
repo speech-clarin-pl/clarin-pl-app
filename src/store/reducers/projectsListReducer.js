@@ -31,8 +31,7 @@ const choseProject = (state, action) => {
 
 const addProject = (state, action) => {
     let newProjectsList = [action.responsedNewProject, ...state.projects];
-    //console.log(newProjectsList)
-   // console.log(action.responsedNewProject)
+
 
     return updateObject(state, {projects: newProjectsList, loaded: true });
 }
@@ -107,9 +106,6 @@ const editName = (state, action) => {
     const newProjectName = action.newProjectName;
     const message = action.message;
 
-    console.log(projectId)
-    console.log(newProjectName)
-    console.log(message)
 
     //robie immutable updating projektow
     const projects = [...state.projects];
@@ -136,7 +132,7 @@ const editName = (state, action) => {
 
 //pobieranie listy projektow
 const getProjectsListFailed = (state, action) => {
-     console.log(action)
+
     return updateObject(state, { 
         error: true, 
         loaded: false,
@@ -144,7 +140,6 @@ const getProjectsListFailed = (state, action) => {
 }
 
 const getProjectsList = (state, action) => {
-    //console.log(action)
 
     return updateObject(state,
         {

@@ -230,10 +230,10 @@ export const saveTranscription = (container, toolType, token, transcription) => 
                 status: 'done',
             })
             dispatch(saveTranscriptionSuccess(response.data.message, container._id, toolType));
-          //  dispatch(closeModal());
+
         })
         .catch(error => {
-          //  console.log(error)
+
            dispatch(saveTranscriptionFailed(error, container._id, toolType));
         });
     }

@@ -108,16 +108,13 @@ class AudioEditor extends Component {
 
 		switch(this.props.toolType){
 			case("VAD"):
-				console.log('VAD')
 				break;
 			case("DIA"):
-				console.log('DIA')
 				break;
 			case("REC"):
 			    this.props.onSaveTranscription(this.props.containerForPreview, this.props.toolType, this.props.token, this.state.text);
 				break;
 			case("SEG"):
-				console.log('SEG')
 				break;
 			default:
 				console.err("Zła nazwa narzędzia");
@@ -258,7 +255,6 @@ class AudioEditor extends Component {
 			this.setState({
 				currentZoom: peaksInstance.zoom.getZoom(),
 			})
-			console.log(this.state.currentZoom)
 		});
 
 		document.querySelector('[data-action="zoom-out"]').addEventListener('click', () =>{
@@ -266,15 +262,13 @@ class AudioEditor extends Component {
 			this.setState({
 				currentZoom: peaksInstance.zoom.getZoom(),
 			})
-			console.log(this.state.currentZoom)
+
 		});
 
 		document.querySelector('[data-action="resize"]').addEventListener('click', () =>{
 			
 	
 			this.props.editorFullWidth();
-
-			console.log(this.props.ifFullScreen)
 		
 			let zoomview = peaksInstance.views.getView('zoomview');
 			if (zoomview) {
@@ -481,7 +475,7 @@ class AudioEditor extends Component {
 					
 					this.peaks.setSource(source, error => {
 						if(error){
-							console.log(error);
+							//console.log(error);
 						}
 
 						this.peaks.segments.add(data.segments);
@@ -517,16 +511,13 @@ class AudioEditor extends Component {
 
 			switch(this.props.toolType){
 				case("VAD"):
-					console.log('VAD')
 					break;
 				case("DIA"):
-					console.log('DIA')
 					break;
 				case("REC"):
 				    this.loadTranscription();
 					break;
 				case("SEG"):
-					console.log('SEG')
 					break;
 				default:
 					console.error("wrong tool type")
@@ -735,10 +726,8 @@ class AudioEditor extends Component {
 				this.props.onSaveDIASegments(this.props.containerForPreview, this.props.toolType, this.props.token, simplerSegments);
 				break;
 			case("REC"):
-			console.log('REC')
 				break;
 			case("SEG"):
-				console.log('SEG')
 				break;
 			default:
 				console.error("wrong tool type")

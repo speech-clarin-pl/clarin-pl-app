@@ -34,13 +34,11 @@ class DragAndDrop extends Component {
   dropRef = React.createRef();
  
   handleDrag = (e) => {
-    console.log("handleDrag")
+
     e.preventDefault()
     e.stopPropagation()
   }
   handleDragIn = (e) => {
-    console.log("handleDragIn " + this.dragCounter)
-    //console.log(e)
     e.preventDefault()
     e.stopPropagation()
     this.dragCounter++
@@ -49,7 +47,7 @@ class DragAndDrop extends Component {
     }
   }
   handleDragOut = (e) => {
-    console.log("handleDragOut " + this.dragCounter)
+
     e.preventDefault()
     e.stopPropagation()
     this.dragCounter--
@@ -58,8 +56,7 @@ class DragAndDrop extends Component {
     }
   }
   handleDrop = (e) => {
-    console.log("handleDrop")
-    //console.log(e.dataTransfer.getData("fileURL"))
+
     
     e.preventDefault()
     e.stopPropagation()
@@ -83,7 +80,7 @@ class DragAndDrop extends Component {
 
       this.props.whenDropped(draggedFile)
       e.dataTransfer.clearData();
-      //console.log(e.dataTransfer.getData("fileURL"))
+
     }
   }
   componentDidMount() {

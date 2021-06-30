@@ -248,7 +248,7 @@ export const runKWS = (containerId, setOfWords,token) => {
             dispatch({
                 type: actionTypes.KWS_ERROR,
             });
-            console.log("Coś poszło nie tak z KWS")
+
         }); 
 
     }
@@ -727,7 +727,7 @@ export const exportToEMU = (projectId, userId, token) => {
             dispatch(exportToEMUSuccess(response.data.message, response.data.corpusCreatedAt));
         })
         .catch(error => {
-            console.log(error)
+            //console.log(error)
             dispatch(exportToEMUFailed(error.message));
         });
     }
@@ -845,11 +845,11 @@ export const uploadFiles = (fileList,folderKey,userId, projectId, token) => {
             }
         })
         .then(response => {
-            console.log(response)
+
             dispatch(uploadFilesSuccess(response.message));
         })
         .catch(error => {
-            console.log(error)
+
             dispatch(uploadFilesFailed(error.message));
         });
 
@@ -897,7 +897,7 @@ export const handleUpdateTxtFileActionFailed = (key, message) => {
 }
 
 export const handleUpdateTxtFile = (userId, projectId, token, key, newContent) => {
-    console.log('UPDATE TXT FILE:' + key);
+
     return dispatch => {
         axios.put(('/repoFiles/editTxtFile/'), {
             key: key, //np key: "nowyfolder/" lub "nowyfolder/innypodfolder/"

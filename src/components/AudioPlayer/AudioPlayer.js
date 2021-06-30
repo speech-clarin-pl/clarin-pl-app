@@ -78,22 +78,19 @@ class AudioPlayer extends Component {
     }
 
     handlePlay = () => {
-        console.log('onPlay')
+
         this.setState({ playing: true })
     }
 
     handleEnablePIP = () => {
-        console.log('onEnablePIP')
         this.setState({ pip: true })
     }
 
     handleDisablePIP = () => {
-        console.log('onDisablePIP')
         this.setState({ pip: false })
     }
 
     handlePause = () => {
-        console.log('onPause')
         this.setState({ playing: false })
     }
 
@@ -111,7 +108,7 @@ class AudioPlayer extends Component {
     }
 
     handleProgress = state => {
-        console.log('onProgress', state)
+
         // We only want to update time slider if we are not currently seeking
         if (!this.state.seeking) {
             this.setState(state)
@@ -119,12 +116,12 @@ class AudioPlayer extends Component {
     }
 
     handleEnded = () => {
-        console.log('onEnded')
+
         this.setState({ playing: this.state.loop })
     }
 
     handleDuration = (duration) => {
-        console.log('onDuration', duration)
+
         this.setState({ duration })
     }
 
@@ -147,7 +144,7 @@ class AudioPlayer extends Component {
 
     
     componentDidMount = () => {
-        console.log("AUDIO PLAYER")
+
         this.loadAudioFile(this.props.audioURL)
     }
     
@@ -176,16 +173,16 @@ class AudioPlayer extends Component {
                         playbackRate={playbackRate}
                         volume={volume}
                         muted={muted}
-                        onReady={() => console.log('onReady')}
-                        onStart={() => console.log('onStart')}
+                        onReady={() => null}
+                        onStart={() => null}
                         onPlay={this.handlePlay}
                         onEnablePIP={this.handleEnablePIP}
                         onDisablePIP={this.handleDisablePIP}
                         onPause={this.handlePause}
-                        onBuffer={() => console.log('onBuffer')}
-                        onSeek={e => console.log('onSeek', e)}
+                        onBuffer={() => null}
+                        onSeek={e => null}
                         onEnded={this.handleEnded}
-                        onError={e => console.log('onError', e)}
+                        onError={e => null}
                         onProgress={this.handleProgress}
                         onDuration={this.handleDuration}
                     />

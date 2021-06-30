@@ -117,8 +117,7 @@ const initFileRecognition = (state,action) => {
 //rozpoczynam wysylke na serwer i przetwarzanie rozpoznawania
 const initBatchRecognition = (state,action) => {
 
-    
-    console.log("INIT BATCH RECOGNITION")
+
     //jezali jest jakikolwiek plik do wyslania
     if(state.containersForREC.length > 0) {
         return updateObject(state, {});
@@ -175,7 +174,7 @@ const openAudioRecPreview = (state, action) => {
     //znajduje pozycje w containersForREC aby wyciagnac z niej plik audio
 
     let foundEntry = state.containersForREC.find(obj => obj.id === entryId);
-    console.log(foundEntry.file)
+
 
     return updateObject(state, { recoFileForPreview: foundEntry.file}) ; 
 

@@ -563,11 +563,9 @@ class repoPanel extends Component {
    
         listaSesji = Object.keys(this.props.repoData.sessions.byId).map(sessionId => {
 
-            //console.log(sessionId)
-            
+
             let sId = this.props.repoData.sessions.byId[sessionId].id;
 
-            //console.log(sId)
 
             let sessionName = this.props.repoData.sessions.byId[sessionId].sessionName;
             let ifSelected = this.props.repoData.sessions.byId[sessionId].ifSelected;

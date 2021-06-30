@@ -51,7 +51,6 @@ export const getProjectsList = (userId, token) => {
             }
         })
             .then(response => {
-                console.log(response)
                 dispatch(getProjectsListAction(userId, response.data.projects));
             })
             .catch(error => {
@@ -173,7 +172,7 @@ export const deleteProject = (projectId, userId, token) => {
                 dispatch(closeModal());
             })
             .catch(error => {
-                console.log(error)
+                //console.log(error)
                // dispatch(editNameProjectActionFailed(error));
             });
     }
@@ -219,7 +218,7 @@ export const editName = (projectId, newName, userId, token) => {
                 dispatch(closeModal());
             })
             .catch(error => {
-                console.log(error)
+               // console.log(error)
                 dispatch(editNameProjectActionFailed(error));
             });
     }

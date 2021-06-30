@@ -33,7 +33,6 @@ class CustomPointMarker{
 
     attachListeners = () => {
 
-      console.log(this._options);
 
       const layer = this._options.layer;
 

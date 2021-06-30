@@ -8,9 +8,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const projectListItem = (props) => {
 
-    
 
-          // console.log(props.key)
 
     return(
         <Aux>

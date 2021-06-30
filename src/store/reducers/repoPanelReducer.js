@@ -405,7 +405,7 @@ const repoRemoveSessionSuccess = (state, action) => {
     //const message = action.message;
     const sessionId = action.sessionId;  // sesja którą chcemy usunąć
 
-    console.log(sessionId)
+
 
     const nextState = produce(state, draftState => {
 
@@ -436,7 +436,7 @@ const repoRemoveSessionSuccess = (state, action) => {
 
          draftState.containers.byId = newContainers;
 
-         console.log(newContainers)
+
         
          //jezeli byly zaznaczone to odznaczam
          draftState.currentlySelectedSessions[0] = null;

@@ -32,10 +32,10 @@ class NewPasswordPage extends Component {
 
       axios.post('/auth/enterNewPass/'+userId+'/'+token, {newPassword: password})
           .then(res => {
-            console.log("RESPONSE FROM SERVER TO CLIENT:", res)
+
           })
           .catch(err => {
-            console.log("SERVER ERROR TO CLIENT:", err)
+         
           });
       
           this.setState({ submitted: !this.state.submitted })

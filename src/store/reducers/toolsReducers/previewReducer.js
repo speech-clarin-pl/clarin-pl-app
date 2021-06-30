@@ -84,7 +84,6 @@ const openAudioFilePreview = (state,action) => {
     const fileKey = action.fileKey;
     const wsinit = action.waveSurferInitialized;
 
-    console.log(wsinit)
 
     return updateObject(state, {
         audiofileName: fileKey,

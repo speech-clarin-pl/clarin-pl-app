@@ -33,12 +33,7 @@ class VADTool extends Component {
 
 	//opens given container in preview window
     openContainerInPreview = (container) => {
-		//console.log(e)
-		
-		//uruchomienie full screen
-		//if(this.state.editorFullWidth == false){
-       //     this.setState({editorFullWidth: true});
-		//} 
+
 		
         this.props.openContainerInVADPreview(container);
 	}

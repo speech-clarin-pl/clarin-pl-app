@@ -56,7 +56,6 @@ class RecognitionTool extends Component {
 
     //opens given container in preview window
     openContainerInPreview = (container) => {
-        //console.log(e)
         this.props.openContainerInRecoPreview(container);
     }
 

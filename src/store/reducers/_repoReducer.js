@@ -103,8 +103,6 @@ const repoRenameFolder = (state, action) => {
     const oldKey = action.oldKey;
     const newKey = action.newKey;
 
-    console.log('ZMIOANA NAZWY FOLDERU')
-
     const newFiles = [];
     state.files.map((file) => {
 

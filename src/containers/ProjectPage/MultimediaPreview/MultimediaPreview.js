@@ -74,27 +74,26 @@ class MultimediaPreview extends Component {
          
  
          this.player.on('waveReady', (event) => {
-             console.log('waveform: ready!');
+            // console.log('waveform: ready!');
          });
  
          this.player.on('ratechange', (event) => {
-             console.log('zmienilem speed!');
+            // console.log('zmienilem speed!');
           
          });
  
          this.player.on('playbackFinish', (event) => {
-             console.log('playback finished.');
+            // console.log('playback finished.');
          });
  
          // error handling
          this.player.on('error', (element, error) => {
-             console.error(error);
+            // console.error(error);
          }); 
     }
 
 
     componentDidMount() {
-        console.log("Component Did Mount")
         this.initializePreview(this.state.fileToPreviewURL);
     }
 
@@ -113,26 +112,10 @@ class MultimediaPreview extends Component {
     setFileToPreview = (fileURL) => {
         if (this.player) {
 
-            console.log("laduje nowy plik")
             //this.player.wavesurfer().destroy();
             
             this.player.wavesurfer().load(fileURL);
 
-            
-            // update src url
-
-             // restore the audio element
-            // this.player.wavesurfer().destroy();
-            // ReactDOM.unmountComponentAtNode(container),
-            //$('body').prepend('<audio id="myAudio_html5_api" class="vjs-tech" tabindex="-1"></audio>');
-
-            //this.setState({ state: this.state });
-           // this.initializePreview(fileURL);
-
-
-            //player = videojs("myAudio", settings);
-           //this.player.wavesurfer().surfer.load(fileURL);
-            //this.player.load(fileURL)
         }
 
       

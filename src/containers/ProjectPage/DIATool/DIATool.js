@@ -74,14 +74,13 @@ class DIATool extends Component {
         for(let i=0;i<this.props.containersForDIA.length;i++){
             
             let current = this.props.containersForDIA[i];
-           // console.log(current)
             //sprawdzam ktory obecnie jest edytowany
             if(current._id === this.props.containerForPreview._id){
                 foundIdx = i;
             }
         }
 
-       // console.log(foundIdx)
+
 
         if(foundIdx < this.props.containersForDIA.length-1){
             this.openContainerInPreview(this.props.containersForDIA[foundIdx+1]);

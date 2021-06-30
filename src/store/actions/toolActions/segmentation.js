@@ -132,14 +132,6 @@ export const startSegmentItem = (entryId, userId, projectId, audioFile, txtFile,
         //data.append('txtFile',txtFile);
         //data.append('token', entryId);
 
-        console.log("WYSYLAM")
-        console.log(entryId)
-        console.log(userId)
-        console.log(projectId)
-        console.log(audioFile)
-        console.log(txtFile)
-        console.log(audioFrom)
-        console.log(txtFrom)
        
         
         const config = {
@@ -149,7 +141,7 @@ export const startSegmentItem = (entryId, userId, projectId, audioFile, txtFile,
             onUploadProgress: ProgressEvent => {
                 let percent = ProgressEvent.loaded / ProgressEvent.total*100;
 
-                console.log('wysłano: ' + percent + '%');
+
                 //dispatch(changeUploadProgress(percent));
 
                 if(percent===100){
@@ -162,7 +154,7 @@ export const startSegmentItem = (entryId, userId, projectId, audioFile, txtFile,
         
         axios.post('/segmentation/singleFile',data, config)
             .then(response => {
-                console.log(response);
+     
                 //const message = response.data.message;
                 //const entryId = response.data.sentEntryId.sentEntryId;
                 //console.log(message)
@@ -173,7 +165,7 @@ export const startSegmentItem = (entryId, userId, projectId, audioFile, txtFile,
             })
             .catch(error => {
                 dispatch(finishFileSegmentationFailed(error, entryId));
-                console.log(error);
+                //console.log(error);
             })
     }
 }
