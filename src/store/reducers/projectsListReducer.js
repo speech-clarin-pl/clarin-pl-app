@@ -104,7 +104,6 @@ const editName = (state, action) => {
 
     const projectId = action.projectId;
     const newProjectName = action.newProjectName;
-    const message = action.message;
 
 
     //robie immutable updating projektow

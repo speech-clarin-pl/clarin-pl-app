@@ -3,11 +3,8 @@ import FileContainer from '../ContainerFile/FileContainer';
 import './RepoSession.css';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-
 import UploadAudio from '../../../../components/UploadAudio/UploadAudio';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-//import { faFolderPlus } from '@fortawesome/free-solid-svg-icons';
 import { faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 import { faFolder } from '@fortawesome/free-solid-svg-icons';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
@@ -17,7 +14,7 @@ import EditableLabel from 'react-inline-editing';
 import * as repoActions from '../../../../store/actions/index';
 
 import {injectIntl, FormattedMessage} from 'react-intl';
-import ReactHtmlParser from "react-html-parser";
+
 
 class RepoSession extends Component {
 

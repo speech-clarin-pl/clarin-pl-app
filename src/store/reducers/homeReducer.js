@@ -1,5 +1,4 @@
 import * as actionTypes from '../actions/actionsTypes';
-import { registerUserAction } from '../actions/home';
 import {updateObject} from '../utility';
 //import {createNotification} from '../../index';
 

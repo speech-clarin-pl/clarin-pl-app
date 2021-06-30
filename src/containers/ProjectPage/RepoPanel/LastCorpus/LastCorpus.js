@@ -1,22 +1,15 @@
 import React, {Component} from 'react';
-import FileContainer from '../ContainerFile/FileContainer';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import './LastCorpus.css';
-import UploadAudio from '../../../../components/UploadAudio/UploadAudio';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-//import { faFolderPlus } from '@fortawesome/free-solid-svg-icons';
-import { faFolderOpen } from '@fortawesome/free-solid-svg-icons';
+
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import {ContextMenu, MenuItem, ContextMenuTrigger} from 'react-contextmenu';
-import EditableLabel from 'react-inline-editing';
+
 import * as repoActions from '../../../../store/actions/index';
 
-import {injectIntl, FormattedMessage} from 'react-intl';
-import ReactHtmlParser from "react-html-parser";
+import {injectIntl} from 'react-intl';
 
 class LastCorpus extends Component {
 

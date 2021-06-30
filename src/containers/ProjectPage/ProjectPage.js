@@ -299,8 +299,8 @@ class ProjectPage extends Component {
     const userId = localStorage.getItem('userId');
     const userName = localStorage.getItem('userName');
     const email = localStorage.getItem('email');
-    const remainingMilliseconds =
-    new Date(expiryDate).getTime() - new Date().getTime();
+   // const remainingMilliseconds =
+    //new Date(expiryDate).getTime() - new Date().getTime();
 
 
     this.props.onSetLoggedIn(userId,userName, email,token);    

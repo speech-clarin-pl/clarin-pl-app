@@ -4,36 +4,20 @@ import './RepoPanel.css';
 import { connect } from 'react-redux';
 import * as repoActions from '../../../store/actions/index';
 import { withRouter } from 'react-router-dom';
-//import { getExt } from '../../../utils/utils';
 import Modal from '../../../components/UI/Modal/Modal';
-//import Preview from '../../../components/Preview/Preview';
-//import {getFileKeyFromURL} from '../../../utils/utils';
-//import DragAndDrop from '../../../components/UI/DragAndDrop/DragAndDrop';
-//import DropFilesArea from '../../../components/UI/DropFilesArea/DropFilesArea';
-//import uuid from 'uuid';
-//import { extensionMapping } from '../../../utils/fileTypes';
-//import {Alert, Progress} from 'reactstrap';
-//import UploadAudio from '../../../components/UploadAudio/UploadAudio';
 import RepoSession from './RepoSession/RepoSession';
 import SingleInputForm from '../../../components/UI/SingleInputForm/SingleInputForm';
 import ButtonLeftBar from '../../../components/UI/ButtonLeftBar/ButtonLeftBar';
 import { RingLoader } from "react-spinners";
 import { css } from "@emotion/core";
 import LastCorpus from './LastCorpus/LastCorpus';
-
 import {injectIntl, FormattedMessage} from 'react-intl';
-import ReactHtmlParser from "react-html-parser";
-
-//import ContainerFile from './ContainerFile/ContainerFile';
-
 import { Tooltip } from '@material-ui/core';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolderPlus } from '@fortawesome/free-solid-svg-icons';
 import { faFolderMinus } from '@fortawesome/free-solid-svg-icons';
 import { faAngleDoubleRight } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-//import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 
 
 const override = css`

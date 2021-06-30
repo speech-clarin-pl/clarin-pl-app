@@ -5,12 +5,11 @@ import './Dashboard.css';
 import FooterTool from '../FooterTool/FooterTool';
 import LeftSiteBar from '../LeftSiteBar/LeftSiteBar';
 import { connect } from 'react-redux';
-import {withRouter, Link } from 'react-router-dom';
+import {withRouter } from 'react-router-dom';
 import * as projectActions from '../../../store/actions/index';
 import {bytesToSize} from '../../../utils/utils';
 import G2PTool from '../G2PTool/G2PTool';
 import KWSTool from '../KWSTool/KWSTool';
-//import {bytesToSize} from '../../../utils/utils';
 import {injectIntl, FormattedMessage} from 'react-intl';
 
 

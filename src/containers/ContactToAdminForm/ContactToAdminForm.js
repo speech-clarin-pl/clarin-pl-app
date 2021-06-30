@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Aux from '../../hoc/Auxiliary';
 import './ContactToAdminForm.css';
-import {withRouter, Link} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 //import {FormattedMessage} from 'react-intl';
 import {connect} from 'react-redux';
 //import * as actionTypes from '../../store/actions/actionsTypes';

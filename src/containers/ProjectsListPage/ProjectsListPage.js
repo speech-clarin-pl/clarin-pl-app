@@ -14,7 +14,7 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import SingleInputForm from '../../components/UI/SingleInputForm/SingleInputForm';
 import ConfirmationForm from '../../components/UI/ConfirmationForm/ConfirmationForm';
 
-import {injectIntl, FormattedMessage} from 'react-intl';
+import {injectIntl} from 'react-intl';
 
 const localActions = {
   CREATE_NEW_PROJECT: 'CREATE_NEW_PROJECT',
@@ -45,8 +45,8 @@ class ProjectsListPage extends Component {
     const userId = localStorage.getItem('userId');
     const userName = localStorage.getItem('userName');
     const email = localStorage.getItem('email');
-    const remainingMilliseconds =
-    new Date(expiryDate).getTime() - new Date().getTime();
+   // const remainingMilliseconds =
+   // new Date(expiryDate).getTime() - new Date().getTime();
 
     this.props.onSetLoggedIn(userId,userName, email, token);
     //this.setState({ isAuth: true, token: token, userId: userId });

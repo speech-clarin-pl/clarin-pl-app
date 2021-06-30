@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Aux from '../../hoc/Auxiliary';
 import { Link } from "react-router-dom";
 import axios from "axios";
 
