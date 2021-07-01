@@ -586,14 +586,12 @@ export const getRepoAssets = (userId, projectId, token) => {
 // ####################### tworzenie nowej sesji ##############
 // ############################################################
 
-export const createNewSession = (sessionName, projectId, userId, token) => {
+export const createNewSession = (sessionName, projectId, token) => {
     return dispatch => {
 
-        axios.post('/repoFiles/createNewSession',
+        axios.post('/repoFiles/createNewSession/'+projectId,
             {
                 sessionName: sessionName,
-                projectId: projectId,
-                userId: userId,
             }, 
             {
                 headers: {

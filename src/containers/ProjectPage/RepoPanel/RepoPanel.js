@@ -234,7 +234,6 @@ class repoPanel extends Component {
         event.preventDefault();
         this.props.createNewSession(this.state.newSessionName, 
             this.props.currentProjectID, 
-            this.props.currentProjectOwner,
             this.props.token
             );
        // this.props.onCloseModalHandler();
@@ -753,7 +752,7 @@ const mapDispatchToProps = dispatch => {
         addContainerToReco: (container) => dispatch(repoActions.addContainerToReco(container)),
         addContainerToAlign: (container) => dispatch(repoActions.addContainerToAlign(container)),
         onKorpusDownloaded: () => dispatch(repoActions.korpusDownloaded()),
-        createNewSession: (sessionName, projectId, userId, token) => dispatch(repoActions.createNewSession(sessionName, projectId, userId, token)),
+        createNewSession: (sessionName, projectId, token) => dispatch(repoActions.createNewSession(sessionName, projectId, token)),
         removeSessionFromRepo: (userId, projectId, sessionId, token) => dispatch(repoActions.removeSessionFromRepo(userId, projectId, sessionId, token)),
         changeContainerName: (container, text, token) => dispatch(repoActions.changeContainerName(container, text, token)),
     }
