@@ -303,7 +303,9 @@ class FileContainer extends Component {
 									defaultMessage="Kopiuj ID" 
 								/>: {this.props.container._id}
                     </MenuItem>
-                    <MenuItem divider />
+                    {
+                        /*
+                         <MenuItem divider />
                     <MenuItem disabled={false} data={{toolType: this.props.type, action: 'usun'}} onClick={this.handleClick}>
                                 <FormattedMessage
 									id="FileContainer-contextUsunZRepo"
@@ -311,6 +313,9 @@ class FileContainer extends Component {
 									defaultMessage="Usuń z repozytorium" 
 								/>
                     </MenuItem>
+                    */
+                    }
+                   
                     <MenuItem divider />
                     <MenuItem disabled={false} data={{toolType: this.props.type, action: 'audio'}} onClick={this.handleClick}>
                                 <FormattedMessage
