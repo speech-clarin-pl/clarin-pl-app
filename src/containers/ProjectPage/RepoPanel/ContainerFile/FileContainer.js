@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import './ContainerFile.css';
+import './FileContainer.css';
 
 //import {DragPreviewImage, useDrag} from 'react-dnd';
 //import ItemTypes from '../../ItemDndTypes';
