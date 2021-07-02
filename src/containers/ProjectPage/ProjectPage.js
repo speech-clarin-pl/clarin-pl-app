@@ -81,6 +81,7 @@ class ProjectPage extends Component {
       
       action: () => {
         //console.log(this.props.history)
+        /*
         const currLocation = this.props.history.location.pathname;
         const splittedLoc = currLocation.split("/");
         splittedLoc[splittedLoc.length-1] = "recognition";
@@ -93,8 +94,10 @@ class ProjectPage extends Component {
           }
           
         }
+       
 
         this.props.history.push(finalPathTo);
+         */
     
         this.addDemoFilesToReco();
       }
