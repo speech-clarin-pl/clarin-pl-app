@@ -9,8 +9,8 @@ import RecognitionTool from './RecognitionTool/RecognitionTool';
 import SegmentTool from './SegmentTool/SegmentTool';
 import VADTool from './VADTool/VADTool';
 import DIATool from './DIATool/DIATool';
-import TranscriptionTool from './TranscriptionTool/TranscriptionTool';
-import RepoBar from './RepoBar/RepoBar';
+//import TranscriptionTool from './TranscriptionTool/TranscriptionTool';
+//import RepoBar from './RepoBar/RepoBar';
 import RepoPanel from './RepoPanel/RepoPanel';
 import ErrorPage from '../../components/ErrorPage/ErrorPage';
 
@@ -20,8 +20,9 @@ import Tab from '../ProjectPage/TabContainer/Tab/Tab';
 import * as projectActions from '../../store/actions/index';
 import {DndProvider} from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
+import ReactHtmlParser from 'react-html-parser';
 import Tour from 'reactour';
-import {injectIntl, FormattedMessage} from 'react-intl';
+import {injectIntl} from 'react-intl';
 
 
 class ProjectPage extends Component {
@@ -80,6 +81,21 @@ class ProjectPage extends Component {
       
       action: () => {
         //console.log(this.props.history)
+        const currLocation = this.props.history.location.pathname;
+        const splittedLoc = currLocation.split("/");
+        splittedLoc[splittedLoc.length-1] = "recognition";
+        let finalPathTo = '';
+        for (let j=0;j<splittedLoc.length;j++){
+          if(j===0){
+            finalPathTo = splittedLoc[j];
+          } else {
+            finalPathTo = finalPathTo + "/" + splittedLoc[j];
+          }
+          
+        }
+
+        this.props.history.push(finalPathTo);
+    
         this.addDemoFilesToReco();
       }
     },
@@ -106,7 +122,7 @@ class ProjectPage extends Component {
     },
     {
       selector: '[data-tut="edytorControls"]',
-      content: this.props.intl.formatMessage(
+      content: ReactHtmlParser(this.props.intl.formatMessage(
         {
           id:"ProjectPage-tour-edytorControls",
           description: 'Tour-edytorControls', 
@@ -123,7 +139,7 @@ class ProjectPage extends Component {
           - Dodanie segmentu
         . Warto nauczyć się również skrótów klawiaturowych.`
         }
-      ),
+      )),
       
       
       
@@ -206,6 +222,16 @@ class ProjectPage extends Component {
           id:"ProjectPage-tour-edytorExportCorpus",
           description: 'Tour-edytorExportCorpus', 
           defaultMessage:  `Wszystkie pliki na których zostały wykonane wszystkie poziomy annotacji (i ewentualnie poprawione przez Ciebie), mogą zostać wyeksportowane do gotowego korpusu w formacie EMU-SDMS. Po odczekaniu, będziesz mógł go ściągnąć w formacie ZIP.`
+        }
+      ),
+    },
+    {
+      selector: '[data-tut="topBarIcons"]',
+      content: this.props.intl.formatMessage(
+        {
+          id:"ProjectPage-tour-topBarIcons",
+          description: 'Tour-ikonkiWTopBar', 
+          defaultMessage:  `Pamiętaj że zawsze możesz skorzystać z przewodnika ponownie bądź zapoznać się z bardziej rozbudowaną dokumentacją. W szczególności możesz nam wysłać wiadomość. Powodzenia!`
         }
       ),
     },

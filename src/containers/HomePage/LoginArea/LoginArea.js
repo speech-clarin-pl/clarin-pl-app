@@ -492,13 +492,13 @@ class LoginArea extends Component {
                                 <br></br>
                                 <br></br>
 
-                                <a onClick={this.showLoginAreaBack}>
+                                <button className="buttonaslink" onClick={this.showLoginAreaBack}>
                                     <FormattedMessage
                                         id="LoginAreaLoginBtnv2"
                                         description="Napisz na przycisku do logowania" 
                                         defaultMessage="Zaloguj się" 
                                     />
-                                </a>
+                                </button>
 
                              
                             </form>   
@@ -627,13 +627,13 @@ class LoginArea extends Component {
                                     <br></br>
                                     <br></br>
 
-                                    <a href="#" onClick={this.forgotPass}>
+                                    <button className="buttonaslink" onClick={this.forgotPass}>
                                             <FormattedMessage
                                                 id="LoginAreaLoginForgottPassBtn"
                                                 description="napisz na btn do przypomnienia hasła" 
                                                 defaultMessage="Zapomniałem hasła" 
                                             />
-                                    </a>
+                                    </button>
                             </form>   
                             
                             : 

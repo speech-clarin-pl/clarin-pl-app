@@ -176,7 +176,7 @@ class SegmentTool extends Component {
                                 <div className={"col-md-"+szer1col}>
                                     <div className="file-list">
 									    {
-                                            filelist.length == 0?
+                                            filelist.length === 0?
                                             <div className="alert alert-primary" role="alert">
 												<FormattedMessage
 													id="SegmentTool-dodajPliki"

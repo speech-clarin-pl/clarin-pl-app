@@ -1,4 +1,4 @@
-This project is written in React js with the usage of [Create React App](https://github.com/facebookincubator/create-react-app). It is the view of new speech proccessing platform, developed as a part of CLARIN project. The current deployment of this platform is available at [https://mowa.clarin-pl.eu:8433/](https://mowa.clarin-pl.eu:8433/). This is the beta version of the new platform. The previous platform is available at [https://mowa.clarin-pl.eu/](https://mowa.clarin-pl.eu/). All features are intended to be developed here. Any suggestions and comment are welcomed.
+This project is written in React with the usage of [Create React App](https://github.com/facebookincubator/create-react-app). It is the view of new speech proccessing platform, developed as a part of CLARIN project. The current deployment of this platform is available at [https://mowa.clarin-pl](https://mowa.clarin-pl).
 
 ## How to run the app
 In order to run the app, clone the repo and:

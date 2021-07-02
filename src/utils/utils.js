@@ -7,6 +7,7 @@ export function bytesToSize(bytes){
 }
 
 export function getExt(path){
+    //eslint-disable-next-line
     return (path.match(/(?:.+..+[^\/]+$)/ig) != null) ? path.split('.').slice(-1): 'null';
   // return  path.split('.').slice(-1);
 }

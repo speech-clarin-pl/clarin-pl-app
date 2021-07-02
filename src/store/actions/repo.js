@@ -201,10 +201,11 @@ export const runG2P = (alphabet, setOfWords,token) => {
             },
         })
         .then(response => {
+            console.log(response)
             dispatch({
                 type: actionTypes.G2P_DONE_SUCCESS,
-                alphabet: response.body.alphabet,
-                g2pResults: response.body.g2pResults,
+                alphabet: response.data.alphabet,
+                g2pResults: response.data.g2pResults,
             });
         })
         .catch(error => {

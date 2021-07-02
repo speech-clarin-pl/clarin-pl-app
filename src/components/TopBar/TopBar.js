@@ -73,29 +73,31 @@ class topBar extends Component {
 
         const fastTourLink = this.props.ifTourLink ?
             <li className="nav-item">
-                <a href="#" onClick={(e) => {
-                    e.preventDefault();
-                    this.props.openTourHandler();
-                }}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    id="navbarDropdownMenuLinkpomoc"
-                    className={["nav-link", "navLink"].join(' ')}>
-                    <FontAwesomeIcon icon={faFighterJet} className="faIcon" />
-                        <FormattedMessage
-                            id="TopBar-QuickTour"
-                            description="Ikona szybkiego przewodnika" 
-                            defaultMessage="Szybki przewodnik"
-                        />
-                    </a>
+
+                    <button onClick={(e) => {
+                            e.preventDefault();
+                            this.props.openTourHandler();
+                                }}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            id="navbarDropdownMenuLinkpomoc"
+                            className={["nav-link", "navLink", "buttonaslink"].join(' ')}>
+                                <FontAwesomeIcon icon={faFighterJet} className="faIcon" />
+                                    <FormattedMessage
+                                        id="TopBar-QuickTour"
+                                        description="Ikona szybkiego przewodnika" 
+                                        defaultMessage="Szybki przewodnik"
+                                    />
+                    </button>
+                
             </li>
             :
             null;
 
         const contactToAdminBtn = this.props.ifContactToAdmin ?
             <li className="nav-item">
-                <a href="#"
-                    className={["nav-link", "navLink"].join(' ')}
+                <button
+                    className={["nav-link", "navLink", "buttonaslink"].join(' ')}
                     onClick={this.openSendToAdminModal}>
                     <FontAwesomeIcon icon={faEnvelope} className="faIcon" /> 
                         <FormattedMessage
@@ -103,17 +105,15 @@ class topBar extends Component {
                             description="Ikona zgłoś do admina" 
                             defaultMessage="Zgłoś do admina"
                         />
-                    </a>
+                    </button>
             </li>
             :
             null;
 
         const logOutLink = this.props.ifLogOut ?
             <li className="nav-item">
-                <a className={["nav-link", "navLink"].join(' ')}
-                    href="#"
+                <button className={["nav-link", "navLink","buttonaslink"].join(' ')}
                     id="navbarDropdownMenuLinkkonto"
-                    role="button"
                     aria-haspopup="true"
                     aria-expanded="false"
                     onClick={this.logOut}>
@@ -124,7 +124,7 @@ class topBar extends Component {
                             description="Ikona wylogowania się" 
                             defaultMessage="Wyloguj"
                         />
-                    </a>
+                    </button>
             </li> : null;
 
         const apiLink = this.props.ifAPI ?
@@ -234,26 +234,26 @@ class topBar extends Component {
                         )}
                     </div>
 
-                    <ul className="navbar-nav">
+                    <ul className="navbar-nav" data-tut="topBarIcons">
     
     
                         {
                           
                        
                           <li className={["nav-item", "dropdown"].join(' ')}>
-                            <a  className={["nav-link", "dropdown-toggle", "navLink"].join(' ')} 
-                                href="#" 
+                            <button  className={["nav-link", "dropdown-toggle", "navLink", "buttonaslink"].join(' ')} 
+                               
                                 id="navbarDropdownMenuLinkjezyk" 
-                                role="button" 
+                             
                                 data-toggle="dropdown" 
                                 aria-haspopup="true" 
                                 aria-expanded="false">
 
                                 <i className={["fas", "fa-globe-europe"].join(' ')}></i> {this.props.language}
-                            </a>
+                            </button>
                                 <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLinkjezyk">
-                                    <a className="dropdown-item" onClick={()=> this.props.onChangeLanguage("pl")}>PL</a>
-                                    <a className="dropdown-item" onClick={() => this.props.onChangeLanguage("en")}>EN</a>
+                                    <button className="dropdown-item buttonaslink" onClick={()=> this.props.onChangeLanguage("pl")}>PL</button>
+                                    <button className="dropdown-item buttonaslink" onClick={() => this.props.onChangeLanguage("en")}>EN</button>
                                 </div>
                           </li>
                          

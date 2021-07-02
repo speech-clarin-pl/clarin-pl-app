@@ -6,12 +6,7 @@
     right: 210px;
     background: #394b55;
 }
-/*
-.ProjectPage .nav-tabs .nav-item:last-child{
-    position:relative;
-    left: 40px;
-}
-*/
+
 
 .ProjectPage .darkbg {
     background-color: #394b55;
@@ -23,4 +18,114 @@
     background-color: #e1e9ec;
     top: 88px;
 
+}
+
+/*------*/
+
+.Content {
+    position: absolute;
+    bottom: 0px;
+    top: 90px;
+    overflow: auto;
+    left:0px;
+    right: 0px;
+}
+
+#div1 {
+    width: 350px;
+    height: 70px;
+    padding: 10px;
+    border: 1px solid black;
+  }
+
+.TranscriptTool {
+    padding-top: 1em;
+}
+
+
+.TranscriptTool .TranskriptInput {
+    min-height: 250px;
+    width: 100%;
+}
+
+/*-----*/
+
+.RepoBar {
+    position: absolute;
+    left: 0px;
+    width: 300px;
+    bottom: 0px;
+    top: 38px;
+    z-index: 99999;
+}
+
+.RepoBar .scrollStrip {
+ 
+  position: absolute;
+  left:-8px;
+  bottom: 0px;
+  width: 15px;
+  top: 3px;
+  cursor:ew-resize;
+}
+
+.mainRepoContent {
+    background-color: #e1e9ec;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    top: 55px;
+}
+
+.mainRepoContent .files {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    top: 80px;
+    overflow: auto;
+}
+
+.repoNav{
+    background-color: #6f8796;
+    height: 40px;
+}
+
+.repoTab {
+    background-color: #546c78;
+    height: 50px;
+    border-top-right-radius: 5px;
+    line-height: 45px;
+    position: relative;
+    top:2px;
+}
+
+.topPart {
+    height: 90px;
+    background: #394b55;
+    color:#e1e9ec;
+    text-align: center;
+    margin-top: 5px;
+}
+/* ukrywam podlgad pliku w repo */
+div.rendered-file-browser ~ div {
+  display: none;
+}
+
+div.rendered-file-browser .files a {
+  color: #3a4b54 !important;
+  text-decoration: none;
+}
+
+div.rendered-file-browser .files .selected a {
+  color:#0a79fa !important;
+  text-decoration: none;
+}
+
+
+
+div.rendered-file-browser .files a:hover {
+  color:#0a79fa !important;
+  text-decoration: none;
 }

@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TextareaAutosize from 'react-textarea-autosize';
 import ButtonLeftBar from '../../../../components/UI/ButtonLeftBar/ButtonLeftBar';
-import {injectIntl, FormattedMessage} from 'react-intl';
+import {injectIntl} from 'react-intl';
 //import * as audioEditorActions from '../../../../store/actions/index';
 //import EditorJs from 'react-editor-js';
 

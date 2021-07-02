@@ -289,7 +289,7 @@ class repoPanel extends Component {
     downloadCorpus = () => {
 
         let projectId = this.props.currentProjectID;
-        let userId = this.props.currentProjectOwner;
+       // let userId = this.props.currentProjectOwner;
 
         //let audioGetUrl = process.env.REACT_APP_API_URL+ "/repoFiles/" + userId + "/" + projectId + "/"+sessionId+"/"+containerId+"/audio?api_key="+token;
 		
@@ -587,9 +587,9 @@ class repoPanel extends Component {
                                                     defaultMessage: "Usuń zaznaczone kontenery",
                                                 },
                                             )}>
-                                        <a href="#" role="button" >
-                                            <FontAwesomeIcon icon={faTrash} onClick={this.removeContainers}/> 
-                                        </a>
+                                        <button className="buttonaslink" onClick={this.removeContainers} >
+                                            <FontAwesomeIcon icon={faTrash} /> 
+                                        </button>
                                     </Tooltip>
 
         const removeSessionIcon = <Tooltip title={this.props.intl.formatMessage(
@@ -599,9 +599,9 @@ class repoPanel extends Component {
                                                             defaultMessage: "Usuń zaznaczone sesje",
                                                         },
                                                     )}>
-                                    <a href="#" role="button" >
-                                        <FontAwesomeIcon icon={faFolderMinus} onClick={this.removeSessions}/> 
-                                    </a>
+                                    <button className="buttonaslink" onClick={this.removeSessions}>
+                                        <FontAwesomeIcon icon={faFolderMinus} /> 
+                                    </button>
                                  </Tooltip>
         
         const moveContainersToSession = <Tooltip title={this.props.intl.formatMessage(
@@ -611,9 +611,9 @@ class repoPanel extends Component {
                                                         defaultMessage: "Przesuń zaznaczone kontenery do innej sesji",
                                                     },
                                                 )}>
-                                            <a href="#" role="button" >
-                                                <FontAwesomeIcon icon={faAngleDoubleRight} onClick={this.moveContainers}/> 
-                                            </a>
+                                            <button className="buttonaslink" onClick={this.moveContainers} >
+                                                <FontAwesomeIcon icon={faAngleDoubleRight} /> 
+                                            </button>
                                         </Tooltip>
 
         let trashIconContainer = null;
@@ -672,9 +672,9 @@ class repoPanel extends Component {
                                                         defaultMessage: "Dodaj sesje",
                                                     },
                                                 )}>
-                                <a href="#" role="button">
-                                        <FontAwesomeIcon icon={faFolderPlus} onClick={this.addSession} /> 
-                                </a> 
+                                <button className="buttonaslink" onClick={this.addSession} >
+                                        <FontAwesomeIcon icon={faFolderPlus} /> 
+                                </button> 
                             </Tooltip>
                             {
                                 trashIconSession

@@ -111,7 +111,6 @@ class RepoSession extends Component {
 
         if(this.props.containers && this.props.containers.length > 0){
             containerList = this.props.containers.map(container => {
-                if(container){
                     return   <FileContainer 
                                     container = {container}
                                     onAddContainerToReco = {this.props.onAddContainerToReco}
@@ -124,7 +123,6 @@ class RepoSession extends Component {
                                     token={this.props.token}
                                     ifSelected = {container.ifSelected}
                                     selectContainer = {this.selectTheContainer}/>
-                 }
              
             });
         }

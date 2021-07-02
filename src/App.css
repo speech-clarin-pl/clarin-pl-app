@@ -3,6 +3,11 @@ a {
   text-decoration: none;
 }
 
+.buttonaslink {
+  background: none !important;
+  border:none;
+}
+
 a:hover {
   color: #10171b;
   text-decoration: none;

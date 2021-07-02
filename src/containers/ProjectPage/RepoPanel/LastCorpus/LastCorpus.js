@@ -40,7 +40,8 @@ class LastCorpus extends Component {
                             defaultMessage: "Korpus z dnia ",
                         },
                     )}
-                     <span style={{fontSize:'11px'}}>{this.props.corpusCreatedAt}</span>  <a href="#" onClick={this.downloadLastCorpus}><FontAwesomeIcon icon={faDownload}  /> </a>
+                     <span style={{fontSize:'11px'}}>{this.props.corpusCreatedAt}</span>  
+                        <button className="buttonaslink"  onClick={this.downloadLastCorpus}><FontAwesomeIcon icon={faDownload}  /> </button>
                 </div>
             )
         }

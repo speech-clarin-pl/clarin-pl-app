@@ -15,6 +15,9 @@ const initialState = {
 const G2PSuccess = (state, action)=>{
 
     const g2pResults = action.g2pResults;
+
+    console.log(g2pResults)
+
     const nextState = produce(state, draftState => {
         draftState.g2pResults = g2pResults;
         draftState.g2pInProgress = false;

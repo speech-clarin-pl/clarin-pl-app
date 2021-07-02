@@ -76,7 +76,9 @@ const removeProject = (state, action) => {
 
     //znajduje index projektu do usuniecia
     let index = 0;
+    //eslint-disable-next-line
     let updatedProjects = projects.map((project,i) => {
+
         if(project._id !== projectId){
             return project;
         } else {

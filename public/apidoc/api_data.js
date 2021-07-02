@@ -190,6 +190,172 @@ define({ "api": [
   },
   {
     "type": "put",
+    "url": "/repoFiles/runG2P'",
+    "title": "Uruchamia Graphen to Phonem (G2P)",
+    "description": "<p>Uruchamia usługę G2P</p>",
+    "name": "RunG2P",
+    "group": "Narzędzia",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "words",
+            "description": "<p>słowa do tłumaczenia - każde w nowej linii</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "alphabet",
+            "description": "<p>rodzaj alfabetu, może być alpha lub sampa lub ipa</p>"
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Ciąg znaków 'Bearer token' gdzie w miejsce 'token' należy wstawić token uzyskany podczas logowania.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "containerId",
+            "optional": false,
+            "field": "Identyfikator",
+            "description": "<p>kontenera</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "newName",
+            "optional": false,
+            "field": "Nowa",
+            "description": "<p>nazwa</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"message\": 'G2P zakończone powodzeniem',\n  \"alphabet\": \"alpha\",\n  \"g2pResults\": \"ala ma kota\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "500": [
+          {
+            "group": "500",
+            "optional": false,
+            "field": "ServerError",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "controllers/repoPanel.js",
+    "groupTitle": "Narzędzia"
+  },
+  {
+    "type": "put",
+    "url": "/repoFiles/runKWS/:containerId'",
+    "title": "Uruchamia keyword detection (KWS)",
+    "description": "<p>Uruchamia usługę KWS</p>",
+    "name": "RunKWS",
+    "group": "Narzędzia",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "containerId",
+            "description": "<p>identyfikator kontenera na ktorym ma byc przeprowadzona usługa</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "keywords",
+            "description": "<p>słowa kluczowe do wyszukania</p>"
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Ciąg znaków 'Bearer token' gdzie w miejsce 'token' należy wstawić token uzyskany podczas logowania.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "containerId",
+            "optional": false,
+            "field": "Identyfikator",
+            "description": "<p>kontenera</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "newName",
+            "optional": false,
+            "field": "Nowa",
+            "description": "<p>nazwa</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"message\": 'KWS zakończone powodzeniem',\n  \"containerId\": \"60c4a68bbf17b2778c0b56be\",\n  \"kwsResults\": \"celnik 0.74 0.22 -178.839\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "500": [
+          {
+            "group": "500",
+            "optional": false,
+            "field": "ServerError",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "controllers/repoPanel.js",
+    "groupTitle": "Narzędzia"
+  },
+  {
+    "type": "put",
     "url": "/repoFiles/runSpeechSegmentation/:containerId",
     "title": "Segmentacja",
     "description": "<p>Narzędzie segmentacji. Dla krótkich nagrań (poniżej 0.5MB) uruchamiany jest algorytm forcealign. Dla dłuższych plików segmentalign. Usługa wymaga uruchomienia najpierw usługi rozpoznawania. Po wykonaniu zapytania należy poczekać na zakończenie pracy. Po zakończeniu serwer zapisze rezultaty w kontenerze o danym ID. Aby ściągnąć rezultaty działania narzędzia należy skorzystać z osobnego zapytania API. W międzyczasie możesz odpytywać serwer na temat statusu wykonania tego narzędzia korzystając z osobnego zapytania API.</p>",
@@ -379,7 +545,7 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/repoFiles/createNewSession",
+    "url": "/repoFiles/createNewSession/:projectId",
     "title": "Tworzenie sesji",
     "description": "<p>Tworzy nową sesje (folder) w istniejącym projekcie</p>",
     "name": "CREATESession",
@@ -425,7 +591,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "message",
-            "description": "<p>'Nowa sesja została utworzona!'</p>"
+            "description": "<p>wiadomość że 'Nowa sesja została utworzona!'</p>"
           },
           {
             "group": "Success 200",
@@ -453,12 +619,20 @@ define({ "api": [
     },
     "error": {
       "fields": {
+        "400": [
+          {
+            "group": "400",
+            "optional": false,
+            "field": "BadRequest",
+            "description": "<p>Błędne zapytanie</p>"
+          }
+        ],
         "500": [
           {
             "group": "500",
             "optional": false,
-            "field": "ServerError",
-            "description": ""
+            "field": "InternalServerError",
+            "description": "<p>Błąd serwera</p>"
           }
         ]
       }
@@ -552,9 +726,107 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/repoFiles/changeSessionName/:sessionId",
+    "title": "Zmiana nazwy sesji",
+    "description": "<p>Zmienia nazwę sesji</p>",
+    "name": "ChangeSessionName",
+    "group": "Pliki",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sessionId",
+            "description": "<p>id sesji której nazwe chcemy zmienić</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "newName",
+            "description": "<p>nowa nazwa sesji</p>"
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Ciąg znaków 'Bearer token' gdzie w miejsce 'token' należy wstawić token uzyskany podczas logowania.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>że zmiana przebiegła pomyślnie</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "sessionId",
+            "description": "<p>id zmienianej sesji</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "newName",
+            "description": "<p>nowa nazwa</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"message\": \"Zmiana nazwy sesji sukcesem!\",\n   \"sessionId\": \"60ddf31aa715f3fd9b544c50\",\n   \"newName\": \"zmienionaNazwa123\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "404": [
+          {
+            "group": "404",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>nie znaleziono sesji o danym ID</p>"
+          }
+        ],
+        "500": [
+          {
+            "group": "500",
+            "optional": false,
+            "field": "InternalServerError",
+            "description": "<p>Błąd serwera</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "controllers/repoPanel.js",
+    "groupTitle": "Pliki"
+  },
+  {
+    "type": "get",
     "url": "/repoFiles/createCorpus/:projectId",
     "title": "Tworzenie korpusu",
-    "description": "<p>Wywołanie powoduje inicjalizację procesu tworzenia korpusu w formacie EMU-SDMS i zapisuje go na serwerze w postaci pliku ZIP. Korpus jest tworzony z plików dla których wykonane zostały wszystkie poziomy anotacji (VAD, DIA, REC oraz SEG). Proces może trać dłuższy czas w zależności od ilości plików w projekcie. Po zakończeniu możesz ściągnąć korpus za pomocą osobnego zapytania API. W trakcie jego tworzenia możesz również odpytać czy korpus dla danego projektu został zakończony.</p>",
+    "description": "<p>Wywołanie powoduje inicjalizację procesu tworzenia korpusu w formacie EMU-SDMS i zapisuje go na serwerze w postaci pliku ZIP. Korpus jest tworzony z plików dla których wykonane zostały wszystkie poziomy anotacji (VAD, DIA, REC oraz SEG). Proces może trać dłuższy czas w zależności od ilości plików w projekcie. Po zakończeniu możesz ściągnąć korpus za pomocą osobnego zapytania API.</p>",
     "name": "CreateCorpus",
     "group": "Pliki",
     "parameter": {
@@ -674,13 +946,21 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 201 OK\n{\n  \"message\": 'Projekt został utworzony!',\n  \"project\": { accessToRead: [],\n                    accessToEdit: [],\n                    sessionIds: [\"5fec2f1082a28b3663a90845\", \"5fec2f1082a28b3663a90846\"],\n                    _id: 5fe99be5d831b7c009e36fbb,\n                    name: 'sampleProject',\n                    owner: 5fe39a36daa13f1fa38e1e06,\n                    projectCreated: 'December 28th 2020, 9:48:37 am',\n                    createdAt: 2020-12-28T08:48:37.558Z,\n                    updatedAt: 2020-12-28T08:48:37.558Z,\n                    __v: 0 }\n}",
+          "content": "HTTP/1.1 201 OK\n{\n  \"message\": 'Projekt został utworzony!',\n  \"project\": { \n               sessionIds: [\"5fec2f1082a28b3663a90845\", \"5fec2f1082a28b3663a90846\"],\n               _id: 5fe99be5d831b7c009e36fbb,\n               name: 'sampleProject',\n               owner: 5fe39a36daa13f1fa38e1e06,\n               projectCreated: 'December 28th 2020, 9:48:37 am',\n               createdAt: 2020-12-28T08:48:37.558Z,\n               updatedAt: 2020-12-28T08:48:37.558Z,\n     \n             }\n}",
           "type": "json"
         }
       ]
     },
     "error": {
       "fields": {
+        "400": [
+          {
+            "group": "400",
+            "optional": false,
+            "field": "BadRequest",
+            "description": "<p>Błedne polecenie</p>"
+          }
+        ],
         "422": [
           {
             "group": "422",
@@ -710,7 +990,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "sessionId",
-            "description": "<p>ID usuwanej sesji</p>"
+            "description": "<p>Id usuwanej sesji</p>"
           }
         ]
       }
@@ -757,12 +1037,28 @@ define({ "api": [
     },
     "error": {
       "fields": {
+        "400": [
+          {
+            "group": "400",
+            "optional": false,
+            "field": "BadRequest",
+            "description": "<p>Błędne zapytanie</p>"
+          }
+        ],
+        "404": [
+          {
+            "group": "404",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>Sesji nie znaleziono</p>"
+          }
+        ],
         "500": [
           {
             "group": "500",
             "optional": false,
-            "field": "ServerError",
-            "description": ""
+            "field": "InternalServerError",
+            "description": "<p>Błąd serwera</p>"
           }
         ]
       }
@@ -819,14 +1115,14 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "containerId",
-            "description": "<p>ID kontenera który został usunięty</p>"
+            "description": "<p>Id kontenera który został usunięty</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "sessionId",
-            "description": "<p>ID sesji do której należy kontener</p>"
+            "description": "<p>Id sesji do której należy kontener</p>"
           }
         ]
       },
@@ -845,15 +1141,15 @@ define({ "api": [
             "group": "404",
             "optional": false,
             "field": "NotFound",
-            "description": "<p>Nie znaleziono kontenera o danym ID</p>"
+            "description": "<p>Nie znaleziono kontenera o danym Id</p>"
           }
         ],
         "500": [
           {
             "group": "500",
             "optional": false,
-            "field": "ServerError",
-            "description": ""
+            "field": "InternalServerError",
+            "description": "<p>Bład serwera</p>"
           }
         ]
       }
@@ -936,7 +1232,7 @@ define({ "api": [
     "type": "GET",
     "url": "/repoFiles/download/:containerId/:fileType",
     "title": "Pobierz wyniki",
-    "description": "<p>Za pomocą tego zapytania możesz pobrać efekty pracy narzędzi automatycznych. Oprócz tego możesz pobrać oryginalnie wgrany plik oraz plik przekonwertowany do formatu PCM 16000Hz 16bits.</p>",
+    "description": "<p>Za pomocą tego zapytania możesz pobrać efekty pracy narzędzi automatycznych. Oprócz tego możesz pobrać oryginalnie wgrany plik oraz plik przekonwertowany do formatu WAV 16000 Hz, 16bits.</p>",
     "name": "GETOutputFile",
     "group": "Pliki",
     "parameter": {
@@ -947,7 +1243,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "containerId",
-            "description": "<p>Identyfikator kontenera dla którego chcesz pobrać wynik. Możesz go również znaleźć w interfejsie użytkownika</p>"
+            "description": "<p>Identyfikator kontenera dla którego chcesz pobrać wynik.</p>"
           },
           {
             "group": "Parameter",
@@ -1019,7 +1315,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/repoFiles/getProjectAssets/:projectId",
-    "title": "Zawartość projektu",
+    "title": "Zawartość repozytorium",
     "description": "<p>Zapytanie zwraca zawartość danego projektu w postaci listy sesji oraz kontenerów</p>",
     "name": "GETrepoassets",
     "group": "Pliki",
@@ -1063,12 +1359,19 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
+            "field": "corpusCreatedAt",
+            "description": "<p>Data ostatnio stworzonego korpusu z danego projektu</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
             "field": "sessions",
             "description": "<p>Lista sesji</p>"
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "Array",
             "optional": false,
             "field": "containers",
             "description": "<p>Lista kontenerów</p>"
@@ -1078,13 +1381,329 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n  \"message\": 'Nowa sesja została utworzona!',\n  \"sessions\": [\n   {\n       \"id\": \"5fdce8d1673bf111427d73ba\",\n       \"sessionName\": \"demo\",\n       \"ifSelected\": false,\n       \"containers\": [\n           \"5fdce8d1673bf111427d73bb\",\n           \"5fdce8d1673bf111427d73bc\",\n           \"5fdce8d1673bf111427d73bd\",\n           \"5fdce8d1673bf111427d73be\",\n           \"5fdce8d1673bf111427d73bf\"\n       ]\n   },\n   {\n       \"id\": \"5fdd0af7673bf111427d73c0\",\n       \"sessionName\": \"\\\"nowaSesjaAPI\\\"\",\n       \"ifSelected\": false,\n       \"containers\": []\n   }],\n  \"containers\": [\n   {\n       \"ifVAD\": true,\n       \"ifDIA\": true,\n       \"ifREC\": true,\n       \"ifSEG\": true,\n       \"errorMessage\": \"\",\n       \"_id\": \"5fdce8d1673bf111427d73bb\",\n       \"fileName\": \"celnik-1189e21a.wav\",\n       \"containerName\": \"celnik\",\n       \"oryginalFileName\": \"celnik.wav\",\n       \"size\": \"214078\",\n       \"owner\": \"5fc4d01a9045bb531c0b01a4\",\n       \"project\": \"5fdce8d1673bf111427d73b8\",\n       \"session\": \"5fdce8d1673bf111427d73ba\",\n       \"statusVAD\": \"done\",\n       \"statusDIA\": \"done\",\n       \"statusREC\": \"done\",\n       \"statusSEG\": \"done\",\n       \"VADUserSegments\": [\n           {\n               \"startTime\": 0.68,\n               \"endTime\": 2.74,\n               \"editable\": true,\n               \"color\": \"#394b55\",\n               \"labelText\": \"speech\"\n           },\n           {\n               \"startTime\": 2.74,\n               \"endTime\": 5.97,\n               \"editable\": true,\n               \"color\": \"#394b55\",\n               \"labelText\": \"speech\"\n           }\n       ],\n       \"DIAUserSegments\": [\n           {\n               \"startTime\": 0.68,\n               \"endTime\": 2.74,\n               \"editable\": true,\n               \"color\": \"#394b55\",\n               \"labelText\": \"1\"\n           },\n           {\n               \"startTime\": 2.74,\n               \"endTime\": 4.62,\n               \"editable\": true,\n               \"color\": \"#394b55\",\n               \"labelText\": \"2\"\n           },\n           {\n               \"startTime\": 4.62,\n               \"endTime\": 5.97,\n               \"editable\": true,\n               \"color\": \"#394b55\",\n               \"labelText\": \"3\"\n           }\n       ],\n       \"RECUserSegments\": [],\n       \"SEGUserSegments\": [],\n       \"__v\": 0,\n       \"createdAt\": \"2020-12-18T17:37:21.828Z\",\n       \"updatedAt\": \"2020-12-18T17:37:21.828Z\"\n   },\n   {\n       \"ifVAD\": true,\n       \"ifDIA\": true,\n       \"ifREC\": false,\n       \"ifSEG\": false,\n       \"errorMessage\": \"\",\n       \"_id\": \"5fdce8d1673bf111427d73bc\",\n       \"fileName\": \"kleska-29d61ce0.wav\",\n       \"containerName\": \"kleska\",\n       \"oryginalFileName\": \"kleska.wav\",\n       \"size\": \"274078\",\n       \"owner\": \"5fc4d01a9045bb531c0b01a4\",\n       \"project\": \"5fdce8d1673bf111427d73b8\",\n       \"session\": \"5fdce8d1673bf111427d73ba\",\n       \"statusVAD\": \"done\",\n       \"statusDIA\": \"done\",\n       \"statusREC\": \"ready\",\n       \"statusSEG\": \"ready\",\n       \"VADUserSegments\": [\n           {\n               \"startTime\": 1.31,\n               \"endTime\": 7.81,\n               \"editable\": true,\n               \"color\": \"#394b55\",\n               \"labelText\": \"speech\"\n           }\n       ],\n       \"DIAUserSegments\": [\n           {\n               \"startTime\": 1.31,\n               \"endTime\": 4.69,\n               \"editable\": true,\n               \"color\": \"#394b55\",\n               \"labelText\": \"3\"\n           },\n           {\n               \"startTime\": 4.68,\n               \"endTime\": 6.18,\n               \"editable\": true,\n               \"color\": \"#394b55\",\n               \"labelText\": \"1\"\n           },\n           {\n               \"startTime\": 6.18,\n               \"endTime\": 7.81,\n               \"editable\": true,\n               \"color\": \"#394b55\",\n               \"labelText\": \"2\"\n           }\n       ],\n       \"RECUserSegments\": [],\n       \"SEGUserSegments\": [],\n       \"__v\": 0,\n       \"createdAt\": \"2020-12-18T17:37:21.828Z\",\n       \"updatedAt\": \"2020-12-18T17:37:21.828Z\"\n   }]\n}",
+          "content": "   HTTP/1.1 200 OK\n   {\n     \"message\": 'Nowa sesja została utworzona!',\n     \"corpusCreatedAt\": \"2021-04-03 12:03:33 pm\"\n     \"sessions\": [\n      {\n          \"id\": \"5fdce8d1673bf111427d73ba\",\n          \"sessionName\": \"demo\",\n          \"ifSelected\": false,\n          \"containers\": [\n              \"5fdce8d1673bf111427d73bb\",\n              \"5fdce8d1673bf111427d73bc\",\n              \"5fdce8d1673bf111427d73bd\",\n              \"5fdce8d1673bf111427d73be\",\n              \"5fdce8d1673bf111427d73bf\"\n          ]\n      },\n      {\n          \"id\": \"5fdd0af7673bf111427d73c0\",\n          \"sessionName\": \"\\\"nowaSesjaAPI\\\"\",\n          \"ifSelected\": false,\n          \"containers\": []\n      }],\n     \"containers\": [\n      {\n          \"ifVAD\": true,\n          \"ifDIA\": true,\n          \"ifREC\": true,\n          \"ifSEG\": true,\n          \"errorMessage\": \"\",\n          \"_id\": \"5fdce8d1673bf111427d73bb\",\n          \"fileName\": \"celnik-1189e21a.wav\",\n          \"containerName\": \"celnik\",\n          \"oryginalFileName\": \"celnik.wav\",\n          \"size\": \"214078\",\n          \"owner\": \"5fc4d01a9045bb531c0b01a4\",\n          \"project\": \"5fdce8d1673bf111427d73b8\",\n          \"session\": \"5fdce8d1673bf111427d73ba\",\n          \"statusVAD\": \"done\",\n          \"statusDIA\": \"done\",\n          \"statusREC\": \"done\",\n          \"statusSEG\": \"done\",\n          \"VADUserSegments\": [\n              {\n                  \"startTime\": 0.68,\n                  \"endTime\": 2.74,\n                  \"editable\": true,\n                  \"color\": \"#394b55\",\n                  \"labelText\": \"speech\"\n              },\n              {\n                  \"startTime\": 2.74,\n                  \"endTime\": 5.97,\n                  \"editable\": true,\n                  \"color\": \"#394b55\",\n                  \"labelText\": \"speech\"\n              }\n          ],\n          \"DIAUserSegments\": [\n              {\n                  \"startTime\": 0.68,\n                  \"endTime\": 2.74,\n                  \"editable\": true,\n                  \"color\": \"#394b55\",\n                  \"labelText\": \"1\"\n              },\n              {\n                  \"startTime\": 2.74,\n                  \"endTime\": 4.62,\n                  \"editable\": true,\n                  \"color\": \"#394b55\",\n                  \"labelText\": \"2\"\n              },\n              {\n                  \"startTime\": 4.62,\n                  \"endTime\": 5.97,\n                  \"editable\": true,\n                  \"color\": \"#394b55\",\n                  \"labelText\": \"3\"\n              }\n          ],\n          \"RECUserSegments\": [],\n          \"SEGUserSegments\": [],\n          \"__v\": 0,\n          \"createdAt\": \"2020-12-18T17:37:21.828Z\",\n          \"updatedAt\": \"2020-12-18T17:37:21.828Z\"\n      },\n      {\n          \"ifVAD\": true,\n          \"ifDIA\": true,\n          \"ifREC\": false,\n          \"ifSEG\": false,\n          \"errorMessage\": \"\",\n          \"_id\": \"5fdce8d1673bf111427d73bc\",\n          \"fileName\": \"kleska-29d61ce0.wav\",\n          \"containerName\": \"kleska\",\n          \"oryginalFileName\": \"kleska.wav\",\n          \"size\": \"274078\",\n          \"owner\": \"5fc4d01a9045bb531c0b01a4\",\n          \"project\": \"5fdce8d1673bf111427d73b8\",\n          \"session\": \"5fdce8d1673bf111427d73ba\",\n          \"statusVAD\": \"done\",\n          \"statusDIA\": \"done\",\n          \"statusREC\": \"ready\",\n          \"statusSEG\": \"ready\",\n          \"VADUserSegments\": [\n              {\n                  \"startTime\": 1.31,\n                  \"endTime\": 7.81,\n                  \"editable\": true,\n                  \"color\": \"#394b55\",\n                  \"labelText\": \"speech\"\n              }\n          ],\n          \"DIAUserSegments\": [\n              {\n                  \"startTime\": 1.31,\n                  \"endTime\": 4.69,\n                  \"editable\": true,\n                  \"color\": \"#394b55\",\n                  \"labelText\": \"3\"\n              },\n              {\n                  \"startTime\": 4.68,\n                  \"endTime\": 6.18,\n                  \"editable\": true,\n                  \"color\": \"#394b55\",\n                  \"labelText\": \"1\"\n              },\n              {\n                  \"startTime\": 6.18,\n                  \"endTime\": 7.81,\n                  \"editable\": true,\n                  \"color\": \"#394b55\",\n                  \"labelText\": \"2\"\n              }\n          ],\n*            \"RECUserSegments\": [],\n          \"SEGUserSegments\": [],\n          \"__v\": 0,\n          \"createdAt\": \"2020-12-18T17:37:21.828Z\",\n          \"updatedAt\": \"2020-12-18T17:37:21.828Z\"\n      }]\n   }",
           "type": "json"
         }
       ]
     },
     "error": {
       "fields": {
+        "400": [
+          {
+            "group": "400",
+            "optional": false,
+            "field": "BadRequest",
+            "description": "<p>Błędne zapytanie</p>"
+          }
+        ],
+        "500": [
+          {
+            "group": "500",
+            "optional": false,
+            "field": "IntenalServerError",
+            "description": "<p>Błąd serwera</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "controllers/repoPanel.js",
+    "groupTitle": "Pliki"
+  },
+  {
+    "type": "get",
+    "url": "/repoFiles/getContainerInfo/:containerId",
+    "title": "Info kontenera",
+    "description": "<p>Zwraca metadane danego kontenera</p>",
+    "name": "GetContainerInfo",
+    "group": "Pliki",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "containerId",
+            "description": "<p>Identyfikator kontenera</p>"
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Ciąg znaków 'Bearer token' gdzie w miejsce 'token' należy wstawić token uzyskany podczas logowania.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "repoStats",
+            "description": "<p>statystyki użycia repozytorium</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n{\n     {\n         \"container\": {\n             \"ifVAD\": false,\n             \"ifDIA\": false,\n             \"ifREC\": false,\n             \"ifSEG\": false,\n             \"errorMessage\": \"\",\n             \"_id\": \"60df2e582978b3ba4d8303d8\",\n             \"fileName\": \"testowyplik-f5001650.wav\",\n             \"containerName\": \"testowyplik\",\n             \"oryginalFileName\": \"testowyplik.mp3\",\n             \"size\": 2694606,\n             \"sizeOryginal\": 168408,\n             \"owner\": \"60ddca14f2e04bbdec0aa893\",\n             \"project\": \"60df2e392978b3ba4d8303d0\",\n             \"session\": \"60df2e4d2978b3ba4d8303d7\",\n             \"statusVAD\": \"ready\",\n             \"statusDIA\": \"ready\",\n             \"statusREC\": \"ready\",\n             \"statusSEG\": \"ready\",\n             \"VADUserSegments\": [],\n             \"DIAUserSegments\": [],\n             \"RECUserSegments\": [],\n             \"SEGUserSegments\": [],\n             \"createdAt\": \"2021-07-02T15:18:48.730Z\",\n             \"updatedAt\": \"2021-07-02T15:18:48.730Z\",\n         }\n     }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "400": [
+          {
+            "group": "400",
+            "optional": false,
+            "field": "BadRequest",
+            "description": "<p>Błędne zapytanie</p>"
+          }
+        ],
+        "500": [
+          {
+            "group": "500",
+            "optional": false,
+            "field": "InternalServerError",
+            "description": "<p>Błąd serwera</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "controllers/repoPanel.js",
+    "groupTitle": "Pliki"
+  },
+  {
+    "type": "get",
+    "url": "/projectsList",
+    "title": "Pobranie listy projektów",
+    "description": "<p>Zwraca listę projektów stworzonych przez zalogowanego użytkownika</p>",
+    "name": "GetProjectList",
+    "group": "Pliki",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Ciąg znaków 'Bearer token' gdzie w miejsce 'token' należy wstawić token uzyskany podczas logowania.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>wiadomość że projekt został utworzony.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "projects",
+            "description": "<p>tablica z metadanymi projektów użytkownika</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n    {\n   \"message\": \"Lista projektów pobrana!\",\n   \"projects\": [\n       {\n           \"sessionIds\": [\n               \"60dde3c32c7c40e8baedcaf2\",\n               \"60dde3c32c7c40e8baedcaf3\"\n           ],\n           \"_id\": \"60dde3c32c7c40e8baedcaf1\",\n           \"name\": \"Zmieniona nazwa nowego projektu XYZ\",\n           \"owner\": \"60ddca14f2e04bbdec0aa893\",\n           \"projectCreated\": \"July 1st 2021, 5:48:19 pm\",\n           \"createdAt\": \"2021-07-01T15:48:19.874Z\",\n           \"updatedAt\": \"2021-07-01T15:54:08.572Z\",\n       },\n       {\n           \"sessionIds\": [\n               \"60ddca1bf2e04bbdec0aa896\",\n               \"60ddca1bf2e04bbdec0aa897\"\n           ],\n           \"_id\": \"60ddca1bf2e04bbdec0aa894\",\n           \"name\": \"DOMYŚLNY PROJEKT\",\n           \"owner\": \"60ddca14f2e04bbdec0aa893\",\n           \"projectCreated\": \"July 1st 2021, 3:58:51 pm\",\n           \"createdAt\": \"2021-07-01T13:58:51.766Z\",\n           \"updatedAt\": \"2021-07-01T13:58:51.776Z\",\n       }\n   ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "500": [
+          {
+            "group": "500",
+            "optional": false,
+            "field": "InternalServerError",
+            "description": "<p>Błąd serwera</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "controllers/projectsList.js",
+    "groupTitle": "Pliki"
+  },
+  {
+    "type": "get",
+    "url": "/repoFiles/getRepoStats/:projectId",
+    "title": "Statystyki repozytorium",
+    "description": "<p>Zwraca statystyki użycia repozytorium</p>",
+    "name": "GetRepoStats",
+    "group": "Pliki",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "projectId",
+            "description": "<p>Identyfikator projektu</p>"
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Ciąg znaków 'Bearer token' gdzie w miejsce 'token' należy wstawić token uzyskany podczas logowania.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "repoStats",
+            "description": "<p>statystyki użycia repozytorium</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n{\n    \"repoStats\": {\n        \"containersNumber\": 7,\n        \"weightOfOryginal\": 2884128,\n        \"weightOfConverted\": 1855274,\n        \"totalWeight\": 4739402\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "400": [
+          {
+            "group": "400",
+            "optional": false,
+            "field": "BadRequest",
+            "description": "<p>Błędne zapytanie</p>"
+          }
+        ],
+        "500": [
+          {
+            "group": "500",
+            "optional": false,
+            "field": "InternalServerError",
+            "description": "<p>Błąd serwera</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "controllers/repoPanel.js",
+    "groupTitle": "Pliki"
+  },
+  {
+    "type": "put",
+    "url": "/repoFiles/moveContainerToSession/:containerId",
+    "title": "Przenoszenie kontenera",
+    "description": "<p>Przenoszenie kontenera do innej sesji</p>",
+    "name": "MoveContainer",
+    "group": "Pliki",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "containerId",
+            "description": "<p>id kontenera ktory chcemy przenieść</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sessionId",
+            "description": "<p>id sesji do której chcemy przenieść kontener</p>"
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Ciąg znaków 'Bearer token' gdzie w miejsce 'token' należy wstawić token uzyskany podczas logowania.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>że kontener został przeniesiony</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "containerId",
+            "description": "<p>id kontenera przenoszonego</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "sessionId",
+            "description": "<p>id sesji do ktorej zostal przeniesiony kontener</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "404": [
+          {
+            "group": "404",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>nie znaleziono kontenera o danym ID</p>"
+          }
+        ],
         "500": [
           {
             "group": "500",
@@ -1161,12 +1780,28 @@ define({ "api": [
     },
     "error": {
       "fields": {
+        "400": [
+          {
+            "group": "400",
+            "optional": false,
+            "field": "BadRequest",
+            "description": "<p>Nie znaleziono projektu o zadanym Id</p>"
+          }
+        ],
         "403": [
           {
             "group": "403",
             "optional": false,
-            "field": "Not",
-            "description": "<p>authorized Błędna nazwa projektu</p>"
+            "field": "Forbidden",
+            "description": "<p>Brak uprawnień</p>"
+          }
+        ],
+        "404": [
+          {
+            "group": "404",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>Nie znaleziono projektu o zadanym Id</p>"
           }
         ]
       }
@@ -1179,7 +1814,7 @@ define({ "api": [
     "type": "post",
     "url": "/repoFiles/uploadFile",
     "title": "Wgrywanie pliku",
-    "description": "<p>Wgranie pliku audio lub transkrypcji na serwer. W przypadku pliku audio należy podać id projektu oraz sesji do której wgrany będzie plik. W przypadku pliku transkrypcji (txt) należy podać dodatkowo id kontenera którego dotyczy.</p>",
+    "description": "<p>Wgranie pliku audio lub transkrypcji na serwer. W przypadku pliku audio należy podać id sesji do której wgrany będzie plik. W przypadku pliku transkrypcji (txt) należy podać dodatkowo id kontenera którego dotyczy.</p>",
     "name": "UPLOADfile",
     "group": "Pliki",
     "parameter": {
@@ -1190,14 +1825,14 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "projectId",
-            "description": "<p>Identyfikator projektu</p>"
+            "description": "<p>Id projektu</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
             "field": "sessionId",
-            "description": "<p>Identyfikator sesji</p>"
+            "description": "<p>Id sesji</p>"
           },
           {
             "group": "Parameter",
@@ -1272,12 +1907,28 @@ define({ "api": [
     },
     "error": {
       "fields": {
+        "400": [
+          {
+            "group": "400",
+            "optional": false,
+            "field": "BadRequest",
+            "description": "<p>Brak pliku</p>"
+          }
+        ],
+        "404": [
+          {
+            "group": "404",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>Nie znaleziono sesji podanym id</p>"
+          }
+        ],
         "500": [
           {
             "group": "500",
             "optional": false,
-            "field": "ServerError",
-            "description": ""
+            "field": "InternalServerError",
+            "description": "<p>Błąd serwera</p>"
           }
         ]
       }
@@ -1355,19 +2006,27 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n  \"message\": 'Nazwa projektu zaktualizowana!',\n  \"projectId\": 5fe99be5d831b7c009e36fbb,\n  \"newName\": newName\n}",
+          "content": "HTTP/1.1 200 OK\n{\n  \"message\": 'Nazwa projektu zaktualizowana!',\n  \"projectId\": '5fe99be5d831b7c009e36fbb',\n  \"newName\": 'nowa nazwa projektu'\n}",
           "type": "json"
         }
       ]
     },
     "error": {
       "fields": {
+        "400": [
+          {
+            "group": "400",
+            "optional": false,
+            "field": "BadRequest",
+            "description": "<p>Błędne Id projektu</p>"
+          }
+        ],
         "403": [
           {
             "group": "403",
             "optional": false,
-            "field": "NotAuthorized",
-            "description": "<p>nieautoryzowany dostęp</p>"
+            "field": "Forbidden",
+            "description": "<p>Brak uprawnień</p>"
           }
         ],
         "404": [
@@ -1375,14 +2034,14 @@ define({ "api": [
             "group": "404",
             "optional": false,
             "field": "NotFound",
-            "description": "<p>nie znaleziono projektu</p>"
+            "description": "<p>Nie znaleziono projektu</p>"
           }
         ],
         "422": [
           {
             "group": "422",
             "optional": false,
-            "field": "ValidationFailed",
+            "field": "UnprocessableEntity",
             "description": "<p>Błędna nazwa projektu</p>"
           }
         ]
@@ -1396,7 +2055,7 @@ define({ "api": [
     "type": "post",
     "url": "/auth/forgotPass/",
     "title": "Odzyskanie hasła",
-    "description": "<p>Pozwala użytkownikowi wygenerować nowe hasło. Wywołanie tego API powoduje wysłąnie wiadomości email na adres użytkownika z linkiem do strony gdzie można wprowadzić nowe hasło.</p>",
+    "description": "<p>Pozwala użytkownikowi wygenerować nowe hasło. Wywołanie tego zapytania powoduje wysłanie wiadomości email na adres użytkownika z linkiem do strony gdzie można wprowadzić nowe hasło.</p>",
     "name": "ForgotPassword",
     "group": "Użytkownik",
     "parameter": {
@@ -1468,7 +2127,7 @@ define({ "api": [
     "type": "post",
     "url": "/auth/login",
     "title": "Logowanie",
-    "description": "<p>Pozwala na zalogowanie się zarejestrowanym użytkownikom i uzyskanie tokenu JWT do przeprowadzania dzalszych zapytań API. Token należy podawać w nagłówku zapytań w polu 'Authorization'. Token jest ważny przez 192h (8 dni). Po tym czasie należy zalogować się ponownie.</p>",
+    "description": "<p>Pozwala na zalogowanie się zarejestrowanym użytkownikom i uzyskanie tokenu JWT do przeprowadzania dzalszych zapytań API. Token należy podawać w nagłówku zapytań w polu 'Authorization'.</p>",
     "name": "LoginUser",
     "group": "Użytkownik",
     "parameter": {
@@ -1539,23 +2198,23 @@ define({ "api": [
             "group": "401",
             "optional": false,
             "field": "Unathorized",
-            "description": "<p>Błędne hasło</p>"
+            "description": "<p>Błędne hasło lub konto nie zostało potwierdzone na maila</p>"
           }
         ],
         "404": [
           {
             "group": "404",
             "optional": false,
-            "field": "Not",
-            "description": "<p>Found Użytkownik o podanym email nie został znaleziony</p>"
+            "field": "NotFound",
+            "description": "<p>Użytkownik o podanym email nie został znaleziony</p>"
           }
         ],
         "500": [
           {
             "group": "500",
             "optional": false,
-            "field": "ServerError",
-            "description": "<p>Serwer error</p>"
+            "field": "InternalServerError",
+            "description": "<p>błąd serwera</p>"
           }
         ]
       }
@@ -1568,7 +2227,7 @@ define({ "api": [
     "type": "put",
     "url": "/auth/registration",
     "title": "Rejestracja użytkownika",
-    "description": "<p>Rejestracja nowego użytkownika. Tylko zarejestrowani użytkownicy mogą wykonywać zapytania do API. W ten sposób chronimy dostęp do Twoich danych. Podczas rejestracji tworzony jest domyślny projekt z dwoma sesjami. Sesja demo z przykładowymi plikami oraz sesja domyślna, gotowa do wgrania własnych plików. Użytkownik może je zostawić, skasować bądź utworzyć własne dodatkowe sesje.</p>",
+    "description": "<p>Rejestracja nowego użytkownika. Tylko zarejestrowani użytkownicy mogą wykonywać zapytania do API. W ten sposób chronimy dostęp do danych. Podczas rejestracji system wysyła wiadomość na podany przez użytkownika email z linkiem aktywującym konto. Bez aktywowania konta nie ma możliwości zalogowania.</p>",
     "name": "RegisterUser",
     "group": "Użytkownik",
     "parameter": {
@@ -1606,14 +2265,78 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "message",
-            "description": "<p>wiadomość potwierdzająca</p>"
+            "description": "<p>wiadomość potwierdzająca że link został wysłany na podany email</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"message\": 'Wiadomość z linkiem aktywacyjnym została wysłana na podany adres email',\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "422": [
+          {
+            "group": "422",
+            "optional": false,
+            "field": "UnprocesssableEntity",
+            "description": "<p>Błędy walidacji</p>"
+          }
+        ],
+        "500": [
+          {
+            "group": "500",
+            "optional": false,
+            "field": "InternalServerError",
+            "description": "<p>Serwer error</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "controllers/auth.js",
+    "groupTitle": "Użytkownik"
+  },
+  {
+    "type": "get",
+    "url": "/confirmUser/:confirmationCode",
+    "title": "Weryfikacja użytkownika",
+    "description": "<p>Użytkownik po zarejestrowaniu powinien otrzymać wiadomość email z linkiem aktywującym. Kliknięcie w ten link weryfikuje użytkownika że to właśnie on się zarejestrował.</p>",
+    "name": "RegisterUser",
+    "group": "Użytkownik",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "confirmationCode",
+            "description": "<p>Kod weryfikacyjny zawarty w linku wysłanym na email</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>wiadomość potwierdzająca że konto zostało założone</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "defaultProjectId",
-            "description": "<p>Identyfikator pierwszego stworzonego projektu do którego domyślnie będą wgrywane pliki oraz rezultaty działania narzędzi (o ile nie zostanie utworzony osobny projekt).</p>"
+            "description": "<p>Identyfikator pierwszego stworzonego projektu.</p>"
           },
           {
             "group": "Success 200",
