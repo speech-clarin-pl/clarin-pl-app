@@ -1,3 +1,3 @@
 
-var axiosBaseURL = "https://mowa.clarin-pl.eu:8433/api";
+var axiosBaseURL = "https://mowa.clarin-pl.eu/api";
 
