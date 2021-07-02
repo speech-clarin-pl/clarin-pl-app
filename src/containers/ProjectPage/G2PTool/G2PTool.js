@@ -113,7 +113,10 @@ class G2PTool extends Component {
                 <div className="row">
                 <div className="col-md-12">
                         <div className="alert alert-primary" role="alert" style={{textAlign:'center'}}>
-                            <p><FormattedMessage
+                            {
+                                /*
+                                //tymczasowo nieobsluguje
+                                <p><FormattedMessage
                                 id="G2PTool-wybierzAlfabetInfo"
                                 description="instrukcja aby wybrać alfabet" 
                                 defaultMessage="Wybierz alfabet" 
@@ -132,6 +135,9 @@ class G2PTool extends Component {
                                     <label for="ipa">IPA</label>
                                 </span>
                             </div>
+                                 */
+                            }
+                            
                             <button type="button" 
                                 className="btn btn-primary btn-block op-btn" 
                                 onClick={this.makeTranscript}

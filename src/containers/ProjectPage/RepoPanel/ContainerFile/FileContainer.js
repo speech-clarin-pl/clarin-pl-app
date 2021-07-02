@@ -246,7 +246,7 @@ class FileContainer extends Component {
                                                         defaultMessage: "Detekcja mowy (VAD)",
                                                     },
                                                 )}>
-                                    <button className="buttonaslink" onClick={this.runVAD} >
+                                    <button className="buttonaslink" onClick={this.runVAD} style={{padding: '0px'}} >
                                         
                                         <FontAwesomeIcon icon={faSurprise} className={["repoIcon",VADerrorClass, this.props.container.ifVAD? "on": ""].join(" ")}/> 
                                     </button>
@@ -259,7 +259,7 @@ class FileContainer extends Component {
                                                         defaultMessage: "Diaryzacja (DIA)",
                                                     },
                                                 )}>
-                                    <button className="buttonaslink" onClick={this.runDIA} >
+                                    <button className="buttonaslink" onClick={this.runDIA} style={{padding: '0px'}}>
                                         <FontAwesomeIcon icon={faComment} className={["repoIcon",DIAerrorClass, this.props.container.ifDIA? "on": ""].join(" ")}/> 
                                     </button>
                                 </Tooltip>
@@ -271,7 +271,7 @@ class FileContainer extends Component {
                                                         defaultMessage: "Rozpoznawanie mowy (REC)",
                                                     },
                                                 )} data-tut={addODoTranskrypcji+""}>
-                                    <button className="buttonaslink" onClick={this.runRECO} >
+                                    <button className="buttonaslink" onClick={this.runRECO} style={{padding: '0px'}}>
                                         <FontAwesomeIcon icon={faFileAlt} className={["repoIcon",RECerrorClass, this.props.container.ifREC? "on": ""].join(" ")}/> 
                                     </button>
                                 </Tooltip>
@@ -283,7 +283,7 @@ class FileContainer extends Component {
                                                         defaultMessage: "Segmentacja (SEG)",
                                                     },
                                                 )}>
-                                    <button className="buttonaslink" onClick={this.runALIGN}>
+                                    <button className="buttonaslink" onClick={this.runALIGN} style={{padding: '0px'}}>
                                         <FontAwesomeIcon icon={faClock} className={["repoIcon",SEGerrorClass, this.props.container.ifSEG? "on": ""].join(" ")}/> 
                                     </button>
                                 </Tooltip>
