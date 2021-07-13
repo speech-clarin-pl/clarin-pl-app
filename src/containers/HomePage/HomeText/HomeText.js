@@ -55,7 +55,7 @@ const hometext = (props) => {
                                 id="HomeText-corpusCreationBody"
                                 description="Tworzenie korpusów nagłówek opis" 
                                 defaultMessage="Centralne repozytorium plików umożliwia przechowywanie Twoich danych, dostępnych tylko dla Ciebie po zalogowaniu. 
-                                Witryna umożliwia tworzenie korpusów, gotowych do dalszej analizy w środowisku EMU-SDMD do badań naukowych."
+                                Witryna umożliwia tworzenie korpusów, gotowych do dalszej analizy w środowisku EMU-SDMS do badań naukowych."
                             />
                         </p>
                         <h3>
